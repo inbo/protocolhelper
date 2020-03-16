@@ -11,6 +11,6 @@ Installation
 You can install protocolshelper from [github](https://github.com/inbo/protocolshelper) with:
 
 ``` r
-# install.packages("remotes")
+if (!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("inbo/protocolshelper")
 ```
