@@ -1,0 +1,21 @@
+Package: protocolshelper
+Title: Helper Functions to Manage INBO Protoocols
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Hans",
+             family = "Van Calster",
+             role = c("aut", "cre"),
+             email = "hans.vancalster@inbo.be",
+             comment = c(ORCID = "0000-0001-8595-8426")),
+      person(given = "Research Institute for Nature and Forest",
+             role = c("cph", "fnd"),
+             email = "info@inbo.be"))
+Description: This package contains helper functions to manage INBO protocols.
+License: GPL-3
+Suggests: 
+    testthat
+Encoding: UTF-8
+Language: en-GB
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0

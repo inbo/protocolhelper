@@ -1,12 +1,23 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-protocolshelper
-===============
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# protocolshelper
 
 The goal of protocolshelper is to provide helper functions and templates to manage the INBO/protocols repository.
 
-Installation
-------------
+## Installation
 
 You can install protocolshelper from [github](https://github.com/inbo/protocolshelper) with:
 
@@ -14,3 +25,4 @@ You can install protocolshelper from [github](https://github.com/inbo/protocolsh
 # install.packages("remotes")
 remotes::install_github("inbo/protocolshelper")
 ```
+
