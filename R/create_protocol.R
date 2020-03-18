@@ -34,7 +34,7 @@ create_sfp <- function(
   short_title,
   authors,
   date = Sys.Date(),
-  reviewers = "voornaam1 naam1, voornaam2 naam2, ...",
+  reviewers,
   file_manager = "voornaam naam",
   revision = "0.0.0.9000",
   projectname = "",
