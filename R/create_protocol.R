@@ -35,7 +35,7 @@ create_sfp <- function(
   authors,
   date = Sys.Date(),
   reviewers,
-  file_manager = "voornaam naam",
+  file_manager,
   revision = "0.0.0.9000",
   projectname = "",
   theme = c("generiek", "water", "lucht", "bodem", "vegetatie", "soorten")) {
