@@ -31,7 +31,7 @@
 create_sfp <- function(
   title,
   subtitle = "",
-  short_title = "korte titel",
+  short_title,
   authors = "voornaam1 naam1, voornaam2 naam2, ...",
   date = Sys.Date(),
   reviewers = "voornaam1 naam1, voornaam2 naam2, ...",
