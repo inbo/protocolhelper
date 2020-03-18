@@ -29,7 +29,7 @@
 #' create_sfp()
 #'}
 create_sfp <- function(
-  title = "Titel",
+  title,
   subtitle = "",
   short_title = "korte titel",
   authors = "voornaam1 naam1, voornaam2 naam2, ...",
