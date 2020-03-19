@@ -86,7 +86,7 @@ create_sfp <- function(
   short_title <- str_replace_all(short_title, " ", "-")
   short_titles <- get_short_titles(protocol_type = protocol_type)
   assert_that(!(short_title %in% short_titles),
-              msg = "De opgegeven korte titel bestaat al. Geef een korte titel die nog niet bestaat.")
+              msg = "The given short title already exists. Give a short title that is not in use. Use get_short_titles() to get an overview of short titles that are in use.")
 
   protocol_code <- paste0(protocol_type, "-", protocol_number)
   folder_name <- paste0(protocol_code, "_", short_title)
@@ -105,8 +105,8 @@ create_sfp <- function(
 
   # check for existence of the folder
   if (dir.exists(path_to_protocol)) {
-    stop(sprintf(paste0("De protocol repository bevat reeds ",
-                        "een map voor %s!"), path_to_protocol))
+    stop(sprintf(paste0("The protocol repository already has ",
+                        "a folder %s!"), path_to_protocol))
   }
   # create a new directory
   dir.create(file.path(path_to_protocol),
