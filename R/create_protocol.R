@@ -11,7 +11,7 @@
 #' @param file_manager A character string for the name of the document maintainer of the form First name Last name
 #' @param revision A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.
 #' @param projectname A character string giving the project name. Best to use an acronym for this.
-#' @param theme A character string equal to generiek (default), water, lucht, bodem, vegetatie of soorten.
+#' @param theme A character string equal to one of generiek (default), water, lucht, bodem, vegetatie or soorten.
 #'
 #' @return A new subfolder beneath src with an Rmarkdown file
 #'
@@ -56,14 +56,9 @@ create_sfp <- function(
 
   protocol_type <- "sfp"
 
-  protocol_leading_number <- switch(theme,
-                                 generiek = "0",
-                                 water = "1",
-                                 bodem = "2",
-                                 lucht = "3",
-                                 vegetatie = "4",
-                                 soorten = "5"
-  )
+  themes_df <- protocolshelper:::themes_df
+  protocol_leading_number <- themes_df[themes_df$theme == theme,
+                                       "theme_number"]
 
   all_numbers <- get_protocolnumbers(protocol_type = protocol_type)
 
