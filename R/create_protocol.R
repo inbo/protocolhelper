@@ -40,7 +40,7 @@ create_sfp <- function(
   file_manager,
   revision = "0.0.0.9000",
   projectname = "",
-  theme = c("generiek", "water", "lucht", "bodem", "vegetatie", "soorten")) {
+  theme = c("generic", "water", "air", "soil", "vegetation", "species")) {
 
   # check parameters
   assert_that(is.string(title))
