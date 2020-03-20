@@ -2,6 +2,8 @@
 #'
 #' @description This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown skeleton based on a template file to start working on a new protocol.
 #'
+#' @details The created folder is a new subfolder beneath `src` and contains an Rmarkdown file.
+#'
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
 #' @param short_title A character string of less than 20 characters to use in folder and filenames
@@ -13,7 +15,6 @@
 #' @param projectname A character string giving the project name. Best to use an acronym for this.
 #' @param theme A character string equal to one of generiek (default), water, lucht, bodem, vegetatie or soorten.
 #'
-#' @return A new subfolder beneath src with an Rmarkdown file
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all str_extract

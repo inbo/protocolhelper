@@ -38,11 +38,11 @@ create_sfp(
 
 \item{theme}{A character string equal to one of generiek (default), water, lucht, bodem, vegetatie or soorten.}
 }
-\value{
-A new subfolder beneath src with an Rmarkdown file
-}
 \description{
 This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown skeleton based on a template file to start working on a new protocol.
+}
+\details{
+The created folder is a new subfolder beneath \code{src} and contains an Rmarkdown file.
 }
 \examples{
 \dontrun{
