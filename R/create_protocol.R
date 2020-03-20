@@ -14,6 +14,7 @@
 #' @param revision A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
+#' @param language Language of the protocol, either `"nl"` (Dutch), the default, or `"en"` (English).
 #'
 #'
 #' @importFrom rprojroot find_root is_git_root
@@ -38,7 +39,8 @@ create_sfp <- function(
   reviewers,
   file_manager,
   revision = "0.0.0.9000",
-  theme = c("generic", "water", "air", "soil", "vegetation", "species")) {
+  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+  language = c("nl", "en")) {
 
   # check parameters
   assert_that(is.string(title))
@@ -50,6 +52,7 @@ create_sfp <- function(
   assert_that(is.string(file_manager))
   assert_that(is.string(revision))
   theme <- match.arg(theme)
+  language <- match.arg(language)
 
   # create protocol name
 
@@ -84,32 +87,50 @@ create_sfp <- function(
   protocol_code <- paste0(protocol_type, "-", protocol_number)
   folder_name <- paste0(protocol_code, "_", short_title)
   folder_name <- tolower(folder_name)
-  protocol_filename <- folder_name
+  protocol_filename <- paste0(folder_name, "_", language)
 
   # directory setup
   project_root <- find_root(is_git_root)
   path_to_protocol <- file.path(project_root, "src", "thematic", theme,
                                   folder_name)
+  # set _bookdown.yml values
+  book_filename <- paste0(protocol_filename, ".Rmd")
+  output_dir <- file.path(project_root, "docs", "thematic", theme,
+                          folder_name)
 
-  # check for existence of the folder
+  # check for existence of the folders
   if (dir.exists(path_to_protocol)) {
     stop(sprintf(paste0("The protocol repository already has ",
                         "a folder %s!"), path_to_protocol))
   }
-  # create a new directory
+  if (dir.exists(output_dir)) {
+    stop(sprintf(paste0("The protocol repository already has ",
+                        "a folder %s!"), path_to_protocol))
+  }
+  # create new directories
   dir.create(file.path(path_to_protocol),
                recursive = TRUE)
-
+  dir.create(file.path(output_dir),
+             recursive = TRUE)
   # create subfolders data and media
   dir.create(file.path(path_to_protocol, "data"))
   dir.create(file.path(path_to_protocol, "media"))
 
   # move all files from the template folder
-  parent_rmd <- file.path(path_to_protocol, paste0(protocol_filename, ".Rmd"))
-  draft(file = parent_rmd,
-        template = "template_sfp",
-        package = "protocolshelper",
-        edit = FALSE)
+  parent_rmd <- file.path(path_to_protocol, "index.Rmd")
+  if (language == "nl") {
+    draft(file = parent_rmd,
+          template = "template_sfp_nl",
+          package = "protocolshelper",
+          edit = FALSE)
+  } else {
+    draft(file = parent_rmd,
+          template = "template_sfp_en",
+          package = "protocolshelper",
+          edit = FALSE)
+  }
+
+
   # change values in parent rmarkdown
   original_file <- file(parent_rmd, "r")
   original_file_content <- readLines(parent_rmd)
@@ -121,7 +142,9 @@ create_sfp <- function(
                file_manager = file_manager,
                revision = revision,
                procedure = protocol_code,
-               theme = theme
+               theme = theme,
+               book_filename = book_filename,
+               output_dir = output_dir
   )
   writeLines(map_chr(original_file_content,
                      whisker.render,
