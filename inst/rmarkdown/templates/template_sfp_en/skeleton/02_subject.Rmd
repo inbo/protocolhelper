@@ -1,0 +1,14 @@
+# Onderwerp
+
+## Definities en afkortingen
+
+<!--
+Definities van begrippen en afkortingen die noodzakelijk zijn om dit document te begrijpen en het veldprotocol op een gepaste manier te kunnen uitvoeren.  
+-->
+
+## Doelstelling en toepassingsgebied
+
+<!--
+Doelstelling: omschrijving in woorden waarvoor het veldprotocol dient. Voorbeelden wat er met de gegevens kan gedaan worden. Probeer de doelstelling zo veel mogelijk generiek te beschrijven en vermijd projectspecifieke doelstellingen.
+Toepassingsgebied: bespreek hier onder welke condities het veldprotocol kan gebruikt worden.
+-->
