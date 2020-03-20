@@ -20,7 +20,8 @@
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all str_extract
 #' @importFrom assertthat assert_that is.string is.date
-#' @importFrom rmarkdown draft render
+#' @importFrom rmarkdown draft
+#' @importFrom bookdown render_book
 #' @importFrom purrr map_chr
 #' @importFrom whisker whisker.render
 #'
@@ -131,29 +132,32 @@ create_sfp <- function(
   }
 
 
-  # change values in parent rmarkdown
-  original_file <- file(parent_rmd, "r")
-  original_file_content <- readLines(parent_rmd)
-  data <- list(title = title,
-               subtitle = subtitle,
-               authors = authors,
-               date = date,
-               reviewers = reviewers,
-               file_manager = file_manager,
-               revision = revision,
-               procedure = protocol_code,
-               theme = theme,
-               book_filename = book_filename,
-               output_dir = output_dir
-  )
-  writeLines(map_chr(original_file_content,
-                     whisker.render,
-                     data),
-             parent_rmd)
-  close(original_file)
-
+  # change values in parent rmarkdown and _bookdown.yml
+  filenames <- c(parent_rmd,
+                 file.path(path_to_protocol, "_bookdown.yml"))
+  for (filename in filenames) {
+    original_file <- file(filename, "r")
+    original_file_content <- readLines(filename)
+    data <- list(title = title,
+                 subtitle = subtitle,
+                 authors = authors,
+                 date = date,
+                 reviewers = reviewers,
+                 file_manager = file_manager,
+                 revision = revision,
+                 procedure = protocol_code,
+                 theme = theme,
+                 book_filename = book_filename,
+                 output_dir = output_dir
+    )
+    writeLines(map_chr(original_file_content,
+                       whisker.render,
+                       data),
+               filename)
+    close(original_file)
+  }
   # render html
-  render(input = parent_rmd)
+  render_book(input = parent_rmd)
 }
 
 
