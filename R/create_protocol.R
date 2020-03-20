@@ -58,7 +58,6 @@ create_sfp <- function(
 
   protocol_type <- "sfp"
 
-  themes_df <- protocolshelper:::themes_df
   protocol_leading_number <- themes_df[themes_df$theme == theme,
                                        "theme_number"]
 
@@ -108,6 +107,10 @@ create_sfp <- function(
   # create a new directory
   dir.create(file.path(path_to_protocol),
                recursive = TRUE)
+
+  # create subfolders data and media
+  dir.create(file.path(path_to_protocol, "data"))
+  dir.create(file.path(path_to_protocol, "media"))
 
   # move all files from the template folder
   parent_rmd <- file.path(path_to_protocol, paste0(protocol_filename, ".Rmd"))
