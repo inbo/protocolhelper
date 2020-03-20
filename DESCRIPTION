@@ -1,5 +1,5 @@
 Package: protocolshelper
-Title: Helper Functions to Manage INBO Protoocols
+Title: Helper Functions to Manage Protocols
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Hans",
