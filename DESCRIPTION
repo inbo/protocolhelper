@@ -11,7 +11,7 @@ Authors@R:
              role = c("cph", "fnd"),
              email = "info@inbo.be"))
 Description: This package contains helper functions to manage INBO protocols.
-License: GPL-3
+License: GPL-3 + file LICENSE
 Suggests: 
     testthat (>= 2.1.0)
 Encoding: UTF-8
