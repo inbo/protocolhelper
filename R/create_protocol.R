@@ -106,6 +106,10 @@ create_sfp <- function(
   dir.create(file.path(path_to_protocol),
                recursive = TRUE)
 
+  # create subfolders data and media
+  dir.create(file.path(path_to_protocol, "data"))
+  dir.create(file.path(path_to_protocol, "media"))
+
   # move all files from the template folder
   parent_rmd <- file.path(path_to_protocol, paste0(protocol_filename, ".Rmd"))
   draft(file = parent_rmd,
