@@ -3,11 +3,11 @@ title: {{{title}}}
 subtitle: {{{subtitle}}}
 author: {{{authors}}}
 date: {{{date}}}
+site: bookdown::bookdown_site
 output: 
-  bookdown::html_document2:
-    toc: true
-    toc_float: true
-    number_sections: true
+  bookdown::gitbook:
+    split_by: none
+    split_bib: FALSE
 ---
 
 <!--
@@ -50,62 +50,3 @@ metadata <- data.frame(
 kable(metadata)
 
 ```
-
-```{r dependencies, child = "_01_dependencies.Rmd"}
-
-```
-
-```{r subject, child = "_02_subject.Rmd"}
-
-```
-
-```{r scope, child = "_03_scope.Rmd"}
-
-```
-
-
-```{r principle, child = "_04_principle.Rmd"}
-
-```
-
-
-```{r skills, child = "_05_skills.Rmd"}
-
-```
-
-
-```{r materials, child = "_06_materials.Rmd"}
-
-```
-
-
-```{r workflow, child = "_07_workflow.Rmd"}
-
-```
-
-```{r quality-assurance, child = "_08_quality_assurance.Rmd"}
-
-```
-
-```{r safety, child = "_09_safety.Rmd"}
-
-```
-
-
-```{r summary, child = "_10_summary.Rmd"}
-
-```
-
-
-```{r references, child = "_11_references.Rmd"}
-
-```
-
-
-```{r appendices, child = "_12_appendices.Rmd"}
-
-```
-
-
-
-
