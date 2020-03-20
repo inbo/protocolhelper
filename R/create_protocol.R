@@ -12,7 +12,6 @@
 #' @param reviewers A character string for reviewers of the form First name Last name and multiple authors separated by a comma
 #' @param file_manager A character string for the name of the document maintainer of the form First name Last name
 #' @param revision A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.
-#' @param projectname A character string giving the project name. Best to use an acronym for this.
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #'
@@ -39,7 +38,6 @@ create_sfp <- function(
   reviewers,
   file_manager,
   revision = "0.0.0.9000",
-  projectname = "",
   theme = c("generic", "water", "air", "soil", "vegetation", "species")) {
 
   # check parameters
@@ -51,7 +49,6 @@ create_sfp <- function(
   assert_that(is.string(reviewers))
   assert_that(is.string(file_manager))
   assert_that(is.string(revision))
-  assert_that(is.string(projectname))
   theme <- match.arg(theme)
 
   # create protocol name
@@ -91,13 +88,8 @@ create_sfp <- function(
 
   # directory setup
   project_root <- find_root(is_git_root)
-  if (!nzchar(projectname)) {
-    path_to_protocol <- file.path(project_root, "src", "thematic", theme,
+  path_to_protocol <- file.path(project_root, "src", "thematic", theme,
                                   folder_name)
-  } else {
-    path_to_protocol <- file.path(project_root, "src", "project", projectname,
-                                  theme, folder_name)
-  }
 
   # check for existence of the folder
   if (dir.exists(path_to_protocol)) {
@@ -129,8 +121,7 @@ create_sfp <- function(
                file_manager = file_manager,
                revision = revision,
                procedure = protocol_code,
-               theme = theme,
-               projectname = projectname
+               theme = theme
   )
   writeLines(map_chr(original_file_content,
                      whisker.render,
