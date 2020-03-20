@@ -26,4 +26,5 @@ Imports:
     rprojroot,
     stringr,
     whisker,
-    purrr
+    purrr,
+    bookdown
