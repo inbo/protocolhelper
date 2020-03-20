@@ -13,8 +13,8 @@ create_sfp(
   reviewers,
   file_manager,
   revision = "0.0.0.9000",
-  projectname = "",
-  theme = c("generiek", "water", "lucht", "bodem", "vegetatie", "soorten")
+  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+  language = c("nl", "en")
 )
 }
 \arguments{
@@ -34,10 +34,10 @@ create_sfp(
 
 \item{revision}{A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.}
 
-\item{projectname}{A character string giving the project name. Best to use an acronym for this.}
+\item{theme}{A character string equal to one of \code{"generic"} (default),
+\code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.}
 
-\item{theme}{A character string equal to one of \code{"generiek"} (default),
-\code{"water"}, \code{"lucht"}, \code{"bodem"}, \code{"vegetatie"} or \code{"soorten"}.}
+\item{language}{Language of the protocol, either \code{"nl"} (Dutch), the default, or \code{"en"} (English).}
 }
 \description{
 This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown (bookdown) skeleton based on a template file to start working on a new protocol.
