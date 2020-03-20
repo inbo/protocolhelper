@@ -43,7 +43,7 @@ create_sfp(
 This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown (bookdown) skeleton based on a template file to start working on a new protocol.
 }
 \details{
-The created folder is a new subfolder beneath \code{src} and contains a bookdown project.
+The created folder is a new subfolder beneath \code{src} and contains a bookdown project. It is assumed that the src folder is a subfolder of an RStudio project with git version control.
 }
 \examples{
 \dontrun{
