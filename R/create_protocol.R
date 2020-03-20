@@ -13,8 +13,8 @@
 #' @param file_manager A character string for the name of the document maintainer of the form First name Last name
 #' @param revision A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.
 #' @param projectname A character string giving the project name. Best to use an acronym for this.
-#' @param theme A character string equal to one of `"generiek"` (default),
-#' `"water"`, `"lucht"`, `"bodem"`, `"vegetatie"` or `"soorten"`.
+#' @param theme A character string equal to one of `"generic"` (default),
+#' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #'
 #'
 #' @importFrom rprojroot find_root is_git_root
