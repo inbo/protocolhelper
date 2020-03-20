@@ -13,12 +13,14 @@ output:
 <!--
 Instructies bij opmaak van veldprotocol:
 
-Hieronder vind je de verschillende onderdelen van een veldprotocol en een beschrijving wat er bij elk onderdeel vermeld moet worden. 
+Hieronder vind je de verschillende onderdelen van een veldprotocol.
+In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden;
+het is in die bestanden dat je moet editeren. 
 Niet alle onderdelen zijn altijd van toepassing. Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
 Probeer het veldprotocol generiek te maken in de mate van mogelijk en probeer te vermijden dat het veldprotocol enkel specifiek voor een bepaald project bruikbaar is. 
 Je kan het protocol generiek houden door bepaalde variabelen, zoals bijvoorbeeld de grootte van een proefvlak of de diepte van een bodembemonstering, niet vast te leggen in het protocol. 
 In bijlage kan je dan een tabel toevoegen waarin je per project aangeeft welke waardes gekozen moeten worden voor die variabelen. 
-Indien een bepaald onderdeel niet van toepassing is, laat je de hoofding staan en vermeld je hieronder ‘Niet van toepassing’. Op die manier is de nummering van alle protocols dezelfde.
+Indien een bepaald onderdeel niet van toepassing is, laat je de hoofding staan en vermeld je onder de titel ‘Niet van toepassing’. Op die manier is de nummering in alle protocols dezelfde.
 -->
 
 ```{r setup, include=FALSE}

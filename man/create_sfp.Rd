@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_protocol.R
 \name{create_sfp}
 \alias{create_sfp}
-\title{Create a folder with a markdown template to start working on a new fieldwork protocol}
+\title{Create a folder with a bookdown (R markdown) template to start a new fieldwork protocol}
 \usage{
 create_sfp(
   title,
@@ -36,13 +36,14 @@ create_sfp(
 
 \item{projectname}{A character string giving the project name. Best to use an acronym for this.}
 
-\item{theme}{A character string equal to one of generiek (default), water, lucht, bodem, vegetatie or soorten.}
-}
-\value{
-A new subfolder beneath src with an Rmarkdown file
+\item{theme}{A character string equal to one of \code{"generiek"} (default),
+\code{"water"}, \code{"lucht"}, \code{"bodem"}, \code{"vegetatie"} or \code{"soorten"}.}
 }
 \description{
-This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown skeleton based on a template file to start working on a new protocol.
+This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown (bookdown) skeleton based on a template file to start working on a new protocol.
+}
+\details{
+The created folder is a new subfolder beneath \code{src} and contains a bookdown project.
 }
 \examples{
 \dontrun{
