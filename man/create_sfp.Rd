@@ -5,13 +5,13 @@
 \title{Create a folder with a markdown template to start working on a new fieldwork protocol}
 \usage{
 create_sfp(
-  title = "Titel",
-  subtitle = "",
-  short_title = "korte titel",
-  authors = "voornaam1 naam1, voornaam2 naam2, ...",
+  title,
+  subtitle,
+  short_title,
+  authors,
   date = Sys.Date(),
-  reviewers = "voornaam1 naam1, voornaam2 naam2, ...",
-  file_manager = "voornaam naam",
+  reviewers,
+  file_manager,
   revision = "0.0.0.9000",
   projectname = "",
   theme = c("generiek", "water", "lucht", "bodem", "vegetatie", "soorten")
@@ -24,19 +24,19 @@ create_sfp(
 
 \item{short_title}{A character string of less than 20 characters to use in folder and filenames}
 
-\item{authors}{A character string for authors of the form Voornaam Achternaam and multiple authors separated by a comma}
+\item{authors}{A character string for authors of the form First name Last name and multiple authors separated by a comma}
 
 \item{date}{A character string of the date in ISO 8601 format (YYYY-MM-DD)}
 
-\item{reviewers}{A character string for reviewers of the form Voornaam Achternaam and multiple authors separated by a comma}
+\item{reviewers}{A character string for reviewers of the form First name Last name and multiple authors separated by a comma}
 
-\item{file_manager}{A character string for the name of the document maintainer}
+\item{file_manager}{A character string for the name of the document maintainer of the form First name Last name}
 
 \item{revision}{A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.}
 
 \item{projectname}{A character string giving the project name. Best to use an acronym for this.}
 
-\item{theme}{A character string equal to generiek (default), water, lucht, bodem, vegetatie of soorten.}
+\item{theme}{A character string equal to one of generiek (default), water, lucht, bodem, vegetatie or soorten.}
 }
 \value{
 A new subfolder beneath src with an Rmarkdown file
