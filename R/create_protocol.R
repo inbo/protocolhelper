@@ -56,7 +56,6 @@ create_sfp <- function(
 
   protocol_type <- "sfp"
 
-  themes_df <- protocolshelper:::themes_df
   protocol_leading_number <- themes_df[themes_df$theme == theme,
                                        "theme_number"]
 
