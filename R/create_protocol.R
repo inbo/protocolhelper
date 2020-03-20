@@ -157,8 +157,10 @@ create_sfp <- function(
     close(original_file)
   }
   # render html
+  old_wd <- getwd()
   setwd(path_to_protocol)
   render_book(input = "index.Rmd")
+  setwd(old_wd)
 }
 
 
