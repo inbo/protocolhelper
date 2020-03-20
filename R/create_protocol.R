@@ -1,4 +1,4 @@
-#' @title Create a folder with a bookdown (R markdown) template to start working on a new fieldwork protocol
+#' @title Create a folder with a bookdown (R markdown) template to start a new fieldwork protocol
 #'
 #' @description This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown (bookdown) skeleton based on a template file to start working on a new protocol.
 #'

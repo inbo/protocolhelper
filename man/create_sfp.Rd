@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_protocol.R
 \name{create_sfp}
 \alias{create_sfp}
-\title{Create a folder with a bookdown (R markdown) template to start working on a new fieldwork protocol}
+\title{Create a folder with a bookdown (R markdown) template to start a new fieldwork protocol}
 \usage{
 create_sfp(
   title,
