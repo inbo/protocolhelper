@@ -1,0 +1,111 @@
+---
+title: {{{title}}}
+subtitle: {{{subtitle}}}
+author: {{{authors}}}
+date: {{{date}}}
+output: 
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+<!--
+Instructies bij opmaak van veldprotocol:
+
+Hieronder vind je de verschillende onderdelen van een veldprotocol.
+In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden;
+het is in die bestanden dat je moet editeren. 
+Niet alle onderdelen zijn altijd van toepassing. Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
+Probeer het veldprotocol generiek te maken in de mate van mogelijk en probeer te vermijden dat het veldprotocol enkel specifiek voor een bepaald project bruikbaar is. 
+Je kan het protocol generiek houden door bepaalde variabelen, zoals bijvoorbeeld de grootte van een proefvlak of de diepte van een bodembemonstering, niet vast te leggen in het protocol. 
+In bijlage kan je dan een tabel toevoegen waarin je per project aangeeft welke waardes gekozen moeten worden voor die variabelen. 
+Indien een bepaald onderdeel niet van toepassing is, laat je de hoofding staan en vermeld je onder de titel ‘Niet van toepassing’. Op die manier is de nummering in alle protocols dezelfde.
+-->
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE, 
+  eval = TRUE,
+  dpi = 300,
+  fig.width = 150 / 25.4,
+  fig.height = 100 / 25.4,
+  out.width = '100%',
+  warning = FALSE,
+  error = TRUE,
+  message = FALSE
+)
+```
+
+
+```{r metadata}
+metadata <- data.frame(
+  Reviewers = "{{{reviewers}}}",
+  Documentbeheerder = "{{{file_manager}}}",
+  Procedure = "{{{procedure}}}",
+  Revisie = "{{{revision}}}"
+)
+
+kable(metadata)
+
+```
+
+```{r dependencies, child = "_01_dependencies.Rmd"}
+
+```
+
+```{r subject, child = "_02_subject.Rmd"}
+
+```
+
+```{r scope, child = "_03_scope.Rmd"}
+
+```
+
+
+```{r principle, child = "_04_principle.Rmd"}
+
+```
+
+
+```{r skills, child = "_05_skills.Rmd"}
+
+```
+
+
+```{r materials, child = "_06_materials.Rmd"}
+
+```
+
+
+```{r workflow, child = "_07_workflow.Rmd"}
+
+```
+
+```{r quality-assurance, child = "_08_quality_assurance.Rmd"}
+
+```
+
+```{r safety, child = "_09_safety.Rmd"}
+
+```
+
+
+```{r summary, child = "_10_summary.Rmd"}
+
+```
+
+
+```{r references, child = "_11_references.Rmd"}
+
+```
+
+
+```{r appendices, child = "_12_appendices.Rmd"}
+
+```
+
+
+
+

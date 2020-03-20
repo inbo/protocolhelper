@@ -1,0 +1,5 @@
+# Principe
+
+<!--
+Korte omschrijving van de principes waarop het veldprotocol gebaseerd is. Bv principe achter het nemen van mengmonsters, principe achter visueel inschatten van de bedekking van een plant, …
+-->

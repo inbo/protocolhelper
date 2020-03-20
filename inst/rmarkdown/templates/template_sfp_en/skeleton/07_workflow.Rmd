@@ -1,0 +1,21 @@
+# Werkwijze
+
+## Uitvoering
+
+<!--
+Gedetailleerde omschrijving van alle stappen die doorlopen moeten worden om het veldprotocol uit te voeren. Subtitels gebruiken om elke stap te omschrijven. 
+-->
+
+### Subtitel 1
+
+### Subtitel 2
+
+
+## Registratie en bewaring van resultaten
+
+<!--
+Opsomming van alle resultaten die bekomen worden na de uitvoering van het protocol en hoe die resultaten geregistreerd, bewaard of opgeslagen moeten worden.
+Voor metingen of observaties: verwijs naar invulformulier (met versienummer; invulformulier toevoegen in bijlage; eventueel bepaalde zaken van invulformulier verduidelijken) en/of naar apparatuur en/of softwareprogramma indien gegevens digitaal worden ingevoerd (verwijs naar SIP indien beschikbaar; indien geen SIP beschikbaar, geef de nodige instructies om gegevens op gepaste wijzen in te kunnen geven).
+Voor staalnames: geef aan hoe de stalen bewaard, gelabeld en vervoerd moeten worden. Geef aan of de stalen voorbehandeld moeten worden. 
+Voor digitale foto’s en/of andere digitale bestanden: geef aan hoe en waar deze bestanden moeten worden opgeslagen. Geef eventueel aan welke bestandnamen aan de bestanden moeten gegeven worden.
+-->

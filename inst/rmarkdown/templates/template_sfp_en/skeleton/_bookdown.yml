@@ -1,0 +1,15 @@
+book_filename: {{{book_filename}}}
+output_dir: {{{output_dir}}}
+language:
+  label:
+    fig:    'Figure '
+    tab:    'Table '
+    eq:     'Equation '
+    thm:    'Theorem '
+    lem:    'Lemma '
+    def:    'Definition '
+    cor:    'Corrolary '
+    prp:    'Proposition '
+    ex:     'Example '
+    proof:  'Proof. '
+    remark: 'Remark. '
