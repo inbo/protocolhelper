@@ -19,7 +19,7 @@
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stringr str_replace_all
 #' @export
-docx_to_md <- function(
+convert_docx_to_rmd <- function(
   docx,
   to,
   dir = ".",
@@ -33,7 +33,7 @@ docx_to_md <- function(
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
 
 
-  md <- convert_docx_to_md(docx, wrap, verbose)
+  md <- pandoc_docx_to_md(docx, wrap, verbose)
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
 
 
@@ -42,7 +42,7 @@ docx_to_md <- function(
 }
 
 #' @importFrom rmarkdown pandoc_convert
-convert_docx_to_md <- function(docx,
+pandoc_docx_to_md <- function(docx,
                                wrap,
                                verbose) {
   docx <- normalizePath(docx)
