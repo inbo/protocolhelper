@@ -21,7 +21,7 @@
 #' @export
 docx_to_md <- function(
   docx,
-  to = NULL,
+  to,
   dir = ".",
   wrap = 80,
   overwrite = FALSE,
