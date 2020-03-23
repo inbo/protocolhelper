@@ -1,20 +1,48 @@
-#' @title Create a folder with a bookdown (R markdown) template to start a new fieldwork protocol
+#' @title Create a folder with a bookdown (R markdown) template to start a new
+#' fieldwork protocol
 #'
-#' @description This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown (bookdown) skeleton based on a template file to start working on a new protocol.
+#' @description This function will create a new folder based on values that are
+#' passed on via the parameters and creates a R-markdown (bookdown) skeleton
+#' based on a template file to start working on a new protocol.
 #'
-#' @details The created folder is a new subfolder beneath `src` and contains a bookdown project. It is assumed that the src folder is a subfolder of an RStudio project with git version control.
+#' @details The created folder is a new subfolder beneath `src` and contains a
+#' bookdown project.
+#' It is assumed that the src folder is a subfolder of an RStudio project with
+#' git version control.
 #'
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
-#' @param short_title A character string of less than 20 characters to use in folder and filenames
-#' @param authors A character string for authors of the form First name Last name and multiple authors separated by a comma
+#' @param short_title A character string of less than 20 characters to use in
+#' folder and filenames
+#' @param authors A character string for authors of the form First name Last
+#' name and multiple authors separated by a comma
 #' @param date A character string of the date in ISO 8601 format (YYYY-MM-DD)
-#' @param reviewers A character string for reviewers of the form First name Last name and multiple authors separated by a comma
-#' @param file_manager A character string for the name of the document maintainer of the form First name Last name
-#' @param revision A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.
+#' @param reviewers A character string for reviewers of the form First name
+#' Last name and multiple authors separated by a comma
+#' @param file_manager A character string for the name of the document
+#' maintainer of the form First name Last name
+#' @param from_docx A character string with the path (absolute or relative) to
+#' a `.docx` file containing a pre-existing protocol.
+#' Please make sure to copy-paste all relevant meta-data from the `.docx` file
+#' to the corresponding parameters of this function.
+#' If nothing is provided, an empty template will be used.
+#' @param protocol_number A character string giving the protocol number.
+#' This parameter should normally not be specified (i.e. missing), unless
+#' `from_docx` is specified.
+#' A protocol number is a three digit string where the first digit corresponds
+#' with a theme and the last two digits identify a protocol within a theme.
+#' If missing (the default), a protocol number will be determined automatically
+#' based on pre-existing protocol numbers.
+#' Protocol numbers that are already in use can be retrieved with
+#' `get_protocolnumbers()`.
+#' @param revision A semantic version number of the form major.minor.patch.
+#' For development versions a fourth component is appended starting from .9000.
+#' The default is 0.0.0.9000 and should normally only be changed if a
+#' pre-existing protocol is used (See `from_docx`).
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
-#' @param language Language of the protocol, either `"nl"` (Dutch), the default, or `"en"` (English).
+#' @param language Language of the protocol, either `"nl"` (Dutch),
+#' the default, or `"en"` (English).
 #'
 #'
 #' @importFrom rprojroot find_root is_git_root
@@ -39,6 +67,8 @@ create_sfp <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
+  from_docx,
+  protocol_number,
   revision = "0.0.0.9000",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en")) {
@@ -54,36 +84,49 @@ create_sfp <- function(
   assert_that(is.string(revision))
   theme <- match.arg(theme)
   language <- match.arg(language)
-
-  # create protocol name
-
+  if (!missing(from_docx)) {
+    assert_that(is.string(from_docx),
+                file.exists(from_docx))
+  }
   protocol_type <- "sfp"
-
-  protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                       "theme_number"]
-
-  all_numbers <- get_protocolnumbers(protocol_type = protocol_type)
-
-  if (length(all_numbers) == 0) {
-    protocol_trailing_number <- "01"
-  } else {
-    numbers <- str_subset(all_numbers, paste0("^", protocol_leading_number))
-    protocol_trailing_number <- max(
-      as.integer(
-        str_extract(numbers, "\\d{2}$"))
-    ) + 1
-    protocol_trailing_number <- formatC(protocol_trailing_number,
-                                   width = 2, format = "d", flag = "0")
+  if (!missing(protocol_number)) {
+    assert_that(
+      is.string(protocol_number),
+      !(protocol_number %in% get_protocolnumbers(protocol_type = protocol_type))
+      )
   }
 
-  protocol_number <- paste0(protocol_leading_number,
-                            protocol_trailing_number)
+  # create protocol name
+  if (missing(protocol_number)) {
+    protocol_leading_number <- themes_df[themes_df$theme == theme,
+                                         "theme_number"]
+
+    all_numbers <- get_protocolnumbers(protocol_type = protocol_type)
+
+    if (length(all_numbers) == 0) {
+      protocol_trailing_number <- "01"
+    } else {
+      numbers <- str_subset(all_numbers, paste0("^", protocol_leading_number))
+      protocol_trailing_number <- max(
+        as.integer(
+          str_extract(numbers, "\\d{2}$"))
+      ) + 1
+      protocol_trailing_number <- formatC(protocol_trailing_number,
+                                          width = 2, format = "d", flag = "0")
+    }
+
+    protocol_number <- paste0(protocol_leading_number,
+                              protocol_trailing_number)
+  }
 
   short_title <- tolower(short_title)
   short_title <- str_replace_all(short_title, " ", "-")
   short_titles <- get_short_titles(protocol_type = protocol_type)
   assert_that(!(short_title %in% short_titles),
-              msg = "The given short title already exists. Give a short title that is not in use. Use get_short_titles() to get an overview of short titles that are in use.")
+              msg = "The given short title already exists.
+              Give a short title that is not in use.
+              Use get_short_titles() to get an overview of short titles
+              that are in use.")
 
   protocol_code <- paste0(protocol_type, "-", protocol_number)
   folder_name <- paste0(protocol_code, "_", short_title)
@@ -106,7 +149,7 @@ create_sfp <- function(
   }
   if (dir.exists(output_dir)) {
     stop(sprintf(paste0("The protocol repository already has ",
-                        "a folder %s!"), path_to_protocol))
+                        "a folder %s!"), output_dir))
   }
   # create new directories
   dir.create(file.path(path_to_protocol),
@@ -168,11 +211,15 @@ create_sfp <- function(
 
 #' @title Function to list all occupied protocol numbers
 #'
-#' @description This function will search for protocol numbers in filenames of Rmarkdown files listed underneath the src folder. The search will be restricted to files of a given protocol type.
+#' @description This function will search for protocol numbers in filenames of
+#' Rmarkdown files listed underneath the src folder.
+#' The search will be restricted to files of a given protocol type.
 #'
-#' @param protocol_type A character string equal to sfp (default), sip, sap or sop.
+#' @param protocol_type A character string equal to sfp (default), sip, sap or
+#' sop.
 #'
-#' @return A character vector with occupied protocol numbers for a specific protoocol type
+#' @return A character vector with occupied protocol numbers for a specific
+#' protoocol type
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_subset str_replace str_extract
@@ -211,11 +258,15 @@ get_protocolnumbers <- function(protocol_type = c("sfp", "sip", "sap", "sop")) {
 
 #' @title Function to list all short titles that are already in use.
 #'
-#' @description This function will search for short titles in filenames of Rmarkdown files listed underneath the src folder. The search will be restricted to files of a given protocol type.
-
-#' @param protocol_type A character string equal to sfp (default), sip, sap or sop.
+#' @description This function will search for short titles in filenames of
+#' Rmarkdown files listed underneath the src folder.
+#' The search will be restricted to files of a given protocol type.
 #'
-#' @return A character vector with short titles that are in use for a given protocol type.
+#' @param protocol_type A character string equal to sfp (default), sip, sap or
+#' sop.
+#'
+#' @return A character vector with short titles that are in use for a given
+#' protocol type.
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
