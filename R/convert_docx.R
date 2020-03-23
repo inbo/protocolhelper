@@ -1,6 +1,6 @@
 #' @title Convert a docx-file (a protocol) to an (R)markdown file
 #'
-#' @description This function is derived from the \link[redoc]{dedoc} and uses pandoc to convert between docx and markdown. Several options are preset to end-up with a markdown document that is in syntax as close as possible to Rmarkdown files in RStudio. During conversion, graphics (e.g. png, jpg) will be extracted from the docx archive and placed in a folder `./media` and named `image1`, `image2`, etcetera.
+#' @description This function is derived from the [redoc::dedoc()] function and uses pandoc to convert between docx and markdown. Several options are preset to end-up with a markdown document that is in syntax as close as possible to Rmarkdown files in RStudio. During conversion, graphics (e.g. png, jpg) will be extracted from the docx archive and placed in a folder `./media` and named `image1`, `image2`, etcetera.
 #'
 #' @details Metadata in the page headers and footers of the docx are ignored and will thus be lost during conversion. In case the header or footer did contain important metadata, it will need to be recovered manually. Usually header information will go inside a yaml section of an Rmarkdown.
 #'
