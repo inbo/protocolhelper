@@ -47,7 +47,7 @@ convert_docx_to_md <- function(docx,
                                verbose) {
   docx <- normalizePath(docx)
 
-  if (is.null(wrap)) {
+  if (missing(wrap)) {
     wrap_opts <- "--wrap=none"
   } else {
     wrap_opts <- c("--wrap=auto", paste0("--columns=", wrap))
