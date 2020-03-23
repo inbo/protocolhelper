@@ -27,7 +27,7 @@ docx_to_md <- function(
   overwrite = FALSE,
   verbose = FALSE) {
 
-  if (is.null(to)) to <- paste0(file_path_sans_ext(basename(docx)), ".Rmd")
+  if (missing(to)) { to <- paste0(file_path_sans_ext(basename(docx)), ".Rmd") } else {assert_that(is.string(to))}
   if (is.null(dir)) dir <- "."
   to <- file.path(dir, to)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
