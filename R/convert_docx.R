@@ -11,7 +11,7 @@
 #' directory. Any images will be written to `dir/media`.
 #' @param wrap The width at which to wrap text. If `NA`, text is not wrapped.
 #' Defaults to 80.
-#' @param overwrite Whether or not to overwrite the to file if it already
+#' @param overwrite Whether or not to overwrite the `to` file if it already
 #' existed. Defaults to FALSE.
 #' @param verbose whether to print pandoc progress text. Defaults to FALSE.
 #'
