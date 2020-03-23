@@ -37,21 +37,20 @@
 convert_docx_to_rmd <- function(
   from,
   to,
-  dir = ".",
+  dir,
   wrap = 80,
   overwrite = FALSE,
   verbose = FALSE) {
 
   if (missing(to)) {to <- paste0(file_path_sans_ext(basename(from)), ".Rmd")
   } else {assert_that(is.string(to))}
-  if (is.null(dir)) dir <- "."
+  if (missing(dir)) dir <- "."
   to <- file.path(dir, to)
+  to <- normalizePath(to, winslash = "/", mustWork = TRUE)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
-
 
   md <- pandoc_docx_to_md(from, wrap, verbose)
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
-
 
   writeLines(md, con = to)
   return(to)
