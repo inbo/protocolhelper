@@ -4,7 +4,7 @@
 #'
 #' @details Metadata in the page headers and footers of the docx are ignored and will thus be lost during conversion. In case the header or footer did contain important metadata, it will need to be recovered manually. Usually header information will go inside a yaml section of an Rmarkdown.
 #'
-#' @param docx The `.docx` file to convert. Can be given as an absolute or relative path.
+#' @param from The `.docx` file to convert. Can be given as an absolute or relative path.
 #' @param to The filename to write the resulting `.Rmd` file (without path). The default is to
 #' use the same basename as the docx document.
 #' @param dir The directory to write the `.Rmd` to. Defaults to current working
