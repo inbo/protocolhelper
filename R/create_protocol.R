@@ -199,6 +199,46 @@ create_sfp <- function(
                filename)
     close(original_file)
   }
+
+  # docx
+  if (!missing(from_docx)) {
+    convert_docx_to_rmd(
+      from = from_docx,
+      to = book_filename,
+      dir = path_to_protocol,
+      wrap = 80,
+      overwrite = FALSE,
+      verbose = FALSE)
+    # move relevant sections
+    contents <- readLines(con = file.path(path_to_protocol,
+                                          book_filename))
+    is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
+    title_numbers <- formatC(x = cumsum(is_title),
+                             width = 2, format = "d", flag = "0")
+    filenames <- str_remove(string = tolower(contents[is_title]),
+                            pattern = "^(#{1}\\s{1})")
+    filenames <- str_remove(string = filenames,
+                            pattern = "\\s$")
+    filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")
+    filenames <- paste(unique(title_numbers), filenames, sep = "_")
+    # delete the empty template chapters
+    file.remove(
+      list.files(
+        path = path_to_protocol,
+        pattern = "^\\d{2}_"
+      )
+    )
+    # create new chapters
+    file.create(file.path(path_to_protocol, filenames))
+    # and add chapter contents from docx
+    for (chapter in unique(cumsum(is_title))) {
+      chapter_file <- file(filenames[chapter], "r")
+      writeLines(text = contents[chapter == cumsum(is_title)],
+                 con = chapter_file)
+      close(chapter_file)
+    }
+  }
+
   # render html
   old_wd <- getwd()
   setwd(path_to_protocol)
