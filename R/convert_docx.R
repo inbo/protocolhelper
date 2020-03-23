@@ -35,20 +35,21 @@
 #' @importFrom stringr str_replace_all
 #' @export
 convert_docx_to_rmd <- function(
-  docx,
+  from,
   to,
   dir = ".",
   wrap = 80,
   overwrite = FALSE,
   verbose = FALSE) {
 
-  if (missing(to)) { to <- paste0(file_path_sans_ext(basename(docx)), ".Rmd") } else {assert_that(is.string(to))}
+  if (missing(to)) {to <- paste0(file_path_sans_ext(basename(from)), ".Rmd")
+  } else {assert_that(is.string(to))}
   if (is.null(dir)) dir <- "."
   to <- file.path(dir, to)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
 
 
-  md <- pandoc_docx_to_md(docx, wrap, verbose)
+  md <- pandoc_docx_to_md(from, wrap, verbose)
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
 
 
@@ -57,10 +58,10 @@ convert_docx_to_rmd <- function(
 }
 
 #' @importFrom rmarkdown pandoc_convert
-pandoc_docx_to_md <- function(docx,
-                               wrap,
-                               verbose) {
-  docx <- normalizePath(docx)
+pandoc_docx_to_md <- function(from,
+                              wrap,
+                              verbose) {
+  from <- normalizePath(from)
 
   if (missing(wrap)) {
     wrap_opts <- "--wrap=none"
@@ -74,7 +75,7 @@ pandoc_docx_to_md <- function(docx,
                   "--extract-media=.")
   opts <- c(filter_opts, wrap_opts, other_opts)
   md_tmp <- tempfile(fileext = ".md")
-  pandoc_convert(docx,
+  pandoc_convert(input = from,
                  from = from_format,
                  to = "markdown",
                  output = md_tmp,
