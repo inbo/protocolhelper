@@ -37,7 +37,7 @@ docx_to_md <- function(
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
 
 
-  cat(md, file = to, sep = "")
+  writeLines(md, con = to)
   return(to)
 }
 
