@@ -1,5 +1,6 @@
 book_filename: {{{book_filename}}}
 output_dir: {{{output_dir}}}
+delete_merged_file: true
 language:
   label:
     fig:    'Figuur '
