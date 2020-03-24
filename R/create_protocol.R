@@ -46,7 +46,7 @@
 #'
 #'
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom stringr str_replace_all str_extract
+#' @importFrom stringr str_replace_all str_extract str_remove str_detect
 #' @importFrom assertthat assert_that is.string is.date
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
@@ -220,22 +220,23 @@ create_sfp <- function(
     filenames <- str_remove(string = filenames,
                             pattern = "\\s$")
     filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")
-    filenames <- paste(unique(title_numbers), filenames, sep = "_")
+    filenames <- paste0(unique(title_numbers), "_", filenames, ".Rmd")
     # delete the empty template chapters
     file.remove(
       list.files(
         path = path_to_protocol,
-        pattern = "^\\d{2}_"
+        pattern = "^\\d{2}_",
+        full.names = TRUE
       )
     )
     # create new chapters
     file.create(file.path(path_to_protocol, filenames))
     # and add chapter contents from docx
     for (chapter in unique(cumsum(is_title))) {
-      chapter_file <- file(filenames[chapter], "r")
-      writeLines(text = contents[chapter == cumsum(is_title)],
+      chapter_file <- file.path(path_to_protocol, filenames[chapter])
+      chapter_contents <- contents[chapter == cumsum(is_title)]
+      writeLines(text = chapter_contents,
                  con = chapter_file)
-      close(chapter_file)
     }
   }
 
