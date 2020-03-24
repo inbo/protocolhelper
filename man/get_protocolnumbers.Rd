@@ -7,13 +7,17 @@
 get_protocolnumbers(protocol_type = c("sfp", "sip", "sap", "sop"))
 }
 \arguments{
-\item{protocol_type}{A character string equal to sfp (default), sip, sap or sop.}
+\item{protocol_type}{A character string equal to sfp (default), sip, sap or
+sop.}
 }
 \value{
-A character vector with occupied protocol numbers for a specific protoocol type
+A character vector with occupied protocol numbers for a specific
+protoocol type
 }
 \description{
-This function will search for protocol numbers in filenames of Rmarkdown files listed underneath the src folder. The search will be restricted to files of a given protocol type.
+This function will search for protocol numbers in filenames of
+Rmarkdown files listed underneath the src folder.
+The search will be restricted to files of a given protocol type.
 }
 \examples{
 \dontrun{

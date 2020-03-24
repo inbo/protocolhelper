@@ -2,7 +2,8 @@
 % Please edit documentation in R/create_protocol.R
 \name{create_sfp}
 \alias{create_sfp}
-\title{Create a folder with a bookdown (R markdown) template to start a new fieldwork protocol}
+\title{Create a folder with a bookdown (R markdown) template to start a new
+fieldwork protocol}
 \usage{
 create_sfp(
   title,
@@ -12,6 +13,8 @@ create_sfp(
   date = Sys.Date(),
   reviewers,
   file_manager,
+  from_docx,
+  protocol_number,
   revision = "0.0.0.9000",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en")
@@ -22,28 +25,57 @@ create_sfp(
 
 \item{subtitle}{A character string for an optional subtitle}
 
-\item{short_title}{A character string of less than 20 characters to use in folder and filenames}
+\item{short_title}{A character string of less than 20 characters to use in
+folder and filenames}
 
-\item{authors}{A character string for authors of the form First name Last name and multiple authors separated by a comma}
+\item{authors}{A character string for authors of the form First name Last
+name and multiple authors separated by a comma}
 
 \item{date}{A character string of the date in ISO 8601 format (YYYY-MM-DD)}
 
-\item{reviewers}{A character string for reviewers of the form First name Last name and multiple authors separated by a comma}
+\item{reviewers}{A character string for reviewers of the form First name
+Last name and multiple authors separated by a comma}
 
-\item{file_manager}{A character string for the name of the document maintainer of the form First name Last name}
+\item{file_manager}{A character string for the name of the document
+maintainer of the form First name Last name}
 
-\item{revision}{A semantic version number of the form major.minor.patch. For development versions a fourth component is appended starting from .9000. The default is 0.0.0.9000 and should normally not be changed.}
+\item{from_docx}{A character string with the path (absolute or relative) to
+a \code{.docx} file containing a pre-existing protocol.
+Please make sure to copy-paste all relevant meta-data from the \code{.docx} file
+to the corresponding parameters of this function.
+If nothing is provided, an empty template will be used.}
+
+\item{protocol_number}{A character string giving the protocol number.
+This parameter should normally not be specified (i.e. missing), unless
+\code{from_docx} is specified.
+A protocol number is a three digit string where the first digit corresponds
+with a theme and the last two digits identify a protocol within a theme.
+If missing (the default), a protocol number will be determined automatically
+based on pre-existing protocol numbers.
+Protocol numbers that are already in use can be retrieved with
+\code{get_protocolnumbers()}.}
+
+\item{revision}{A semantic version number of the form major.minor.patch.
+For development versions a fourth component is appended starting from .9000.
+The default is 0.0.0.9000 and should normally only be changed if a
+pre-existing protocol is used (See \code{from_docx}).}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.}
 
-\item{language}{Language of the protocol, either \code{"nl"} (Dutch), the default, or \code{"en"} (English).}
+\item{language}{Language of the protocol, either \code{"nl"} (Dutch),
+the default, or \code{"en"} (English).}
 }
 \description{
-This function will create a new folder based on values that are passed on via the parameters and creates a R-markdown (bookdown) skeleton based on a template file to start working on a new protocol.
+This function will create a new folder based on values that are
+passed on via the parameters and creates a R-markdown (bookdown) skeleton
+based on a template file to start working on a new protocol.
 }
 \details{
-The created folder is a new subfolder beneath \code{src} and contains a bookdown project. It is assumed that the src folder is a subfolder of an RStudio project with git version control.
+The created folder is a new subfolder beneath \code{src} and contains a
+bookdown project.
+It is assumed that the src folder is a subfolder of an RStudio project with
+git version control.
 }
 \examples{
 \dontrun{

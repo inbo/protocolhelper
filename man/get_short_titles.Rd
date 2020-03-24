@@ -7,13 +7,17 @@
 get_short_titles(protocol_type = c("sfp", "sip", "sap", "sop"))
 }
 \arguments{
-\item{protocol_type}{A character string equal to sfp (default), sip, sap or sop.}
+\item{protocol_type}{A character string equal to sfp (default), sip, sap or
+sop.}
 }
 \value{
-A character vector with short titles that are in use for a given protocol type.
+A character vector with short titles that are in use for a given
+protocol type.
 }
 \description{
-This function will search for short titles in filenames of Rmarkdown files listed underneath the src folder. The search will be restricted to files of a given protocol type.
+This function will search for short titles in filenames of
+Rmarkdown files listed underneath the src folder.
+The search will be restricted to files of a given protocol type.
 }
 \examples{
 \dontrun{
