@@ -165,12 +165,12 @@ create_sfp <- function(
   if (language == "nl") {
     draft(file = parent_rmd,
           template = "template_sfp_nl",
-          package = "protocolshelper",
+          package = "protocolhelper",
           edit = FALSE)
   } else {
     draft(file = parent_rmd,
           template = "template_sfp_en",
-          package = "protocolshelper",
+          package = "protocolhelper",
           edit = FALSE)
   }
 
