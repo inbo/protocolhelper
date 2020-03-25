@@ -55,9 +55,10 @@ based on pre-existing protocol numbers.
 Protocol numbers that are already in use can be retrieved with
 \code{get_protocolnumbers()}.}
 
-\item{revision}{A semantic version number of the form major.minor.patch.
-For development versions a fourth component is appended starting from .9000.
-The default is 0.0.0.9000 and should normally only be changed if a
+\item{revision}{A semantic version number of the form \code{major.minor.patch}.
+For development versions a fourth component is appended starting from
+\code{.9000}.
+The default is \verb{0.0.0.9000} and should normally only be changed if a
 pre-existing protocol is used (See \code{from_docx}).}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),

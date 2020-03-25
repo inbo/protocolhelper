@@ -1,4 +1,4 @@
 library(testthat)
-library(protocolshelper)
+library(protocolhelper)
 
-test_check("protocolshelper")
+test_check("protocolhelper")

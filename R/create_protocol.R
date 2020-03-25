@@ -35,9 +35,10 @@
 #' based on pre-existing protocol numbers.
 #' Protocol numbers that are already in use can be retrieved with
 #' `get_protocolnumbers()`.
-#' @param revision A semantic version number of the form major.minor.patch.
-#' For development versions a fourth component is appended starting from .9000.
-#' The default is 0.0.0.9000 and should normally only be changed if a
+#' @param revision A semantic version number of the form `major.minor.patch`.
+#' For development versions a fourth component is appended starting from
+#' `.9000`.
+#' The default is `0.0.0.9000` and should normally only be changed if a
 #' pre-existing protocol is used (See `from_docx`).
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
@@ -165,12 +166,12 @@ create_sfp <- function(
   if (language == "nl") {
     draft(file = parent_rmd,
           template = "template_sfp_nl",
-          package = "protocolshelper",
+          package = "protocolhelper",
           edit = FALSE)
   } else {
     draft(file = parent_rmd,
           template = "template_sfp_en",
-          package = "protocolshelper",
+          package = "protocolhelper",
           edit = FALSE)
   }
 
