@@ -21,6 +21,15 @@
 #' Last name and multiple authors separated by a comma
 #' @param file_manager A character string for the name of the document
 #' maintainer of the form First name Last name
+#' @param revision A semantic version number of the form `major.minor.patch`.
+#' For development versions a fourth component is appended starting from
+#' `.9000`.
+#' The default is `0.0.0.9000` and should normally only be changed if a
+#' pre-existing protocol is used (See `from_docx`).
+#' @param theme A character string equal to one of `"generic"` (default),
+#' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
+#' @param language Language of the protocol, either `"nl"` (Dutch),
+#' the default, or `"en"` (English).
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
 #' Please make sure to copy-paste all relevant meta-data from the `.docx` file
@@ -35,16 +44,6 @@
 #' based on pre-existing protocol numbers.
 #' Protocol numbers that are already in use can be retrieved with
 #' `get_protocolnumbers()`.
-#' @param revision A semantic version number of the form `major.minor.patch`.
-#' For development versions a fourth component is appended starting from
-#' `.9000`.
-#' The default is `0.0.0.9000` and should normally only be changed if a
-#' pre-existing protocol is used (See `from_docx`).
-#' @param theme A character string equal to one of `"generic"` (default),
-#' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
-#' @param language Language of the protocol, either `"nl"` (Dutch),
-#' the default, or `"en"` (English).
-#'
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all str_extract str_remove str_detect
@@ -69,11 +68,11 @@ create_sfp <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  from_docx,
-  protocol_number,
   revision = "0.0.0.9000",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-  language = c("nl", "en")) {
+  language = c("nl", "en"),
+  from_docx,
+  protocol_number) {
 
   # check parameters
   assert_that(is.string(title))
