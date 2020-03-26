@@ -53,6 +53,7 @@
 #' @importFrom bookdown render_book
 #' @importFrom purrr map_chr
 #' @importFrom whisker whisker.render
+#' @importFrom fs path_rel
 #'
 #' @export
 #'
@@ -138,10 +139,17 @@ create_sfp <- function(
   project_root <- find_root(is_git_root)
   path_to_protocol <- file.path(project_root, "src", "thematic", theme,
                                   folder_name)
+
   # set _bookdown.yml values
   book_filename <- paste0(protocol_filename, ".Rmd")
+  # the output_dir should be set as a relative path to make it reproducible on
+  # other machines: it should be relative to path_to_protocol
+  # first get the absolute path
   output_dir <- file.path(project_root, "docs", "thematic", theme,
                           folder_name)
+  # next make it relative to path_to_protocol
+  output_dir <- path_rel(output_dir, path_to_protocol)
+
 
   # check for existence of the folders
   if (dir.exists(path_to_protocol)) {

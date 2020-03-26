@@ -27,4 +27,5 @@ Imports:
     stringr,
     whisker,
     purrr,
-    bookdown
+    bookdown,
+    fs
