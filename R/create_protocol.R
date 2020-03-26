@@ -248,6 +248,8 @@ create_sfp <- function(
                  con = chapter_file)
     }
   }
+  # delete the complete Rmd (output of convert_docx_rmd)
+  file.remove(file.path(path_to_protocol, book_filename))
 
   # render html
   old_wd <- getwd()
