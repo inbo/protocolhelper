@@ -34,13 +34,13 @@
 #' a `.docx` file containing a pre-existing protocol.
 #' Please make sure to copy-paste all relevant meta-data from the `.docx` file
 #' to the corresponding parameters of this function.
-#' If nothing is provided, an empty template will be used.
+#' If nothing is provided (i.e. default = NULL), an empty template will be used.
 #' @param protocol_number A character string giving the protocol number.
-#' This parameter should normally not be specified (i.e. missing), unless
+#' This parameter should normally not be specified (i.e. NULL), unless
 #' `from_docx` is specified.
 #' A protocol number is a three digit string where the first digit corresponds
 #' with a theme and the last two digits identify a protocol within a theme.
-#' If missing (the default), a protocol number will be determined automatically
+#' If NULL (the default), a protocol number will be determined automatically
 #' based on pre-existing protocol numbers.
 #' Protocol numbers that are already in use can be retrieved with
 #' `get_protocolnumbers()`.
@@ -71,8 +71,8 @@ create_sfp <- function(
   revision = "0.0.0.9000",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
-  from_docx,
-  protocol_number) {
+  from_docx = NULL,
+  protocol_number = NULL) {
 
   # check parameters
   assert_that(is.string(title))
@@ -85,12 +85,12 @@ create_sfp <- function(
   assert_that(is.string(revision))
   theme <- match.arg(theme)
   language <- match.arg(language)
-  if (!missing(from_docx)) {
+  if (!is.null(from_docx)) {
     assert_that(is.string(from_docx),
                 file.exists(from_docx))
   }
   protocol_type <- "sfp"
-  if (!missing(protocol_number)) {
+  if (!is.null(protocol_number)) {
     assert_that(
       is.string(protocol_number),
       !(protocol_number %in% get_protocolnumbers(protocol_type = protocol_type))
@@ -98,7 +98,7 @@ create_sfp <- function(
   }
 
   # create protocol name
-  if (missing(protocol_number)) {
+  if (is.null(protocol_number)) {
     protocol_leading_number <- themes_df[themes_df$theme == theme,
                                          "theme_number"]
 
@@ -210,7 +210,7 @@ create_sfp <- function(
   }
 
   # docx
-  if (!missing(from_docx)) {
+  if (!is.null(from_docx)) {
     convert_docx_to_rmd(
       from = from_docx,
       to = book_filename,
