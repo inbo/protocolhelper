@@ -137,6 +137,7 @@ create_sfp <- function(
 
   # directory setup
   project_root <- find_root(is_git_root)
+  theme <- paste0(protocol_leading_number, "_", theme)
   path_to_protocol <- file.path(project_root, "src", "thematic", theme,
                                   folder_name)
 
