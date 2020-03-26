@@ -266,8 +266,8 @@ create_sfp <- function(
 #' Rmarkdown files listed underneath the src folder.
 #' The search will be restricted to files of a given protocol type.
 #'
-#' @param protocol_type A character string equal to sfp (default), sip, sap or
-#' sop.
+#' @param protocol_type A character string equal to sfp (default), sip, sap,
+#' sop or spp.
 #'
 #' @return A character vector with occupied protocol numbers for a specific
 #' protoocol type
@@ -281,7 +281,8 @@ create_sfp <- function(
 #' \dontrun{
 #' get_protocolnumbers()
 #'}
-get_protocolnumbers <- function(protocol_type = c("sfp", "sip", "sap", "sop")) {
+get_protocolnumbers <- function(
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp")) {
 
   protocol_type <- match.arg(protocol_type)
 
@@ -313,8 +314,8 @@ get_protocolnumbers <- function(protocol_type = c("sfp", "sip", "sap", "sop")) {
 #' Rmarkdown files listed underneath the src folder.
 #' The search will be restricted to files of a given protocol type.
 #'
-#' @param protocol_type A character string equal to sfp (default), sip, sap or
-#' sop.
+#' @param protocol_type A character string equal to sfp (default), sip, sap, sop
+#' or spp.
 #'
 #' @return A character vector with short titles that are in use for a given
 #' protocol type.
@@ -329,7 +330,8 @@ get_protocolnumbers <- function(protocol_type = c("sfp", "sip", "sap", "sop")) {
 #' \dontrun{
 #' get_short_titles()
 #'}
-get_short_titles <- function(protocol_type = c("sfp", "sip", "sap", "sop")) {
+get_short_titles <- function(
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp")) {
 
   protocol_type <- match.arg(protocol_type)
   assert_that(is.string(protocol_type))
