@@ -122,10 +122,9 @@ create_sfp <- function(
   assert_that(is.flag(render), noNA(render))
 
   # create protocol name
+  protocol_leading_number <- themes_df[themes_df$theme == theme,
+                                       "theme_number"]
   if (is.null(protocol_number)) {
-    protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                         "theme_number"]
-
     all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
                                        language = language)
 
