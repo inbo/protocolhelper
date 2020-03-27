@@ -50,12 +50,14 @@
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all str_extract str_remove str_detect
+#' str_replace
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
 #' @importFrom purrr map_chr
 #' @importFrom whisker whisker.render
 #' @importFrom fs path_rel
+#' @importFrom magick image_read image_write
 #'
 #' @return A target folder to which files will be written will be created as
 #' subdirectories beneath `src`.
@@ -243,9 +245,21 @@ create_sfp <- function(
       wrap = 80,
       overwrite = FALSE,
       verbose = FALSE)
+    # convert emf to png
+    emf_images <- list.files(path = file.path(path_to_protocol, "media"),
+                             pattern = ".emf",
+                             full.names = TRUE)
+    for (img in emf_images) {
+      img_emf <- image_read(path = img)
+      image_write(image = img_emf,
+                  format = "png",
+                  path = str_replace(img, ".emf", ".png"))
+      file.remove(img)
+    }
     # move relevant sections
     contents <- readLines(con = file.path(path_to_protocol,
                                           book_filename))
+    contents <- str_replace_all(contents, ".emf", ".png")
     is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
     title_numbers <- formatC(x = cumsum(is_title),
                              width = 2, format = "d", flag = "0")

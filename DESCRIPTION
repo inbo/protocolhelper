@@ -28,4 +28,5 @@ Imports:
     whisker,
     purrr,
     bookdown,
-    fs
+    fs,
+    magick
