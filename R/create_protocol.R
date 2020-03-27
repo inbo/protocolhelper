@@ -115,7 +115,8 @@ create_sfp <- function(
   if (!is.null(protocol_number)) {
     assert_that(
       is.string(protocol_number),
-      !(protocol_number %in% get_protocolnumbers(protocol_type = protocol_type))
+      !(protocol_number %in% get_protocolnumbers(protocol_type = protocol_type,
+                                                 language = language))
       )
   }
   assert_that(is.flag(render), noNA(render))
@@ -125,7 +126,8 @@ create_sfp <- function(
     protocol_leading_number <- themes_df[themes_df$theme == theme,
                                          "theme_number"]
 
-    all_numbers <- get_protocolnumbers(protocol_type = protocol_type)
+    all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
+                                       language = language)
 
     if (length(all_numbers) == 0) {
       protocol_trailing_number <- "01"
@@ -145,7 +147,8 @@ create_sfp <- function(
 
   short_title <- tolower(short_title)
   short_title <- str_replace_all(short_title, " ", "-")
-  short_titles <- get_short_titles(protocol_type = protocol_type)
+  short_titles <- get_short_titles(protocol_type = protocol_type,
+                                   language = language)
   assert_that(!(short_title %in% short_titles),
               msg = "The given short title already exists.
               Give a short title that is not in use.
@@ -153,9 +156,9 @@ create_sfp <- function(
               that are in use.")
 
   protocol_code <- paste0(protocol_type, "-", protocol_number)
-  folder_name <- paste0(protocol_code, "_", short_title)
+  folder_name <- paste0(protocol_code, "_", short_title, "_", language)
   folder_name <- tolower(folder_name)
-  protocol_filename <- paste0(folder_name, "_", language)
+  protocol_filename <- folder_name
 
   # directory setup
   project_root <- find_root(is_git_root)
@@ -290,10 +293,14 @@ create_sfp <- function(
 #'
 #' @description This function will search for protocol numbers in filenames of
 #' Rmarkdown files listed underneath the src folder.
-#' The search will be restricted to files of a given protocol type.
+#' The search will be restricted to files of a given protocol type and given
+#' language.
 #'
 #' @param protocol_type A character string equal to sfp (default), sip, sap,
 #' sop or spp.
+#' @param language Language of the protocol, either `"nl"` (Dutch),
+#' the default, or `"en"` (English).
+#'
 #'
 #' @return A character vector with occupied protocol numbers for a specific
 #' protoocol type
@@ -308,9 +315,11 @@ create_sfp <- function(
 #' get_protocolnumbers()
 #'}
 get_protocolnumbers <- function(
-  protocol_type = c("sfp", "sip", "sap", "sop", "spp")) {
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")) {
 
   protocol_type <- match.arg(protocol_type)
+  language <- match.arg(language)
 
   project_root <- find_root(is_git_root)
   path_to_src <- file.path(project_root, "src")
@@ -326,6 +335,8 @@ get_protocolnumbers <- function(
                     replacement = "\\2")
   lf <- str_subset(string = lf,
                    pattern = protocol_type)
+  lf <- str_subset(string = lf,
+                   pattern = paste0("(", language, ")$"))
   lf <- str_extract(string = lf,
                     pattern = "(?<=p-)\\d{3}")
   lf <- lf[!is.na(lf)]
@@ -338,10 +349,13 @@ get_protocolnumbers <- function(
 #'
 #' @description This function will search for short titles in filenames of
 #' Rmarkdown files listed underneath the src folder.
-#' The search will be restricted to files of a given protocol type.
+#' The search will be restricted to files of a given protocol type and given
+#' language.
 #'
 #' @param protocol_type A character string equal to sfp (default), sip, sap, sop
 #' or spp.
+#' @param language Language of the protocol, either `"nl"` (Dutch),
+#' the default, or `"en"` (English).
 #'
 #' @return A character vector with short titles that are in use for a given
 #' protocol type.
@@ -357,10 +371,11 @@ get_protocolnumbers <- function(
 #' get_short_titles()
 #'}
 get_short_titles <- function(
-  protocol_type = c("sfp", "sip", "sap", "sop", "spp")) {
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")) {
 
   protocol_type <- match.arg(protocol_type)
-  assert_that(is.string(protocol_type))
+  language <- match.arg(language)
 
   project_root <- find_root(is_git_root)
   path_to_src <- file.path(project_root, "src")
@@ -376,6 +391,8 @@ get_short_titles <- function(
                     replacement = "\\2")
   lf <- str_subset(string = lf,
                    pattern = protocol_type)
+  lf <- str_subset(string = lf,
+                   pattern = paste0("(", language, ")$"))
   lf <- str_extract(string = lf,
                     pattern = "(?<=\\d{3}_).*")
   lf <- lf[!is.na(lf)]
