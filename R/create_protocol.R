@@ -44,10 +44,12 @@
 #' based on pre-existing protocol numbers.
 #' Protocol numbers that are already in use can be retrieved with
 #' `get_protocolnumbers()`.
+#' @param render Whether or not to render the protocol to html.
+#' Defaults to FALSE.
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all str_extract str_remove str_detect
-#' @importFrom assertthat assert_that is.string is.date
+#' @importFrom assertthat assert_that is.string is.date is.flag noNA
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
 #' @importFrom purrr map_chr
@@ -72,7 +74,8 @@ create_sfp <- function(
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
-  protocol_number = NULL) {
+  protocol_number = NULL,
+  render = FALSE) {
 
   # check parameters
   assert_that(is.string(title))
@@ -96,6 +99,7 @@ create_sfp <- function(
       !(protocol_number %in% get_protocolnumbers(protocol_type = protocol_type))
       )
   }
+  assert_that(is.flag(render), noNA(render))
 
   # create protocol name
   if (is.null(protocol_number)) {
@@ -252,10 +256,12 @@ create_sfp <- function(
   file.remove(file.path(path_to_protocol, book_filename))
 
   # render html
-  old_wd <- getwd()
-  setwd(path_to_protocol)
-  render_book(input = "index.Rmd")
-  setwd(old_wd)
+  if (render) {
+    old_wd <- getwd()
+    setwd(path_to_protocol)
+    render_book(input = "index.Rmd")
+    setwd(old_wd)
+  }
 }
 
 
