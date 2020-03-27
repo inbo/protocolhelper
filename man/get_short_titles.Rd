@@ -4,11 +4,17 @@
 \alias{get_short_titles}
 \title{Function to list all short titles that are already in use.}
 \usage{
-get_short_titles(protocol_type = c("sfp", "sip", "sap", "sop"))
+get_short_titles(
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")
+)
 }
 \arguments{
-\item{protocol_type}{A character string equal to sfp (default), sip, sap or
-sop.}
+\item{protocol_type}{A character string equal to sfp (default), sip, sap, sop
+or spp.}
+
+\item{language}{Language of the protocol, either \code{"nl"} (Dutch),
+the default, or \code{"en"} (English).}
 }
 \value{
 A character vector with short titles that are in use for a given
@@ -17,7 +23,8 @@ protocol type.
 \description{
 This function will search for short titles in filenames of
 Rmarkdown files listed underneath the src folder.
-The search will be restricted to files of a given protocol type.
+The search will be restricted to files of a given protocol type and given
+language.
 }
 \examples{
 \dontrun{

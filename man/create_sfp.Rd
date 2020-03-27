@@ -3,7 +3,7 @@
 \name{create_sfp}
 \alias{create_sfp}
 \title{Create a folder with a bookdown (R markdown) template to start a new
-fieldwork protocol}
+fieldwork protocol and optionally render to html}
 \usage{
 create_sfp(
   title,
@@ -13,11 +13,12 @@ create_sfp(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  from_docx,
-  protocol_number,
   revision = "0.0.0.9000",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-  language = c("nl", "en")
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  render = FALSE
 )
 }
 \arguments{
@@ -39,22 +40,6 @@ Last name and multiple authors separated by a comma}
 \item{file_manager}{A character string for the name of the document
 maintainer of the form First name Last name}
 
-\item{from_docx}{A character string with the path (absolute or relative) to
-a \code{.docx} file containing a pre-existing protocol.
-Please make sure to copy-paste all relevant meta-data from the \code{.docx} file
-to the corresponding parameters of this function.
-If nothing is provided, an empty template will be used.}
-
-\item{protocol_number}{A character string giving the protocol number.
-This parameter should normally not be specified (i.e. missing), unless
-\code{from_docx} is specified.
-A protocol number is a three digit string where the first digit corresponds
-with a theme and the last two digits identify a protocol within a theme.
-If missing (the default), a protocol number will be determined automatically
-based on pre-existing protocol numbers.
-Protocol numbers that are already in use can be retrieved with
-\code{get_protocolnumbers()}.}
-
 \item{revision}{A semantic version number of the form \code{major.minor.patch}.
 For development versions a fourth component is appended starting from
 \code{.9000}.
@@ -66,20 +51,58 @@ pre-existing protocol is used (See \code{from_docx}).}
 
 \item{language}{Language of the protocol, either \code{"nl"} (Dutch),
 the default, or \code{"en"} (English).}
+
+\item{from_docx}{A character string with the path (absolute or relative) to
+a \code{.docx} file containing a pre-existing protocol.
+Please make sure to copy-paste all relevant meta-data from the \code{.docx} file
+to the corresponding parameters of this function.
+If nothing is provided (i.e. default = NULL), an empty template will be used.}
+
+\item{protocol_number}{A character string giving the protocol number.
+This parameter should normally not be specified (i.e. NULL), unless
+\code{from_docx} is specified.
+A protocol number is a three digit string where the first digit corresponds
+with a theme and the last two digits identify a protocol within a theme.
+If NULL (the default), a protocol number will be determined automatically
+based on pre-existing protocol numbers.
+Protocol numbers that are already in use can be retrieved with
+\code{get_protocolnumbers()}.}
+
+\item{render}{Whether or not to render the protocol to html.
+Defaults to FALSE.}
+}
+\value{
+A target folder to which files will be written will be created as
+subdirectories beneath \code{src}.
+The subfolder structure is of the form
+\verb{/thematic/theme/sfp-protocolnumber_short_title_language/} where \code{theme},
+\code{protocolnumber}, \code{short_title} and \code{language} are determined by the
+corresponding arguments of the function.
+A matching subfolder structure will be created beneath the \code{docs} folder (and
+output files needed for rendering to html output will be placed in it if
+\code{render = TRUE}.
+The template Rmarkdown files, or the Rmarkdown files that result from
+converting a docx protocol (see \code{from_docx} argument), will be written to
+the target folder beneath \code{src}.
+Besides Rmarkdown files, this target folder will also contain files needed to render
+to a Bookdown gitbook such as a \verb{_bookdown.yml}.
+Additionally, a \code{NEWS.md} file will be written to the target folder which
+must be used to document the changes between revision of the protocol.
+Furthermore, a \code{data} and a \code{media} folder will be created as subdirectories
+of the target folder.
+The \code{media} folder will contain image files extracted from the docx protocol
+when the \code{from_docx} argument is used.
+The \code{data} folder can be used to store tabular data that are needed for the
+protocol.
 }
 \description{
 This function will create a new folder based on values that are
 passed on via the parameters and creates a R-markdown (bookdown) skeleton
 based on a template file to start working on a new protocol.
+Optionally, the rmarkdown chapters are rendered to an html files which will
+be saved in a matching subfolder of the \code{docs} folder.
 }
 \details{
-The created folder is a new subfolder beneath \code{src} and contains a
-bookdown project.
-It is assumed that the src folder is a subfolder of an RStudio project with
-git version control.
-}
-\examples{
-\dontrun{
-create_sfp()
-}
+It is assumed that the \code{src} folder is a subfolder of an RStudio
+project with git version control.
 }

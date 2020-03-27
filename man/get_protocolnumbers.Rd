@@ -4,11 +4,17 @@
 \alias{get_protocolnumbers}
 \title{Function to list all occupied protocol numbers}
 \usage{
-get_protocolnumbers(protocol_type = c("sfp", "sip", "sap", "sop"))
+get_protocolnumbers(
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")
+)
 }
 \arguments{
-\item{protocol_type}{A character string equal to sfp (default), sip, sap or
-sop.}
+\item{protocol_type}{A character string equal to sfp (default), sip, sap,
+sop or spp.}
+
+\item{language}{Language of the protocol, either \code{"nl"} (Dutch),
+the default, or \code{"en"} (English).}
 }
 \value{
 A character vector with occupied protocol numbers for a specific
@@ -17,7 +23,8 @@ protoocol type
 \description{
 This function will search for protocol numbers in filenames of
 Rmarkdown files listed underneath the src folder.
-The search will be restricted to files of a given protocol type.
+The search will be restricted to files of a given protocol type and given
+language.
 }
 \examples{
 \dontrun{
