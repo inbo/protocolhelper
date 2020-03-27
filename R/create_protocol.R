@@ -173,7 +173,7 @@ create_sfp <- function(
   output_dir <- file.path(project_root, "docs", "thematic", theme,
                           folder_name)
   # next make it relative to path_to_protocol
-  output_dir <- path_rel(output_dir, path_to_protocol)
+  output_dir_rel <- path_rel(output_dir, path_to_protocol)
 
 
   # check for existence of the folders
@@ -225,7 +225,7 @@ create_sfp <- function(
                  procedure = protocol_code,
                  theme = theme,
                  book_filename = book_filename,
-                 output_dir = output_dir
+                 output_dir = output_dir_rel
     )
     writeLines(map_chr(original_file_content,
                        whisker.render,
