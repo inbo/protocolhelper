@@ -1,14 +1,15 @@
 #' @title Create a folder with a bookdown (R markdown) template to start a new
-#' fieldwork protocol
+#' fieldwork protocol and optionally render to html
 #'
 #' @description This function will create a new folder based on values that are
 #' passed on via the parameters and creates a R-markdown (bookdown) skeleton
 #' based on a template file to start working on a new protocol.
+#' Optionally, the rmarkdown chapters are rendered to an html files which will
+#' be saved in a matching subfolder of the `docs` folder.
 #'
-#' @details The created folder is a new subfolder beneath `src` and contains a
-#' bookdown project.
-#' It is assumed that the src folder is a subfolder of an RStudio project with
-#' git version control.
+#'
+#' @details It is assumed that the `src` folder is a subfolder of an RStudio
+#' project with git version control.
 #'
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
@@ -56,12 +57,30 @@
 #' @importFrom whisker whisker.render
 #' @importFrom fs path_rel
 #'
-#' @export
+#' @return A target folder to which files will be written will be created as
+#' subdirectories beneath `src`.
+#' The subfolder structure is of the form
+#' `/thematic/theme/sfp-protocolnumber_short_title_language/` where `theme`,
+#' `protocolnumber`, `short_title` and `language` are determined by the
+#' corresponding arguments of the function.
+#' A matching subfolder structure will be created beneath the `docs` folder (and
+#' output files needed for rendering to html output will be placed in it if
+#' `render = TRUE`.
+#' The template Rmarkdown files, or the Rmarkdown files that result from
+#' converting a docx protocol (see `from_docx` argument), will be written to
+#' the target folder beneath `src`.
+#' Besides Rmarkdown files, this target folder will also contain files needed to render
+#'  to a Bookdown gitbook such as a `_bookdown.yml`.
+#' Additionally, a `NEWS.md` file will be written to the target folder which
+#' must be used to document the changes between revision of the protocol.
+#' Furthermore, a `data` and a `media` folder will be created as subdirectories
+#' of the target folder.
+#' The `media` folder will contain image files extracted from the docx protocol
+#' when the `from_docx` argument is used.
+#' The `data` folder can be used to store tabular data that are needed for the
+#' protocol.
 #'
-#' @examples
-#' \dontrun{
-#' create_sfp()
-#'}
+#' @export
 create_sfp <- function(
   title,
   subtitle,
