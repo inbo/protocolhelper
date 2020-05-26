@@ -1,9 +1,3 @@
-# Wijzigingen vorige versies
-
-<!--
-Omschrijf hier welke wijzigingen er gebeurd zijn ten opzichte van de vorige versie. Vermeld de datum van de vorige versie, de reden van de wijziging en een beknopte beschrijving van de wijziging.
--->
-
 # Afhankelijkheden (Indien van toepassing)
 
 <!--
