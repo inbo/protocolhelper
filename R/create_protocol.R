@@ -22,11 +22,10 @@
 #' Last name and multiple authors separated by a comma
 #' @param file_manager A character string for the name of the document
 #' maintainer of the form First name Last name
-#' @param revision A semantic version number of the form `major.minor.patch`.
-#' For development versions a fourth component is appended starting from
-#' `.9000`.
-#' The default is `0.0.0.9000` and should normally only be changed if a
-#' pre-existing protocol is used (See `from_docx`).
+#' @param revision A version number of the form `YYYY.##`.
+#' For development versions `.dev` is added.
+#' The default is `YYYY.##.dev` (See `from_docx`).
+#' When the protocol is ready to be released, this should be changed by a repo-admin.
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #' @param language Language of the protocol, either `"nl"` (Dutch),
@@ -73,7 +72,7 @@
 #' the target folder beneath `src`.
 #' Besides Rmarkdown files, this target folder will also contain files needed to render
 #'  to a Bookdown gitbook such as a `_bookdown.yml`.
-#' Additionally, a `NEWS.md` file will be written to the target folder which
+#' Additionally, a `NEWS.Rmd` file will be written to the target folder which
 #' must be used to document the changes between revision of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
 #' of the target folder.
@@ -91,7 +90,7 @@ create_sfp <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  revision = "0.0.0.9000",
+  revision = "YYYY.##.dev",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
