@@ -13,7 +13,8 @@ Authors@R:
 Description: This package contains helper functions to manage INBO protocols.
 License: GPL-3 + file LICENSE
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    magick
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
@@ -28,5 +29,4 @@ Imports:
     whisker,
     purrr,
     bookdown,
-    fs,
-    magick
+    fs
