@@ -57,7 +57,6 @@
 #' @importFrom purrr map_chr
 #' @importFrom whisker whisker.render
 #' @importFrom fs path_rel
-#' @importFrom magick image_read image_write
 #'
 #' @return A target folder to which files will be written will be created as
 #' subdirectories beneath `src`.
@@ -249,12 +248,19 @@ create_sfp <- function(
     emf_images <- list.files(path = file.path(path_to_protocol, "media"),
                              pattern = ".emf",
                              full.names = TRUE)
-    for (img in emf_images) {
-      img_emf <- image_read(path = img)
-      image_write(image = img_emf,
-                  format = "png",
-                  path = str_replace(img, ".emf", ".png"))
-      file.remove(img)
+    if (length(emf_images) > 0) {
+      if (!requireNamespace("magick", quietly = TRUE)) {
+        stop("Package \"magick\" needed for docx protocols with emf images. ",
+             "Please install it with 'install.packages(\"magick\")'.",
+             call. = FALSE)
+      }
+      for (img in emf_images) {
+        img_emf <- magick::image_read(path = img)
+        magick::image_write(image = img_emf,
+                            format = "png",
+                            path = str_replace(img, ".emf", ".png"))
+        file.remove(img)
+      }
     }
     # move relevant sections
     contents <- readLines(con = file.path(path_to_protocol,
