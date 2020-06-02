@@ -13,7 +13,7 @@ create_sfp(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  revision = "0.0.0.9000",
+  revision = "YYYY.##.dev",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -40,11 +40,10 @@ Last name and multiple authors separated by a comma}
 \item{file_manager}{A character string for the name of the document
 maintainer of the form First name Last name}
 
-\item{revision}{A semantic version number of the form \code{major.minor.patch}.
-For development versions a fourth component is appended starting from
-\code{.9000}.
-The default is \verb{0.0.0.9000} and should normally only be changed if a
-pre-existing protocol is used (See \code{from_docx}).}
+\item{revision}{A version number of the form \code{YYYY.##}.
+For development versions \code{.dev} is added.
+The default is \code{YYYY.##.dev} (See \code{from_docx}).
+When the protocol is ready to be released, this should be changed by a repo-admin.}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.}
@@ -86,8 +85,7 @@ converting a docx protocol (see \code{from_docx} argument), will be written to
 the target folder beneath \code{src}.
 Besides Rmarkdown files, this target folder will also contain files needed to render
 to a Bookdown gitbook such as a \verb{_bookdown.yml}.
-Additionally, a \code{NEWS.md} file will be written to the target folder which
-must be used to document the changes between revision of the protocol.
+The \verb{00_NEWS.Rmd} file must be used to document the changes between revision of the protocol.
 Furthermore, a \code{data} and a \code{media} folder will be created as subdirectories
 of the target folder.
 The \code{media} folder will contain image files extracted from the docx protocol
