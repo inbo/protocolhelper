@@ -440,6 +440,7 @@ get_path_to_protocol <- function(protocol_folder_name = NULL,
                    pattern = protocol_folder_name)
   if (!identical(ld, character(0))) {
     path_to_protocol <- ld[[1]]
+    return(path_to_protocol)
   } else {
     # second case: the path does not yet exist
     if (is.null(theme) & is.null(project) |
@@ -457,6 +458,7 @@ get_path_to_protocol <- function(protocol_folder_name = NULL,
                                     subfolder_of,
                                     theme,
                                     protocol_folder_name)
+      return(path_to_protocol)
     } else {
       subfolder_of <- "project"
       path_to_protocol <- file.path(project_root,
@@ -464,9 +466,7 @@ get_path_to_protocol <- function(protocol_folder_name = NULL,
                                     subfolder_of,
                                     project,
                                     protocol_folder_name)
-
+      return(path_to_protocol)
     }
   }
-
-  return(path_to_protocol)
 }

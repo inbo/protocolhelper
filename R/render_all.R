@@ -33,11 +33,10 @@
 
 
 render_all <- function(output_root = "publish",
-                       version_number = NULL) {
+                       version_number) {
 
   assert_that(is.string(output_root))
-  assert_that(!is.null(version_number),
-              str_detect(version_number, "^\\d{4}\\.\\d{2}$"),
+  assert_that(str_detect(version_number, "^\\d{4}\\.\\d{2}$"),
               msg = "Please provide a valid version number")
 
   git_root <- find_root(is_git_root)
