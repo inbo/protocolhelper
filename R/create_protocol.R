@@ -133,7 +133,9 @@ create_sfp <- function(
       numbers <- str_subset(all_numbers, paste0("^", protocol_leading_number))
       protocol_trailing_number <- max(
         as.integer(
-          str_extract(numbers, "\\d{2}$"))
+          str_extract(numbers, "\\d{2}$")),
+        0,
+        na.rm = TRUE
       ) + 1
       protocol_trailing_number <- formatC(protocol_trailing_number,
                                           width = 2, format = "d", flag = "0")
@@ -290,9 +292,10 @@ create_sfp <- function(
       writeLines(text = chapter_contents,
                  con = chapter_file)
     }
+    # delete the complete Rmd (output of convert_docx_rmd)
+    file.remove(file.path(path_to_protocol, book_filename))
   }
-  # delete the complete Rmd (output of convert_docx_rmd)
-  file.remove(file.path(path_to_protocol, book_filename))
+
 
   # render html
   if (render) {
