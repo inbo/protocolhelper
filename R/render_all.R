@@ -63,12 +63,10 @@ render_all <- function(output_root = "publish",
                   y = thematic_protocols_rel,
                   z = thematic_protocols),
         .f = function(x, y, z) {
-         old_wd <- getwd()
-         setwd(z)
          render_book(input = x,
-                     output_dir =  path(output_new_root, y))
-         setwd(old_wd)
-       })
+                     output_dir =  path(output_new_root, y),
+                     knit_root_dir = z)
+         })
 
   # Project-specific protocols
   project_protocols <- dir_ls(path = path(git_root,
@@ -90,11 +88,9 @@ render_all <- function(output_root = "publish",
                   y = project_protocols_rel,
                   z = project_protocols),
         .f = function(x, y, z) {
-          old_wd <- getwd()
-          setwd(z)
           render_book(input = x,
-                      output_dir =  path(output_new_root, y))
-          setwd(old_wd)
+                      output_dir =  path(output_new_root, y),
+                      knit_root_dir = z)
         })
 
 }
