@@ -71,8 +71,7 @@
 #' the target folder beneath `src`.
 #' Besides Rmarkdown files, this target folder will also contain files needed to render
 #'  to a Bookdown gitbook such as a `_bookdown.yml`.
-#' Additionally, a `NEWS.Rmd` file will be written to the target folder which
-#' must be used to document the changes between revision of the protocol.
+#' The `00_NEWS.Rmd` file must be used to document the changes between revision of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
 #' of the target folder.
 #' The `media` folder will contain image files extracted from the docx protocol
@@ -134,7 +133,9 @@ create_sfp <- function(
       numbers <- str_subset(all_numbers, paste0("^", protocol_leading_number))
       protocol_trailing_number <- max(
         as.integer(
-          str_extract(numbers, "\\d{2}$"))
+          str_extract(numbers, "\\d{2}$")),
+        0,
+        na.rm = TRUE
       ) + 1
       protocol_trailing_number <- formatC(protocol_trailing_number,
                                           width = 2, format = "d", flag = "0")
@@ -160,16 +161,16 @@ create_sfp <- function(
   protocol_filename <- folder_name
 
   # directory setup
-  project_root <- find_root(is_git_root)
-  theme <- paste0(protocol_leading_number, "_", theme)
-  path_to_protocol <- file.path(project_root, "src", "thematic", theme,
-                                  folder_name)
+  path_to_protocol <- get_path_to_protocol(theme = theme,
+                                           protocol_folder_name = folder_name)
 
   # set _bookdown.yml values
   book_filename <- paste0(protocol_filename, ".Rmd")
   # the output_dir should be set as a relative path to make it reproducible on
   # other machines: it should be relative to path_to_protocol
   # first get the absolute path
+  project_root <- find_root(is_git_root)
+  theme <- paste0(protocol_leading_number, "_", theme)
   output_dir <- file.path(project_root, "docs", "thematic", theme,
                           folder_name)
   # next make it relative to path_to_protocol
@@ -235,10 +236,11 @@ create_sfp <- function(
   }
 
   # docx
+  temp_filename <- "temp.Rmd"
   if (!is.null(from_docx)) {
     convert_docx_to_rmd(
       from = from_docx,
-      to = book_filename,
+      to = temp_filename,
       dir = path_to_protocol,
       wrap = 80,
       overwrite = FALSE,
@@ -263,7 +265,7 @@ create_sfp <- function(
     }
     # move relevant sections
     contents <- readLines(con = file.path(path_to_protocol,
-                                          book_filename))
+                                          temp_filename))
     contents <- str_replace_all(contents, ".emf", ".png")
     is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
     title_numbers <- formatC(x = cumsum(is_title),
@@ -291,16 +293,14 @@ create_sfp <- function(
       writeLines(text = chapter_contents,
                  con = chapter_file)
     }
+    # delete the complete Rmd (output of convert_docx_rmd)
+    file.remove(file.path(path_to_protocol, temp_filename))
   }
-  # delete the complete Rmd (output of convert_docx_rmd)
-  file.remove(file.path(path_to_protocol, book_filename))
+
 
   # render html
   if (render) {
-    old_wd <- getwd()
-    setwd(path_to_protocol)
-    render_book(input = "index.Rmd")
-    setwd(old_wd)
+    render_protocol(protocol_folder_name = folder_name)
   }
 }
 
@@ -341,25 +341,19 @@ get_protocolnumbers <- function(
 
   project_root <- find_root(is_git_root)
   path_to_src <- file.path(project_root, "src")
-  lf <- list.files(path = path_to_src,
+  ld <- list.dirs(path = path_to_src,
                    recursive = TRUE,
-                   full.names = FALSE,
-                   ignore.case = TRUE
+                   full.names = FALSE
   )
-  lf <- str_subset(string = lf,
-                   pattern = "^(.*)\\/(.*)(\\.Rmd)$")
-  lf <- str_replace(string = lf,
-                    pattern = "^(.*)\\/(.*)(\\.Rmd)$",
-                    replacement = "\\2")
-  lf <- str_subset(string = lf,
+  ld <- str_subset(string = ld,
                    pattern = protocol_type)
-  lf <- str_subset(string = lf,
+  ld <- str_subset(string = ld,
                    pattern = paste0("(", language, ")$"))
-  lf <- str_extract(string = lf,
+  ld <- str_extract(string = ld,
                     pattern = "(?<=p-)\\d{3}")
-  lf <- lf[!is.na(lf)]
+  ld <- ld[!is.na(ld)]
 
-  return(lf)
+  return(ld)
 }
 
 
@@ -397,23 +391,86 @@ get_short_titles <- function(
 
   project_root <- find_root(is_git_root)
   path_to_src <- file.path(project_root, "src")
-  lf <- list.files(path = path_to_src,
+  ld <- list.dirs(path = path_to_src,
                    recursive = TRUE,
-                   full.names = FALSE,
-                   ignore.case = TRUE
+                   full.names = FALSE
   )
-  lf <- str_subset(string = lf,
-                   pattern = "^(.*)\\/(.*)(\\.Rmd)$")
-  lf <- str_replace(string = lf,
-                    pattern = "^(.*)\\/(.*)(\\.Rmd)$",
-                    replacement = "\\2")
-  lf <- str_subset(string = lf,
+  ld <- str_subset(string = ld,
                    pattern = protocol_type)
-  lf <- str_subset(string = lf,
+  ld <- str_subset(string = ld,
                    pattern = paste0("(", language, ")$"))
-  lf <- str_extract(string = lf,
-                    pattern = "(?<=\\d{3}_).*")
-  lf <- lf[!is.na(lf)]
+  ld <- str_extract(string = ld,
+                    pattern = "(?<=\\d{3}_)([a-z]|-)*")
+  ld <- ld[!is.na(ld)]
 
-  return(lf)
+  return(ld)
+}
+
+#' @title Internal function to get (or set) the full path to a protocol.
+#'
+#' @param protocol_folder_name Character string giving the name of the protocol subfolder
+#' @param theme A character string equal to one of `"generic"`,
+#' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
+#' Defaults to NULL.
+#' Only needed if no folder with the name of the protocol subfolder exists and the request is for a thematic protocol.
+#' @param project Character string giving the name of the project folder.
+#' Defaults to NULL.
+#' Only needed if no folder with the name of the protocol subfolder exists and the request if for a project-specific protocol.
+#'
+#' @return A character vector containing the full path to the protocol.
+#'
+#' @importFrom rprojroot find_root is_git_root
+#' @importFrom assertthat assert_that is.string
+#' @importFrom stringr str_subset
+#'
+#' @export
+#'
+#'
+#' @examples
+#' \dontrun{
+#' get_path_to_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
+#'}
+get_path_to_protocol <- function(protocol_folder_name = NULL,
+                                 theme = NULL,
+                                 project = NULL) {
+  assert_that(is.string(protocol_folder_name))
+
+  # first case: the path exists already
+  project_root <- find_root(is_git_root)
+  ld <- list.dirs(path = file.path(project_root,"src"),
+                  full.names = TRUE,
+                  recursive = TRUE)
+  ld <- str_subset(string = ld,
+                   pattern = protocol_folder_name)
+  if (!identical(ld, character(0))) {
+    path_to_protocol <- ld[[1]]
+    return(path_to_protocol)
+  } else {
+    # second case: the path does not yet exist
+    if (is.null(theme) & is.null(project) |
+        is.string(theme) & is.string(project)) {
+      stop("Check the spelling of protocol_folder_name - or - provide a string value for theme or project, not both.")
+    }
+
+    if (is.string(theme)) {
+      subfolder_of <- "thematic"
+      protocol_leading_number <- themes_df[themes_df$theme == theme,
+                                           "theme_number"]
+      theme <- paste0(protocol_leading_number, "_", theme)
+      path_to_protocol <- file.path(project_root,
+                                    "src",
+                                    subfolder_of,
+                                    theme,
+                                    protocol_folder_name)
+      return(path_to_protocol)
+    } else {
+      subfolder_of <- "project"
+      path_to_protocol <- file.path(project_root,
+                                    "src",
+                                    subfolder_of,
+                                    project,
+                                    protocol_folder_name)
+      return(path_to_protocol)
+    }
+  }
 }
