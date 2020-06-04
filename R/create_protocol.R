@@ -236,10 +236,11 @@ create_sfp <- function(
   }
 
   # docx
+  temp_filename <- "temp.Rmd"
   if (!is.null(from_docx)) {
     convert_docx_to_rmd(
       from = from_docx,
-      to = book_filename,
+      to = temp_filename,
       dir = path_to_protocol,
       wrap = 80,
       overwrite = FALSE,
@@ -264,7 +265,7 @@ create_sfp <- function(
     }
     # move relevant sections
     contents <- readLines(con = file.path(path_to_protocol,
-                                          book_filename))
+                                          temp_filename))
     contents <- str_replace_all(contents, ".emf", ".png")
     is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
     title_numbers <- formatC(x = cumsum(is_title),
@@ -293,7 +294,7 @@ create_sfp <- function(
                  con = chapter_file)
     }
     # delete the complete Rmd (output of convert_docx_rmd)
-    file.remove(file.path(path_to_protocol, book_filename))
+    file.remove(file.path(path_to_protocol, temp_filename))
   }
 
 

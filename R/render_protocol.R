@@ -29,7 +29,9 @@ render_protocol <- function(protocol_folder_name = NULL,
     )
 
   # render html
+  old_wd <- getwd()
+  setwd(dir = path_to_protocol)
   render_book(input = "index.Rmd",
-              output_dir = output_dir,
-              knit_root_dir = path_to_protocol)
+              output_dir = output_dir)
+  setwd(old_wd)
 }

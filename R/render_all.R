@@ -87,9 +87,11 @@ render_all <- function(output_root = "publish",
                   y = project_protocols_rel,
                   z = project_protocols),
         .f = function(x, y, z) {
+          old_wd <- getwd()
+          setwd(dir = z)
           render_book(input = x,
-                      output_dir =  path(output_new_root, y),
-                      knit_root_dir = z)
+                      output_dir =  path(output_new_root, y))
+          setwd(old_wd)
         })
 
 }
