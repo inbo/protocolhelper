@@ -4,7 +4,7 @@
 \alias{render_all}
 \title{Function to render all protocols into a folder \code{publish/version_number}.}
 \usage{
-render_all(output_root = "publish", version_number = NULL)
+render_all(output_root = "publish", version_number)
 }
 \arguments{
 \item{output_root}{A character string giving the root folder without version

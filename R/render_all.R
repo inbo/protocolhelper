@@ -18,10 +18,11 @@
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
-#' @importFrom fs dir_ls path path_rel
+#' @importFrom fs dir_ls path path_rel path_ext_set
 #' @importFrom stringr str_detect
 #' @importFrom bookdown render_book
 #' @importFrom purrr pwalk
+#' @importFrom yaml read_yaml
 #'
 #' @export
 #'
@@ -62,9 +63,17 @@ render_all <- function(output_root = "publish",
                   y = thematic_protocols_rel,
                   z = thematic_protocols),
         .f = function(x, y, z) {
-         render_book(input = x,
-                     output_dir =  path(output_new_root, y),
-                     knit_root_dir = z)
+          old_wd <- getwd()
+          setwd(dir = z)
+          render_book(input = x,
+                      output_dir =  path(output_new_root, y))
+          # rename html to index.html
+          yml <- read_yaml("_bookdown.yml")
+          original_name <- yml$book_filename
+          file.rename(from = path_ext_set(path(output_new_root, y, original_name),
+                                          ext = "html"),
+                      to = path(output_new_root, y, "index.html"))
+          setwd(old_wd)
          })
 
   # Project-specific protocols
@@ -91,6 +100,12 @@ render_all <- function(output_root = "publish",
           setwd(dir = z)
           render_book(input = x,
                       output_dir =  path(output_new_root, y))
+          # rename html to index.html
+          yml <- read_yaml("_bookdown.yml")
+          original_name <- yml$book_filename
+          file.rename(from = path_ext_set(path(output_new_root, y, original_name),
+                                          ext = "html"),
+                      to = path(output_new_root, y, "index.html"))
           setwd(old_wd)
         })
 

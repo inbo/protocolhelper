@@ -29,4 +29,5 @@ Imports:
     whisker,
     purrr,
     bookdown,
-    fs
+    fs,
+    yaml
