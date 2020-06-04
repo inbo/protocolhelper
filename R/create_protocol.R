@@ -165,7 +165,7 @@ create_sfp <- function(
                                            protocol_folder_name = folder_name)
 
   # set _bookdown.yml values
-  book_filename <- "index.Rmd"
+  book_filename <- paste0(protocol_filename, ".Rmd")
   # the output_dir should be set as a relative path to make it reproducible on
   # other machines: it should be relative to path_to_protocol
   # first get the absolute path
