@@ -1,8 +1,15 @@
 ---
 title: {{{title}}}
 subtitle: {{{subtitle}}}
-author: {{{authors}}}
+author: [{{{authors}}}]
 date: {{{date}}}
+params:
+  reviewers: [{{{reviewers}}}]
+  file_manager: {{{file_manager}}}
+  procedure: {{{procedure}}}
+  version_number: {{{version_number}}}
+  language: {{{language}}}
+  theme: {{{theme}}}
 site: bookdown::bookdown_site
 output: 
   bookdown::gitbook:
@@ -41,10 +48,12 @@ opts_chunk$set(
 
 ```{r metadata}
 metadata <- data.frame(
-  Reviewers = "{{{reviewers}}}",
-  Documentbeheerder = "{{{file_manager}}}",
-  Procedure = "{{{procedure}}}",
-  Revisie = "{{{revision}}}"
+  Reviewers = paste(params$reviewers, collapse = ", "),
+  Documentbeheerder = params$file_manager,
+  Procedure = params$procedure,
+  Versienummer = params$version_number,
+  Taal = params$language,
+  Thema = params$theme
 )
 
 kable(metadata)

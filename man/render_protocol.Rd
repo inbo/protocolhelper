@@ -7,7 +7,8 @@
 render_protocol(protocol_folder_name = NULL, output_dir = NULL)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
+\item{protocol_folder_name}{Character string giving the name of the protocol
+subfolder}
 
 \item{output_dir}{The output directory. If \code{NULL}, a field named
 \code{output_dir} in the configuration file \file{_bookdown.yml} will be

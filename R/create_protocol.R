@@ -15,17 +15,18 @@
 #' @param subtitle A character string for an optional subtitle
 #' @param short_title A character string of less than 20 characters to use in
 #' folder and filenames
-#' @param authors A character string for authors of the form First name Last
-#' name and multiple authors separated by a comma
+#' @param authors A character vector for authors of the form First name Last
+#' name
 #' @param date A character string of the date in ISO 8601 format (YYYY-MM-DD)
-#' @param reviewers A character string for reviewers of the form First name
-#' Last name and multiple authors separated by a comma
+#' @param reviewers A character vector for reviewers of the form First name
+#' Last name
 #' @param file_manager A character string for the name of the document
 #' maintainer of the form First name Last name
-#' @param revision A version number of the form `YYYY.##`.
+#' @param version_number A version number of the form `YYYY.##`.
 #' For development versions `.dev` is added.
 #' The default is `YYYY.##.dev` (See `from_docx`).
-#' When the protocol is ready to be released, this should be changed by a repo-admin.
+#' When the protocol is ready to be released, this should be changed by a repo-
+#' admin.
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #' @param language Language of the protocol, either `"nl"` (Dutch),
@@ -69,9 +70,10 @@
 #' The template Rmarkdown files, or the Rmarkdown files that result from
 #' converting a docx protocol (see `from_docx` argument), will be written to
 #' the target folder beneath `src`.
-#' Besides Rmarkdown files, this target folder will also contain files needed to render
-#'  to a Bookdown gitbook such as a `_bookdown.yml`.
-#' The `00_NEWS.Rmd` file must be used to document the changes between revisions of the protocol.
+#' Besides Rmarkdown files, this target folder will also contain files needed to
+#' render to a Bookdown gitbook such as a `_bookdown.yml`.
+#' The `00_NEWS.Rmd` file must be used to document the changes between revisions
+#' of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
 #' of the target folder.
 #' The `media` folder will contain image files extracted from the docx protocol
@@ -88,7 +90,7 @@ create_sfp <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  revision = "YYYY.##.dev",
+  version_number = "YYYY.##.dev",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -100,10 +102,10 @@ create_sfp <- function(
   assert_that(is.string(subtitle))
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
-  assert_that(is.string(authors))
-  assert_that(is.string(reviewers))
+  assert_that(is.character(authors))
+  assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
-  assert_that(is.string(revision))
+  assert_that(is.string(version_number))
   theme <- match.arg(theme)
   language <- match.arg(language)
   if (!is.null(from_docx)) {
@@ -222,9 +224,10 @@ create_sfp <- function(
                  date = date,
                  reviewers = reviewers,
                  file_manager = file_manager,
-                 revision = revision,
+                 version_number = version_number,
                  procedure = protocol_code,
                  theme = theme,
+                 language = language,
                  book_filename = book_filename,
                  output_dir = output_dir_rel
     )
@@ -423,10 +426,12 @@ get_short_titles <- function(
 #' @param theme A character string equal to one of `"generic"`,
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #' Defaults to NULL.
-#' Only needed if no folder with the name of the protocol subfolder exists and the request is for a thematic protocol.
+#' Only needed if no folder with the name of the protocol subfolder exists and
+#' the request is for a thematic protocol.
 #' @param project Character string giving the name of the project folder.
 #' Defaults to NULL.
-#' Only needed if no folder with the name of the protocol subfolder exists and the request if for a project-specific protocol.
+#' Only needed if no folder with the name of the protocol subfolder exists and
+#' the request if for a project-specific protocol.
 #'
 #' @return A character vector containing the full path to the protocol.
 #'

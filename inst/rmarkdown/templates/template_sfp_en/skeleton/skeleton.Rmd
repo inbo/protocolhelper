@@ -3,6 +3,13 @@ title: {{{title}}}
 subtitle: {{{subtitle}}}
 author: {{{authors}}}
 date: {{{date}}}
+params:
+  reviewers: [{{{reviewers}}}]
+  file_manager: {{{file_manager}}}
+  procedure: {{{procedure}}}
+  version_number: {{{version_number}}}
+  language: {{{language}}}
+  theme: {{{theme}}}
 output: 
   bookdown::html_document2:
     toc: true
@@ -41,71 +48,18 @@ opts_chunk$set(
 
 ```{r metadata}
 metadata <- data.frame(
-  Reviewers = "{{{reviewers}}}",
-  Documentbeheerder = "{{{file_manager}}}",
-  Procedure = "{{{procedure}}}",
-  Revisie = "{{{revision}}}"
+  Reviewers = paste(params$reviewers, collapse = ", "),
+  File_manager = params$file_manager,
+  Procedure = params$procedure,
+  Version_number = params$version_number,
+  Language = params$language,
+  Theme = params$theme
 )
+
 
 kable(metadata)
 
 ```
-
-```{r dependencies, child = "_01_dependencies.Rmd"}
-
-```
-
-```{r subject, child = "_02_subject.Rmd"}
-
-```
-
-```{r scope, child = "_03_scope.Rmd"}
-
-```
-
-
-```{r principle, child = "_04_principle.Rmd"}
-
-```
-
-
-```{r skills, child = "_05_skills.Rmd"}
-
-```
-
-
-```{r materials, child = "_06_materials.Rmd"}
-
-```
-
-
-```{r workflow, child = "_07_workflow.Rmd"}
-
-```
-
-```{r quality-assurance, child = "_08_quality_assurance.Rmd"}
-
-```
-
-```{r safety, child = "_09_safety.Rmd"}
-
-```
-
-
-```{r summary, child = "_10_summary.Rmd"}
-
-```
-
-
-```{r references, child = "_11_references.Rmd"}
-
-```
-
-
-```{r appendices, child = "_12_appendices.Rmd"}
-
-```
-
 
 
 

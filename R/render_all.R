@@ -2,7 +2,7 @@
 #'
 #' @description This function renders all protocols (which have been merged to
 #' the master branch) into a folder `publish/version_number`, where
-#' `version_number` is a tag of the form `YYYY.NN` (year, number giving order of
+#' `version_number` is of the form `YYYY.NN` (year, number giving order of
 #'  release in a year).
 #'
 #'
