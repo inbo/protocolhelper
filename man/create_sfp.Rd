@@ -99,7 +99,7 @@ protocol.
 This function will create a new folder based on values that are
 passed on via the parameters and creates a R-markdown (bookdown) skeleton
 based on a template file to start working on a new protocol.
-Optionally, the rmarkdown chapters are rendered to an html files which will
+Optionally, the rmarkdown chapters are rendered to an html file which will
 be saved in a matching subfolder of the \code{docs} folder.
 }
 \details{
