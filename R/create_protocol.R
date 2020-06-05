@@ -434,7 +434,7 @@ get_short_titles <- function(
 #' @importFrom assertthat assert_that is.string
 #' @importFrom stringr str_subset
 #'
-#' @export
+#' @keywords internal
 #'
 #'
 #' @examples

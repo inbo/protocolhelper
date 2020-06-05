@@ -51,3 +51,4 @@ the \code{protocol_folder_name}.
 get_path_to_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
 }
 }
+\keyword{internal}
