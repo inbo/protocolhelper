@@ -13,7 +13,7 @@ create_sfp(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  revision = "YYYY.##.dev",
+  version_number = "YYYY.##.dev",
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -29,21 +29,22 @@ create_sfp(
 \item{short_title}{A character string of less than 20 characters to use in
 folder and filenames}
 
-\item{authors}{A character string for authors of the form First name Last
-name and multiple authors separated by a comma}
+\item{authors}{A character vector for authors of the form First name Last
+name}
 
 \item{date}{A character string of the date in ISO 8601 format (YYYY-MM-DD)}
 
-\item{reviewers}{A character string for reviewers of the form First name
-Last name and multiple authors separated by a comma}
+\item{reviewers}{A character vector for reviewers of the form First name
+Last name}
 
 \item{file_manager}{A character string for the name of the document
 maintainer of the form First name Last name}
 
-\item{revision}{A version number of the form \code{YYYY.##}.
+\item{version_number}{A version number of the form \code{YYYY.##}.
 For development versions \code{.dev} is added.
 The default is \code{YYYY.##.dev} (See \code{from_docx}).
-When the protocol is ready to be released, this should be changed by a repo-admin.}
+When the protocol is ready to be released, this should be changed by a repo-
+admin.}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.}
@@ -83,9 +84,10 @@ output files needed for rendering to html output will be placed in it if
 The template Rmarkdown files, or the Rmarkdown files that result from
 converting a docx protocol (see \code{from_docx} argument), will be written to
 the target folder beneath \code{src}.
-Besides Rmarkdown files, this target folder will also contain files needed to render
-to a Bookdown gitbook such as a \verb{_bookdown.yml}.
-The \verb{00_NEWS.Rmd} file must be used to document the changes between revision of the protocol.
+Besides Rmarkdown files, this target folder will also contain files needed to
+render to a Bookdown gitbook such as a \verb{_bookdown.yml}.
+The \verb{00_NEWS.Rmd} file must be used to document the changes between revisions
+of the protocol.
 Furthermore, a \code{data} and a \code{media} folder will be created as subdirectories
 of the target folder.
 The \code{media} folder will contain image files extracted from the docx protocol

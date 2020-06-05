@@ -7,16 +7,19 @@
 get_path_to_protocol(protocol_folder_name = NULL, theme = NULL, project = NULL)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
+\item{protocol_folder_name}{Character string giving the name of the protocol
+subfolder}
 
 \item{theme}{A character string equal to one of \code{"generic"},
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.
 Defaults to NULL.
-Only needed if no folder with the name of the protocol subfolder exists and the request is for a thematic protocol.}
+Only needed if no folder with the name of the protocol subfolder exists and
+the request is for a thematic protocol.}
 
 \item{project}{Character string giving the name of the project folder.
 Defaults to NULL.
-Only needed if no folder with the name of the protocol subfolder exists and the request if for a project-specific protocol.}
+Only needed if no folder with the name of the protocol subfolder exists and
+the request if for a project-specific protocol.}
 }
 \value{
 A character vector containing the full path to the protocol.
