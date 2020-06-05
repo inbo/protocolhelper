@@ -11,7 +11,7 @@
 #' @param version_number A character string of the form `YYYY.NN` (year, number
 #' giving order of release in a year).
 #'
-#' @return The rendered html files and associated files needed by the html file
+#' @details The rendered html files and associated files needed by the html file
 #' for all protocols will be written to subfolders of `publish/version_number`.
 #' The subfolder structure mirrors the structure of `src/thematic` and
 #' `src/project`.

@@ -3,7 +3,6 @@
 export(check_frontmatter)
 export(convert_docx_to_rmd)
 export(create_sfp)
-export(get_path_to_protocol)
 export(get_protocolnumbers)
 export(get_short_titles)
 export(render_all)

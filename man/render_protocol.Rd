@@ -20,7 +20,9 @@ The rendered html file and associated files needed by the html file.
 They will be put in the directory implied by the output_dir parameter.
 }
 \description{
-This function is a simple wrapper around bookdown::render_book() and can be used to render a protocol to html in order to preview updates that have been made.
+This function is a simple wrapper around
+\code{bookdown::render_book()} and can be used to render a protocol to html
+in order to preview updates that have been made.
 }
 \examples{
 \dontrun{
