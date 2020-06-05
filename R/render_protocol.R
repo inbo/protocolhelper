@@ -21,8 +21,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' render_protocol(theme = "vegetation",
-#' protocol_folder_name = "sfp_401-vegopn-terrestr_nl")
+#' render_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
 #'}
 render_protocol <- function(protocol_folder_name = NULL,
                             output_dir = NULL) {
