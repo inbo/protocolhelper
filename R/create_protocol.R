@@ -408,6 +408,17 @@ get_short_titles <- function(
 
 #' @title Internal function to get (or set) the full path to a protocol.
 #'
+#' Either provide the full path of an existing, given folder name,
+#' or construct one for non-existing protocols using (new) folder name plus
+#' the theme or project name.
+#'
+#' For existing protocol folders, arguments `theme` and `project` are always
+#' ignored.
+#'
+#' To create a new protocol folder,
+#' also either the `theme` or the `project` argument are required apart from
+#' the `protocol_folder_name`.
+#'
 #' @param protocol_folder_name Character string giving the name of the protocol subfolder
 #' @param theme A character string equal to one of `"generic"`,
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
