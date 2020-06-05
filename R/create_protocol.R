@@ -225,7 +225,7 @@ create_sfp <- function(
                  reviewers = reviewers,
                  file_manager = file_manager,
                  version_number = version_number,
-                 procedure = protocol_code,
+                 protocol_code = protocol_code,
                  theme = theme,
                  language = language,
                  book_filename = book_filename,

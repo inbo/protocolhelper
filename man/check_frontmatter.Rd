@@ -7,8 +7,7 @@
 check_frontmatter(protocol_folder_name)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol
-subfolder}
+\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
 }
 \value{
 Silent, or an error message stating which check failed.

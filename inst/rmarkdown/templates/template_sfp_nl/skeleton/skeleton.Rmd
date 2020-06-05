@@ -6,7 +6,7 @@ date: {{{date}}}
 params:
   reviewers: [{{{reviewers}}}]
   file_manager: {{{file_manager}}}
-  procedure: {{{procedure}}}
+  protocol_code: {{{protocol_code}}}
   version_number: {{{version_number}}}
   language: {{{language}}}
   theme: {{{theme}}}
@@ -50,7 +50,7 @@ opts_chunk$set(
 metadata <- data.frame(
   Reviewers = paste(params$reviewers, collapse = ", "),
   Documentbeheerder = params$file_manager,
-  Procedure = params$procedure,
+  Protocol_code = params$protocol_code,
   Versienummer = params$version_number,
   Taal = params$language,
   Thema = params$theme

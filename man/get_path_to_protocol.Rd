@@ -18,8 +18,7 @@ the \code{protocol_folder_name}.}
 get_path_to_protocol(protocol_folder_name = NULL, theme = NULL, project = NULL)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol
-subfolder}
+\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
 
 \item{theme}{A character string equal to one of \code{"generic"},
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.

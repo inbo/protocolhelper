@@ -7,26 +7,24 @@
 render_protocol(protocol_folder_name = NULL, output_dir = NULL)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol
-subfolder}
+\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
 
 \item{output_dir}{The output directory. If \code{NULL}, a field named
 \code{output_dir} in the configuration file \file{_bookdown.yml} will be
 used (possibly not specified, either, in which case a directory name
 \file{_book} will be used).}
 }
-\value{
-The rendered html file and associated files needed by the html file.
-They will be put in the directory implied by the output_dir parameter.
-}
 \description{
 This function is a simple wrapper around
 \code{bookdown::render_book()} and can be used to render a protocol to html
 in order to preview updates that have been made.
 }
+\details{
+The rendered html file and associated files needed by the html file
+will be put in the directory implied by the output_dir parameter.
+}
 \examples{
 \dontrun{
-render_protocol(theme = "vegetation",
-protocol_folder_name = "sfp_401-vegopn-terrestr_nl")
+render_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
 }
 }

@@ -13,17 +13,17 @@ number. Default is "publish".}
 \item{version_number}{A character string of the form \code{YYYY.NN} (year, number
 giving order of release in a year).}
 }
-\value{
-The rendered html files and associated files needed by the html file
-for all protocols will be written to subfolders of \code{publish/version_number}.
-The subfolder structure mirrors the structure of \code{src/thematic} and
-\code{src/project}.
-}
 \description{
 This function renders all protocols (which have been merged to
 the master branch) into a folder \code{publish/version_number}, where
 \code{version_number} is of the form \code{YYYY.NN} (year, number giving order of
 release in a year).
+}
+\details{
+The rendered html files and associated files needed by the html file
+for all protocols will be written to subfolders of \code{publish/version_number}.
+The subfolder structure mirrors the structure of \code{src/thematic} and
+\code{src/project}.
 }
 \examples{
 \dontrun{

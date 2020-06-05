@@ -49,8 +49,8 @@ check_frontmatter <- function(protocol_folder_name) {
   assert_that(has_name(yml, "file_manager"))
   assert_that(is.string(yml$file_manager))
 
-  assert_that(has_name(yml, "procedure"))
-  assert_that(str_detect(yml$procedure, "^s[fioap]p_\\d{3}$"))
+  assert_that(has_name(yml, "protocol_code"))
+  assert_that(str_detect(yml$protocol_code, "^s[fioap]p_\\d{3}$"))
 
   assert_that(has_name(yml, "version_number"))
   assert_that(str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$"))
