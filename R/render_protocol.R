@@ -1,6 +1,8 @@
 #' @title Function to render a protocol to html.
 #'
-#' @description This function is a simple wrapper around bookdown::render_book() and can be used to render a protocol to html in order to preview updates that have been made.
+#' @description This function is a simple wrapper around
+#' `bookdown::render_book()` and can be used to render a protocol to html
+#' in order to preview updates that have been made.
 #'
 #'
 #' @inheritParams get_path_to_protocol
