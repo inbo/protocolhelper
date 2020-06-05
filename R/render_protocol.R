@@ -8,8 +8,8 @@
 #' @inheritParams get_path_to_protocol
 #' @inheritParams bookdown::render_book
 #'
-#' @return The rendered html file and associated files needed by the html file.
-#' They will be put in the directory implied by the output_dir parameter.
+#' @details The rendered html file and associated files needed by the html file
+#' will be put in the directory implied by the output_dir parameter.
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
