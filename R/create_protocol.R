@@ -71,7 +71,7 @@
 #' the target folder beneath `src`.
 #' Besides Rmarkdown files, this target folder will also contain files needed to render
 #'  to a Bookdown gitbook such as a `_bookdown.yml`.
-#' The `00_NEWS.Rmd` file must be used to document the changes between revision of the protocol.
+#' The `00_NEWS.Rmd` file must be used to document the changes between revisions of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
 #' of the target folder.
 #' The `media` folder will contain image files extracted from the docx protocol
