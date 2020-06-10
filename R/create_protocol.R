@@ -211,6 +211,14 @@ create_sfp <- function(
           edit = FALSE)
   }
 
+  # create a character vector with the names of all rmd_files
+  # in correct order for compilation
+  rmd_files <- c(
+    "index.Rmd",
+    "NEWS.Rmd",
+    list.files(path = path_to_protocol,
+               pattern = "^\\d{2}.+Rmd$"))
+
 
   # change values in parent rmarkdown and _bookdown.yml
   filenames <- c(parent_rmd,
@@ -229,7 +237,8 @@ create_sfp <- function(
                  theme = theme,
                  language = language,
                  book_filename = book_filename,
-                 output_dir = output_dir_rel
+                 output_dir = output_dir_rel,
+                 rmd_files = rmd_files
     )
     writeLines(map_chr(original_file_content,
                        whisker.render,
@@ -304,6 +313,16 @@ create_sfp <- function(
   # render html
   if (render) {
     render_protocol(protocol_folder_name = folder_name)
+  }
+  # return a message
+  if (!is.null(from_docx)) {
+    message(ifelse(
+      render,
+      "Rendering may fail if Rmarkdown files do not correspond with
+      those listed in the rmd_files field in the _bookdown.yml file.",
+      "Please check if the names of the Rmarkdown files comply with
+      those listed in the rmd_files field in the _bookdown.yml file.")
+    )
   }
 }
 
