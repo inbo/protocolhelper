@@ -172,8 +172,8 @@ create_sfp <- function(
   # other machines: it should be relative to path_to_protocol
   # first get the absolute path
   project_root <- find_root(is_git_root)
-  theme <- paste0(protocol_leading_number, "_", theme)
-  output_dir <- file.path(project_root, "docs", "thematic", theme,
+  nr_theme <- paste0(protocol_leading_number, "_", theme)
+  output_dir <- file.path(project_root, "docs", "thematic", nr_theme,
                           folder_name)
   # next make it relative to path_to_protocol
   output_dir_rel <- path_rel(output_dir, path_to_protocol)

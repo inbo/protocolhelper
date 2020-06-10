@@ -30,6 +30,8 @@
 #'
 #' @keywords internal
 #'
+#' @export
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -90,7 +92,7 @@ render_release <- function(output_root = "publish",
   all_protocols_rel <- c(thematic_protocols_rel, project_protocols_rel)
   version_numbers <- map_chr(all_protocols_index, function(x) {
     yml <- yaml_front_matter(x)
-    vn <- yml$version_number
+    vn <- as.character(yml$params$version_number)
     vn
     }
     )
@@ -105,18 +107,20 @@ render_release <- function(output_root = "publish",
   # render the protocol(s) in the publish/version_number folder
   pwalk(.l = list(x = to_publish_index,
                   y = to_publish,
-                  z = yml$language),
+                  z = yml),
         .f = function(x, y, z) {
           old_wd <- getwd()
           setwd(dir = y)
           render_book(input = x,
-                      output_dir =  path(output_new_root, z))
+                      output_dir =  path(output_new_root, z$params$language))
           # rename html to index.html
           yml <- read_yaml("_bookdown.yml")
           original_name <- yml$book_filename
-          file.rename(from = path_ext_set(path(output_new_root, z, original_name),
+          file.rename(from = path_ext_set(path(output_new_root,
+                                               z$params$language, original_name),
                                           ext = "html"),
-                      to = path(output_new_root, z, "index.html"))
+                      to = path(output_new_root,
+                                z$params$language, "index.html"))
           setwd(old_wd)
         })
 

@@ -36,8 +36,8 @@ check_frontmatter <- function(
     assert_that(is.string(yml$subtitle))
   }
 
-  assert_that(has_name(yml, "authors"))
-  assert_that(is.character(yml$authors))
+  assert_that(has_name(yml, "author"))
+  assert_that(is.character(yml$author))
 
   assert_that(has_name(yml, "date"))
   if (!requireNamespace("lubridate", quietly = TRUE)) {
@@ -49,31 +49,31 @@ check_frontmatter <- function(
                         lubridate::format_ISO8601(as.Date(yml$date))),
               msg = "'date' must be in YYYY-MM-DD format")
 
-  assert_that(has_name(yml, "reviewers"))
-  assert_that(is.character(yml$reviewers))
+  assert_that(has_name(yml$params, "reviewers"))
+  assert_that(is.character(yml$params$reviewers))
 
-  assert_that(has_name(yml, "file_manager"))
-  assert_that(is.string(yml$file_manager))
+  assert_that(has_name(yml$params, "file_manager"))
+  assert_that(is.string(yml$params$file_manager))
 
-  assert_that(has_name(yml, "protocol_code"))
-  assert_that(str_detect(yml$protocol_code, "^s[fioap]p_\\d{3}$"))
+  assert_that(has_name(yml$params, "protocol_code"))
+  assert_that(str_detect(yml$params$protocol_code, "^s[fioap]p-\\d{3}$"))
 
-  assert_that(has_name(yml, "version_number"))
-  assert_that(str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$"))
+  assert_that(has_name(yml$params, "version_number"))
+  assert_that(str_detect(yml$params$version_number, "^\\d{4}\\.\\d{2}$"))
 
-  assert_that(has_name(yml, "language"))
-  assert_that(yml$language %in% c("nl", "en"),
-              is.string(yml$language),
+  assert_that(has_name(yml$params, "language"))
+  assert_that(yml$params$language %in% c("nl", "en"),
+              is.string(yml$params$language),
               msg = "'lang' must be 'nl' or 'en'")
 
-  if (has_name(yml, "theme")) {
-    assert_that(yml$theme %in% c("generic", "water", "air", "soil", "vegetation",
+  if (has_name(yml$params, "theme")) {
+    assert_that(yml$params$theme %in% c("generic", "water", "air", "soil", "vegetation",
                                  "species"),
-                is.string(yml$theme))
+                is.string(yml$params$theme))
   }
 
-  if (has_name(yml, "project")) {
-    assert_that(is.string(yml$project))
+  if (has_name(yml$params, "project")) {
+    assert_that(is.string(yml$params$project))
   }
 
   if (yaml) {
