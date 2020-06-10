@@ -6,8 +6,11 @@
 #' and published (for instance, it will fail if version number is `YYYY.NN.dev`).
 #'
 #' @inheritParams get_path_to_protocol
+#' @param yaml Boolean. If \code{FALSE} the function will only print error messages,
+#' otherwise (default) the parsed yml front matter will be returned
 #'
-#' @return Silent, or an error message stating which check failed.
+#' @return parsed yml front matter if \code{yaml} is \code{TRUE}, otherwise
+#' nothing is returned.
 #'
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom assertthat assert_that is.string has_name
@@ -16,7 +19,10 @@
 #' @export
 #'
 #'
-check_frontmatter <- function(protocol_folder_name) {
+check_frontmatter <- function(
+  protocol_folder_name,
+  yaml = TRUE
+  ) {
 
   path_to_protocol <- get_path_to_protocol(
     protocol_folder_name = protocol_folder_name)
@@ -69,4 +75,9 @@ check_frontmatter <- function(protocol_folder_name) {
   if (has_name(yml, "project")) {
     assert_that(is.string(yml$project))
   }
+
+  if (yaml) {
+    return(yml)
+  }
+
 }
