@@ -13,7 +13,7 @@ create_sfp(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = "YYYY.##.dev",
+  version_number = paste0(format(Sys.Date(), "\%Y"), ".00.dev"),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -42,7 +42,7 @@ maintainer of the form First name Last name}
 
 \item{version_number}{A version number of the form \code{YYYY.##}.
 For development versions \code{.dev} is added.
-The default is \code{YYYY.##.dev} (See \code{from_docx}).
+The default is \code{paste0(format(Sys.Date(), "\%Y"), ".00.dev")} (See \code{from_docx}).
 When the protocol is ready to be released, this should be changed by a repo-
 admin.}
 

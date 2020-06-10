@@ -24,7 +24,7 @@
 #' maintainer of the form First name Last name
 #' @param version_number A version number of the form `YYYY.##`.
 #' For development versions `.dev` is added.
-#' The default is `YYYY.##.dev` (See `from_docx`).
+#' The default is `paste0(format(Sys.Date(), "%Y"), ".00.dev")` (See `from_docx`).
 #' When the protocol is ready to be released, this should be changed by a repo-
 #' admin.
 #' @param theme A character string equal to one of `"generic"` (default),
@@ -90,7 +90,7 @@ create_sfp <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = "YYYY.##.dev",
+  version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
