@@ -46,10 +46,9 @@ convert_docx_to_rmd <- function(
   } else {assert_that(is.string(to))}
   if (missing(dir)) dir <- "."
   to <- file.path(dir, to)
-  to <- normalizePath(to, winslash = "/", mustWork = TRUE)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
 
-  md <- pandoc_docx_to_md(from, wrap, verbose)
+  md <- pandoc_docx_to_md(from, wrap, dir, verbose)
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
 
   writeLines(md, con = to)
@@ -59,6 +58,7 @@ convert_docx_to_rmd <- function(
 #' @importFrom rmarkdown pandoc_convert
 pandoc_docx_to_md <- function(from,
                               wrap,
+                              dir,
                               verbose) {
   from <- normalizePath(from)
 
@@ -71,7 +71,8 @@ pandoc_docx_to_md <- function(from,
   from_format <- "docx"
   other_opts <- c("--standalone",
                   "--atx-headers",
-                  "--extract-media=.")
+                  paste0("--extract-media=", dir)
+                  )
   opts <- c(filter_opts, wrap_opts, other_opts)
   md_tmp <- tempfile(fileext = ".md")
   pandoc_convert(input = from,

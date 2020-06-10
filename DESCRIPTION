@@ -1,4 +1,4 @@
-Package: protocolshelper
+Package: protocolhelper
 Title: Helper Functions to Manage Protocols
 Version: 0.0.0.9000
 Authors@R: 
@@ -13,7 +13,9 @@ Authors@R:
 Description: This package contains helper functions to manage INBO protocols.
 License: GPL-3 + file LICENSE
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    magick,
+    lubridate
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
@@ -27,4 +29,6 @@ Imports:
     stringr,
     whisker,
     purrr,
-    bookdown
+    bookdown,
+    fs,
+    yaml
