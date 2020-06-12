@@ -12,10 +12,9 @@ params:
   theme: {{{theme}}}
 site: bookdown::bookdown_site
 output: 
-  bookdown::html_document2:
-    toc: true
-    toc_float: true
-    number_sections: true
+  bookdown::gitbook:
+    split_by: none
+    split_bib: FALSE
 ---
 
 <!--
