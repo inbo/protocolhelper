@@ -1,4 +1,4 @@
-# Kwaliteitszorg
+# Quality assurance
 
 <!--
 Vermeld alle acties bij het uitvoeren van het protocol om tot kwaliteitsvolle resultaten te komen. 

@@ -1,4 +1,4 @@
-# Afhankelijkheden (Indien van toepassing)
+# Dependencies
 
 <!--
 Protocols waarnaar in dit protocol verwezen wordt: bv SIP_xxx
