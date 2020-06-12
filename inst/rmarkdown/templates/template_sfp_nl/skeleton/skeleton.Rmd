@@ -7,7 +7,7 @@ params:
   reviewers: [{{{reviewers}}}]
   file_manager: {{{file_manager}}}
   protocol_code: {{{protocol_code}}}
-  version_number: {{{version_number}}}
+  version_number: "{{{version_number}}}"
   language: {{{language}}}
   theme: {{{theme}}}
 site: bookdown::bookdown_site
