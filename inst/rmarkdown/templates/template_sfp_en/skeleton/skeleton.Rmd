@@ -10,6 +10,7 @@ params:
   version_number: {{{version_number}}}
   language: {{{language}}}
   theme: {{{theme}}}
+site: bookdown::bookdown_site
 output: 
   bookdown::html_document2:
     toc: true
