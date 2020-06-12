@@ -19,10 +19,13 @@
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown render_book
-#' @importFrom fs dir_delete dir_exists dir_ls
+#' @importFrom fs dir_delete dir_exists dir_ls file_delete
 #' @importFrom purrr map map_chr map_lgl
+#' @importFrom rmarkdown render
 #' @importFrom rprojroot find_root
 #' @importFrom stringr str_replace_all
+#' @importFrom utils tail
+#' @importFrom yaml as.yaml
 #'
 #' @keywords internal
 #'
@@ -68,6 +71,8 @@ render_release <- function(output_root = "publish") {
     )
   }
   protocol_index <- protocol_index[order(version)]
+  yaml <- yaml[order(version)]
+  parameters <- parameters[order(version)]
   version <- sort(version)
   for (i in seq_along(protocol_index)) {
     target_dir <- file.path(output_root, version[i])
@@ -85,5 +90,36 @@ render_release <- function(output_root = "publish") {
       output_dir = target_dir,
       envir = new.env()
     )
+    yaml[[i]][["output"]] <- list(`rmarkdown::html_document` = "default")
+    protocol_code <- map_chr(parameters, "protocol_code")
+    relevant <- protocol_code == protocol_code[[i]]
+    news <- map_chr(
+      dirname(names(protocol_code[relevant])),
+      ~paste(tail(readLines(file.path(.x, "NEWS.Rmd")), -1), collapse = "\n")
+    )
+    if (length(news) > 1) {
+      lang <- map_chr(parameters[relevant], "language")
+      lang <- factor(
+        lang,
+        c("nl", "en"),
+        c("\n# Nederlandse versie\n", "\n# English version \n")
+      )
+      news <- paste(lang, news, collapse = "\n")
+    }
+    writeLines(
+      c("---", as.yaml(yaml[[i]]), "---", "", news),
+      "render_NEWS.Rmd"
+    )
+    target_dir <- file.path(
+      output_root, yaml[[i]][["params"]][["protocol_code"]]
+    )
+    if (dir_exists(target_dir)) {
+      dir_delete(target_dir)
+    }
+    render(
+      "render_NEWS.Rmd", output_file = "index.html", envir = new.env(),
+      output_dir = target_dir
+    )
+    file_delete("render_NEWS.Rmd")
   }
 }
