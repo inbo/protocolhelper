@@ -6,3 +6,6 @@
 ^\.github$
 ^data-raw$
 ^Dockerfile$
+^src$
+^docs$
+^publish$
