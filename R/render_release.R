@@ -21,7 +21,7 @@
 #' @importFrom bookdown gitbook render_book
 #' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete
 #' @importFrom purrr map map_chr map_lgl
-#' @importFrom rmarkdown html_document render
+#' @importFrom rmarkdown html_document pandoc_variable_arg render
 #' @importFrom rprojroot find_root
 #' @importFrom stringr str_replace_all
 #' @importFrom utils tail
@@ -94,6 +94,26 @@ render_release <- function(output_root = "publish") {
       output_format = gitbook(
         split_by = "none",
         split_bib = FALSE,
+        pandoc_args = c(
+          as.vector(
+            sapply(
+              parameters[[i]][["reviewers"]],
+              pandoc_variable_arg,
+              name = "reviewer"
+            )
+          ),
+          pandoc_variable_arg(
+            "file_manager", parameters[[i]][["file_manager"]]
+          ),
+          pandoc_variable_arg(
+            "protocol_code", parameters[[i]][["protocol_code"]]
+          ),
+          pandoc_variable_arg(
+            "version_number", parameters[[i]][["version_number"]]
+          ),
+          pandoc_variable_arg("thema", parameters[[i]][["theme"]]),
+          pandoc_variable_arg("lang", parameters[[i]][["language"]])
+        ),
         template = "css/gitbook.html"
       ),
       output_file = "index.html",

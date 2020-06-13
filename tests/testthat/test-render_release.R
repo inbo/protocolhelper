@@ -36,7 +36,8 @@ test_that("render protocols for release", {
   version_number <- "2020.02"
   create_sfp(
     title = "Air test 1", subtitle = "subtitle", short_title = "air 2",
-    authors = "me", reviewers = "someone else", file_manager = "who?",
+    authors = c("first author", "second author"),
+    reviewers = c("first reviewer", "second reviewer"), file_manager = "who?",
     version_number = version_number, theme = "air", lang = "nl"
   )
   update_news(
