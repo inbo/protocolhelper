@@ -19,10 +19,11 @@
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown gitbook render_book
-#' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete
+#' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete file_exists
 #' @importFrom purrr map map_chr map_lgl
 #' @importFrom rmarkdown html_document pandoc_variable_arg render
 #' @importFrom rprojroot find_root
+#' @importFrom stats aggregate
 #' @importFrom stringr str_replace_all
 #' @importFrom utils tail
 #' @importFrom yaml as.yaml
@@ -154,4 +155,58 @@ render_release <- function(output_root = "publish") {
     )
     file_delete("render_NEWS.Rmd")
   }
+  protocols <- dir_ls(
+    output_root, recurse = TRUE, type = "file",
+    regexp = "[0-9]{4}\\.[0-9]{2}/index.html"
+  )
+  meta <- map(
+    protocols,
+    function(x) {
+      meta <- readLines(x, n = 40)
+      meta <- str_subset(meta, pattern = "<meta name=\"protocol")
+      z <- as.list(str_replace(meta, ".*content=\"(.*?)\".*", "\\1"))
+      names(z) <- str_replace(meta, ".*name=\"protocol-(.*?)\".*", "\\1")
+      as.data.frame(z)
+    }
+  )
+  meta <- do.call(rbind, meta)
+  meta_order <- order(meta$theme, meta$code, -as.integer(factor(meta$version)))
+  meta <- meta[meta_order, ]
+  meta$Rmd <- sprintf(
+    "- [%1$s](%1$s/index.html) (%2$s)", meta$version, meta$language
+  )
+  meta <- aggregate(
+    Rmd ~ theme + code + title + subtitle,
+    data = meta, FUN = paste, collapse = "\n"
+  )
+  meta$Rmd <- sprintf(
+    "## %1$s [(`%2$s`)](%2$s/index.html)\n\n%3$s\n\n%4$s",
+    meta$title, meta$code, meta$subtitle, meta$Rmd
+  )
+  meta <- aggregate(Rmd ~ theme, data = meta, FUN = paste, collapse = "\n\n")
+  meta$Rmd <- sprintf("# %s\n\n%s", meta$theme, meta$Rmd)
+  setwd(file.path(git_root, "src"))
+  if (!file_exists("homepage.Rmd")) {
+    writeLines(
+      "---\ntitle: INBO protocols\ndate: 13-6-2020\noutput: html_document
+---\n\n",
+      "homepage.Rmd"
+    )
+  }
+  homepage <- readLines("homepage.Rmd")
+  writeLines(c(homepage, paste(meta$Rmd, collapse = "\n\n")), "homepage.Rmd")
+  if (!dir_exists(file.path(git_root, "src", "css"))) {
+    dir_copy(
+      system.file("css", package = "protocolhelper"),
+      file.path(git_root, "src", "css")
+    )
+  }
+  render(
+    "homepage.Rmd", output_file = "index.html", envir = new.env(),
+    output_dir = output_root, output_format = html_document(
+      css = "css/inbo_rapport.css"
+    )
+  )
+  writeLines(homepage, "homepage.Rmd")
 }
+
