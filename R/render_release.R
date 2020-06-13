@@ -18,10 +18,10 @@
 #'
 #'
 #' @importFrom assertthat assert_that is.string
-#' @importFrom bookdown render_book
-#' @importFrom fs dir_delete dir_exists dir_ls file_delete
+#' @importFrom bookdown gitbook render_book
+#' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete
 #' @importFrom purrr map map_chr map_lgl
-#' @importFrom rmarkdown render
+#' @importFrom rmarkdown html_document render
 #' @importFrom rprojroot find_root
 #' @importFrom stringr str_replace_all
 #' @importFrom utils tail
@@ -82,10 +82,20 @@ render_release <- function(output_root = "publish") {
       }
       dir_delete(target_dir)
     }
+    if (!dir_exists(file.path(dirname(protocol_index[i]), "css"))) {
+      dir_copy(
+        system.file("css", package = "protocolhelper"),
+        file.path(dirname(protocol_index[i]), "css")
+      )
+    }
     setwd(dirname(protocol_index[i]))
     render_book(
       input = ".",
-      output_format = "bookdown::gitbook",
+      output_format = gitbook(
+        split_by = "none",
+        split_bib = FALSE,
+        template = "css/gitbook.html"
+      ),
       output_file = "index.html",
       output_dir = target_dir,
       envir = new.env()
@@ -118,7 +128,9 @@ render_release <- function(output_root = "publish") {
     }
     render(
       "render_NEWS.Rmd", output_file = "index.html", envir = new.env(),
-      output_dir = target_dir
+      output_dir = target_dir, output_format = html_document(
+        css = "css/inbo_rapport.css"
+      )
     )
     file_delete("render_NEWS.Rmd")
   }
