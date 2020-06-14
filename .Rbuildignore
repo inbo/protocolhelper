@@ -9,3 +9,5 @@
 ^src$
 ^docs$
 ^publish$
+^_pkgdown\.yml$
+^pkgdown$
