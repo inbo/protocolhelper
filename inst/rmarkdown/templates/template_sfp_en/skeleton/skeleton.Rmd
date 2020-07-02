@@ -7,14 +7,14 @@ params:
   reviewers: [{{{reviewers}}}]
   file_manager: {{{file_manager}}}
   protocol_code: {{{protocol_code}}}
-  version_number: {{{version_number}}}
+  version_number: "{{{version_number}}}"
   language: {{{language}}}
   theme: {{{theme}}}
+site: bookdown::bookdown_site
 output: 
-  bookdown::html_document2:
-    toc: true
-    toc_float: true
-    number_sections: true
+  bookdown::gitbook:
+    split_by: none
+    split_bib: FALSE
 ---
 
 <!--
@@ -45,21 +45,9 @@ opts_chunk$set(
 )
 ```
 
-
-```{r metadata}
-metadata <- data.frame(
-  Reviewers = paste(params$reviewers, collapse = ", "),
-  File_manager = params$file_manager,
-  Protocol_code = params$protocol_code,
-  Version_number = params$version_number,
-  Language = params$language,
-  Theme = params$theme
-)
-
-
-kable(metadata)
-
-```
+| Reviewers | File manager | Protocol code | Version number | Language | Theme |
+| --------- | ----------------- | ------------- | ------------ | ---- | ----- |
+| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r sprintf("[%1$s](../%1$s/index.html)", params$protocol_code)` | `r params$version_number` | `r params$language` | `r params$theme` |
 
 
 

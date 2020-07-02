@@ -1,12 +1,12 @@
-# Benodigdheden
+# Materials
 
-## Apparatuur
+## Instruments
 
 <!--
 Opsomming van de apparatuur die nodig is en verwijzingen naar de SIP’s (Standard Instrument Procedure) indien die er zijn. Indien geen specifiek SIP’s voorhanden, illustreer de toegelaten apparatuur met foto’s, geef het exacte type apparatuur mee, …
 -->
 
-## Materiaal
+## Other materials
 
 <!--
 Opsomming van gebruikte materialen. Duidelijk aangeven welke materialen toelaatbaar zijn, welke volumes, afmetingen, materiaal, … vb. vermeld niet staalnamepotje, maar wel vierkant flesje, volume 250 ml, gegradueerd, vervaardigd uit PE, met afsluitbare deksel uit PP.

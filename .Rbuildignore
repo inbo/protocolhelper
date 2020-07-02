@@ -6,3 +6,8 @@
 ^\.github$
 ^data-raw$
 ^Dockerfile$
+^src$
+^docs$
+^publish$
+^_pkgdown\.yml$
+^pkgdown$

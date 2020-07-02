@@ -1,17 +1,17 @@
-# Werkwijze
+# Workflow
 
-## Uitvoering
+## Steps
 
 <!--
 Gedetailleerde omschrijving van alle stappen die doorlopen moeten worden om het veldprotocol uit te voeren. Subtitels gebruiken om elke stap te omschrijven. 
 -->
 
-### Subtitel 1
+### Subtitle 1
 
-### Subtitel 2
+### Subtitle 2
 
 
-## Registratie en bewaring van resultaten
+## Registration and storage of results
 
 <!--
 Opsomming van alle resultaten die bekomen worden na de uitvoering van het protocol en hoe die resultaten geregistreerd, bewaard of opgeslagen moeten worden.
