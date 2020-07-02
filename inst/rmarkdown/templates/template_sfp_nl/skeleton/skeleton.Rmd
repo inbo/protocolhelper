@@ -7,7 +7,7 @@ params:
   reviewers: [{{{reviewers}}}]
   file_manager: {{{file_manager}}}
   protocol_code: {{{protocol_code}}}
-  version_number: {{{version_number}}}
+  version_number: "{{{version_number}}}"
   language: {{{language}}}
   theme: {{{theme}}}
 site: bookdown::bookdown_site
@@ -46,16 +46,6 @@ opts_chunk$set(
 ```
 
 
-```{r metadata}
-metadata <- data.frame(
-  Reviewers = paste(params$reviewers, collapse = ", "),
-  Documentbeheerder = params$file_manager,
-  Protocol_code = params$protocol_code,
-  Versienummer = params$version_number,
-  Taal = params$language,
-  Thema = params$theme
-)
-
-kable(metadata)
-
-```
+| Reviewers | Documentbeheerder | Protocol code | Versienummer | Taal | Thema |
+| --------- | ----------------- | ------------- | ------------ | ---- | ----- |
+| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r sprintf("[%1$s](../%1$s/index.html)", params$protocol_code)` | `r params$version_number` | `r params$language` | `r params$theme` |

@@ -4,14 +4,11 @@
 \alias{render_release}
 \title{Function to render the protocols that are ready for a new release.}
 \usage{
-render_release(output_root = "publish", version_number)
+render_release(output_root = "publish")
 }
 \arguments{
 \item{output_root}{A character string giving the root folder without version
 number. Default is "publish".}
-
-\item{version_number}{A character string of the form \code{YYYY.NN} (year, number
-giving order of release in a year).}
 }
 \description{
 This function renders the protocols which are ready for a new
@@ -29,7 +26,7 @@ structure of \code{src/thematic} and \code{src/project}.
 }
 \examples{
 \dontrun{
-protocolhelper:::render_release(version_number = "2000.01")
+protocolhelper:::render_release()
 }
 }
 \keyword{internal}

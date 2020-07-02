@@ -13,6 +13,7 @@ Authors@R:
 Description: This package contains helper functions to manage INBO protocols.
 License: GPL-3 + file LICENSE
 Suggests: 
+    git2r,
     testthat (>= 2.1.0),
     magick,
     lubridate

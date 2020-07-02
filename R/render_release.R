@@ -11,22 +11,22 @@
 #'
 #' @param output_root A character string giving the root folder without version
 #' number. Default is "publish".
-#' @param version_number A character string of the form `YYYY.NN` (year, number
-#' giving order of release in a year).
 #'
 #' @details The links to earlier releases and older versions can be found
 #' through a subfolder structure below `publish/version_number` that mirrors the
 #' structure of `src/thematic` and `src/project`.
 #'
 #'
-#' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
-#' @importFrom fs dir_ls path path_rel path_ext_set
-#' @importFrom stringr str_detect
-#' @importFrom bookdown render_book
-#' @importFrom purrr pwalk map_chr map
-#' @importFrom yaml read_yaml
-#' @importFrom rmarkdown yaml_front_matter render
+#' @importFrom bookdown gitbook render_book
+#' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete file_exists
+#' @importFrom purrr map map_chr map_lgl
+#' @importFrom rmarkdown html_document pandoc_variable_arg render
+#' @importFrom rprojroot find_root
+#' @importFrom stats aggregate
+#' @importFrom stringr str_replace_all
+#' @importFrom utils tail
+#' @importFrom yaml as.yaml
 #'
 #' @keywords internal
 #'
@@ -35,109 +35,178 @@
 #'
 #' @examples
 #' \dontrun{
-#' protocolhelper:::render_release(version_number = "2000.01")
+#' protocolhelper:::render_release()
 #'}
 
-render_release <- function(output_root = "publish",
-                           version_number) {
-
-
+render_release <- function(output_root = "publish") {
   assert_that(is.string(output_root))
-  assert_that(str_detect(version_number, "^\\d{4}\\.\\d{2}$"),
-              msg = "Please provide a valid version number")
+
+  old_wd <- getwd()
+  on.exit(setwd(old_wd), add = TRUE)
 
   git_root <- find_root(is_git_root)
-  output_new_root <- path(git_root, output_root, version_number)
+  output_root <- file.path(git_root, output_root)
 
-  # Search thematic and project-specific protocols
-  # for those which have version_number == version_number
-  # normally one protocol, except if multiple language-versions
-  # thematic protocols
-  thematic_protocols <- dir_ls(path = path(git_root,
-                                           "src",
-                                           "thematic"),
-                               recurse = 1,
-                               type = "directory")
-  theme_dirs <- dir_ls(path = file.path(git_root,
-                                        "src",
-                                        "thematic"),
-                       recurse = 0,
-                       type = "directory")
-  thematic_protocols <- thematic_protocols[!thematic_protocols %in% theme_dirs]
-  thematic_protocols_index <- path(thematic_protocols, "index", ext = "Rmd")
-  thematic_protocols_rel <- path_rel(thematic_protocols, path(git_root,
-                                                              "src",
-                                                              "thematic"))
-
-  # Project-specific protocols
-  project_protocols <- dir_ls(path = path(git_root,
-                                          "src",
-                                          "project"),
-                              recurse = 1,
-                              type = "directory")
-  project_dirs <- dir_ls(path = file.path(git_root,
-                                          "src",
-                                          "project"),
-                         recurse = 0,
-                         type = "directory")
-  project_protocols <- project_protocols[!project_protocols %in% project_dirs]
-  project_protocols_index <- path(project_protocols, "index", ext = "Rmd")
-  project_protocols_rel <- path_rel(project_protocols, path(git_root,
-                                                            "src",
-                                                            "project"))
-
-  # search for version number
-  all_protocols_index <- c(thematic_protocols_index, project_protocols_index)
-  all_protocols <- c(thematic_protocols, project_protocols)
-  all_protocols_rel <- c(thematic_protocols_rel, project_protocols_rel)
-  version_numbers <- map_chr(all_protocols_index, function(x) {
-    yml <- yaml_front_matter(x)
-    vn <- as.character(yml$params$version_number)
-    vn
-    }
+  protocol_index <- dir_ls(
+    file.path(git_root, "src"),
+    type = "file",
+    recurse = 3,
+    regexp = "index\\.Rmd"
+  )
+  yaml <- map(protocol_index, yaml_front_matter)
+  parameters <- map(yaml, "params")
+  version <- map(parameters, "version_number")
+  missing_version <- !map_lgl(version, is.string)
+  if (any(missing_version)) {
+    stop(
+      "version not a string in: ",
+      paste(protocol_index[missing_version], collapse = "; ")
     )
-
-  to_publish <- all_protocols[version_numbers == version_number]
-  to_publish_index <- all_protocols_index[version_numbers == version_number]
-  to_publish_rel <- all_protocols_rel[version_numbers == version_number]
-
-  # check front matter
-  yml <- map(to_publish, check_frontmatter)
-
-  # render the protocol(s) in the publish/version_number folder
-  pwalk(.l = list(x = to_publish_index,
-                  y = to_publish,
-                  z = yml),
-        .f = function(x, y, z) {
-          old_wd <- getwd()
-          setwd(dir = y)
-          render_book(input = x,
-                      output_dir =  path(output_new_root, z$params$language))
-          # rename html to index.html
-          yml <- read_yaml("_bookdown.yml")
-          original_name <- yml$book_filename
-          file.rename(from = path_ext_set(path(output_new_root,
-                                               z$params$language, original_name),
-                                          ext = "html"),
-                      to = path(output_new_root,
-                                z$params$language, "index.html"))
-          setwd(old_wd)
-        })
-
-  # render the protocol-specific NEWS.Rmd
-  pwalk(.l = list(x = to_publish,
-                  y = to_publish_rel),
-        .f = function(x, y) {
-          old_wd <- getwd()
-          setwd(dir = x)
-          render(input = path(x, "NEWS.Rmd"),
-                 output_format = "html_document",
-                 output_file = "index",
-                 output_dir = path(git_root, output_root, y))
-          setwd(old_wd)
-        })
-
-  # also render the repo NEWS.md?? into a file publish/index.html
-  # which then becomes the homepage??
-
+  }
+  version <- map_chr(parameters, "version_number")
+  wrong_format <- !grepl("[0-9]{4}\\.[0-9]{2}", version)
+  if (any(wrong_format)) {
+    stop(
+      "version not in YYYY-XX format: ",
+      paste(protocol_index[wrong_format], collapse = "; ")
+    )
+  }
+  protocol_index <- protocol_index[order(version)]
+  yaml <- yaml[order(version)]
+  parameters <- parameters[order(version)]
+  version <- sort(version)
+  for (i in seq_along(protocol_index)) {
+    target_dir <- file.path(output_root, version[i])
+    if (dir_exists(target_dir)) {
+      if (i < length(protocol_index)) {
+        next
+      }
+      dir_delete(target_dir)
+    }
+    if (!dir_exists(file.path(dirname(protocol_index[i]), "css"))) {
+      dir_copy(
+        system.file("css", package = "protocolhelper"),
+        file.path(dirname(protocol_index[i]), "css")
+      )
+    }
+    setwd(dirname(protocol_index[i]))
+    render_book(
+      input = ".",
+      output_format = gitbook(
+        split_by = "none",
+        split_bib = FALSE,
+        pandoc_args = c(
+          as.vector(
+            sapply(
+              parameters[[i]][["reviewers"]],
+              pandoc_variable_arg,
+              name = "reviewer"
+            )
+          ),
+          pandoc_variable_arg(
+            "file_manager", parameters[[i]][["file_manager"]]
+          ),
+          pandoc_variable_arg(
+            "protocol_code", parameters[[i]][["protocol_code"]]
+          ),
+          pandoc_variable_arg(
+            "version_number", parameters[[i]][["version_number"]]
+          ),
+          pandoc_variable_arg("thema", parameters[[i]][["theme"]]),
+          pandoc_variable_arg("lang", parameters[[i]][["language"]])
+        ),
+        template = "css/gitbook.html"
+      ),
+      output_file = "index.html",
+      output_dir = target_dir,
+      envir = new.env()
+    )
+    yaml[[i]][["output"]] <- list(`rmarkdown::html_document` = "default")
+    protocol_code <- map_chr(parameters, "protocol_code")
+    relevant <- protocol_code == protocol_code[[i]]
+    news <- map_chr(
+      dirname(names(protocol_code[relevant])),
+      ~paste(tail(readLines(file.path(.x, "NEWS.Rmd")), -1), collapse = "\n")
+    )
+    if (length(news) > 1) {
+      lang <- map_chr(parameters[relevant], "language")
+      lang <- factor(
+        lang,
+        c("nl", "en"),
+        c("\n# Nederlandse versie\n", "\n# English version \n")
+      )
+      news <- paste(lang, news, collapse = "\n")
+    }
+    writeLines(
+      c("---", as.yaml(yaml[[i]]), "---", "", news),
+      "render_NEWS.Rmd"
+    )
+    target_dir <- file.path(
+      output_root, yaml[[i]][["params"]][["protocol_code"]]
+    )
+    if (dir_exists(target_dir)) {
+      dir_delete(target_dir)
+    }
+    render(
+      "render_NEWS.Rmd", output_file = "index.html", envir = new.env(),
+      output_dir = target_dir, output_format = html_document(
+        css = "css/inbo_rapport.css"
+      )
+    )
+    file_delete("render_NEWS.Rmd")
+  }
+  protocols <- dir_ls(
+    output_root, recurse = TRUE, type = "file",
+    regexp = "[0-9]{4}\\.[0-9]{2}/index.html"
+  )
+  meta <- map(
+    protocols,
+    function(x) {
+      meta <- readLines(x, n = 40)
+      meta <- str_subset(meta, pattern = "<meta name=\"protocol")
+      z <- as.list(str_replace(meta, ".*content=\"(.*?)\".*", "\\1"))
+      names(z) <- str_replace(meta, ".*name=\"protocol-(.*?)\".*", "\\1")
+      as.data.frame(z)
+    }
+  )
+  meta <- do.call(rbind, meta)
+  meta_order <- order(meta$theme, meta$code, -as.integer(factor(meta$version)))
+  meta <- meta[meta_order, ]
+  meta$Rmd <- sprintf(
+    "- [%1$s](%1$s/index.html) (%2$s)", meta$version, meta$language
+  )
+  meta <- aggregate(
+    Rmd ~ theme + code + title + subtitle,
+    data = meta, FUN = paste, collapse = "\n"
+  )
+  meta$Rmd <- sprintf(
+    "## %1$s [(`%2$s`)](%2$s/index.html)\n\n%3$s\n\n%4$s",
+    meta$title, meta$code, meta$subtitle, meta$Rmd
+  )
+  meta <- aggregate(Rmd ~ theme, data = meta, FUN = paste, collapse = "\n\n")
+  meta$Rmd <- sprintf("# %s\n\n%s", meta$theme, meta$Rmd)
+  setwd(file.path(git_root, "src"))
+  if (!file_exists("homepage.Rmd")) {
+    writeLines(
+      "---\ntitle: INBO protocols\ndate: 13-6-2020\noutput: html_document
+---\n\n",
+      "homepage.Rmd"
+    )
+  }
+  homepage <- readLines("homepage.Rmd")
+  writeLines(c(homepage, paste(meta$Rmd, collapse = "\n\n")), "homepage.Rmd")
+  if (!dir_exists(file.path(git_root, "src", "css"))) {
+    dir_copy(
+      system.file("css", package = "protocolhelper"),
+      file.path(git_root, "src", "css")
+    )
+  }
+  render(
+    "homepage.Rmd", output_file = "index.html", envir = new.env(),
+    output_dir = output_root, output_format = html_document(
+      css = "css/inbo_rapport.css"
+    )
+  )
+  writeLines(homepage, "homepage.Rmd")
 }
+
