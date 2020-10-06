@@ -1,6 +1,7 @@
-# Afhankelijkheden (Indien van toepassing)
+# Afhankelijkheden
 
 <!--
+Alleen in te vullen indien van toepassing.
 Protocols waarnaar in dit protocol verwezen wordt: bv SIP_xxx
 Protocols die verwijzen naar dit protocol: bv SVP_xxx
 -->
