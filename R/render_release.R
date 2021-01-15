@@ -67,7 +67,7 @@ render_release <- function(output_root = "publish") {
   wrong_format <- !grepl("[0-9]{4}\\.[0-9]{2}", version)
   if (any(wrong_format)) {
     stop(
-      "version not in YYYY-XX format: ",
+      "version not in YYYY.XX format: ",
       paste(protocol_index[wrong_format], collapse = "; ")
     )
   }
