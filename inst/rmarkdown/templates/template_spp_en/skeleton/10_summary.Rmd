@@ -1,0 +1,5 @@
+# Summary
+
+<!--
+Een samenvattende opsomming van de te volgen stappen. Gebruik eventueel een stroomschema indien dit het protocol kan verduidelijken.
+-->

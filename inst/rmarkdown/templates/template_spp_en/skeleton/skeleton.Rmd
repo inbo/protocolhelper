@@ -1,0 +1,53 @@
+---
+title: {{{title}}}
+subtitle: {{{subtitle}}}
+author: {{{authors}}}
+date: {{{date}}}
+params:
+  reviewers: [{{{reviewers}}}]
+  file_manager: {{{file_manager}}}
+  protocol_code: {{{protocol_code}}}
+  version_number: "{{{version_number}}}"
+  language: {{{language}}}
+  project_name: {{{project_name}}}
+site: bookdown::bookdown_site
+output: 
+  bookdown::gitbook:
+    split_by: none
+    split_bib: FALSE
+---
+
+<!--
+Instructies bij opmaak van veldprotocol:
+
+Hieronder vind je de verschillende onderdelen van een veldprotocol.
+In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden;
+het is in die bestanden dat je moet editeren. 
+Niet alle onderdelen zijn altijd van toepassing. Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
+Probeer het veldprotocol generiek te maken in de mate van mogelijk en probeer te vermijden dat het veldprotocol enkel specifiek voor een bepaald project bruikbaar is. 
+Je kan het protocol generiek houden door bepaalde variabelen, zoals bijvoorbeeld de grootte van een proefvlak of de diepte van een bodembemonstering, niet vast te leggen in het protocol. 
+In bijlage kan je dan een tabel toevoegen waarin je per project aangeeft welke waardes gekozen moeten worden voor die variabelen. 
+Indien een bepaald onderdeel niet van toepassing is, laat je de hoofding staan en vermeld je onder de titel ‘Niet van toepassing’. Op die manier is de nummering in alle protocols dezelfde.
+-->
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE, 
+  eval = TRUE,
+  dpi = 300,
+  fig.width = 150 / 25.4,
+  fig.height = 100 / 25.4,
+  out.width = '100%',
+  warning = FALSE,
+  error = TRUE,
+  message = FALSE
+)
+```
+
+| Reviewers | File manager | Protocol code | Version number | Language | Project |
+| --------- | ----------------- | ------------- | ------------ | ---- | ----- |
+| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r sprintf("[%1$s](../%1$s/index.html)", params$protocol_code)` | `r params$version_number` | `r params$language` | `r params$project_name` |
+
+
+
