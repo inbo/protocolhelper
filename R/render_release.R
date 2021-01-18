@@ -112,7 +112,10 @@ render_release <- function(output_root = "publish") {
           pandoc_variable_arg(
             "version_number", parameters[[i]][["version_number"]]
           ),
-          pandoc_variable_arg("thema", parameters[[i]][["theme"]]),
+          pandoc_variable_arg(
+            "thema",
+            c(parameters[[i]][["theme"]], parameters[[i]][["project_name"]])[1]
+          ),
           pandoc_variable_arg("lang", parameters[[i]][["language"]])
         ),
         template = "css/gitbook.html"
