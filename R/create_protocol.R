@@ -279,6 +279,8 @@ create_sfp <- function(
     contents <- readLines(con = file.path(path_to_protocol,
                                           temp_filename))
     contents <- str_replace_all(contents, ".emf", ".png")
+    # replace absolute path to media folder by relative path
+    contents <- str_replace_all(contents, path_to_protocol, ".")
     is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
     title_numbers <- formatC(x = cumsum(is_title),
                              width = 2, format = "d", flag = "0")
@@ -600,6 +602,8 @@ create_spp <- function(
     contents <- readLines(con = file.path(path_to_protocol,
                                           temp_filename))
     contents <- str_replace_all(contents, ".emf", ".png")
+    # replace absolute path to media folder by relative path
+    contents <- str_replace_all(contents, path_to_protocol, ".")
     is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
     title_numbers <- formatC(x = cumsum(is_title),
                              width = 2, format = "d", flag = "0")
