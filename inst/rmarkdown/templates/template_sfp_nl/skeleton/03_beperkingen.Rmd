@@ -1,5 +1,6 @@
-## Beperkingen tot het protocol (indien van toepassing)
+## Beperkingen van het protocol
 
 <!--
-Bespreek hieronder onder welke condities het veldprotocol niet gebruikt kan worden of wanneer afwijkingen nodig zijn ten opzichte van het standaard protocol. Vermeld hier ook mogelijke interferenties, knelpunten, …
+Alleen in te vullen indien van toepassing.
+Bespreek onder welke condities het veldprotocol niet gebruikt kan worden of wanneer afwijkingen nodig zijn ten opzichte van het standaard protocol. Vermeld hier ook mogelijke interferenties, knelpunten, …
 -->
