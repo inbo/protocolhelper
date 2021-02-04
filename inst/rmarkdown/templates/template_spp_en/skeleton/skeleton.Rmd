@@ -9,7 +9,7 @@ params:
   protocol_code: {{{protocol_code}}}
   version_number: "{{{version_number}}}"
   language: {{{language}}}
-  theme: {{{theme}}}
+  project_name: {{{project_name}}}
 site: bookdown::bookdown_site
 output: 
   bookdown::gitbook:
@@ -25,12 +25,8 @@ In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk ond
 Het is in die bestanden dat je moet editeren.
 Niet alle onderdelen zijn altijd van toepassing.
 Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
-Op die manier is de nummering in alle protocols dezelfde.
-
-Probeer het protocol generiek te maken in de mate van het mogelijke en probeer te vermijden dat het protocol enkel specifiek voor een bepaald project bruikbaar is. 
-Je kan het protocol generiek houden door bepaalde variabelen, zoals bijvoorbeeld de grootte van een proefvlak of de diepte van een bodembemonstering, niet vast te leggen in het protocol.
-Zie https://github.com/inbo/protocols#dynamic-protocol-features.
 -->
+
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -47,9 +43,9 @@ opts_chunk$set(
 )
 ```
 
-| Reviewers | File manager | Protocol code | Version number | Language | Theme |
+| Reviewers | File manager | Protocol code | Version number | Language | Project |
 | --------- | ----------------- | ------------- | ------------ | ---- | ----- |
-| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r sprintf("[%1$s](../%1$s/index.html)", params$protocol_code)` | `r params$version_number` | `r params$language` | `r params$theme` |
+| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r sprintf("[%1$s](../%1$s/index.html)", params$protocol_code)` | `r params$version_number` | `r params$language` | `r params$project_name` |
 
 
 

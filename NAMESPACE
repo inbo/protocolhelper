@@ -2,7 +2,9 @@
 
 export(check_frontmatter)
 export(convert_docx_to_rmd)
+export(create_protocol)
 export(create_sfp)
+export(create_spp)
 export(get_protocolnumbers)
 export(get_short_titles)
 export(render_all)

@@ -18,16 +18,18 @@ output:
 ---
 
 <!--
-Instructies bij opmaak van veldprotocol:
+Instructies bij opmaak van het protocol:
 
-Hieronder vind je de verschillende onderdelen van een veldprotocol.
-In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden;
-het is in die bestanden dat je moet editeren. 
-Niet alle onderdelen zijn altijd van toepassing. Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
-Probeer het veldprotocol generiek te maken in de mate van mogelijk en probeer te vermijden dat het veldprotocol enkel specifiek voor een bepaald project bruikbaar is. 
-Je kan het protocol generiek houden door bepaalde variabelen, zoals bijvoorbeeld de grootte van een proefvlak of de diepte van een bodembemonstering, niet vast te leggen in het protocol. 
-In bijlage kan je dan een tabel toevoegen waarin je per project aangeeft welke waardes gekozen moeten worden voor die variabelen. 
-Indien een bepaald onderdeel niet van toepassing is, laat je de hoofding staan en vermeld je onder de titel ‘Niet van toepassing’. Op die manier is de nummering in alle protocols dezelfde.
+Hieronder vind je de verschillende onderdelen van een protocol.
+In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden.
+Het is in die bestanden dat je moet editeren.
+Niet alle onderdelen zijn altijd van toepassing.
+Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
+Op die manier is de nummering in alle protocols dezelfde.
+
+Probeer het protocol generiek te maken in de mate van het mogelijke en probeer te vermijden dat het protocol enkel specifiek voor een bepaald project bruikbaar is. 
+Je kan het protocol generiek houden door bepaalde variabelen, zoals bijvoorbeeld de grootte van een proefvlak of de diepte van een bodembemonstering, niet vast te leggen in het protocol.
+Zie https://github.com/inbo/protocols#dynamic-protocol-features.
 -->
 
 ```{r setup, include=FALSE}

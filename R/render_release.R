@@ -112,7 +112,10 @@ render_release <- function(output_root = "publish") {
           pandoc_variable_arg(
             "version_number", parameters[[i]][["version_number"]]
           ),
-          pandoc_variable_arg("thema", parameters[[i]][["theme"]]),
+          pandoc_variable_arg(
+            "thema",
+            c(parameters[[i]][["theme"]], parameters[[i]][["project_name"]])[1]
+          ),
           pandoc_variable_arg("lang", parameters[[i]][["language"]])
         ),
         template = "css/gitbook.html"
@@ -188,7 +191,7 @@ render_release <- function(output_root = "publish") {
   setwd(file.path(git_root, "src"))
   if (!file_exists("homepage.Rmd")) {
     writeLines(
-      "---\ntitle: INBO protocols\ndate: 13-6-2020\noutput: html_document
+      "---\ntitle: INBO protocols\ndate: `r Sys.Date()`\noutput: html_document
 ---\n\n",
       "homepage.Rmd"
     )
