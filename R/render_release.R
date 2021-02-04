@@ -191,7 +191,7 @@ render_release <- function(output_root = "publish") {
   setwd(file.path(git_root, "src"))
   if (!file_exists("homepage.Rmd")) {
     writeLines(
-      "---\ntitle: INBO protocols\ndate: 13-6-2020\noutput: html_document
+      "---\ntitle: INBO protocols\ndate: `r Sys.Date()`\noutput: html_document
 ---\n\n",
       "homepage.Rmd"
     )
