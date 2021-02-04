@@ -73,9 +73,9 @@
 #' @return A target folder to which files will be written will be created as
 #' subdirectories beneath `src`.
 #' The subfolder structure is of the form
-#' `/thematic/theme/sfp-protocolnumber_short_title_language/` for standard field
+#' `/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/` for standard field
 #' protocols.
-#' Or `/project/project_name/spp-protocolnumber_short_title_language/` for
+#' Or `/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/` for
 #' standard project protocols.
 #' The folder names are determined by the corresponding arguments of the
 #' function.
@@ -115,7 +115,7 @@ create_protocol <- function(
   render = FALSE) {
 
   # check parameters
-  protocol_type <-match.arg(protocol_type)
+  protocol_type <- match.arg(protocol_type)
   assert_that(is.string(title))
   assert_that(is.string(subtitle))
   assert_that(is.string(short_title), nchar(short_title) <= 20)
@@ -199,8 +199,8 @@ create_protocol <- function(
               Use get_short_titles() to get an overview of short titles
               that are in use.")
 
-  protocol_code <- paste0(protocol_type, "-", protocol_number)
-  folder_name <- paste0(protocol_code, "_", short_title, "_", language)
+  protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
+  folder_name <- paste0(protocol_code, "_", short_title)
   folder_name <- tolower(folder_name)
   protocol_filename <- folder_name
 

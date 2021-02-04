@@ -125,9 +125,9 @@ Defaults to FALSE.}
 A target folder to which files will be written will be created as
 subdirectories beneath \code{src}.
 The subfolder structure is of the form
-\verb{/thematic/theme/sfp-protocolnumber_short_title_language/} for standard field
+\verb{/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/} for standard field
 protocols.
-Or \verb{/project/project_name/spp-protocolnumber_short_title_language/} for
+Or \verb{/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/} for
 standard project protocols.
 The folder names are determined by the corresponding arguments of the
 function.
