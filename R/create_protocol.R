@@ -370,7 +370,7 @@ create_protocol <- function(
 
   # render html
   if (render) {
-    render_protocol(protocol_folder_name = folder_name)
+    render_protocol(protocol_code = protocol_code)
   }
   # return a message
   if (!is.null(from_docx)) {
