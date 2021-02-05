@@ -491,10 +491,11 @@ get_protocolnumbers <- function(
   ld <- str_subset(string = ld,
                    pattern = protocol_type)
   ld <- str_subset(string = ld,
-                   pattern = paste0("(", language, ")$"))
+                   pattern = paste0("-", language, "_"))
   ld <- str_extract(string = ld,
                     pattern = "(?<=p-)\\d{3}")
   ld <- ld[!is.na(ld)]
+  ld <- unique(ld)
 
   return(ld)
 }
