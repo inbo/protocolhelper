@@ -4,10 +4,10 @@
 \alias{render_protocol}
 \title{Function to render a protocol to html.}
 \usage{
-render_protocol(protocol_folder_name = NULL, output_dir = NULL)
+render_protocol(protocol_code = NULL, output_dir = NULL)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
+\item{protocol_code}{Character string giving the protocol code}
 
 \item{output_dir}{The output directory. If \code{NULL}, a field named
 \code{output_dir} in the configuration file \file{_bookdown.yml} will be
@@ -25,6 +25,6 @@ will be put in the directory implied by the output_dir parameter.
 }
 \examples{
 \dontrun{
-render_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
+render_protocol(protocol_code = "sfp_401-nl")
 }
 }

@@ -4,10 +4,10 @@
 \alias{check_frontmatter}
 \title{Checks protocol metadata}
 \usage{
-check_frontmatter(protocol_folder_name, yaml = TRUE)
+check_frontmatter(protocol_code, yaml = TRUE)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
+\item{protocol_code}{Character string giving the protocol code}
 
 \item{yaml}{Boolean. If \code{FALSE} the function will only print error messages,
 otherwise (default) the parsed yml front matter will be returned}
