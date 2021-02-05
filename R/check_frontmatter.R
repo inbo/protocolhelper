@@ -20,12 +20,12 @@
 #'
 #'
 check_frontmatter <- function(
-  protocol_folder_name,
+  protocol_code,
   yaml = TRUE
   ) {
 
   path_to_protocol <- get_path_to_protocol(
-    protocol_folder_name = protocol_folder_name)
+    protocol_code = protocol_code)
 
   yml <- yaml_front_matter(file.path(path_to_protocol, "index.Rmd"))
 
