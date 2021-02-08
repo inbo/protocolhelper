@@ -47,7 +47,7 @@ add_subprotocol <-
            version_number,
            file_name,
            section,
-           demote_header = c(0, 1, 2, -1),
+           demote_header = 0,
            params) {
 
     execshell <- function(commandstring, intern = FALSE) {
@@ -73,7 +73,11 @@ add_subprotocol <-
         "protocol code not in s*f-###-nl or s*f-###-en format"
       )
     }
-    demote_header <- match.arg(demote_header)
+    assert_that(is.numeric(demote_header))
+    demote_choices <- c(0, 1, 2, -1)
+    if (!(demote_header %in% demote_choices)) {
+      stop(paste0("demote header must be one of ", demote_choices))
+    }
     if (!missing(params)) {
       assert_that(is.list(params))
     }
@@ -87,15 +91,15 @@ add_subprotocol <-
       file.path(file_name) %>%
       path_rel(start = find_root(is_git_root))
 
-    tag <- paste(protocol_code, version_number, "-")
+    tag <- paste(protocol_code, version_number, sep = "-")
     gitcommand <- paste0("git show ",
                          tag, ":",
                          git_filepath)
 
-    #Fetching the git repo
-    # this usually returns "origin"
-    firstremote <- execshell("git remote", intern = TRUE)[1]
-    execshell(paste0("git fetch ", firstremote))
+    # #Fetching the git repo
+    # # this usually returns "origin"
+    # firstremote <- execshell("git remote", intern = TRUE)[1]
+    # execshell(paste0("git fetch ", firstremote))
 
     # get the content of the Rmd file
     # this will return a character vector (each element is one sentence)
@@ -105,27 +109,28 @@ add_subprotocol <-
     # for instance because protocol_code and version_number don't match
 
     # handling the section arguments
-    if (!missing(section)) {
-      has_section <- grepl(section, rmd_content,
-                             ignore.case = TRUE, fixed = TRUE)
-      # avoid looking in chunks which can have lines starting with '#'
-      is_chunk <- grepl("^`{3}", rmd_content)
-      i <- 1
-      while (i < length(is_chunk)) {
-          if (isTRUE(is_chunk[i]) && isTRUE(is_chunk[i+1])) {
-            i <- i + 2
-          } else if (isTRUE(is_chunk[i]) && isFALSE(is_chunk[i+1])) {
-              is_chunk[i+1] <- TRUE
-              i <- i + 1
-          } else {
-              i <- i + 1
-            }
+    # avoid looking in chunks which can have lines starting with '#'
+    is_chunk <- grepl("^`{3}", rmd_content)
+    i <- 1
+    while (i < length(is_chunk)) {
+      if (isTRUE(is_chunk[i]) && isTRUE(is_chunk[i+1])) {
+        i <- i + 2
+      } else if (isTRUE(is_chunk[i]) && isFALSE(is_chunk[i+1])) {
+        is_chunk[i+1] <- TRUE
+        i <- i + 1
+      } else {
+        i <- i + 1
       }
+    }
+
+    if (!missing(section)) {
+      has_section <- grepl(section, rmd_content, fixed = TRUE)
+
       # assuming section is header level 2
       h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk
       # grab the section
       start_section <- which(has_section)
-      if (start_section > 1) {
+      if (length(start_section) > 1) {
         stop(
           "section does not uniquely identify one section"
         )
