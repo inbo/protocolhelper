@@ -46,6 +46,25 @@ test_that("Test that add subprotocol works", {
                   section = "## Uitvoering",
                   demote_header = -1)
 
+  # test add a chapter with non-default params
+  test_params <- "\nThe protocol-code is not `r params$protocol_code`"
+  write(
+   x = test_params,
+   file = "src/thematic/1_water/sfp-101-nl_water-1/07_stappenplan.Rmd",
+   append = TRUE)
+  version_number <- "2020.02"
+  gert::git_commit_all(message = "sfp-101-nl_water-1")
+  specific_tag <- paste("sfp-101-nl", version_number, sep = "-")
+  generic_tag <- paste("protocols", version_number, sep = "-")
+  gert::git_tag_create(name = specific_tag, message = "bla")
+  gert::git_tag_create(name = generic_tag, message = "bla")
+
+  add_subprotocol(protocol_code='sfp-101-nl',
+                  version_number='2020.02',
+                  file_name='07_stappenplan.Rmd',
+                  params = list(protocol_code = "paramvalue"))
+
+
 
 
   # # create a project protocol
