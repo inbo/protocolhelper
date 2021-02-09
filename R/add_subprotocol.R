@@ -16,14 +16,14 @@
 #' @param demote_header Number of '#' to prefix to all titles before inserting
 #' in current protocol. Default is 0. A negative value can be used to remove
 #' a '#' from all section titles
-#' @param params A list of parameter value pairs in case of parameterized
-#' protocols.
+#' @param params A list of parameter name-value pairs in case you need to use
+#' non-default values in parameterized protocols.
 #'
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom fs path_rel
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom stringr str_remove
+#' @importFrom stringr str_remove str_replace_all
 #' @importFrom purrr map %>%
 #'
 #' @export
@@ -168,7 +168,7 @@ add_subprotocol <-
       for (i in 1:length(params)) {
         rmd_content <- str_replace_all(
           rmd_content,
-          paste0("params$", names(params)[i]),
+          paste0("params\\$", names(params)[i]),
           params[[i]]
         )
       }
