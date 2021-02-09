@@ -6,16 +6,17 @@
 to a standard project protocol.}
 \usage{
 add_subprotocol(
-  protocol_code,
+  code_subprotocol,
   version_number,
   file_name,
   section,
-  demote_header = c(0, 1, 2, -1),
+  demote_header = 0,
   params
 )
 }
 \arguments{
-\item{protocol_code}{Character string giving the protocol code}
+\item{code_subprotocol}{Character string giving the protocol code from
+which a subprotocol will be made (usually a sfp-type protocol)}
 
 \item{version_number}{Character string with format YYYY.NN}
 
@@ -28,10 +29,10 @@ is assumed that the section has a level 2 heading.}
 
 \item{demote_header}{Number of '#' to prefix to all titles before inserting
 in current protocol. Default is 0. A negative value can be used to remove
-a '#' from all section titles}
+a '#' from all section titles. Allowed values are -1, 0, 1 and 2.}
 
-\item{params}{A list of parameter value pairs in case of parameterized
-protocols.}
+\item{params}{A list of parameter name-value pairs in case you need to use
+non-default values in parameterized protocols.}
 }
 \value{
 The function will return Rmarkdown
@@ -43,7 +44,7 @@ option \code{results="asis"}.
 \examples{
 \dontrun{
 add_subprotocol(
-  protocol_code = "sfp-401-nl",
+  code_subprotocol = "sfp-401-nl",
   version_number = "2021.01",
   file_name = "07_stappenplan.Rmd",
   params = list(
