@@ -1,4 +1,11 @@
 test_that("Test that add subprotocol works", {
+  if (!requireNamespace("png", quietly = TRUE)) {
+    stop("please install 'png' package for these tests to work")
+  }
+  if (!requireNamespace("gert", quietly = TRUE)) {
+    stop("please install 'gert' package for these tests to work")
+  }
+
   old_wd <- getwd()
   on.exit(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
@@ -23,24 +30,24 @@ test_that("Test that add subprotocol works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
 
   # test addition of a chapter
-  add_subprotocol(protocol_code='sfp-101-nl',
+  add_subprotocol(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd')
 
   # test addition of a chapter + demote_header
-  add_subprotocol(protocol_code='sfp-101-nl',
+  add_subprotocol(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd',
                   demote_header = 1)
 
   # test add a section from a chapter
-  add_subprotocol(protocol_code='sfp-101-nl',
+  add_subprotocol(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd',
                   section = "## Uitvoering")
 
   # test add a section from a chapter + demote_header by -1
-  add_subprotocol(protocol_code='sfp-101-nl',
+  add_subprotocol(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd',
                   section = "## Uitvoering",
@@ -59,44 +66,64 @@ test_that("Test that add subprotocol works", {
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
 
-  add_subprotocol(protocol_code='sfp-101-nl',
+  add_subprotocol(code_subprotocol ='sfp-101-nl',
                   version_number='2020.02',
                   file_name='07_stappenplan.Rmd',
                   params = list(protocol_code = "paramvalue"))
 
+  # test data and media
+  # need a project protocol to see if data and media are copied
+  # first add some data and media
+  write.csv(x = cars, file = "src/thematic/1_water/sfp-101-nl_water-1/data/cars.csv")
+  z <- tempfile()
+  download.file("https://www.r-project.org/logo/Rlogo.png",
+                z,
+                mode="wb")
+  pic <- png::readPNG(z)
+  png::writePNG(pic,"src/thematic/1_water/sfp-101-nl_water-1/media/Rlogo.png")
+  data_media_staged <- gert::git_add(files = ".")
+  chunk1 <- "```{r}\nknitr::include_graphics(path = './media/Rlogo.png')\n```"
+  chunk2 <- "```{r}\nread.csv('./data/cars.csv')\n```"
+  write(
+    x = chunk1,
+    file = "src/thematic/1_water/sfp-101-nl_water-1/07_stappenplan.Rmd",
+    append = TRUE)
+  write(
+    x = chunk2,
+    file = "src/thematic/1_water/sfp-101-nl_water-1/07_stappenplan.Rmd",
+    append = TRUE)
+  gert::git_commit_all(message = "sfp-101-nl_water-1")
+  version_number <- "2020.03"
+  specific_tag <- paste("sfp-101-nl", version_number, sep = "-")
+  generic_tag <- paste("protocols", version_number, sep = "-")
+  gert::git_tag_create(name = specific_tag, message = "bla")
+  gert::git_tag_create(name = generic_tag, message = "bla")
 
+  # create a project protocol
+  version_number <- "2020.04"
+  create_spp(
+    title = "project protocol", subtitle = "subtitle",
+    short_title = "mne protocol",
+    authors = "me", reviewers = "someone else", file_manager = "who?",
+    version_number = version_number, project_name = "mne", lang = "nl"
+  )
 
+  # add and commit it
+  spp_staged <- gert::git_add(files = ".")
+  gert::git_commit_all(message = "spp-001-nl_mne-protocol")
 
-  # # create a project protocol
-  # version_number <- "2020.02"
-  # create_spp(
-  #   title = "project protocol", subtitle = "subtitle",
-  #   short_title = "mne protocol",
-  #   authors = "me", reviewers = "someone else", file_manager = "who?",
-  #   version_number = version_number, project_name = "nme", lang = "nl"
-  # )
-  #
-  # # add and commit it
-  # spp_staged <- gert::git_add(files = ".")
-  # gert::git_commit_all(message = "spp-001-nl_mne-protocol")
-  #
-  #
-  # # add a subprotocol to
-  # # src/project/nme/spp-001-nl_mne-protocol/08_appendices.Rmd
-  # # via a chunk
-  # chunk <- "```{r results='asis'}\nprotocolhelper::add_subprotocol(protocol_code='sfp-101-nl', version_number='2020.01', file_name='07_stappenplan.Rmd')\n```"
-  # write(
-  #   x = chunk,
-  #   file = "src/project/nme/spp-001-nl_mne-protocol/08_appendices.Rmd",
-  #   append = TRUE)
-  #
-  # # render spp-001-nl including the subprotocol
-  # render_protocol(protocol_code = "spp-001-nl")
+  # add a subprotocol to
+  # src/project/mne/spp-001-nl_mne-protocol/08_appendices.Rmd
+  # via a chunk
+  chunk <- "```{r results='asis'}\nprotocolhelper::add_subprotocol(code_subprotocol='sfp-101-nl', version_number='2020.03', file_name='07_stappenplan.Rmd', params = list(protocol_code = 'paramvalue'))\n```"
+  write(
+    x = chunk,
+    file = "src/project/mne/spp-001-nl_mne-protocol/08_appendices.Rmd",
+    append = TRUE)
+  gert::git_commit_all(message = "spp-001-nl_mne-protocol")
 
-
-
-
-
+  # render spp-001-nl including the subprotocol
+  render_protocol(protocol_code = "spp-001-nl")
 
   # Cleanup
   unlink(repo, recursive = TRUE)
