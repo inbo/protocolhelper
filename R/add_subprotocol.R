@@ -163,15 +163,14 @@ add_subprotocol <-
     }
 
 
-    # change params$... by the values supplied in params list
+    # insert a yaml section with params name-value pairs
     if (!missing(params)) {
-      for (i in 1:length(params)) {
-        rmd_content <- str_replace_all(
-          rmd_content,
-          paste0("params\\$", names(params)[i]),
-          params[[i]]
-        )
-      }
+      pairs <- sprintf("  %s: %s", names(params), params)
+      rmd_content <- c("---",
+                       "params:",
+                       pairs,
+                       "---",
+                       rmd_content)
     }
 
     # dealing with external figures and tabular data
