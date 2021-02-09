@@ -6,7 +6,8 @@
 #'
 #' @return The function will return Rmarkdown
 #'
-#' @param protocol_code Character string giving the protocol code
+#' @param code_subprotocol Character string giving the protocol code from
+#' which a subprotocol will be made (usually a sfp-type protocol)
 #' @param version_number Character string with format YYYY.NN
 #' @param file_name Character string with the name of the Rmarkdown
 #' file (a chapter starting with a level 1 heading).
@@ -15,7 +16,7 @@
 #' is assumed that the section has a level 2 heading.
 #' @param demote_header Number of '#' to prefix to all titles before inserting
 #' in current protocol. Default is 0. A negative value can be used to remove
-#' a '#' from all section titles
+#' a '#' from all section titles. Allowed values are -1, 0, 1 and 2.
 #' @param params A list of parameter name-value pairs in case you need to use
 #' non-default values in parameterized protocols.
 #'
@@ -23,8 +24,9 @@
 #' @importFrom assertthat assert_that is.string
 #' @importFrom fs path_rel
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom stringr str_remove str_replace_all
-#' @importFrom purrr map %>%
+#' @importFrom stringr str_remove str_replace_all str_extract_all
+#' @importFrom purrr map map2 %>%
+#' @importFrom knitr knit_child opts_knit
 #'
 #' @export
 #'
@@ -32,7 +34,7 @@
 #' @examples
 #' \dontrun{
 #' add_subprotocol(
-#'   protocol_code = "sfp-401-nl",
+#'   code_subprotocol = "sfp-401-nl",
 #'   version_number = "2021.01",
 #'   file_name = "07_stappenplan.Rmd",
 #'   params = list(
@@ -43,7 +45,7 @@
 #' )
 #'}
 add_subprotocol <-
-  function(protocol_code,
+  function(code_subprotocol,
            version_number,
            file_name,
            section,
@@ -59,7 +61,7 @@ add_subprotocol <-
       if (!intern) cat(res, sep = "\n") else return(res)
     }
 
-    assert_that(is.string(protocol_code))
+    assert_that(is.string(code_subprotocol))
     assert_that(is.string(version_number))
     wrong_format <- !grepl("[0-9]{4}\\.[0-9]{2}", version_number)
     if (wrong_format) {
@@ -67,7 +69,7 @@ add_subprotocol <-
         "version number not in YYYY.XX format"
       )
     }
-    wrong_format <- !grepl("s[fpioa]p-[0-9]{3}-[nl|en]", protocol_code)
+    wrong_format <- !grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
     if (wrong_format) {
       stop(
         "protocol code not in s*f-###-nl or s*f-###-en format"
@@ -87,11 +89,11 @@ add_subprotocol <-
     }
 
     git_filepath <-
-      get_path_to_protocol(protocol_code) %>%
+      get_path_to_protocol(code_subprotocol) %>%
       file.path(file_name) %>%
       path_rel(start = find_root(is_git_root))
 
-    tag <- paste(protocol_code, version_number, sep = "-")
+    tag <- paste(code_subprotocol, version_number, sep = "-")
     gitcommand <- paste0("git show ",
                          tag, ":",
                          git_filepath)
@@ -175,25 +177,43 @@ add_subprotocol <-
 
     # dealing with external figures and tabular data
     # extract all paths to data or media
-    data_files <- grep("data\\/\\w+\\.(csv|tsv|xls|xlsx)", rmd_content)
-    media_files <- grep("media\\/\\w+\\.(png|jpg)", rmd_content)
+    pat_data <- "(data\\/\\w+\\.(csv|tsv|xls|xlsx))"
+    data_files <- str_extract_all(rmd_content[grepl(pat_data, rmd_content)],
+                                  pat_data)
+    pat_media <- "(media\\/\\w+\\.(png|jpg))"
+    media_files <- str_extract_all(rmd_content[grepl(pat_media, rmd_content)],
+                                   pat_media)
     all_files <- c(data_files, media_files)
+    if (length(all_files) > 0) {
+      git_filepaths <-
+        get_path_to_protocol(code_subprotocol) %>%
+        file.path(all_files) %>%
+        path_rel(start = find_root(is_git_root))
 
-    # use git show to get the contents of data and media?
-    create_command <- function(path) {
-      paste0("git show ",
-             tag, ":",
-             path)
+      # use git show to get the contents of data and media
+      # and copy it to the project protocol
+      create_command <- function(file_path, dest_path) {
+        paste0("git show ",
+               tag, ":",
+               file_path, " > ",
+               dest_path
+        )
+      }
+      git_commands <- map2(git_filepaths, all_files, create_command)
+      map(git_commands, execshell, intern = FALSE)
     }
-    git_commands <- map(all_files, create_command)
-    all_files_content <- map(git_commands, execshell, intern = FALSE)
-
-    # copy data and media
-    map(all_files_content, file.create)
 
     # return rmd content
-    return(rmd_content %>%
-             paste0(collapse = "\n"))
+    # the following is not strictly necessary, but useful to test
+    # add_subprotocol() when not in an r chunk
+    if (!is.null(opts_knit$get("output.dir"))) {
+      res <- knit_child(text = rmd_content)
+    }  else {
+      res <- rmd_content
+    }
+
+
+    return(cat(res, sep = "\n"))
   }
 
 
