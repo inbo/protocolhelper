@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_subprotocol.R
 \name{add_subprotocol}
 \alias{add_subprotocol}
-\title{Function to add a (section of) a published protocol as a subprotocol
+\title{Function to add (a section of) a published protocol as a subprotocol
 to a standard project protocol.}
 \usage{
 add_subprotocol(

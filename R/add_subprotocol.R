@@ -1,4 +1,4 @@
-#' @title Function to add a (section of) a published protocol as a subprotocol
+#' @title Function to add (a section of) a published protocol as a subprotocol
 #' to a standard project protocol.
 #'
 #' @description The idea is to execute this function in an R chunk with knitr
