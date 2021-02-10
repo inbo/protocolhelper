@@ -19,5 +19,7 @@ execshell <- function(commandstring, intern = FALSE, ...) {
   } else {
     res <- system(commandstring, intern = TRUE, ...)
   }
-  if (!intern) cat(res, sep = "\n") else return(res)
+  if (!intern) {
+    if (length(res) > 0) cat(res, sep = "\n") else return(invisible())
+    } else return(res)
 }
