@@ -49,7 +49,7 @@ add_subprotocol <-
            version_number,
            file_name,
            section,
-           demote_header = 0,
+           demote_header = c(0, 1, 2, -1),
            params) {
 
     assert_that(is.string(code_subprotocol))
@@ -66,11 +66,7 @@ add_subprotocol <-
         "protocol code not in s*f-###-nl or s*f-###-en format"
       )
     }
-    assert_that(is.numeric(demote_header))
-    demote_choices <- c(0, 1, 2, -1)
-    if (!(demote_header %in% demote_choices)) {
-      stop(paste0("demote header must be one of ", demote_choices))
-    }
+    demote_choices <- match.arg(demote_choices)
     if (!missing(params)) {
       assert_that(is.list(params))
     }

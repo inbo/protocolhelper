@@ -10,7 +10,7 @@ add_subprotocol(
   version_number,
   file_name,
   section,
-  demote_header = 0,
+  demote_header = c(0, 1, 2, -1),
   params
 )
 }
