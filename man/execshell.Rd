@@ -4,7 +4,7 @@
 \alias{execshell}
 \title{Pass command lines to a shell}
 \usage{
-execshell(commandstring, intern = FALSE)
+execshell(commandstring, intern = FALSE, ...)
 }
 \arguments{
 \item{commandstring}{String.
@@ -12,6 +12,9 @@ One or multiple commandlines as one would enter in the shell.}
 
 \item{intern}{a logical (not \code{NA}) which indicates whether to
     capture the output of the command as an \R character vector.}
+
+\item{...}{Other arguments passed to \code{\link[base]{system}} or
+\code{\link[base]{shell}}.}
 }
 \description{
 Cross-platform function to pass a command to the shell, using either

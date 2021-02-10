@@ -6,15 +6,18 @@
 #'
 #' @param commandstring String.
 #' One or multiple commandlines as one would enter in the shell.
+#' @param ... Other arguments passed to \code{\link[base]{system}} or
+#' \code{\link[base]{shell}}.
+#'
 #' @inheritParams base::system
 #'
 #' @keywords internal
 #'
-execshell <- function(commandstring, intern = FALSE) {
+execshell <- function(commandstring, intern = FALSE, ...) {
   if (.Platform$OS.type == "windows") {
-    res <- shell(commandstring, intern = TRUE)
+    res <- shell(commandstring, intern = TRUE, ...)
   } else {
-    res <- system(commandstring, intern = TRUE)
+    res <- system(commandstring, intern = TRUE, ...)
   }
   if (!intern) cat(res, sep = "\n") else return(res)
 }
