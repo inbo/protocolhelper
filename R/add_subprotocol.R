@@ -84,7 +84,13 @@ add_subprotocol <-
     execshell(paste0("git fetch ", firstremote),
               ignore.stdout = TRUE,
               ignore.stderr = TRUE)
+    existing_tags <- execshell("git tag", intern = TRUE)
     tag <- paste(code_subprotocol, version_number, sep = "-")
+    assert_that(tag %in% existing_tags,
+                msg = paste0("The combination of code_subprotocol and",
+                             "version_number does not refer to an existing",
+                             "released protocol."))
+
     gitcommand <- paste0("git show ",
                          tag, ":",
                          git_filepath)
@@ -94,7 +100,6 @@ add_subprotocol <-
     rmd_content <- execshell(gitcommand,
            intern = TRUE)
     # What happens if this fails?
-    # for instance because protocol_code and version_number don't match
 
     # handling the section arguments
     # avoid looking in chunks which can have lines starting with '#'
