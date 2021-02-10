@@ -118,6 +118,7 @@ add_subprotocol <-
 
     if (!missing(section)) {
       has_section <- grepl(section, rmd_content, fixed = TRUE)
+      assert_that(any(has_section), msg = "The section was not found.")
 
       # assuming section is header level 2
       h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk
