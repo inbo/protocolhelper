@@ -52,15 +52,6 @@ add_subprotocol <-
            demote_header = 0,
            params) {
 
-    execshell <- function(commandstring, intern = FALSE) {
-      if (.Platform$OS.type == "windows") {
-        res <- shell(commandstring, intern = TRUE)
-      } else {
-        res <- system(commandstring, intern = TRUE)
-      }
-      if (!intern) cat(res, sep = "\n") else return(res)
-    }
-
     assert_that(is.string(code_subprotocol))
     assert_that(is.string(version_number))
     wrong_format <- !grepl("[0-9]{4}\\.[0-9]{2}", version_number)
