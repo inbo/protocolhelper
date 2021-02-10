@@ -12,7 +12,9 @@
 #' @param file_name Character string with the name of the Rmarkdown
 #' file (a chapter starting with a level 1 heading).
 #' @param section Optional character string with the name of a section within an
-#' Rmarkdown file. If not specified (the default): the whole file is taken. It
+#' Rmarkdown file.
+#' Can also be a unique substring of a section title.
+#' If not specified (the default): the whole file is taken. It
 #' is assumed that the section has a level 2 heading.
 #' @param demote_header Number of '#' to prefix to all titles before inserting
 #' in current protocol. Default is 0. A negative value can be used to remove

@@ -24,7 +24,9 @@ which a subprotocol will be made (usually a sfp-type protocol)}
 file (a chapter starting with a level 1 heading).}
 
 \item{section}{Optional character string with the name of a section within an
-Rmarkdown file. If not specified (the default): the whole file is taken. It
+Rmarkdown file.
+Can also be a unique substring of a section title.
+If not specified (the default): the whole file is taken. It
 is assumed that the section has a level 2 heading.}
 
 \item{demote_header}{Number of '#' to prefix to all titles before inserting
