@@ -48,9 +48,9 @@ add_subprotocol <-
   function(code_subprotocol,
            version_number,
            file_name,
-           section,
+           section = NULL,
            demote_header = c(0, 1, 2, -1),
-           params) {
+           params = NULL) {
 
     assert_that(is.string(code_subprotocol))
     assert_that(is.string(version_number))

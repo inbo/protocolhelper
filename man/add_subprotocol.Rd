@@ -9,9 +9,9 @@ add_subprotocol(
   code_subprotocol,
   version_number,
   file_name,
-  section,
+  section = NULL,
   demote_header = c(0, 1, 2, -1),
-  params
+  params = NULL
 )
 }
 \arguments{
