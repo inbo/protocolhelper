@@ -205,9 +205,9 @@ add_subprotocol <-
 
     # return rmd content
     # the following is not strictly necessary, but useful to test
-    # add_subprotocol() when not in an r chunk
+    # add_subprotocol() outside render_protocol()
     if (!is.null(opts_knit$get("output.dir"))) {
-      res <- knit_child(text = rmd_content)
+      res <- knit_child(text = rmd_content, quiet = TRUE)
     }  else {
       res <- rmd_content
     }
