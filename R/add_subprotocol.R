@@ -80,15 +80,14 @@ add_subprotocol <-
       file.path(file_name) %>%
       path_rel(start = find_root(is_git_root))
 
+    firstremote <- execshell("git remote", intern = TRUE)[1]
+    execshell(paste0("git fetch ", firstremote),
+              ignore.stdout = TRUE,
+              ignore.stderr = TRUE)
     tag <- paste(code_subprotocol, version_number, sep = "-")
     gitcommand <- paste0("git show ",
                          tag, ":",
                          git_filepath)
-
-    # #Fetching the git repo
-    # # this usually returns "origin"
-    # firstremote <- execshell("git remote", intern = TRUE)[1]
-    # execshell(paste0("git fetch ", firstremote))
 
     # get the content of the Rmd file
     # this will return a character vector (each element is one sentence)
