@@ -17,8 +17,9 @@
 #' If not specified (the default): the whole file is taken. It
 #' is assumed that the section has a level 2 heading.
 #' @param demote_header Number of '#' to prefix to all titles before inserting
-#' in current protocol. Default is 0. A negative value can be used to remove
-#' a '#' from all section titles. Allowed values are -1, 0, 1 and 2.
+#' in current protocol. Default is 0. Value -1 can be used to remove
+#' a '#' from all section titles.
+#' Allowed values are visible in the usage section.
 #' @param params A list of parameter name-value pairs in case you need to use
 #' non-default values in parameterized protocols.
 #'
@@ -68,7 +69,13 @@ add_subprotocol <-
         "protocol code not in s*f-###-nl or s*f-###-en format"
       )
     }
-    demote_header <- match.arg(demote_header)
+    demote_choices <- eval(formals()$demote_header)
+    if (missing(demote_header)) {
+      demote_header <- demote_choices[1]} else {
+        assert_that(demote_header %in% demote_choices,
+                    msg = paste("demote header must be one of",
+                                paste(demote_choices, collapse = ", ")))
+      }
     if (!missing(params)) {
       assert_that(is.list(params))
     }
