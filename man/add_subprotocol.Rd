@@ -30,8 +30,9 @@ If not specified (the default): the whole file is taken. It
 is assumed that the section has a level 2 heading.}
 
 \item{demote_header}{Number of '#' to prefix to all titles before inserting
-in current protocol. Default is 0. Value -1 can be used to remove
-a '#' from all section titles.
+in current protocol. Default is 0.
+A negative value can be used to remove
+'#' from all section titles.
 Allowed values are visible in the usage section.}
 
 \item{params}{A list of parameter name-value pairs in case you need to use
