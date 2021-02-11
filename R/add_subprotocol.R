@@ -89,9 +89,9 @@ add_subprotocol <-
     existing_tags <- execshell("git tag", intern = TRUE)
     tag <- paste(code_subprotocol, version_number, sep = "-")
     assert_that(tag %in% existing_tags,
-                msg = paste0("The combination of code_subprotocol and",
-                             "version_number does not refer to an existing",
-                             "released protocol."))
+                msg = paste("The combination of code_subprotocol and",
+                            "version_number does not refer to an existing",
+                            "released protocol."))
 
     gitcommand <- paste0("git show ",
                          tag, ":",
