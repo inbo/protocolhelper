@@ -4,8 +4,10 @@
 #' \code{\link[base]{system}} or
 #' (Windows-only) \code{\link[base]{shell}}, depending on the operating system.
 #'
-#' @param commandstring String.
-#' One or multiple commandlines as one would enter in the shell.
+#' @param commandstring
+#' The system command to be invoked, as a string.
+#' Multiple commands can be combined in this single string, e.g. with a
+#' multiline string.
 #' @param ... Other arguments passed to \code{\link[base]{system}} or
 #' \code{\link[base]{shell}}.
 #'

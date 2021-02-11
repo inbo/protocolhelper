@@ -7,8 +7,9 @@
 execshell(commandstring, intern = FALSE, ...)
 }
 \arguments{
-\item{commandstring}{String.
-One or multiple commandlines as one would enter in the shell.}
+\item{commandstring}{The system command to be invoked, as a string.
+Multiple commands can be combined in this single string, e.g. with a
+multiline string.}
 
 \item{intern}{a logical (not \code{NA}) which indicates whether to
     capture the output of the command as an \R character vector.}
