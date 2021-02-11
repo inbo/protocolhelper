@@ -68,7 +68,7 @@ add_subprotocol <-
         "protocol code not in s*f-###-nl or s*f-###-en format"
       )
     }
-    demote_choices <- match.arg(demote_choices)
+    demote_header <- match.arg(demote_header)
     if (!missing(params)) {
       assert_that(is.list(params))
     }
