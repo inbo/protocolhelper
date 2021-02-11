@@ -73,7 +73,7 @@ add_subprotocol <-
     if (missing(demote_header)) {
       demote_header <- demote_choices[1]} else {
         assert_that(demote_header %in% demote_choices,
-                    msg = paste("demote header must be one of",
+                    msg = paste("demote_header must be one of",
                                 paste(demote_choices, collapse = ", ")))
       }
     if (!missing(params)) {
