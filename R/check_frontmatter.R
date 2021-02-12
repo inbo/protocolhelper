@@ -72,8 +72,8 @@ check_frontmatter <- function(
                 is.string(yml$params$theme))
   }
 
-  if (has_name(yml$params, "project")) {
-    assert_that(is.string(yml$params$project))
+  if (has_name(yml$params, "project_name")) {
+    assert_that(is.string(yml$params$project_name))
   }
 
   if (yaml) {
