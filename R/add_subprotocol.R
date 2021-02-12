@@ -1,4 +1,4 @@
-#' @title Function to add a (section of) a published protocol as a subprotocol
+#' @title Function to add (a section of) a published protocol as a subprotocol
 #' to a standard project protocol.
 #'
 #' @description The idea is to execute this function in an R chunk with knitr
@@ -12,11 +12,15 @@
 #' @param file_name Character string with the name of the Rmarkdown
 #' file (a chapter starting with a level 1 heading).
 #' @param section Optional character string with the name of a section within an
-#' Rmarkdown file. If not specified (the default): the whole file is taken. It
+#' Rmarkdown file.
+#' Can also be a unique substring of a section title.
+#' If not specified (the default): the whole file is taken. It
 #' is assumed that the section has a level 2 heading.
 #' @param demote_header Number of '#' to prefix to all titles before inserting
-#' in current protocol. Default is 0. A negative value can be used to remove
-#' a '#' from all section titles. Allowed values are -1, 0, 1 and 2.
+#' in current protocol. Default is 0.
+#' A negative value can be used to remove
+#' '#' from all section titles.
+#' Allowed values are visible in the usage section.
 #' @param params A list of parameter name-value pairs in case you need to use
 #' non-default values in parameterized protocols.
 #'
@@ -48,18 +52,9 @@ add_subprotocol <-
   function(code_subprotocol,
            version_number,
            file_name,
-           section,
-           demote_header = 0,
-           params) {
-
-    execshell <- function(commandstring, intern = FALSE) {
-      if (.Platform$OS.type == "windows") {
-        res <- shell(commandstring, intern = TRUE)
-      } else {
-        res <- system(commandstring, intern = TRUE)
-      }
-      if (!intern) cat(res, sep = "\n") else return(res)
-    }
+           section = NULL,
+           demote_header = c(0, 1, 2, -1),
+           params = NULL) {
 
     assert_that(is.string(code_subprotocol))
     assert_that(is.string(version_number))
@@ -75,11 +70,13 @@ add_subprotocol <-
         "protocol code not in s*f-###-nl or s*f-###-en format"
       )
     }
-    assert_that(is.numeric(demote_header))
-    demote_choices <- c(0, 1, 2, -1)
-    if (!(demote_header %in% demote_choices)) {
-      stop(paste0("demote header must be one of ", demote_choices))
-    }
+    demote_choices <- eval(formals()$demote_header)
+    if (missing(demote_header)) {
+      demote_header <- demote_choices[1]} else {
+        assert_that(demote_header %in% demote_choices,
+                    msg = paste("demote_header must be one of",
+                                paste(demote_choices, collapse = ", ")))
+      }
     if (!missing(params)) {
       assert_that(is.list(params))
     }
@@ -93,22 +90,26 @@ add_subprotocol <-
       file.path(file_name) %>%
       path_rel(start = find_root(is_git_root))
 
+    firstremote <- execshell("git remote", intern = TRUE)[1]
+    execshell(paste0("git fetch ", firstremote),
+              ignore.stdout = TRUE,
+              ignore.stderr = TRUE)
+    existing_tags <- execshell("git tag", intern = TRUE)
     tag <- paste(code_subprotocol, version_number, sep = "-")
+    assert_that(tag %in% existing_tags,
+                msg = paste("The combination of code_subprotocol and",
+                            "version_number does not refer to an existing",
+                            "released protocol."))
+
     gitcommand <- paste0("git show ",
                          tag, ":",
                          git_filepath)
-
-    # #Fetching the git repo
-    # # this usually returns "origin"
-    # firstremote <- execshell("git remote", intern = TRUE)[1]
-    # execshell(paste0("git fetch ", firstremote))
 
     # get the content of the Rmd file
     # this will return a character vector (each element is one sentence)
     rmd_content <- execshell(gitcommand,
            intern = TRUE)
     # What happens if this fails?
-    # for instance because protocol_code and version_number don't match
 
     # handling the section arguments
     # avoid looking in chunks which can have lines starting with '#'
@@ -127,6 +128,7 @@ add_subprotocol <-
 
     if (!missing(section)) {
       has_section <- grepl(section, rmd_content, fixed = TRUE)
+      assert_that(any(has_section), msg = "The section was not found.")
 
       # assuming section is header level 2
       h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk

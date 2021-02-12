@@ -2,16 +2,16 @@
 % Please edit documentation in R/add_subprotocol.R
 \name{add_subprotocol}
 \alias{add_subprotocol}
-\title{Function to add a (section of) a published protocol as a subprotocol
+\title{Function to add (a section of) a published protocol as a subprotocol
 to a standard project protocol.}
 \usage{
 add_subprotocol(
   code_subprotocol,
   version_number,
   file_name,
-  section,
-  demote_header = 0,
-  params
+  section = NULL,
+  demote_header = c(0, 1, 2, -1),
+  params = NULL
 )
 }
 \arguments{
@@ -24,12 +24,16 @@ which a subprotocol will be made (usually a sfp-type protocol)}
 file (a chapter starting with a level 1 heading).}
 
 \item{section}{Optional character string with the name of a section within an
-Rmarkdown file. If not specified (the default): the whole file is taken. It
+Rmarkdown file.
+Can also be a unique substring of a section title.
+If not specified (the default): the whole file is taken. It
 is assumed that the section has a level 2 heading.}
 
 \item{demote_header}{Number of '#' to prefix to all titles before inserting
-in current protocol. Default is 0. A negative value can be used to remove
-a '#' from all section titles. Allowed values are -1, 0, 1 and 2.}
+in current protocol. Default is 0.
+A negative value can be used to remove
+'#' from all section titles.
+Allowed values are visible in the usage section.}
 
 \item{params}{A list of parameter name-value pairs in case you need to use
 non-default values in parameterized protocols.}
