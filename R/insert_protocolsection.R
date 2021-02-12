@@ -21,7 +21,7 @@
 #' A negative value can be used to remove
 #' '#' from all section titles.
 #' Allowed values are visible in the usage section.
-#' @param params A list of parameter name-value pairs in case you need to use
+#' @param params Optional list of parameter name-value pairs in case you need to use
 #' non-default values in parameterized protocols.
 #' @param fetch_remote Whether or not to fetch the remote. Default TRUE.
 #'
@@ -32,6 +32,7 @@
 #' @importFrom stringr str_remove str_replace_all str_extract_all
 #' @importFrom purrr map map2 %>%
 #' @importFrom knitr knit_child opts_knit
+#' @importFrom rmarkdown yaml_front_matter
 #'
 #' @export
 #'
@@ -172,13 +173,34 @@ insert_protocolsection <-
     }
 
 
-    # insert a yaml section with params name-value pairs
     if (!missing(params)) {
-      pairs <- sprintf("  %s: %s", names(params), params)
-      rmd_content <- c("---",
-                       "params:",
-                       pairs,
-                       "---",
+      # get default params values
+      index_filepath <-
+        get_path_to_protocol(code_subprotocol) %>%
+        file.path("index.Rmd") %>%
+        path_rel(start = find_root(is_git_root))
+      z <- tempfile(fileext = ".Rmd")
+      gitcommand <- paste0("git show ",
+                           tag, ":",
+                           index_filepath, " > ",
+                           z)
+      # copy index.Rmd to z
+      execshell(gitcommand, intern = FALSE)
+      # read yaml front matter
+      yml <- yaml_front_matter(z)
+      unlink(z)
+      # change the non-default values
+      for (i in names(yml$params)) {
+        for (j in names(params)) {
+          if (i == j) yml$params[[i]] <- params[[j]]
+        }
+      }
+      rmd_content <- c("```{r setup-inserted-section}",
+                       "if (bindingIsLocked('params', env = .GlobalEnv))
+                       unlockBinding('params', env = .GlobalEnv)",
+                      paste0("params$", names(yml$params),
+                             " <- '", yml$params, "'"),
+                       "```",
                        rmd_content)
     }
 
@@ -212,7 +234,7 @@ insert_protocolsection <-
 
     # return rmd content
     # the following is not strictly necessary, but useful to test
-    # add_subprotocol() outside render_protocol()
+    # insert_protocolsection() outside render_protocol()
     if (!is.null(opts_knit$get("output.dir"))) {
       res <- knit_child(text = rmd_content, quiet = TRUE)
     }  else {
