@@ -30,27 +30,27 @@ test_that("Test that add subprotocol works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
 
   # test addition of a chapter
-  add_subprotocol(code_subprotocol ='sfp-101-nl',
+  insert_protocolsection(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd',
                   fetch_remote = FALSE)
 
   # test addition of a chapter + demote_header
-  add_subprotocol(code_subprotocol ='sfp-101-nl',
+  insert_protocolsection(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd',
                   demote_header = 1,
                   fetch_remote = FALSE)
 
   # test add a section from a chapter
-  add_subprotocol(code_subprotocol ='sfp-101-nl',
+  insert_protocolsection(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd',
                   section = "## Uitvoering",
                   fetch_remote = FALSE)
 
   # test add a section from a chapter + demote_header by -1
-  add_subprotocol(code_subprotocol ='sfp-101-nl',
+  insert_protocolsection(code_subprotocol ='sfp-101-nl',
                   version_number='2020.01',
                   file_name='07_stappenplan.Rmd',
                   section = "## Uitvoering",
@@ -70,7 +70,7 @@ test_that("Test that add subprotocol works", {
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
 
-  add_subprotocol(code_subprotocol ='sfp-101-nl',
+  insert_protocolsection(code_subprotocol ='sfp-101-nl',
                   version_number='2020.02',
                   file_name='07_stappenplan.Rmd',
                   params = list(protocol_code = "paramvalue"),
@@ -120,7 +120,7 @@ test_that("Test that add subprotocol works", {
   # add a subprotocol to
   # src/project/mne/spp-001-nl_mne-protocol/08_appendices.Rmd
   # via a chunk
-  chunk <- "```{r results='asis'}\nprotocolhelper::add_subprotocol(code_subprotocol='sfp-101-nl', version_number='2020.03', file_name='07_stappenplan.Rmd', params = list(protocol_code = 'paramvalue'), fetch_remote = FALSE)\n```"
+  chunk <- "```{r results='asis'}\nprotocolhelper::insert_protocolsection(code_subprotocol='sfp-101-nl', version_number='2020.03', file_name='07_stappenplan.Rmd', params = list(protocol_code = 'paramvalue'), fetch_remote = FALSE)\n```"
   write(
     x = chunk,
     file = "src/project/mne/spp-001-nl_mne-protocol/08_appendices.Rmd",

@@ -1,5 +1,5 @@
-#' @title Function to add (a section of) a published protocol as a subprotocol
-#' to a standard project protocol.
+#' @title Function to add a chapter or a section of a published protocol for
+#' re-use into another protocol
 #'
 #' @description The idea is to execute this function in an R chunk with knitr
 #' option \code{results="asis"}.
@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' add_subprotocol(
+#' insert_protocolsection(
 #'   code_subprotocol = "sfp-401-nl",
 #'   version_number = "2021.01",
 #'   file_name = "07_stappenplan.Rmd",
@@ -49,7 +49,7 @@
 #'   )
 #' )
 #'}
-add_subprotocol <-
+insert_protocolsection <-
   function(code_subprotocol,
            version_number,
            file_name,
