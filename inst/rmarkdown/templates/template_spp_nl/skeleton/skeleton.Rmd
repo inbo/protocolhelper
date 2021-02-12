@@ -13,7 +13,7 @@ params:
 site: bookdown::bookdown_site
 output: 
   bookdown::gitbook:
-    split_by: none
+    split_by: chapter
     split_bib: FALSE
 ---
 
