@@ -11,7 +11,8 @@ add_subprotocol(
   file_name,
   section = NULL,
   demote_header = c(0, 1, 2, -1),
-  params = NULL
+  params = NULL,
+  fetch_remote = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ Allowed values are visible in the usage section.}
 
 \item{params}{A list of parameter name-value pairs in case you need to use
 non-default values in parameterized protocols.}
+
+\item{fetch_remote}{Whether or not to fetch the remote. Default TRUE.}
 }
 \value{
 The function will return Rmarkdown

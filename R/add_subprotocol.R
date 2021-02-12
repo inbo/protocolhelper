@@ -23,9 +23,10 @@
 #' Allowed values are visible in the usage section.
 #' @param params A list of parameter name-value pairs in case you need to use
 #' non-default values in parameterized protocols.
+#' @param fetch_remote Whether or not to fetch the remote. Default TRUE.
 #'
 #'
-#' @importFrom assertthat assert_that is.string
+#' @importFrom assertthat assert_that is.string is.flag noNA
 #' @importFrom fs path_rel
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_remove str_replace_all str_extract_all
@@ -54,7 +55,8 @@ add_subprotocol <-
            file_name,
            section = NULL,
            demote_header = c(0, 1, 2, -1),
-           params = NULL) {
+           params = NULL,
+           fetch_remote = TRUE) {
 
     assert_that(is.string(code_subprotocol))
     assert_that(is.string(version_number))
@@ -84,16 +86,19 @@ add_subprotocol <-
     if (!missing(section)) {
       assert_that(is.string(section))
     }
+    assert_that(is.flag(fetch_remote), noNA(fetch_remote))
 
     git_filepath <-
       get_path_to_protocol(code_subprotocol) %>%
       file.path(file_name) %>%
       path_rel(start = find_root(is_git_root))
 
-    firstremote <- execshell("git remote", intern = TRUE)[1]
-    execshell(paste0("git fetch ", firstremote),
-              ignore.stdout = TRUE,
-              ignore.stderr = TRUE)
+    if (fetch_remote) {
+      firstremote <- execshell("git remote", intern = TRUE)[1]
+      execshell(paste0("git fetch ", firstremote),
+                ignore.stdout = TRUE,
+                ignore.stderr = TRUE)
+    }
     existing_tags <- execshell("git tag", intern = TRUE)
     tag <- paste(code_subprotocol, version_number, sep = "-")
     assert_that(tag %in% existing_tags,
