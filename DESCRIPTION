@@ -45,4 +45,5 @@ Imports:
     bookdown,
     fs,
     yaml,
-    knitr
+    knitr,
+    jsonlite
