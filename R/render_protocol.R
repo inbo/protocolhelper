@@ -14,7 +14,8 @@
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
 #' @importFrom yaml read_yaml
-#' @importFrom fs path path_ext_set
+#' @importFrom fs path
+#' @importFrom jsonlite read_json write_json
 #'
 #' @export
 #'
@@ -36,15 +37,18 @@ render_protocol <- function(protocol_code = NULL,
   setwd(dir = path_to_protocol)
   render_book(input = "index.Rmd",
               output_dir = output_dir)
-  # rename html to index.html
+  # rename first chapter html to index.html
   yml <- read_yaml("_bookdown.yml")
   if (is.null(output_dir)) {
     output_dir <- yml$output_dir
   }
-  original_name <- yml$book_filename
-  file.rename(from = path_ext_set(path(output_dir, original_name),
-                                  ext = "html"),
+  search_index <- read_json(
+    file.path(output_dir, "search_index.json"))
+  first_chapter_name <- search_index[[1]][[1]][1]
+  file.rename(from = path(output_dir, first_chapter_name),
               to = path(output_dir, "index.html"))
+  search_index[[1]][[1]][1] <- "index.html"
+  write_json(search_index, path(output_dir, "search_index.json"))
   setwd(old_wd)
 
 }
