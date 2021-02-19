@@ -11,7 +11,6 @@ insert_protocolsection(
   file_name,
   section = NULL,
   demote_header = c(0, 1, 2, -1),
-  params = NULL,
   fetch_remote = TRUE
 )
 }
@@ -36,9 +35,6 @@ A negative value can be used to remove
 '#' from all section titles.
 Allowed values are visible in the usage section.}
 
-\item{params}{Optional list of parameter name-value pairs in case you need to use
-non-default values in parameterized protocols.}
-
 \item{fetch_remote}{Whether or not to fetch the remote. Default TRUE.}
 }
 \value{
@@ -53,12 +49,7 @@ option \code{results="asis"}.
 insert_protocolsection(
   code_subprotocol = "sfp-401-nl",
   version_number = "2021.01",
-  file_name = "07_stappenplan.Rmd",
-  params = list(
-     shape = "square",
-     width = "3",
-     height = "3"
-  )
+  file_name = "07_stappenplan.Rmd"
 )
 }
 }
