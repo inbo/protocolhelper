@@ -21,8 +21,6 @@
 #' A negative value can be used to remove
 #' '#' from all section titles.
 #' Allowed values are visible in the usage section.
-#' @param params Optional list of parameter name-value pairs in case you need to use
-#' non-default values in parameterized protocols.
 #' @param fetch_remote Whether or not to fetch the remote. Default TRUE.
 #'
 #'
@@ -42,12 +40,7 @@
 #' insert_protocolsection(
 #'   code_subprotocol = "sfp-401-nl",
 #'   version_number = "2021.01",
-#'   file_name = "07_stappenplan.Rmd",
-#'   params = list(
-#'      shape = "square",
-#'      width = "3",
-#'      height = "3"
-#'   )
+#'   file_name = "07_stappenplan.Rmd"
 #' )
 #'}
 insert_protocolsection <-
@@ -56,7 +49,6 @@ insert_protocolsection <-
            file_name,
            section = NULL,
            demote_header = c(0, 1, 2, -1),
-           params = NULL,
            fetch_remote = TRUE) {
 
     assert_that(is.string(code_subprotocol))
@@ -80,9 +72,6 @@ insert_protocolsection <-
                     msg = paste("demote_header must be one of",
                                 paste(demote_choices, collapse = ", ")))
       }
-    if (!missing(params)) {
-      assert_that(is.list(params))
-    }
     assert_that(is.string(file_name))
     if (!missing(section)) {
       assert_that(is.string(section))
@@ -170,38 +159,6 @@ insert_protocolsection <-
         rmd_content[h3] <- paste0(
           paste0(rep("#", demote_header), collapse = ""), rmd_content[h3])
       }
-    }
-
-
-    if (!missing(params)) {
-      # get default params values
-      index_filepath <-
-        get_path_to_protocol(code_subprotocol) %>%
-        file.path("index.Rmd") %>%
-        path_rel(start = find_root(is_git_root))
-      z <- tempfile(fileext = ".Rmd")
-      gitcommand <- paste0("git show ",
-                           tag, ":",
-                           index_filepath, " > ",
-                           z)
-      # copy index.Rmd to z
-      execshell(gitcommand, intern = FALSE)
-      # read yaml front matter
-      yml <- yaml_front_matter(z)
-      unlink(z)
-      # change the non-default values
-      for (i in names(yml$params)) {
-        for (j in names(params)) {
-          if (i == j) yml$params[[i]] <- params[[j]]
-        }
-      }
-      rmd_content <- c("```{r setup-inserted-section}",
-                       "if (bindingIsLocked('params', env = .GlobalEnv))
-                       unlockBinding('params', env = .GlobalEnv)",
-                      paste0("params$", names(yml$params),
-                             " <- '", yml$params, "'"),
-                       "```",
-                       rmd_content)
     }
 
     # dealing with external figures and tabular data
