@@ -25,7 +25,8 @@
 #' render_protocol(protocol_code = "sfp_401-nl")
 #'}
 render_protocol <- function(protocol_code = NULL,
-                            output_dir = NULL) {
+                            output_dir = NULL,
+                            ...) {
   assert_that(is.string(protocol_code))
 
   path_to_protocol <- get_path_to_protocol(
@@ -38,7 +39,8 @@ render_protocol <- function(protocol_code = NULL,
   render_book(input = "index.Rmd",
               output_dir = output_dir,
               output_file = "index.html",
-              envir = new.env())
+              envir = new.env(),
+              ...)
   setwd(old_wd)
 
 }
