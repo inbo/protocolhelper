@@ -36,19 +36,9 @@ render_protocol <- function(protocol_code = NULL,
   old_wd <- getwd()
   setwd(dir = path_to_protocol)
   render_book(input = "index.Rmd",
-              output_dir = output_dir)
-  # rename first chapter html to index.html
-  yml <- read_yaml("_bookdown.yml")
-  if (is.null(output_dir)) {
-    output_dir <- yml$output_dir
-  }
-  search_index <- read_json(
-    file.path(output_dir, "search_index.json"))
-  first_chapter_name <- search_index[[1]][[1]][1]
-  file.rename(from = path(output_dir, first_chapter_name),
-              to = path(output_dir, "index.html"))
-  search_index[[1]][[1]][1] <- "index.html"
-  write_json(search_index, path(output_dir, "search_index.json"))
+              output_dir = output_dir,
+              output_file = "index.html",
+              envir = new.env())
   setwd(old_wd)
 
 }

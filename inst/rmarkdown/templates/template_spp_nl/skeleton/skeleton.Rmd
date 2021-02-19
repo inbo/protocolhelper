@@ -42,6 +42,7 @@ opts_chunk$set(
 )
 ```
 
+# Metadata {-}
 
 | Reviewers | Documentbeheerder | Protocol code | Versienummer | Taal | Project |
 | --------- | ----------------- | ------------- | ------------ | ---- | ----- |
