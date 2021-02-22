@@ -1,7 +1,16 @@
 # Dependencies
 
 <!--
-Alleen in te vullen indien van toepassing.
-Protocols waarnaar in dit protocol verwezen wordt: <protocol-code>-YYYY.NN.
-Protocols die verwijzen naar dit protocol: <protocol-code>-YYYY.NN.
+Hier niets invullen.
+Indien er dependencies zijn deze invullen in de yaml sectie van index.Rmd
 -->
+
+
+```{r dependencies}
+dependencies <- as_tibble(params$dependencies_protocolcode) %>%
+  mutate(version_number = params$dependencies_versionnumber,
+         params = params$dependencies_params)
+
+dependencies %>%
+  kable()
+```

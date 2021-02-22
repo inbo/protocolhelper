@@ -10,6 +10,9 @@ params:
   version_number: "{{{version_number}}}"
   language: {{{language}}}
   theme: {{{theme}}}
+  dependencies_protocolcode: [sfp_4##_en, sfp_3##_en]
+  dependencies_versionnumber: [YYYY.NN, YYYY.NN]
+  dependencies_params: !r list(list(width = 5, length = 5), list())
 site: bookdown::bookdown_site
 output: 
   bookdown::gitbook:
@@ -45,6 +48,7 @@ opts_chunk$set(
   error = TRUE,
   message = FALSE
 )
+library(tidyverse)
 ```
 
 # Metadata {-}
