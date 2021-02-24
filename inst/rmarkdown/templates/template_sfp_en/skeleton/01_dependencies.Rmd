@@ -9,8 +9,10 @@ Indien er dependencies zijn deze invullen in de yaml sectie van index.Rmd
 ```{r dependencies}
 dependencies <- as_tibble(params$dependencies_protocolcode) %>%
   mutate(version_number = params$dependencies_versionnumber,
-         params = params$dependencies_params)
+         params = params$dependencies_params,
+         appendix = params$dependencies_appendix)
 
 dependencies %>%
+  select(-appendix) %>%
   kable()
 ```
