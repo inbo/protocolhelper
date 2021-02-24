@@ -34,7 +34,7 @@ Elk van de vier vectoren moet even lang zijn en de volgorde van de elementen moe
 
 dependencies_protocolcode: hier geef je de protocolcodes door waar het project-specifieke protocol van afhankelijk is.
 
-dependencies_versionnumber: hier geef je de protocolcodes door waar het project-specifieke protocol van afhankelijk is.
+dependencies_versionnumber: hier geef je de versienummers door waar het project-specifieke protocol van afhankelijk is.
 
 dependencies_params: let op, hier moet je een geneste lijst als R code doorgeven. De '!r ...' duidt aan dat wat volgt moet geïnterpreteerd worden als r code. De geneste lijst begint met list() en daarbinnen geef je de name-value pairs door van de parameters waar je van de defaultwaarden wil afwijken. Indien je niet van de defaultwaarden wil afwijken, geef je een lege lijst door. Zie het voorbeeld.
 
