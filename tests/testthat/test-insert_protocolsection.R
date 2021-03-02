@@ -1,4 +1,4 @@
-test_that("Test that add subprotocol works", {
+test_that("Test that insert_protocolsection works", {
   if (!requireNamespace("png", quietly = TRUE)) {
     stop("please install 'png' package for these tests to work")
   }
