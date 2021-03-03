@@ -28,7 +28,8 @@ Suggests:
     magick,
     lubridate,
     gert,
-    png
+    png,
+    dplyr
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
