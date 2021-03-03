@@ -1,5 +1,5 @@
 test_that("protocol", {
-  expect_error(get_protocolnumbers())
-  expect_error(get_short_titles())
+  expect_equal(get_protocolnumbers(), character(0))
+  expect_equal(get_short_titles(), character(0))
   expect_error(create_sfp())
 })
