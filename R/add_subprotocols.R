@@ -2,18 +2,20 @@
 #' of which it is a dependency
 #'
 #' @description The function renders the subprotocol to
-#' [bookdown::markdown_document2()]
-#' saves the resulting md file (and any associated files) to the directory of
-#' the project-specific protocol.
+#' [bookdown::markdown_document2()] and
+#' saves the resulting md file (and any associated files) in a subfolder of the
+#' directory of the project-specific protocol. This function should normally
+#' not be called directly. Use [protocolhelper::add_subprotocols()] instead.
 #'
-#' @return An r-chunk will be written that uses [knitr::knit_child()] to render
-#' the md-file of the subprotocol as an appendix when the main protocol is
-#' rendered.
+#' @return A markdown file of the subprotocol and associated media and data
+#' files.
 #'
 #' @param code_subprotocol Character string giving the protocol code from
 #' which a subprotocol will be made (usually a sfp-type protocol)
 #' @param version_number Character string with format YYYY.NN
 #' @param params A list of parameter key-value pairs.
+#' @param code_mainprotocol Character string giving the protocol code for the
+#' main protocol
 #' @param fetch_remote Whether or not to fetch the remote. Default TRUE.
 #'
 #' @importFrom assertthat assert_that is.string is.flag noNA
@@ -21,9 +23,9 @@
 #' @importFrom fs path_rel
 #' @importFrom purrr map map2
 #' @importFrom bookdown render_book markdown_document2
-#' @importFrom rmarkdown pandoc_variable_arg
-#' @importFrom stringr str_extract
+#' @importFrom stringr str_extract str_replace_all
 #' @importFrom knitr knit_child
+#' @importFrom rmarkdown yaml_front_matter
 #'
 #'
 #' @export
@@ -33,119 +35,177 @@ add_one_subprotocol <-
   function(code_subprotocol,
            version_number,
            params = NULL,
+           code_mainprotocol,
            fetch_remote = TRUE) {
 
-  assert_that(is.string(version_number))
-  right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
-  assert_that(
-    right_format,
-    msg = "version number not in YYYY.XX format"
-  )
-  assert_that(is.string(code_subprotocol))
-  right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
-  assert_that(
-    right_format,
-    msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-  )
+    assert_that(is.string(version_number))
+    right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
+    assert_that(
+      right_format,
+      msg = "version number not in YYYY.XX format"
+    )
+    assert_that(is.string(code_subprotocol))
+    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
+    assert_that(
+      right_format,
+      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+    )
+    assert_that(is.string(code_mainprotocol))
+    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
+    assert_that(
+      right_format,
+      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+    )
 
-  if (!missing(params)) {
-    # parse params
-    params <- eval(str2lang(params))
-    assert_that(is.list(params))
-  }
+    if (!missing(params)) {
+      # parse params
+      params <- eval(str2lang(params))
+      assert_that(is.list(params))
+    }
 
-  assert_that(is.flag(fetch_remote), noNA(fetch_remote))
+    assert_that(is.flag(fetch_remote), noNA(fetch_remote))
 
-  protocol_path_rel <-
-    get_path_to_protocol(code_subprotocol) %>%
-    path_rel(start = find_root(is_git_root))
+    mainprotocol_path_abs <- get_path_to_protocol(code_mainprotocol)
 
-  if (fetch_remote) {
-    firstremote <- execshell("git remote", intern = TRUE)[1]
-    execshell(paste0("git fetch ", firstremote),
-              ignore.stdout = TRUE,
-              ignore.stderr = TRUE)
-  }
-  existing_tags <- execshell("git tag", intern = TRUE)
-  tag <- paste(code_subprotocol, version_number, sep = "-")
-  assert_that(tag %in% existing_tags,
-              msg = paste("The combination of code_subprotocol and",
-                          "version_number does not refer to an existing",
-                          "released protocol."))
-
-  #use git show to list the protocol files
-  gitcommand <- paste0("git show ",
-                       tag, ":",
-                       protocol_path_rel)
-
-  protocol_files <- execshell(gitcommand,
-                           intern = TRUE)
-  protocol_files <- protocol_files[3:length(protocol_files)]
-  #git show to copy paste all files to a temp location
-  z <- tempdir()
-  if (length(protocol_files) > 0) {
-    git_filepaths <-
+    protocol_path_rel <-
       get_path_to_protocol(code_subprotocol) %>%
-      file.path(protocol_files) %>%
       path_rel(start = find_root(is_git_root))
 
-    create_command <- function(file_path, dest_path) {
-      paste0("git show ",
-             tag, ":",
-             file_path, " > ",
-             dest_path
-      )
+
+
+    if (fetch_remote) {
+      firstremote <- execshell("git remote", intern = TRUE)[1]
+      execshell(paste0("git fetch ", firstremote),
+                ignore.stdout = TRUE,
+                ignore.stderr = TRUE)
     }
-    dest_paths <- file.path(z, protocol_files)
-    git_commands <- map2(git_filepaths, dest_paths, create_command)
-    map(git_commands, execshell, intern = FALSE)
-  } else {
-    stop("no protocol files found")
+    existing_tags <- execshell("git tag", intern = TRUE)
+    tag <- paste(code_subprotocol, version_number, sep = "-")
+    assert_that(tag %in% existing_tags,
+                msg = paste("The combination of code_subprotocol and",
+                            "version_number does not refer to an existing",
+                            "released protocol."))
+
+    #use git ls-tree to list the protocol files
+    #-r for recursive listing
+    #--name-only to only return relative path filenames
+    gitcommand <- paste0("git ls-tree -r --name-only ",
+                         tag, ":",
+                         protocol_path_rel)
+
+    protocol_files <- execshell(gitcommand,
+                                intern = TRUE)
+    #git show to copy paste all files to a subdir of main protocol location
+    if (length(protocol_files) > 0) {
+      git_filepaths <-
+        get_path_to_protocol(code_subprotocol) %>%
+        file.path(protocol_files) %>%
+        path_rel(start = find_root(is_git_root))
+
+      create_command <- function(file_path, dest_path) {
+        paste0("git show ",
+               tag, ":",
+               file_path, " > ",
+               dest_path
+        )
+      }
+      # use version_number as folder name instead of code_subprotocol
+      # to avoid problems with get_path_to_protocol()
+      dir.create(file.path(mainprotocol_path_abs,
+                           version_number))
+      dir.create(file.path(mainprotocol_path_abs,
+                           version_number,
+                           "data"))
+      dir.create(file.path(mainprotocol_path_abs,
+                           version_number,
+                           "media"))
+      dest_paths <- file.path(mainprotocol_path_abs, version_number,
+                              protocol_files) %>%
+        path_rel(start = find_root(is_git_root))
+      git_commands <- map2(git_filepaths, dest_paths, create_command)
+      map(git_commands, execshell, intern = FALSE)
+    } else {
+      stop("no protocol files found")
+    }
+
+
+    #render the protocol
+    #with params and with bookdown::markdown_document2() as output format
+    #and output to the main bookdown working directory
+    mdfile <- paste0(code_subprotocol,"-", version_number, ".md")
+    old_wd <- getwd()
+    setwd(dir = file.path(mainprotocol_path_abs, version_number))
+    yaml_sub <- yaml_front_matter("index.Rmd")
+    if (length(params) >= 1) {
+      render_book(input = "index.Rmd",
+                  output_format = markdown_document2(
+                    variant = "markdown",
+                    number_sections = FALSE,
+                    keep_md = TRUE,
+                    pandoc_args = c(
+                      "--atx-headers",
+                      paste0("--id-prefix=", code_subprotocol),
+                      "--base-header-level=2"
+                    )
+                  ),
+                  output_file = mdfile,
+                  output_dir = ".",
+                  params = params,
+                  envir = new.env())
+    } else {
+      render_book(input = "index.Rmd",
+                  output_format = markdown_document2(
+                    variant = "markdown",
+                    number_sections = FALSE,
+                    keep_md = TRUE,
+                    pandoc_args = c(
+                      "--atx-headers",
+                      paste0("--id-prefix=", code_subprotocol),
+                      "--base-header-level=2"
+                    )
+                  ),
+                  output_file = mdfile,
+                  output_dir = ".",
+                  envir = new.env())
+    }
+
+    # post-processing
+    # add title and replace paths media and data
+    fconn <- file(mdfile, 'r+')
+    mdcontents <- readLines(fconn)
+    mdcontents <- str_replace_all(mdcontents,
+                                  "\\.\\/media\\/",
+                                  paste0("./", version_number, "/media/"))
+    mdcontents <- str_replace_all(mdcontents,
+                                  "\\.\\/data\\/",
+                                  paste0("./", version_number, "/data/"))
+    title <- paste0("# ", yaml_sub$title, "\n")
+    writeLines(c(title, mdcontents), con = fconn)
+    close(fconn)
+    # remove interim files
+    rmd_files <- list.files(path = ".", pattern = "\\.Rmd$")
+    yml_files <- list.files(path = ".", pattern = "\\.yml$")
+    file.remove(rmd_files)
+    file.remove(yml_files)
+
+    setwd(old_wd)
   }
 
 
-  #render the protocol
-  #with params and with bookdown::md_document2() as output format
-  #and output to the main bookdown working directory
-  mdfile <- paste0(code_subprotocol,"-", version_number, ".md")
-  old_wd <- getwd()
-  setwd(dir = z)
-  if (length(params >= 1)) {
-    render_book(input = "index.Rmd",
-                output_format = markdown_document2(
-                  pandoc_args = c(
-                    pandoc_variable_arg("markdown-headings", "atx")
-                  )
-                ),
-                output_dir = old_wd,
-                output_file = mdfile,
-                params = params,
-                envir = new.env())
-  } else {
-    render_book(input = "index.Rmd",
-                output_format = markdown_document2(
-                  pandoc_args = c(
-                    pandoc_variable_arg("markdown-headings", "atx")
-                  )
-                ),
-                output_dir = old_wd,
-                output_file = mdfile,
-                envir = new.env())
-  }
-  # use mdfile as child
-  knit_child(mdfile)
-  setwd(old_wd)
-
-}
-
-
-#' @title Render all subprotocols
+#' @title Render all subprotocols to single markdown files
 #'
-#' @return Each subprotocol is an appendix chapter
+#' @description The function should be called in a separate R script.
+#'
+#' @return For each subprotocol a single markdown file and associated media and
+#' data files. Each subprotocol will be written to a subfolder of the main
+#' protocol. The subfolder name is the same as the version number of the
+#' subprotocol.
 #'
 #' @param .dependencies a data.frame with columns version_number, params and
-#' appendix.
-#' @param ... additional parameters passed on to add_one_subprotocol
+#' appendix. Each column corresponds with an argument of
+#' [protocolhelper::add_one_subprotocol()]
+#' @param ... additional parameters passed on to
+#' [protocolhelper::add_one_subprotocol()].
 #'
 #'
 #' @export
