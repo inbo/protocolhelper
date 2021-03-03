@@ -39,28 +39,76 @@ test_that("add dependencies of a project-specific protocol as appendix chapters 
   spp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "spp-001-en_mne-protocol")
 
-  # debugonce(add_one_subprotocol)
-  # add_one_subprotocol(code_subprotocol = "sfp-101-en",
-  #                     version_number = "2020.01",
-  #                     fetch_remote = FALSE)
-  # add a subprotocol to
-  # src/project/mne/spp-001-nl_mne-protocol/08_appendices.Rmd
-  # via a chunk
-  chunk <- "```{r}\nprotocolhelper::add_subprotocols(.dependencies = dependencies,fetch_remote=FALSE)\n```"
+
+  # create a second protocol to be used as subprotocol
+  version_number <- "2020.03"
+  create_sfp(title = "Second subprotocol",
+             subtitle = "",
+             short_title = "second subprotocol",
+             authors = "me",
+             reviewers = "someone else",
+             file_manager = "who?",
+             version_number = version_number,
+             theme = "water",
+             lang = "en"
+             )
+  # test non-default params
+  test_params <- "\nThe reviewers are `r params$reviewers`"
   write(
-    x = chunk,
-    file = "src/project/mne/spp-001-en_mne-protocol/08_appendices.Rmd",
+    x = test_params,
+    file = "src/thematic/1_water/sfp-102-en_second-subprotocol/07_stappenplan.Rmd",
     append = TRUE)
-  gert::git_commit_all(message = "spp-001-en_mne-protocol")
+  # test data and media
+  write.csv(
+    x = cars,
+    file = "src/thematic/1_water/sfp-102-en_second-subprotocol/data/cars.csv")
+  z <- tempfile()
+  download.file("https://www.r-project.org/logo/Rlogo.png",
+                z,
+                mode="wb")
+  pic <- png::readPNG(z)
+  png::writePNG(pic,"src/thematic/1_water/sfp-102-en_second-subprotocol/media/Rlogo.png")
+  data_media_staged <- gert::git_add(files = ".")
+  chunk1 <- "```{r, out.width='25%'}\nknitr::include_graphics(path = './media/Rlogo.png')\n```"
+  chunk2 <- "```{r}\nread.csv('./data/cars.csv')\n```"
+  write(
+    x = chunk1,
+    file = "src/thematic/1_water/sfp-102-en_second-subprotocol/07_workflow.Rmd",
+    append = TRUE)
+  write(
+    x = chunk2,
+    file = "src/thematic/1_water/sfp-102-en_second-subprotocol/07_workflow.Rmd",
+    append = TRUE)
+
+  # add, commit and tag it
+  gert::git_commit_all(message = "sfp-102-en_second-subprotocol")
+  specific_tag <- paste("sfp-102-en", version_number, sep = "-")
+  generic_tag <- paste("protocols", version_number, sep = "-")
+  gert::git_tag_create(name = specific_tag, message = "bla")
+  gert::git_tag_create(name = generic_tag, message = "bla")
+
+
+  # add subprotocols to
+  # src/project/mne/spp-001-en_mne-protocol/
+  #debugonce(add_subprotocols)
+  dependencies <- data.frame(
+    protocol_code = c("sfp-101-en", "sfp-102-en"),
+    version_number = c("2020.01","2020.03"),
+    params = c("list()", "list(reviewers = c('reviewer1', 'reviewer2'))"),
+    appendix = c(TRUE, TRUE))
+  add_subprotocols(
+    .dependencies = dependencies,
+    fetch_remote = FALSE,
+    code_mainprotocol = 'spp-001-en')
 
   # render spp-001-en including the subprotocol
 
   render_protocol(protocol_code = "spp-001-en",
                   params = list(
-                    dependencies_protocolcode = c("sfp-101-en"),
-                    dependencies_versionnumber = c("2020.01"),
-                    dependencies_params = c("list()"),
-                    dependencies_appendix = c("TRUE")
+                    dependencies_protocolcode = dependencies$protocol_code,
+                    dependencies_versionnumber = dependencies$version_number,
+                    dependencies_params = dependencies$params,
+                    dependencies_appendix = dependencies$appendix
                   ))
 
 
