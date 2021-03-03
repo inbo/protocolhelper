@@ -119,12 +119,12 @@ test_that("Test that insert_protocolsection works", {
   gert::git_commit_all(message = "spp-001-nl_mne-protocol")
 
   # add a subprotocol to
-  # src/project/mne/spp-001-nl_mne-protocol/08_appendices.Rmd
+  # src/project/mne/spp-001-nl_mne-protocol/08_subprotocols.Rmd
   # via a chunk
   chunk <- "```{r results='asis'}\nprotocolhelper::insert_protocolsection(code_subprotocol='sfp-101-nl', version_number='2020.03', file_name='07_stappenplan.Rmd', fetch_remote = FALSE)\n```"
   write(
     x = chunk,
-    file = "src/project/mne/spp-001-nl_mne-protocol/08_appendices.Rmd",
+    file = "src/project/mne/spp-001-nl_mne-protocol/08_subprotocols.Rmd",
     append = TRUE)
   gert::git_commit_all(message = "spp-001-nl_mne-protocol")
 
