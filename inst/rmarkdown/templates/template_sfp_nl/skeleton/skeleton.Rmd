@@ -35,7 +35,9 @@ dependencies_protocolcode: hier geef je de protocolcodes door waar het project-s
 
 dependencies_versionnumber: hier geef je de versienummers door waar het project-specifieke protocol van afhankelijk is.
 
-dependencies_params: let op, hier moet je een geneste lijst als R code doorgeven. De '!r ...' duidt aan dat wat volgt moet geïnterpreteerd worden als r code. De geneste lijst begint met list() en daarbinnen geef je de name-value pairs door van de parameters waar je van de defaultwaarden wil afwijken. Indien je niet van de defaultwaarden wil afwijken, geef je een lege lijst door. Zie het voorbeeld.
+dependencies_params: Hier geef je de key-value pairs door van de parameters waar je van de defaultwaarden wil afwijken. Je geeft deze door als "list(key1 = 'value1', key2 = 'value2')". 
+Indien je niet van de defaultwaarden wil afwijken, geef je een lege lijst door als "list()".
+
 dependencies_appendix: een TRUE FALSE vector die aangeeft welke dependencies je als bijlage wil opnemen in het projectspecifieke protocol.
 
 Instructies bij opmaak van het protocol:
