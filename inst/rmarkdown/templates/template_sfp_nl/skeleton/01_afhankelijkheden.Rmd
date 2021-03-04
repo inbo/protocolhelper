@@ -19,6 +19,9 @@ dependencies <- as_tibble(params$dependencies_protocolcode) %>%
          )
 
 dependencies %>%
-  select(-appendix) %>%
+  rename(
+    `Protocolcode` = protocol_code,
+    `Versienummer` = version_number,
+    `Opgenomen als bijlage` = appendix) %>%
   kable()
 ```
