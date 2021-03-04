@@ -71,7 +71,7 @@ library(purrr)
 
 | Reviewers | File manager | Protocol code | Version number | Language | Theme |
 | --------- | ----------------- | ------------- | ------------ | ---- | ----- |
-| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r sprintf("[%1$s](../%1$s/index.html)", params$protocol_code)` | `r params$version_number` | `r params$language` | `r params$theme` |
+| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r params$protocol_code` | `r params$version_number` | `r params$language` | `r params$theme` |
 
 
 
