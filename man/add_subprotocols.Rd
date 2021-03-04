@@ -14,12 +14,12 @@ appendix. Each column corresponds with an argument of
 \item{...}{additional parameters passed on to
 \code{\link[=add_one_subprotocol]{add_one_subprotocol()}}.}
 }
-\value{
-For each subprotocol a single markdown file and associated media and
-data files. Each subprotocol will be written to a subfolder of the main
-protocol. The subfolder name is the same as the version number of the
-subprotocol.
-}
 \description{
 The function should be called in a separate R script.
+For each subprotocol a single markdown file and associated media and
+data files will be written.
+Each subprotocol will be written to a subfolder of the main
+protocol.
+The subfolder name is the same as the version number of the
+subprotocol.
 }

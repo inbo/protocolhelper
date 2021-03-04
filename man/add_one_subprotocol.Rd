@@ -26,14 +26,11 @@ main protocol}
 
 \item{fetch_remote}{Whether or not to fetch the remote. Default TRUE.}
 }
-\value{
-A markdown file of the subprotocol and associated media and data
-files.
-}
 \description{
 The function renders the subprotocol to
 \code{\link[bookdown:html_document2]{bookdown::markdown_document2()}} and
-saves the resulting md file (and any associated files) in a subfolder of the
-directory of the project-specific protocol. This function should normally
-not be called directly. Use \code{\link[=add_subprotocols]{add_subprotocols()}} instead.
+saves the resulting md file (and any associated media and data files) in a
+subfolder of the directory of the project-specific protocol.
+This function should normally not be called directly.
+Use \code{\link[=add_subprotocols]{add_subprotocols()}} instead.
 }

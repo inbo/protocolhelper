@@ -3,12 +3,10 @@
 #'
 #' @description The function renders the subprotocol to
 #' [bookdown::markdown_document2()] and
-#' saves the resulting md file (and any associated files) in a subfolder of the
-#' directory of the project-specific protocol. This function should normally
-#' not be called directly. Use [protocolhelper::add_subprotocols()] instead.
-#'
-#' @return A markdown file of the subprotocol and associated media and data
-#' files.
+#' saves the resulting md file (and any associated media and data files) in a
+#' subfolder of the directory of the project-specific protocol.
+#' This function should normally not be called directly.
+#' Use [protocolhelper::add_subprotocols()] instead.
 #'
 #' @param code_subprotocol Character string giving the protocol code from
 #' which a subprotocol will be made (usually a sfp-type protocol)
@@ -195,10 +193,11 @@ add_one_subprotocol <-
 #' @title Render all subprotocols to single markdown files
 #'
 #' @description The function should be called in a separate R script.
-#'
-#' @return For each subprotocol a single markdown file and associated media and
-#' data files. Each subprotocol will be written to a subfolder of the main
-#' protocol. The subfolder name is the same as the version number of the
+#' For each subprotocol a single markdown file and associated media and
+#' data files will be written.
+#' Each subprotocol will be written to a subfolder of the main
+#' protocol.
+#' The subfolder name is the same as the version number of the
 #' subprotocol.
 #'
 #' @param .dependencies a data.frame with columns version_number, params and
