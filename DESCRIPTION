@@ -47,4 +47,6 @@ Imports:
     fs,
     yaml,
     knitr,
-    jsonlite
+    jsonlite,
+    commonmark,
+    xml2

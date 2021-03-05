@@ -19,11 +19,13 @@
 #' @importFrom assertthat assert_that is.string is.flag noNA
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom fs path_rel
-#' @importFrom purrr map map2
+#' @importFrom purrr map map2 map2_chr
 #' @importFrom bookdown render_book markdown_document2
-#' @importFrom stringr str_extract str_replace_all
+#' @importFrom stringr str_extract str_replace_all coll
 #' @importFrom knitr knit_child
 #' @importFrom rmarkdown yaml_front_matter
+#' @importFrom commonmark markdown_xml
+#' @importFrom xml2 xml_attr xml_text read_xml xml_find_all
 #'
 #'
 #' @export
@@ -142,7 +144,6 @@ add_one_subprotocol <-
                     keep_md = TRUE,
                     pandoc_args = c(
                       "--atx-headers",
-                      paste0("--id-prefix=", code_subprotocol),
                       "--base-header-level=2"
                     )
                   ),
@@ -158,7 +159,6 @@ add_one_subprotocol <-
                     keep_md = TRUE,
                     pandoc_args = c(
                       "--atx-headers",
-                      paste0("--id-prefix=", code_subprotocol),
                       "--base-header-level=2"
                     )
                   ),
@@ -169,8 +169,7 @@ add_one_subprotocol <-
 
     # post-processing
     # add title and replace paths media and data
-    fconn <- file(mdfile, 'r+')
-    mdcontents <- readLines(fconn)
+    mdcontents <- readLines(mdfile, encoding = "UTF8")
     mdcontents <- str_replace_all(mdcontents,
                                   "\\.\\/media\\/",
                                   paste0("./", version_number, "/media/"))
@@ -178,8 +177,45 @@ add_one_subprotocol <-
                                   "\\.\\/data\\/",
                                   paste0("./", version_number, "/data/"))
     title <- paste0("# ", yaml_sub$title, "\n")
-    writeLines(c(title, mdcontents), con = fconn)
-    close(fconn)
+    mdcontents <- c(title, mdcontents)
+    # alternative to pandoc arg --id-prefix which doesn't work for md output
+    # to make sure main protocol has no duplicated identifiers
+    xml <- markdown_xml(mdcontents)
+    xml <- read_xml(xml)
+    all_headings <- xml_find_all(xml, xpath = ".//d1:heading")
+    heading_level <- xml_attr(all_headings, "level")
+    heading_text <- xml_text(all_headings)
+    add_atx <- function(level, text) {
+      level <- as.double(level)
+      atx <- paste(rep("#", level), collapse = "")
+      paste(atx, text)
+    }
+    add_identifiers <- function(header_text, prepend) {
+      autoidentifier <- !grepl("\\{\\#.+\\}", header_text)
+      special_header <- grepl("\\(.+\\)", header_text)
+      if (autoidentifier) {
+        identifier <- tolower(header_text)
+        identifier <- gsub("\\s", "-", identifier)
+        if (special_header) {gsub("\\(.+\\)", "", identifier)}
+        identifier <- paste0("{#", prepend, "-", identifier, "}")
+        paste(header_text, identifier)
+      } else {
+        header_text <- sub("\\s\\{\\#.+\\}", "", header_text)
+        identifier <- tolower(header_text)
+        identifier <- gsub("\\s", "-", identifier)
+        if (special_header) {gsub("\\(.+\\)", "", identifier)}
+        identifier <- paste0("{#", prepend, "-", identifier, " .unnumbered}")
+        paste(header_text, identifier)
+      }
+    }
+    headings_modif <- map2_chr(heading_text, code_subprotocol, add_identifiers)
+    headings_modif <- map2_chr(heading_level, headings_modif, add_atx)
+    headings_orig <- map2_chr(heading_level, heading_text, add_atx)
+    names(headings_modif) <- headings_orig
+    md_string <- paste(mdcontents, collapse = "||")
+    md_string <- str_replace_all(md_string, stringr::coll(headings_modif))
+    mdcontents <- unlist(strsplit(md_string, split = "||", fixed = TRUE))
+    writeLines(mdcontents, con = mdfile)
     # remove interim files
     rmd_files <- list.files(path = ".", pattern = "\\.Rmd$")
     yml_files <- list.files(path = ".", pattern = "\\.yml$")
