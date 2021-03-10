@@ -6,22 +6,32 @@ Indien er dependencies zijn deze invullen in de yaml sectie van index.Rmd
 -->
 
 
+
 ```{r dependencies}
+dependencies <- tibble(
+  protocol_code = character(),
+  version_number = character(),
+  params = character(),
+  appendix = logical()
+)
+
+pc <- unlist(params$dependencies_protocolcode)
 vn <- unlist(params$dependencies_versionnumber)
 pm <- unlist(params$dependencies_params)
 ap <- as.logical(unlist(params['dependencies_appendix']))
 
-dependencies <- as_tibble(params$dependencies_protocolcode) %>%
-  rename(protocol_code = value) %>%
-  mutate(version_number = vn,
-         params = pm,
-         appendix = ap
-         )
+if (!any(is.na(pc))) {
+  dependencies <- dependencies %>%
+    bind_rows(tibble(protocol_code = pc, 
+                   version_number = vn,
+                   params = pm,
+                   appendix = ap))
+} 
 
 dependencies %>%
   rename(
-    `Protocolcode` = protocol_code,
-    `Versienummer` = version_number,
-    `Opgenomen als bijlage` = appendix) %>%
+    `Protocol code` = protocol_code,
+    `Version number` = version_number,
+    `Included as appendix` = appendix) %>%
   kable()
 ```

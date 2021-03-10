@@ -10,10 +10,10 @@ params:
   version_number: "{{{version_number}}}"
   language: {{{language}}}
   theme: {{{theme}}}
-  dependencies_protocolcode: [sfp_4##_en, sfp_3##_en]
-  dependencies_versionnumber: [YYYY.NN, YYYY.NN]
-  dependencies_params: ["list(width_m = 4, length_m = 4)", "list()"]
-  dependencies_appendix: [TRUE, FALSE]
+  dependencies_protocolcode: !r NA
+  dependencies_versionnumber: !r NA
+  dependencies_params: !r NA
+  dependencies_appendix: !r NA
 site: bookdown::bookdown_site
 output: 
   bookdown::gitbook:
@@ -31,14 +31,14 @@ Aan elk van deze keys moet je informatie doorgeven over de dependencies van je p
 Deze informatie wordt doorgegeven als een vector tussen vierkante haken en komma als scheidingsteken.
 Elk van de vier vectoren moet even lang zijn en de volgorde van de elementen moet overeenkomen (dus eerste element van dependencies_protocolcode komt overeen met eerste element van dependencies_versionnumber)
 
-dependencies_protocolcode: hier geef je de protocolcodes door waar het project-specifieke protocol van afhankelijk is.
+dependencies_protocolcode: hier geef je de protocolcodes door waar het project-specifieke protocol van afhankelijk is. [sfp-###-en, sfp-###-en]
 
-dependencies_versionnumber: hier geef je de versienummers door waar het project-specifieke protocol van afhankelijk is.
+dependencies_versionnumber: hier geef je de versienummers door waar het project-specifieke protocol van afhankelijk is. [YYYY.NN, YYYY.NN]
 
-dependencies_params: Hier geef je de key-value pairs door van de parameters waar je van de defaultwaarden wil afwijken. Je geeft deze door als "list(key1 = 'value1', key2 = 'value2')". 
+dependencies_params: Hier geef je de key-value pairs door van de parameters waar je van de defaultwaarden wil afwijken. Je geeft deze door als ["list(width_m = 4, length_m = 4)", "list()"]. In dit voorbeeld zijn width_m en length_m twee namen van de keys. 
 Indien je niet van de defaultwaarden wil afwijken, geef je een lege lijst door als "list()".
 
-dependencies_appendix: een TRUE FALSE vector die aangeeft welke dependencies je als bijlage wil opnemen in het projectspecifieke protocol.
+dependencies_appendix: een TRUE FALSE vector die aangeeft welke dependencies je als bijlage wil opnemen in het projectspecifieke protocol. bv [TRUE, FALSE]
 
 Instructies bij opmaak van het protocol:
 

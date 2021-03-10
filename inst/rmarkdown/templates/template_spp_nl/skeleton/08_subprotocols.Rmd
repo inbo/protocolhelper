@@ -1,7 +1,7 @@
 # (PART\*) Subprotocols {-} 
 
 ```{r, results="asis"}
-if (exists("dependencies")) {
+if (nrow(dependencies) > 0) {
   mdfiles <- paste0(dependencies$protocol_code,
                     "-", 
                     dependencies$version_number, 
