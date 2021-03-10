@@ -196,14 +196,18 @@ add_one_subprotocol <-
       if (autoidentifier) {
         identifier <- tolower(header_text)
         identifier <- gsub("\\s", "-", identifier)
-        if (special_header) {gsub("\\(.+\\)", "", identifier)}
+        if (special_header) {
+          identifier <- gsub("\\(.+\\)", "", identifier)
+          }
         identifier <- paste0("{#", prepend, "-", identifier, "}")
         paste(header_text, identifier)
       } else {
         header_text <- sub("\\s\\{\\#.+\\}", "", header_text)
         identifier <- tolower(header_text)
         identifier <- gsub("\\s", "-", identifier)
-        if (special_header) {gsub("\\(.+\\)", "", identifier)}
+        if (special_header) {
+          identifier <- gsub("\\(.+\\)", "", identifier)
+          }
         identifier <- paste0("{#", prepend, "-", identifier, " .unnumbered}")
         paste(header_text, identifier)
       }
