@@ -36,11 +36,12 @@ render_protocol <- function(protocol_code = NULL,
   # render html
   old_wd <- getwd()
   setwd(dir = path_to_protocol)
-  render_book(input = "index.Rmd",
+  suppressWarnings(
+    render_book(input = "index.Rmd",
               output_dir = output_dir,
               output_file = "index.html",
               envir = new.env(),
-              ...)
+              ...))
   setwd(old_wd)
 
 }
