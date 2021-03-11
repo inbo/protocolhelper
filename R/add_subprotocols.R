@@ -202,14 +202,20 @@ add_one_subprotocol <-
         identifier <- paste0("{#", prepend, "-", identifier, "}")
         paste(header_text, identifier)
       } else {
-        header_text <- sub("\\s\\{\\#.+\\}", "", header_text)
-        identifier <- tolower(header_text)
-        identifier <- gsub("\\s", "-", identifier)
-        if (special_header) {
-          identifier <- gsub("\\(.+\\)", "", identifier)
+        # deal with sub-sub protocols
+        # which already have protocolcode prepended
+        if (grepl("\\s\\{\\#s[fpiao]p.+\\}",header_text)) {
+          header_text #keep as is
+        } else {
+          header_text <- sub("\\s\\{\\#.+\\}", "", header_text)
+          identifier <- tolower(header_text)
+          identifier <- gsub("\\s", "-", identifier)
+          if (special_header) {
+            identifier <- gsub("\\(.+\\)", "", identifier)
           }
-        identifier <- paste0("{#", prepend, "-", identifier, " .unnumbered}")
-        paste(header_text, identifier)
+          identifier <- paste0("{#", prepend, "-", identifier, " .unnumbered}")
+          paste(header_text, identifier)
+        }
       }
     }
     headings_modif <- map2_chr(heading_text, code_subprotocol, add_identifiers)
