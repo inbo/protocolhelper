@@ -18,7 +18,7 @@
 #'
 #' @importFrom assertthat assert_that is.string is.flag noNA
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom fs path_rel
+#' @importFrom fs path_rel path_dir dir_create
 #' @importFrom purrr map map2 map2_chr
 #' @importFrom bookdown render_book markdown_document2
 #' @importFrom stringr str_extract str_replace_all coll
@@ -97,6 +97,8 @@ add_one_subprotocol <-
                                 intern = TRUE)
     #git show to copy paste all files to a subdir of main protocol location
     if (length(protocol_files) > 0) {
+      subdirs <- path_dir(protocol_files)
+      subdirs <- subdirs[grepl("\\w+", subdirs)]
       git_filepaths <-
         get_path_to_protocol(code_subprotocol) %>%
         file.path(protocol_files) %>%
@@ -111,14 +113,12 @@ add_one_subprotocol <-
       }
       # use version_number as folder name instead of code_subprotocol
       # to avoid problems with get_path_to_protocol()
-      dir.create(file.path(mainprotocol_path_abs,
+      dir_create(file.path(mainprotocol_path_abs,
                            version_number))
-      dir.create(file.path(mainprotocol_path_abs,
+      dir_create(file.path(mainprotocol_path_abs,
                            version_number,
-                           "data"))
-      dir.create(file.path(mainprotocol_path_abs,
-                           version_number,
-                           "media"))
+                           subdirs),
+                 recurse = TRUE)
       dest_paths <- file.path(mainprotocol_path_abs, version_number,
                               protocol_files) %>%
         path_rel(start = find_root(is_git_root))
