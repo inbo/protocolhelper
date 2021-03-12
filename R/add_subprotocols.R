@@ -220,7 +220,11 @@ add_one_subprotocol <-
     }
     headings_modif <- map2_chr(heading_text, code_subprotocol, add_identifiers)
     headings_modif <- map2_chr(heading_level, headings_modif, add_atx)
+    headings_modif <- map2_chr("||", headings_modif, paste, sep = "")
+    headings_modif <- map2_chr(headings_modif,"||", paste, sep = "")
     headings_orig <- map2_chr(heading_level, heading_text, add_atx)
+    headings_orig <- map2_chr("||",headings_orig, paste, sep = "")
+    headings_orig <- map2_chr(headings_orig, "||", paste, sep = "")
     names(headings_modif) <- headings_orig
     md_string <- paste(mdcontents, collapse = "||")
     md_string <- str_replace_all(md_string, stringr::coll(headings_modif))

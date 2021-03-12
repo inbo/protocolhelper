@@ -168,6 +168,4 @@ test_that("add dependencies of a project-specific protocol as appendix chapters 
   # Cleanup
   unlink(repo, recursive = TRUE)
 
-
-
 })
