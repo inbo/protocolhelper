@@ -162,13 +162,7 @@ test_that("add dependencies of a project-specific protocol as appendix chapters 
     code_mainprotocol = 'spp-001-en')
 
   # render spp-001-en including the subprotocol
-  render_protocol(protocol_code = "spp-001-en",
-                  params = list(
-                    dependencies_protocolcode = dependencies$protocol_code,
-                    dependencies_versionnumber = dependencies$version_number,
-                    dependencies_params = dependencies$params,
-                    dependencies_appendix = dependencies$appendix
-                  ))
+  render_protocol(protocol_code = "spp-001-en")
 
 
   # Cleanup
