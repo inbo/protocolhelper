@@ -32,10 +32,20 @@ if (!any(is.na(pc))) {
                    appendix = ap))
 } 
 
-dependencies %>%
-  rename(
-    `Protocol code` = protocol_code,
-    `Version number` = version_number,
-    `Included as appendix` = appendix) %>%
-  kable()
+if (nrow(dependencies) > 0) {
+  dependencies %>%
+    rename(
+      `Protocol code` = protocol_code,
+      `Version number` = version_number,
+      `Included as appendix` = appendix) %>%
+    kable()
+} else {
+  dependencies %>%
+    add_row() %>%
+    rename(
+      `Protocol code` = protocol_code,
+      `Version number` = version_number,
+      `Included as appendix` = appendix) %>%
+    kable()
+}
 ```
