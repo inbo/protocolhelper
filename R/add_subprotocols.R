@@ -12,9 +12,7 @@
 #' which a subprotocol will be made (usually a sfp-type protocol)
 #' @param version_number Character string with format YYYY.NN
 #' @param params A list of parameter key-value pairs.
-#' @param code_mainprotocol Character string giving the protocol code for the
-#' main protocol
-#' @param fetch_remote Whether or not to fetch the remote. Default TRUE.
+#' @inheritParams add_subprotocols
 #'
 #' @importFrom assertthat assert_that is.string is.flag noNA
 #' @importFrom rprojroot find_root is_git_root
@@ -240,9 +238,14 @@ add_one_subprotocol <-
   }
 
 
-#' @title Render all subprotocols to single markdown files
+#' @title Render all subprotocols belonging to a main protocol to single
+#' markdown files
 #'
-#' @description The function should be called in a separate R script.
+#' @description The function should be called interactively (in the console)
+#' after the dependencies section in the `YAML` header of the `Index.Rmd` file
+#' of the main protocol has been filled in.
+#' For reproducibility, it is good practice to save the call in a
+#' separate R script.
 #' For each subprotocol a single markdown file and associated media and
 #' data files will be written.
 #' Each subprotocol will be written to a subfolder of the main
@@ -250,23 +253,53 @@ add_one_subprotocol <-
 #' The subfolder name is the same as the version number of the
 #' subprotocol.
 #'
-#' @param .dependencies a data.frame with columns version_number, params and
-#' appendix. Each column corresponds with an argument of
-#' [protocolhelper::add_one_subprotocol()]
-#' @param ... additional parameters passed on to
-#' [protocolhelper::add_one_subprotocol()].
+#' @param code_mainprotocol Character string giving the protocol code for the
+#' main protocol
+#' @param fetch_remote Whether or not to fetch the remote. Default TRUE.
 #'
+#' @importFrom assertthat assert_that is.string is.flag noNA
+#' @importFrom rmarkdown yaml_front_matter
 #'
 #' @export
 add_subprotocols <-
-  function(.dependencies,
-           ...) {
-  for (i in 1:nrow(.dependencies)) {
-    if (.dependencies$appendix[i]) {
-      add_one_subprotocol(.dependencies$protocol_code[i],
-                          .dependencies$version_number[i],
-                          .dependencies$params[i],
-                          ...)
+  function(code_mainprotocol,
+           fetch_remote = TRUE) {
+
+    assert_that(is.string(code_mainprotocol))
+    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
+    assert_that(
+      right_format,
+      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+    )
+
+    assert_that(is.flag(fetch_remote), noNA(fetch_remote))
+
+    mainprotocol_path_abs <- get_path_to_protocol(code_mainprotocol)
+
+    yml <- yaml_front_matter(file.path(mainprotocol_path_abs, "Index.Rmd"))
+
+    assert_that(is.logical(yml$params$dependencies_appendix),
+                noNA(yml$params$dependencies_appendix))
+    # note: right format assertions are done in add_one_subprotocol()
+    assert_that(is.character(yml$params$dependencies_protocolcode))
+    assert_that(is.character(yml$params$dependencies_versionnumber))
+    assert_that(is.character(yml$params$dependencies_params))
+
+    dependencies <- data.frame(
+        protocol_code = yml$params$dependencies_protocolcode,
+        version_number = yml$params$dependencies_versionnumber,
+        params = yml$params$dependencies_params,
+        appendix = yml$params$dependencies_appendix
+    )
+
+    for (i in 1:nrow(dependencies)) {
+      if (dependencies$appendix[i]) {
+        add_one_subprotocol(
+          code_subprotocol = dependencies$protocol_code[i],
+          version_number = dependencies$version_number[i],
+          params = dependencies$params[i],
+          code_mainprotocol = code_mainprotocol,
+          fetch_remote = fetch_remote)
+      }
     }
   }
-}

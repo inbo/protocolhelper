@@ -114,14 +114,7 @@ test_that("add dependencies of a project-specific protocol as appendix chapters 
     index,
     con = "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
 
-  dependencies <- data.frame(
-    protocol_code = c("sfp-401-en"),
-    version_number = c("2020.02"),
-    params = c("list()"),
-    appendix = c(TRUE))
-
   add_subprotocols(
-    .dependencies = dependencies,
     fetch_remote = FALSE,
     code_mainprotocol = 'sfp-102-en')
 
@@ -151,13 +144,7 @@ test_that("add dependencies of a project-specific protocol as appendix chapters 
   writeLines(
     index,
     con = "src/project/mne/spp-001-en_mne-protocol/index.Rmd")
-  dependencies <- data.frame(
-    protocol_code = c("sfp-101-en", "sfp-102-en"),
-    version_number = c("2020.01","2020.04"),
-    params = c("list()", "list(reviewers = c('reviewer1', 'reviewer2'))"),
-    appendix = c(TRUE, TRUE))
   add_subprotocols(
-    .dependencies = dependencies,
     fetch_remote = FALSE,
     code_mainprotocol = 'spp-001-en')
 
