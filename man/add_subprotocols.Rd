@@ -2,20 +2,23 @@
 % Please edit documentation in R/add_subprotocols.R
 \name{add_subprotocols}
 \alias{add_subprotocols}
-\title{Render all subprotocols to single markdown files}
+\title{Render all subprotocols belonging to a main protocol to single
+markdown files}
 \usage{
-add_subprotocols(.dependencies, ...)
+add_subprotocols(code_mainprotocol, fetch_remote = TRUE)
 }
 \arguments{
-\item{.dependencies}{a data.frame with columns version_number, params and
-appendix. Each column corresponds with an argument of
-\code{\link[=add_one_subprotocol]{add_one_subprotocol()}}}
+\item{code_mainprotocol}{Character string giving the protocol code for the
+main protocol}
 
-\item{...}{additional parameters passed on to
-\code{\link[=add_one_subprotocol]{add_one_subprotocol()}}.}
+\item{fetch_remote}{Whether or not to fetch the remote. Default TRUE.}
 }
 \description{
-The function should be called in a separate R script.
+The function should be called interactively (in the console)
+after the dependencies section in the \code{YAML} header of the \code{Index.Rmd} file
+of the main protocol has been filled in.
+For reproducibility, it is good practice to save the call in a
+separate R script.
 For each subprotocol a single markdown file and associated media and
 data files will be written.
 Each subprotocol will be written to a subfolder of the main
