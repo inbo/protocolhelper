@@ -1,0 +1,19 @@
+# (PART) Subprotocols {-} 
+
+```{r, results="asis"}
+if (nrow(dependencies) > 0) {
+  mdfiles <- paste0(dependencies$protocol_code,
+                    "-", 
+                    dependencies$version_number, 
+                    ".md")
+  child_docs <- file.path(dependencies$version_number,
+                          mdfiles)
+  
+  child_docs <- child_docs[dependencies$appendix]
+  
+  if (length(child_docs) > 0) {
+    res <- map(child_docs, knit_child, quiet = TRUE)
+    cat(unlist(res), sep = "\n")
+  }
+}
+```

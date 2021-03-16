@@ -53,18 +53,16 @@ insert_protocolsection <-
 
     assert_that(is.string(code_subprotocol))
     assert_that(is.string(version_number))
-    wrong_format <- !grepl("[0-9]{4}\\.[0-9]{2}", version_number)
-    if (wrong_format) {
-      stop(
-        "version number not in YYYY.XX format"
+    right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
+    assert_that(
+      right_format,
+      msg = "version number not in YYYY.XX format"
       )
-    }
-    wrong_format <- !grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
-    if (wrong_format) {
-      stop(
-        "protocol code not in s*f-###-nl or s*f-###-en format"
+    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
+    assert_that(
+      right_format,
+      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
       )
-    }
     demote_choices <- eval(formals()$demote_header)
     if (missing(demote_header)) {
       demote_header <- demote_choices[1]} else {
