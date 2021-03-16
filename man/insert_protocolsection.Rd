@@ -3,7 +3,7 @@
 \name{insert_protocolsection}
 \alias{insert_protocolsection}
 \title{Function to add a chapter or a section of a published protocol for
-re-use into another protocol}
+re-use in another protocol}
 \usage{
 insert_protocolsection(
   code_subprotocol,

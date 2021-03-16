@@ -148,8 +148,12 @@ test_that("add dependencies of a project-specific protocol as appendix chapters 
     fetch_remote = FALSE,
     code_mainprotocol = 'spp-001-en')
 
-  # render spp-001-en including the subprotocol
+  # render_protocol spp-001-en including the subprotocol
+  # which will output to docs
   render_protocol(protocol_code = "spp-001-en")
+
+  # render release which will output to publish folder
+  render_release()
 
 
   # Cleanup
