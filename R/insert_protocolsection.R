@@ -1,5 +1,5 @@
 #' @title Function to add a chapter or a section of a published protocol for
-#' re-use into another protocol
+#' re-use in another protocol
 #'
 #' @description The idea is to execute this function in an R chunk with knitr
 #' option \code{results="asis"}.
@@ -199,6 +199,5 @@ insert_protocolsection <-
 
     return(cat(res, sep = "\n"))
   }
-
 
 
