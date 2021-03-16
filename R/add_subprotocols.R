@@ -195,8 +195,10 @@ add_one_subprotocol <-
         identifier <- tolower(header_text)
         identifier <- gsub("\\s", "-", identifier)
         if (special_header) {
+          # remove (APPENDIX) or (PART)
           identifier <- gsub("\\(.+\\)", "", identifier)
-          }
+          header_text <- gsub("\\(.+\\)", "", header_text)
+        }
         identifier <- paste0("{#", prepend, "-", identifier, "}")
         paste(header_text, identifier)
       } else {
@@ -209,7 +211,9 @@ add_one_subprotocol <-
           identifier <- tolower(header_text)
           identifier <- gsub("\\s", "-", identifier)
           if (special_header) {
+            # remove (APPENDIX) or (PART)
             identifier <- gsub("\\(.+\\)", "", identifier)
+            header_text <- gsub("\\(.+\\)", "", header_text)
           }
           identifier <- paste0("{#", prepend, "-", identifier, " .unnumbered}")
           paste(header_text, identifier)
