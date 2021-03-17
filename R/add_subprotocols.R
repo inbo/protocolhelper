@@ -246,7 +246,7 @@ add_one_subprotocol <-
 #' markdown files
 #'
 #' @description The function should be called interactively (in the console)
-#' after the dependencies section in the `YAML` header of the `Index.Rmd` file
+#' after the dependencies section in the `YAML` header of the `index.Rmd` file
 #' of the main protocol has been filled in.
 #' For reproducibility, it is good practice to save the call in a
 #' separate R script.
