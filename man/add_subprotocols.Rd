@@ -15,7 +15,7 @@ main protocol}
 }
 \description{
 The function should be called interactively (in the console)
-after the dependencies section in the \code{YAML} header of the \code{Index.Rmd} file
+after the dependencies section in the \code{YAML} header of the \code{index.Rmd} file
 of the main protocol has been filled in.
 For reproducibility, it is good practice to save the call in a
 separate R script.
