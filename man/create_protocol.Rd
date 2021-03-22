@@ -81,7 +81,8 @@ maintainer of the form First name Last name}
 
 \item{version_number}{A version number of the form \code{YYYY.##}.
 For development versions \code{.dev} is added.
-The default is \code{paste0(format(Sys.Date(), "\%Y"), ".00.dev")} (See \code{from_docx}).
+The default is \code{paste0(format(Sys.Date(), "\%Y"), ".00.dev")}
+(See \code{from_docx}).
 When the protocol is ready to be released, this should be changed by a repo-
 admin.}
 
@@ -125,10 +126,10 @@ Defaults to FALSE.}
 A target folder to which files will be written will be created as
 subdirectories beneath \code{src}.
 The subfolder structure is of the form
-\verb{/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/} for standard field
-protocols.
-Or \verb{/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/} for
-standard project protocols.
+\verb{/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/} for
+standard field protocols.
+Or \verb{/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/}
+for standard project protocols.
 The folder names are determined by the corresponding arguments of the
 function.
 A matching subfolder structure will be created beneath the \code{docs} folder (and

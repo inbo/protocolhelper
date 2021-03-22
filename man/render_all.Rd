@@ -2,7 +2,8 @@
 % Please edit documentation in R/render_all.R
 \name{render_all}
 \alias{render_all}
-\title{Function to render all protocols into a folder \code{publish/version_number}.}
+\title{Function to render all protocols into a folder
+\code{publish/version_number}.}
 \usage{
 render_all(output_root = "publish", version_number)
 }
