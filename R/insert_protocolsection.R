@@ -65,7 +65,8 @@ insert_protocolsection <-
       )
     demote_choices <- eval(formals()$demote_header)
     if (missing(demote_header)) {
-      demote_header <- demote_choices[1]} else {
+      demote_header <- demote_choices[1]
+      } else {
         assert_that(demote_header %in% demote_choices,
                     msg = paste("demote_header must be one of",
                                 paste(demote_choices, collapse = ", ")))
@@ -109,10 +110,10 @@ insert_protocolsection <-
     is_chunk <- grepl("^`{3}", rmd_content)
     i <- 1
     while (i < length(is_chunk)) {
-      if (isTRUE(is_chunk[i]) && isTRUE(is_chunk[i+1])) {
+      if (isTRUE(is_chunk[i]) && isTRUE(is_chunk[i + 1])) {
         i <- i + 2
-      } else if (isTRUE(is_chunk[i]) && isFALSE(is_chunk[i+1])) {
-        is_chunk[i+1] <- TRUE
+      } else if (isTRUE(is_chunk[i]) && isFALSE(is_chunk[i + 1])) {
+        is_chunk[i + 1] <- TRUE
         i <- i + 1
       } else {
         i <- i + 1
@@ -143,7 +144,7 @@ insert_protocolsection <-
       h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk
       h3 <- grepl("^###\\s[A-Z]", rmd_content) & !is_chunk
       if (demote_header == -1) {
-        if(any(h1)) {
+        if (any(h1)) {
           stop("demote header -1 not possible when a level 1 header is present")
         } else {
           rmd_content[h2] <- str_remove(rmd_content[h2], "^#")
@@ -199,5 +200,3 @@ insert_protocolsection <-
 
     return(cat(res, sep = "\n"))
   }
-
-

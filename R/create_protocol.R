@@ -26,7 +26,8 @@
 #' maintainer of the form First name Last name
 #' @param version_number A version number of the form `YYYY.##`.
 #' For development versions `.dev` is added.
-#' The default is `paste0(format(Sys.Date(), "%Y"), ".00.dev")` (See `from_docx`).
+#' The default is `paste0(format(Sys.Date(), "%Y"), ".00.dev")`
+#' (See `from_docx`).
 #' When the protocol is ready to be released, this should be changed by a repo-
 #' admin.
 #' @param theme A character string equal to one of `"generic"` (default),
@@ -73,10 +74,10 @@
 #' @return A target folder to which files will be written will be created as
 #' subdirectories beneath `src`.
 #' The subfolder structure is of the form
-#' `/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/` for standard field
-#' protocols.
-#' Or `/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/` for
-#' standard project protocols.
+#' `/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/` for
+#' standard field protocols.
+#' Or `/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/`
+#' for standard project protocols.
 #' The folder names are determined by the corresponding arguments of the
 #' function.
 #' A matching subfolder structure will be created beneath the `docs` folder (and
@@ -388,19 +389,20 @@ create_protocol <- function(
 #' @rdname create_protocol
 #' @export
 
-create_sfp <- function(title,
-                       subtitle,
-                       short_title,
-                       authors,
-                       date = Sys.Date(),
-                       reviewers,
-                       file_manager,
-                       version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
-                       theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-                       language = c("nl", "en"),
-                       from_docx = NULL,
-                       protocol_number = NULL,
-                       render = FALSE) {
+create_sfp <- function(
+  title,
+  subtitle,
+  short_title,
+  authors,
+  date = Sys.Date(),
+  reviewers,
+  file_manager,
+  version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
+  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  render = FALSE) {
   create_protocol(protocol_type = "sfp",
                   title = title,
                   subtitle = subtitle,
@@ -419,19 +421,20 @@ create_sfp <- function(title,
 
 #' @rdname create_protocol
 #' @export
-create_spp <- function(title,
-                       subtitle,
-                       short_title,
-                       authors,
-                       date = Sys.Date(),
-                       reviewers,
-                       file_manager,
-                       version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
-                       project_name,
-                       language = c("nl", "en"),
-                       from_docx = NULL,
-                       protocol_number = NULL,
-                       render = FALSE) {
+create_spp <- function(
+  title,
+  subtitle,
+  short_title,
+  authors,
+  date = Sys.Date(),
+  reviewers,
+  file_manager,
+  version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
+  project_name,
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  render = FALSE) {
   create_protocol(protocol_type = "spp",
                   title = title,
                   subtitle = subtitle,
@@ -556,12 +559,12 @@ get_short_titles <- function(
 #' or construct one for non-existing protocols using (new) folder name plus
 #' the theme or project name.
 #'
-#' For existing protocol folders, arguments `theme` and `project_name` are always
-#' ignored.
+#' For existing protocol folders, arguments `theme` and `project_name` are
+#' always ignored.
 #'
 #' To create a new protocol folder,
-#' also either the `theme` or the `project_name` argument are required apart from
-#' the `protocol_folder_name`.
+#' also either the `theme` or the `project_name` argument are required apart
+#' from the `protocol_folder_name`.
 #'
 #' @param protocol_code Character string giving the protocol code
 #' @param theme A character string equal to one of `"generic"`,
@@ -599,7 +602,7 @@ get_path_to_protocol <- function(protocol_code,
 
   # first case: the path exists already
   project_root <- find_root(is_git_root)
-  ld <- list.dirs(path = file.path(project_root,"src"),
+  ld <- list.dirs(path = file.path(project_root, "src"),
                   full.names = TRUE,
                   recursive = TRUE)
   ld <- str_subset(string = ld,
@@ -611,7 +614,10 @@ get_path_to_protocol <- function(protocol_code,
     # second case: the path does not yet exist
     if (is.null(theme) & is.null(project_name) |
         is.string(theme) & is.string(project_name)) {
-      stop("Check the spelling of protocol_code - or - provide a string value for theme or project, not both.")
+      stop(
+        paste0("Check the spelling of protocol_code - or - provide ",
+        "a string value for theme or project, not both.")
+        )
     }
 
     if (is.null(short_title)) {

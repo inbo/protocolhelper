@@ -42,8 +42,11 @@ convert_docx_to_rmd <- function(
   overwrite = FALSE,
   verbose = FALSE) {
 
-  if (missing(to)) {to <- paste0(file_path_sans_ext(basename(from)), ".Rmd")
-  } else {assert_that(is.string(to))}
+  if (missing(to)) {
+    to <- paste0(file_path_sans_ext(basename(from)), ".Rmd")
+  } else {
+    assert_that(is.string(to))
+  }
   if (missing(dir)) dir <- "."
   to <- file.path(dir, to)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
