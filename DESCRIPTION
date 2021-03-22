@@ -22,7 +22,7 @@ Authors@R:
              email = "info@inbo.be"))
 Description: Helper functions to manage INBO protocols.
 License: GPL-3
-URL: https://inbo.github.io/protocolhelper, 
+URL: https://inbo.github.io/protocolhelper,
     https://github.com/inbo/protocolhelper
 BugReports: https://github.com/inbo/protocolhelper/issues
 Depends: 
