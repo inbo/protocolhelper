@@ -12,6 +12,7 @@ test_that("Test that insert_protocolsection works", {
   dir.create(test_repo)
   setwd(test_repo)
   repo <- gert::git_init()
+  gert::git_config_set(name = "user.name", value = "someone")
 
   # create a protocol to be used as subprotocol
   version_number <- "2020.01"

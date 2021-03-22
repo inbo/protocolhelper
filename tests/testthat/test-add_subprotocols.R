@@ -9,6 +9,7 @@ test_that("add dependencies of a project-specific protocol as appendix chapters 
   dir.create(test_repo)
   setwd(test_repo)
   repo <- gert::git_init()
+  gert::git_config_set(name = "user.name", value = "someone")
 
   # create a protocol to be used as subprotocol
   version_number <- "2020.01"

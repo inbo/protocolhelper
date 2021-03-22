@@ -5,6 +5,7 @@ test_that("render protocols for release", {
   dir.create(test_repo)
   setwd(test_repo)
   git2r::init()
+  git2r::config(user.name = "someone")
 
   update_news <- function(path, version_number) {
     news <- readLines(file.path(path, "NEWS.Rmd"))
