@@ -32,6 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          brew imagemagick@6
           install.packages("remotes")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_dev("pkgdown")
