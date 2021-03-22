@@ -14,37 +14,34 @@
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
 #' @importFrom yaml read_yaml
-#' @importFrom fs path path_ext_set
+#' @importFrom fs path
+#' @importFrom jsonlite read_json write_json
 #'
 #' @export
 #'
 #'
 #' @examples
 #' \dontrun{
-#' render_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
+#' render_protocol(protocol_code = "sfp_401-nl")
 #'}
-render_protocol <- function(protocol_folder_name = NULL,
-                            output_dir = NULL) {
-  assert_that(is.string(protocol_folder_name))
+render_protocol <- function(protocol_code = NULL,
+                            output_dir = NULL,
+                            ...) {
+  assert_that(is.string(protocol_code))
 
   path_to_protocol <- get_path_to_protocol(
-      protocol_folder_name = protocol_folder_name
+      protocol_code = protocol_code
     )
 
   # render html
   old_wd <- getwd()
   setwd(dir = path_to_protocol)
-  render_book(input = "index.Rmd",
-              output_dir = output_dir)
-  # rename html to index.html
-  yml <- read_yaml("_bookdown.yml")
-  if (is.null(output_dir)) {
-    output_dir <- yml$output_dir
-  }
-  original_name <- yml$book_filename
-  file.rename(from = path_ext_set(path(output_dir, original_name),
-                                  ext = "html"),
-              to = path(output_dir, "index.html"))
+  suppressWarnings(
+    render_book(input = "index.Rmd",
+              output_dir = output_dir,
+              output_file = "index.html",
+              envir = new.env(),
+              ...))
   setwd(old_wd)
 
 }

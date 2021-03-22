@@ -20,12 +20,12 @@
 #'
 #'
 check_frontmatter <- function(
-  protocol_folder_name,
+  protocol_code,
   yaml = TRUE
   ) {
 
   path_to_protocol <- get_path_to_protocol(
-    protocol_folder_name = protocol_folder_name)
+    protocol_code = protocol_code)
 
   yml <- yaml_front_matter(file.path(path_to_protocol, "index.Rmd"))
 
@@ -72,8 +72,8 @@ check_frontmatter <- function(
                 is.string(yml$params$theme))
   }
 
-  if (has_name(yml$params, "project")) {
-    assert_that(is.string(yml$params$project))
+  if (has_name(yml$params, "project_name")) {
+    assert_that(is.string(yml$params$project_name))
   }
 
   if (yaml) {

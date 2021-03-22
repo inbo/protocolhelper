@@ -27,7 +27,7 @@ test_that("render protocols for release", {
     version_number = version_number, theme = "water", lang = "nl"
   )
   update_news(
-    path = file.path("src", "thematic", "1_water", "sfp-101_water-1_nl"),
+    path = file.path("src", "thematic", "1_water", "sfp-101-nl_water-1"),
     version_number = version_number
   )
   render_release()
@@ -41,7 +41,7 @@ test_that("render protocols for release", {
     version_number = version_number, theme = "air", lang = "nl"
   )
   update_news(
-    path = file.path("src", "thematic", "2_air", "sfp-201_air-2_nl"),
+    path = file.path("src", "thematic", "2_air", "sfp-201-nl_air-2"),
     version_number = version_number
   )
   render_release()
@@ -54,7 +54,7 @@ test_that("render protocols for release", {
     version_number = version_number, theme = "water", lang = "nl"
   )
   update_news(
-    path = file.path("src", "thematic", "1_water", "sfp-102_water-2_nl"),
+    path = file.path("src", "thematic", "1_water", "sfp-102-nl_water-2"),
     version_number = version_number
   )
   render_release()
@@ -62,7 +62,7 @@ test_that("render protocols for release", {
   # upgrade first protocol
   version_number <- "2021.02"
   index_file <- readLines(
-    file.path("src", "thematic", "1_water", "sfp-101_water-1_nl", "index.Rmd")
+    file.path("src", "thematic", "1_water", "sfp-101-nl_water-1", "index.Rmd")
   )
   index_file <- gsub(
     "version_number: \"[0-9]{4}.[0-9]{2}\"",
@@ -71,10 +71,10 @@ test_that("render protocols for release", {
   )
   writeLines(
     index_file,
-    file.path("src", "thematic", "1_water", "sfp-101_water-1_nl", "index.Rmd")
+    file.path("src", "thematic", "1_water", "sfp-101-nl_water-1", "index.Rmd")
   )
   update_news(
-    path = file.path("src", "thematic", "1_water", "sfp-101_water-1_nl"),
+    path = file.path("src", "thematic", "1_water", "sfp-101-nl_water-1"),
     version_number = version_number
   )
   render_release()
@@ -87,7 +87,7 @@ test_that("render protocols for release", {
     version_number = version_number, theme = "water", lang = "en"
   )
   update_news(
-    path = file.path("src", "thematic", "1_water", "sfp-101_water-1_en"),
+    path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
     version_number = version_number
   )
   render_release()

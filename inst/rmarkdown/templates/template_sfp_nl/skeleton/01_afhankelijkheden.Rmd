@@ -1,7 +1,47 @@
 # Afhankelijkheden
 
 <!--
-Alleen in te vullen indien van toepassing.
-Protocols waarnaar in dit protocol verwezen wordt: <protocol-code>-YYYY.NN.
-Protocols die verwijzen naar dit protocol: <protocol-code>-YYYY.NN.
+Hier niets invullen.
+Indien er dependencies zijn deze invullen in de yaml sectie van index.Rmd
 -->
+
+
+
+```{r dependencies}
+dependencies <- tibble(
+  protocol_code = character(),
+  version_number = character(),
+  params = character(),
+  appendix = logical()
+)
+
+pc <- unlist(params$dependencies_protocolcode)
+vn <- unlist(params$dependencies_versionnumber)
+pm <- unlist(params$dependencies_params)
+ap <- as.logical(unlist(params['dependencies_appendix']))
+
+if (!any(is.na(pc))) {
+  dependencies <- dependencies %>%
+    bind_rows(tibble(protocol_code = pc, 
+                   version_number = vn,
+                   params = pm,
+                   appendix = ap))
+} 
+
+if (nrow(dependencies) > 0) {
+  dependencies %>%
+    rename(
+      `Protocol code` = protocol_code,
+      `Version number` = version_number,
+      `Included as appendix` = appendix) %>%
+    kable()
+} else {
+  dependencies %>%
+    add_row() %>%
+    rename(
+      `Protocol code` = protocol_code,
+      `Version number` = version_number,
+      `Included as appendix` = appendix) %>%
+    kable()
+}
+```

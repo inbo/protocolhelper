@@ -93,8 +93,8 @@ render_release <- function(output_root = "publish") {
     render_book(
       input = ".",
       output_format = gitbook(
-        split_by = "none",
-        split_bib = FALSE,
+        split_by = yaml[[i]][["output"]][["bookdown::gitbook"]][["split_by"]],
+        split_bib = yaml[[i]][["output"]][["bookdown::gitbook"]][["split_bib"]],
         pandoc_args = c(
           as.vector(
             sapply(
@@ -191,7 +191,7 @@ render_release <- function(output_root = "publish") {
   setwd(file.path(git_root, "src"))
   if (!file_exists("homepage.Rmd")) {
     writeLines(
-      "---\ntitle: INBO protocols\ndate: `r Sys.Date()`\noutput: html_document
+      "---\ntitle: INBO protocols\ndate: '`r Sys.Date()`'\noutput: html_document
 ---\n\n",
       "homepage.Rmd"
     )

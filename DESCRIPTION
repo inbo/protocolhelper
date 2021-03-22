@@ -1,12 +1,22 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Hans",
              family = "Van Calster",
              role = c("aut", "cre"),
              email = "hans.vancalster@inbo.be",
              comment = c(ORCID = "0000-0001-8595-8426")),
+     person(given = "Thierry",
+             family = "Onkelinx",
+             role = c("aut"),
+             email = "thierry.onkelinx@inbo.be",
+             comment = c(ORCID = "0000-0001-8804-4216")),
+     person(given = "Floris", 
+            family = "Vanderhaeghe", 
+            email = "floris.vanderhaeghe@inbo.be", 
+            role = c("aut"),
+            comment = c(ORCID = "0000-0002-6378-6229")), 
       person(given = "Research Institute for Nature and Forest",
              role = c("cph", "fnd"),
              email = "info@inbo.be"))
@@ -16,7 +26,10 @@ Suggests:
     git2r,
     testthat (>= 2.1.0),
     magick,
-    lubridate
+    lubridate,
+    gert,
+    png,
+    dplyr
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
@@ -32,4 +45,8 @@ Imports:
     purrr,
     bookdown,
     fs,
-    yaml
+    yaml,
+    knitr,
+    jsonlite,
+    commonmark,
+    xml2

@@ -8,28 +8,38 @@ Either provide the full path of an existing, given folder name,
 or construct one for non-existing protocols using (new) folder name plus
 the theme or project name.
 
-For existing protocol folders, arguments \code{theme} and \code{project} are always
+For existing protocol folders, arguments \code{theme} and \code{project_name} are always
 ignored.
 
 To create a new protocol folder,
-also either the \code{theme} or the \code{project} argument are required apart from
+also either the \code{theme} or the \code{project_name} argument are required apart from
 the \code{protocol_folder_name}.}
 \usage{
-get_path_to_protocol(protocol_folder_name = NULL, theme = NULL, project = NULL)
+get_path_to_protocol(
+  protocol_code,
+  theme = NULL,
+  project_name = NULL,
+  short_title = NULL
+)
 }
 \arguments{
-\item{protocol_folder_name}{Character string giving the name of the protocol subfolder}
+\item{protocol_code}{Character string giving the protocol code}
 
 \item{theme}{A character string equal to one of \code{"generic"},
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.
 Defaults to NULL.
-Only needed if no folder with the name of the protocol subfolder exists and
+Only needed if no folder with the name of the protocol code exists and
 the request is for a thematic protocol.}
 
-\item{project}{Character string giving the name of the project folder.
+\item{project_name}{Character string giving the name of the project folder.
 Defaults to NULL.
-Only needed if no folder with the name of the protocol subfolder exists and
-the request if for a project-specific protocol.}
+Only needed if no folder with the name of the protocol code exists and
+the request is for a project-specific protocol.}
+
+\item{short_title}{A character string of less than 20 characters to use in
+folder and filenames.
+Defaults to NULL.
+Only needed if no folder with the name of the protocol code exists.}
 }
 \value{
 A character vector containing the full path to the protocol.
@@ -41,16 +51,16 @@ Either provide the full path of an existing, given folder name,
 or construct one for non-existing protocols using (new) folder name plus
 the theme or project name.
 
-For existing protocol folders, arguments \code{theme} and \code{project} are always
+For existing protocol folders, arguments \code{theme} and \code{project_name} are always
 ignored.
 
 To create a new protocol folder,
-also either the \code{theme} or the \code{project} argument are required apart from
+also either the \code{theme} or the \code{project_name} argument are required apart from
 the \code{protocol_folder_name}.
 }
 \examples{
 \dontrun{
-get_path_to_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
+get_path_to_protocol(protocol_code = "sfp-401-nl")
 }
 }
 \keyword{internal}

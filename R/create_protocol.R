@@ -207,11 +207,13 @@ create_protocol <- function(
   # directory setup
   if (protocol_type == "sfp") {
     path_to_protocol <- get_path_to_protocol(theme = theme,
-                                             protocol_folder_name = folder_name)
+                                             protocol_code = protocol_code,
+                                             short_title = short_title)
   }
   if (protocol_type == "spp") {
-    path_to_protocol <- get_path_to_protocol(project = project_name,
-                                             protocol_folder_name = folder_name)
+    path_to_protocol <- get_path_to_protocol(project_name = project_name,
+                                             protocol_code = protocol_code,
+                                             short_title = short_title)
   }
 
   # set _bookdown.yml values
@@ -368,7 +370,7 @@ create_protocol <- function(
 
   # render html
   if (render) {
-    render_protocol(protocol_folder_name = folder_name)
+    render_protocol(protocol_code = protocol_code)
   }
   # return a message
   if (!is.null(from_docx)) {
@@ -489,10 +491,11 @@ get_protocolnumbers <- function(
   ld <- str_subset(string = ld,
                    pattern = protocol_type)
   ld <- str_subset(string = ld,
-                   pattern = paste0("(", language, ")$"))
+                   pattern = paste0("-", language, "_"))
   ld <- str_extract(string = ld,
                     pattern = "(?<=p-)\\d{3}")
   ld <- ld[!is.na(ld)]
+  ld <- unique(ld)
 
   return(ld)
 }
@@ -553,23 +556,27 @@ get_short_titles <- function(
 #' or construct one for non-existing protocols using (new) folder name plus
 #' the theme or project name.
 #'
-#' For existing protocol folders, arguments `theme` and `project` are always
+#' For existing protocol folders, arguments `theme` and `project_name` are always
 #' ignored.
 #'
 #' To create a new protocol folder,
-#' also either the `theme` or the `project` argument are required apart from
+#' also either the `theme` or the `project_name` argument are required apart from
 #' the `protocol_folder_name`.
 #'
-#' @param protocol_folder_name Character string giving the name of the protocol subfolder
+#' @param protocol_code Character string giving the protocol code
 #' @param theme A character string equal to one of `"generic"`,
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #' Defaults to NULL.
-#' Only needed if no folder with the name of the protocol subfolder exists and
+#' Only needed if no folder with the name of the protocol code exists and
 #' the request is for a thematic protocol.
-#' @param project Character string giving the name of the project folder.
+#' @param project_name Character string giving the name of the project folder.
 #' Defaults to NULL.
-#' Only needed if no folder with the name of the protocol subfolder exists and
-#' the request if for a project-specific protocol.
+#' Only needed if no folder with the name of the protocol code exists and
+#' the request is for a project-specific protocol.
+#' @param short_title A character string of less than 20 characters to use in
+#' folder and filenames.
+#' Defaults to NULL.
+#' Only needed if no folder with the name of the protocol code exists.
 #'
 #' @return A character vector containing the full path to the protocol.
 #'
@@ -582,12 +589,13 @@ get_short_titles <- function(
 #'
 #' @examples
 #' \dontrun{
-#' get_path_to_protocol(protocol_folder_name = "sfp_401-vegopname-terrest_nl")
+#' get_path_to_protocol(protocol_code = "sfp-401-nl")
 #'}
-get_path_to_protocol <- function(protocol_folder_name = NULL,
+get_path_to_protocol <- function(protocol_code,
                                  theme = NULL,
-                                 project = NULL) {
-  assert_that(is.string(protocol_folder_name))
+                                 project_name = NULL,
+                                 short_title = NULL) {
+  assert_that(is.string(protocol_code))
 
   # first case: the path exists already
   project_root <- find_root(is_git_root)
@@ -595,15 +603,21 @@ get_path_to_protocol <- function(protocol_folder_name = NULL,
                   full.names = TRUE,
                   recursive = TRUE)
   ld <- str_subset(string = ld,
-                   pattern = protocol_folder_name)
+                   pattern = protocol_code)
   if (!identical(ld, character(0))) {
     path_to_protocol <- ld[[1]]
     return(path_to_protocol)
   } else {
     # second case: the path does not yet exist
-    if (is.null(theme) & is.null(project) |
-        is.string(theme) & is.string(project)) {
-      stop("Check the spelling of protocol_folder_name - or - provide a string value for theme or project, not both.")
+    if (is.null(theme) & is.null(project_name) |
+        is.string(theme) & is.string(project_name)) {
+      stop("Check the spelling of protocol_code - or - provide a string value for theme or project, not both.")
+    }
+
+    if (is.null(short_title)) {
+      stop("Provide a short title")
+    } else {
+      protocol_folder_name <- paste(protocol_code, short_title, sep = "_")
     }
 
     if (is.string(theme)) {
@@ -622,7 +636,7 @@ get_path_to_protocol <- function(protocol_folder_name = NULL,
       path_to_protocol <- file.path(project_root,
                                     "src",
                                     subfolder_of,
-                                    project,
+                                    project_name,
                                     protocol_folder_name)
       return(path_to_protocol)
     }

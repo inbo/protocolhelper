@@ -1,9 +1,0 @@
-# (APPENDIX) Subprotocols {-} 
-
-
-<!--
-Toevoeging van subprotocols met behulp van protocolhelper::add_subprotocol().
-Subprotocols niet manueel toevoegen.
--->
-
-
