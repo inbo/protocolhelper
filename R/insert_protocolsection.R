@@ -96,20 +96,9 @@ insert_protocolsection <-
            intern = TRUE)
     # What happens if this fails?
 
-    # handling the section arguments
-    # avoid looking in chunks which can have lines starting with '#'
-    is_chunk <- grepl("^`{3}", rmd_content)
-    i <- 1
-    while (i < length(is_chunk)) {
-      if (isTRUE(is_chunk[i]) && isTRUE(is_chunk[i + 1])) {
-        i <- i + 2
-      } else if (isTRUE(is_chunk[i]) && isFALSE(is_chunk[i + 1])) {
-        is_chunk[i + 1] <- TRUE
-        i <- i + 1
-      } else {
-        i <- i + 1
-      }
-    }
+    # avoid looking in chunks
+    # is_chunk will be TRUE when the line is a chunk
+    is_chunk <- mark_chunks(rmd_content)
 
     if (!missing(section)) {
       has_section <- grepl(section, rmd_content, fixed = TRUE)
@@ -253,4 +242,34 @@ check_protocolcode <- function(protocolcode) {
     right_format,
     msg = "protocol code not in s*f-###-nl or s*f-###-en format"
   )
+}
+
+
+#' @title Mark line as part of chunk
+#'
+#' The function will search for beginning and end of chunk and mark all lines
+#' in between as TRUE, otherwise FALSE
+#'
+#' @return A logical vector
+#'
+#' @param rmd_content Character vector (each element is a line read from an µ
+#' Rmarkdown file)
+#'
+#' @keywords internal
+mark_chunks <- function(rmd_content) {
+  # handling the section arguments
+  # avoid looking in chunks which can have lines starting with '#'
+  is_chunk <- grepl("^`{3}", rmd_content)
+  i <- 1
+  while (i < length(is_chunk)) {
+    if (isTRUE(is_chunk[i]) && isTRUE(is_chunk[i + 1])) {
+      i <- i + 2
+    } else if (isTRUE(is_chunk[i]) && isFALSE(is_chunk[i + 1])) {
+      is_chunk[i + 1] <- TRUE
+      i <- i + 1
+    } else {
+      i <- i + 1
+    }
+  }
+  return(is_chunk)
 }
