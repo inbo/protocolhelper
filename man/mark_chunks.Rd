@@ -10,7 +10,7 @@ in between as TRUE, otherwise FALSE}
 mark_chunks(rmd_content)
 }
 \arguments{
-\item{rmd_content}{Character vector (each element is a line read from an µ
+\item{rmd_content}{Character vector (each element is a line read from an
 Rmarkdown file)}
 }
 \value{

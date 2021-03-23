@@ -252,7 +252,7 @@ check_protocolcode <- function(protocolcode) {
 #'
 #' @return A logical vector
 #'
-#' @param rmd_content Character vector (each element is a line read from an µ
+#' @param rmd_content Character vector (each element is a line read from an
 #' Rmarkdown file)
 #'
 #' @keywords internal
