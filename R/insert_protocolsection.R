@@ -51,18 +51,9 @@ insert_protocolsection <-
            demote_header = c(0, 1, 2, -1),
            fetch_remote = TRUE) {
 
-    assert_that(is.string(code_subprotocol))
-    assert_that(is.string(version_number))
-    right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
-    assert_that(
-      right_format,
-      msg = "version number not in YYYY.XX format"
-      )
-    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
-    assert_that(
-      right_format,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-      )
+    check_versionnumber(version_number)
+    check_protocolcode(code_subprotocol)
+
     demote_choices <- eval(formals()$demote_header)
     if (missing(demote_header)) {
       demote_header <- demote_choices[1]
@@ -160,33 +151,7 @@ insert_protocolsection <-
       }
     }
 
-    # dealing with external figures and tabular data
-    # extract all paths to data or media
-    pat_data <- "(data\\/\\w+\\.(csv|tsv|xls|xlsx))"
-    data_files <- str_extract_all(rmd_content[grepl(pat_data, rmd_content)],
-                                  pat_data)
-    pat_media <- "(media\\/\\w+\\.(png|jpg))"
-    media_files <- str_extract_all(rmd_content[grepl(pat_media, rmd_content)],
-                                   pat_media)
-    all_files <- c(data_files, media_files)
-    if (length(all_files) > 0) {
-      git_filepaths <-
-        get_path_to_protocol(code_subprotocol) %>%
-        file.path(all_files) %>%
-        path_rel(start = find_root(is_git_root))
-
-      # use git show to get the contents of data and media
-      # and copy it to the project protocol
-      create_command <- function(file_path, dest_path) {
-        paste0("git show ",
-               tag, ":",
-               file_path, " > ",
-               dest_path
-        )
-      }
-      git_commands <- map2(git_filepaths, all_files, create_command)
-      map(git_commands, execshell, intern = FALSE)
-    }
+    get_data_media(rmd_content, code_subprotocol, tag)
 
     # return rmd content
     # the following is not strictly necessary, but useful to test
@@ -200,3 +165,92 @@ insert_protocolsection <-
 
     return(cat(res, sep = "\n"))
   }
+
+
+
+
+#' @title Internal function to get media and data files.
+#'
+#' Extracts all paths to files in data and media from rmd_content and uses git
+#' show to copy paste the files from the subprotocol to the main protocol
+#'
+#' @param rmd_content
+#' @param code_subprotocol Character string giving the protocol code from
+#' which a section or sections will be extracted
+#' @param tag
+#'
+#' @return Silent.
+#'
+#' @importFrom rprojroot find_root is_git_root
+#' @importFrom stringr str_extract_all
+#' @importFrom fs path_rel
+#' @importFrom purrr map2 map
+#'
+#' @keywords internal
+get_data_media <- function(rmd_content, code_subprotocol, tag) {
+  # dealing with external figures and tabular data
+  # extract all paths to data or media
+  pat_data <- "(data\\/\\w+\\.(csv|tsv|xls|xlsx))"
+  data_files <- str_extract_all(rmd_content[grepl(pat_data, rmd_content)],
+                                pat_data)
+  pat_media <- "(media\\/\\w+\\.(png|jpg))"
+  media_files <- str_extract_all(rmd_content[grepl(pat_media, rmd_content)],
+                                 pat_media)
+  all_files <- c(data_files, media_files)
+  if (length(all_files) > 0) {
+    git_filepaths <-
+      get_path_to_protocol(code_subprotocol) %>%
+      file.path(all_files) %>%
+      path_rel(start = find_root(is_git_root))
+
+    # use git show to get the contents of data and media
+    # and copy it to the project protocol
+    create_command <- function(file_path, dest_path) {
+      paste0("git show ",
+             tag, ":",
+             file_path, " > ",
+             dest_path
+      )
+    }
+    git_commands <- map2(git_filepaths, all_files, create_command)
+    map(git_commands, execshell, intern = FALSE)
+  }
+}
+
+#' @title Check the version number format
+#'
+#' Check if version number is of format YYYY.NN
+#'
+#' @param version_number Character string with format YYYY.NN#'
+#'
+#' @importFrom assertthat assert_that is.string
+#'
+#' @keywords internal
+check_versionnumber <- function(version_number) {
+  assert_that(is.string(version_number))
+  right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
+  assert_that(
+    right_format,
+    msg = "version number not in YYYY.XX format"
+  )
+}
+
+
+
+#' @title Check the protocolcode format
+#'
+#' Check if protocolcode is of format `s[f|p|i|o|a]p-###-[nl|en]`
+#'
+#' @param version_number Character string with format YYYY.NN#'
+#'
+#' @importFrom assertthat assert_that is.string
+#'
+#' @keywords internal
+check_protocolcode <- function(protocolcode) {
+  assert_that(is.string(protocolcode))
+  right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", protocolcode)
+  assert_that(
+    right_format,
+    msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+  )
+}

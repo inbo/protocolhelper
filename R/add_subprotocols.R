@@ -36,24 +36,9 @@ add_one_subprotocol <-
            code_mainprotocol,
            fetch_remote = TRUE) {
 
-    assert_that(is.string(version_number))
-    right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
-    assert_that(
-      right_format,
-      msg = "version number not in YYYY.XX format"
-    )
-    assert_that(is.string(code_subprotocol))
-    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
-    assert_that(
-      right_format,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-    )
-    assert_that(is.string(code_mainprotocol))
-    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
-    assert_that(
-      right_format,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-    )
+    check_versionnumber(version_number)
+    check_protocolcode(code_subprotocol)
+    check_protocolcode(code_mainprotocol)
 
     if (!missing(params)) {
       # parse params
