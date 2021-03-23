@@ -129,7 +129,7 @@ render_release <- function(output_root = "publish") {
     relevant <- protocol_code == protocol_code[[i]]
     news <- map_chr(
       dirname(names(protocol_code[relevant])),
-      ~paste(tail(readLines(file.path(.x, "NEWS.Rmd")), -1), collapse = "\n")
+      ~paste(tail(readLines(file.path(.x, "NEWS.md")), -1), collapse = "\n")
     )
     if (length(news) > 1) {
       lang <- map_chr(parameters[relevant], "language")

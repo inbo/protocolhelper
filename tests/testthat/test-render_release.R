@@ -8,7 +8,7 @@ test_that("render protocols for release", {
   git2r::config(user.name = "someone", user.email = "someone@example.org")
 
   update_news <- function(path, version_number) {
-    news <- readLines(file.path(path, "NEWS.Rmd"))
+    news <- readLines(file.path(path, "NEWS.md"))
     writeLines(
       c(
         head(news, 2),
@@ -16,7 +16,7 @@ test_that("render protocols for release", {
         rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
         tail(news, -2)
       ),
-      file.path(path, "NEWS.Rmd")
+      file.path(path, "NEWS.md")
     )
   }
 

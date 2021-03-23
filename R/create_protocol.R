@@ -267,7 +267,7 @@ create_protocol <- function(
   # in correct order for compilation
   rmd_files <- c(
     "index.Rmd",
-    "NEWS.Rmd",
+    "NEWS.md",
     list.files(path = path_to_protocol,
                pattern = "^\\d{2}.+Rmd$"))
 
