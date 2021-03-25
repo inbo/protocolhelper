@@ -43,8 +43,7 @@
 #' Defaults to FALSE.
 #'
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom stringr str_replace_all str_extract str_remove str_detect
-#' str_replace
+#' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
