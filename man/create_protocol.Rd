@@ -122,7 +122,16 @@ Protocol numbers that are already in use can be retrieved with
 \item{render}{Whether or not to render the protocol to html.
 Defaults to FALSE.}
 }
-\value{
+\description{
+This function will create a new folder based on values that are
+passed on via the parameters and creates a R-markdown (bookdown) skeleton
+based on a template file to start working on a new protocol.
+Optionally, the rmarkdown chapters are rendered to an html file which will
+be saved in a matching subfolder of the \code{docs} folder.
+}
+\details{
+It is assumed that the \code{src} folder is a subfolder of an RStudio
+project with git version control.
 A target folder to which files will be written will be created as
 subdirectories beneath \code{src}.
 The subfolder structure is of the form
@@ -148,15 +157,4 @@ The \code{media} folder will contain image files extracted from the docx protoco
 when the \code{from_docx} argument is used.
 The \code{data} folder can be used to store tabular data that are needed for the
 protocol.
-}
-\description{
-This function will create a new folder based on values that are
-passed on via the parameters and creates a R-markdown (bookdown) skeleton
-based on a template file to start working on a new protocol.
-Optionally, the rmarkdown chapters are rendered to an html file which will
-be saved in a matching subfolder of the \code{docs} folder.
-}
-\details{
-It is assumed that the \code{src} folder is a subfolder of an RStudio
-project with git version control.
 }
