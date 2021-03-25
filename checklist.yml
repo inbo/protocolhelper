@@ -2,4 +2,14 @@ description: Configuration file for checklist::check_pkg()
 package: yes
 allowed:
   warnings: []
-  notes: []
+  notes:
+  - motivation: package will not be submitted to CRAN
+    value: |-
+      checking CRAN incoming feasibility ... NOTE
+      Maintainer: 'Hans Van Calster <hans.vancalster@inbo.be>'
+
+      New submission
+  - motivation: checklist package should probably ignore these files via .Rbuildignore
+    value: |-
+      checking top-level files ... NOTE
+      Files 'README.md' or 'NEWS.md' cannot be checked without 'pandoc' being installed.
