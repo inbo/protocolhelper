@@ -10,6 +10,31 @@
 #'
 #' @details It is assumed that the `src` folder is a subfolder of an RStudio
 #' project with git version control.
+#' A target folder to which files will be written will be created as
+#' subdirectories beneath `src`.
+#' The subfolder structure is of the form
+#' `/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/` for
+#' standard field protocols.
+#' Or `/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/`
+#' for standard project protocols.
+#' The folder names are determined by the corresponding arguments of the
+#' function.
+#' A matching subfolder structure will be created beneath the `docs` folder (and
+#' output files needed for rendering to html output will be placed in it if
+#' `render = TRUE`.
+#' The template Rmarkdown files, or the Rmarkdown files that result from
+#' converting a docx protocol (see `from_docx` argument), will be written to
+#' the target folder beneath `src`.
+#' Besides Rmarkdown files, this target folder will also contain files needed to
+#' render to a Bookdown gitbook such as a `_bookdown.yml`.
+#' The `NEWS.Rmd` file must be used to document the changes between revisions
+#' of the protocol.
+#' Furthermore, a `data` and a `media` folder will be created as subdirectories
+#' of the target folder.
+#' The `media` folder will contain image files extracted from the docx protocol
+#' when the `from_docx` argument is used.
+#' The `data` folder can be used to store tabular data that are needed for the
+#' protocol.
 #'
 #' @inheritParams create_protocol_code
 #' @param title A character string giving the main title of the protocol
@@ -51,31 +76,6 @@
 #' @importFrom whisker whisker.render
 #' @importFrom fs path_rel
 #'
-#' @return A target folder to which files will be written will be created as
-#' subdirectories beneath `src`.
-#' The subfolder structure is of the form
-#' `/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/` for
-#' standard field protocols.
-#' Or `/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/`
-#' for standard project protocols.
-#' The folder names are determined by the corresponding arguments of the
-#' function.
-#' A matching subfolder structure will be created beneath the `docs` folder (and
-#' output files needed for rendering to html output will be placed in it if
-#' `render = TRUE`.
-#' The template Rmarkdown files, or the Rmarkdown files that result from
-#' converting a docx protocol (see `from_docx` argument), will be written to
-#' the target folder beneath `src`.
-#' Besides Rmarkdown files, this target folder will also contain files needed to
-#' render to a Bookdown gitbook such as a `_bookdown.yml`.
-#' The `NEWS.Rmd` file must be used to document the changes between revisions
-#' of the protocol.
-#' Furthermore, a `data` and a `media` folder will be created as subdirectories
-#' of the target folder.
-#' The `media` folder will contain image files extracted from the docx protocol
-#' when the `from_docx` argument is used.
-#' The `data` folder can be used to store tabular data that are needed for the
-#' protocol.
 #'
 #' @export
 create_protocol <- function(
