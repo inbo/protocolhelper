@@ -11,8 +11,7 @@
 #' @details It is assumed that the `src` folder is a subfolder of an RStudio
 #' project with git version control.
 #'
-#' @param protocol_type Either `sfp` (standard field protocol) or `spp` (
-#' standard project protocol)
+#' @inheritParams create_protocol_code
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
 #' @param short_title A character string of less than 20 characters to use in
@@ -30,34 +29,16 @@
 #' (See `from_docx`).
 #' When the protocol is ready to be released, this should be changed by a repo-
 #' admin.
-#' @param theme A character string equal to one of `"generic"` (default),
-#' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`. It is used as
-#' the folder location (`src/thematic/theme`) where standard field protocols
-#' that belong to the same theme will be stored.
-#' Ignored if protocol_type = `"spp"`.
 #' @param project_name A character string that is used as the folder location
 #' (`src/project/project_name`) where project-specific protocols that belong to
 #' the same project will be stored. Preferably a short name or acronym. If the
 #' folder does not exist, it will be created.
 #' Ignored if protocol_type = `"sfp"`.
-#' @param language Language of the protocol, either `"nl"` (Dutch),
-#' the default, or `"en"` (English).
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
 #' Please make sure to copy-paste all relevant meta-data from the `.docx` file
 #' to the corresponding parameters of this function.
 #' If nothing is provided (i.e. default = NULL), an empty template will be used.
-#' @param protocol_number A character string giving the protocol number.
-#' This parameter should normally not be specified (i.e. NULL), unless
-#' `from_docx` is specified.
-#' A protocol number is a three digit string where the first digit corresponds
-#' with a theme and the last two digits identify a protocol within a theme for
-#' standard field protocols. A protocol number for a project-specific protocol
-#' is just a three digit string.
-#' If NULL (the default), a protocol number will be determined automatically
-#' based on pre-existing protocol numbers.
-#' Protocol numbers that are already in use can be retrieved with
-#' `get_protocolnumbers()`.
 #' @param render Whether or not to render the protocol to html.
 #' Defaults to FALSE.
 #'
@@ -124,9 +105,11 @@ create_protocol <- function(
   assert_that(is.character(authors))
   assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
-  assert_that(is.string(version_number))
+  check_versionnumber(gsub("\\.dev", "", version_number))
   if (protocol_type == "sfp") {
     theme <- match.arg(theme)
+    protocol_leading_number <- themes_df[themes_df$theme == theme,
+                                         "theme_number"]
   }
   if (protocol_type == "spp") {
     assert_that(is.string(project_name))
@@ -145,49 +128,13 @@ create_protocol <- function(
   }
   assert_that(is.flag(render), noNA(render))
 
-  # create protocol name
-  if (protocol_type == "sfp") {
-    protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                         "theme_number"]
-    if (is.null(protocol_number)) {
-      all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
-                                         language = language)
-
-      if (length(all_numbers) == 0) {
-        protocol_trailing_number <- "01"
-      } else {
-        numbers <- str_subset(all_numbers, paste0("^", protocol_leading_number))
-        protocol_trailing_number <- max(
-          as.integer(
-            str_extract(numbers, "\\d{2}$")),
-          0,
-          na.rm = TRUE
-        ) + 1
-        protocol_trailing_number <- formatC(protocol_trailing_number,
-                                            width = 2, format = "d", flag = "0")
-      }
-
-      protocol_number <- paste0(protocol_leading_number,
-                                protocol_trailing_number)
-    }
-  }
-  if (protocol_type == "spp") {
-    if (is.null(protocol_number)) {
-      all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
-                                         language = language)
-      if (length(all_numbers) == 0) {
-        protocol_number <- "001"
-      } else {
-        protocol_number <- max(
-          as.integer(all_numbers),
-          0,
-          na.rm = TRUE
-        ) + 1
-        protocol_number <- formatC(protocol_number,
-                                   width = 3, format = "d", flag = "0")
-      }
-    }
-  }
+  # create protocol code
+  protocol_code <- create_protocol_code(
+    protocol_type,
+    theme,
+    protocol_number,
+    language
+    )
 
 
   short_title <- tolower(short_title)
@@ -199,8 +146,6 @@ create_protocol <- function(
               Give a short title that is not in use.
               Use get_short_titles() to get an overview of short titles
               that are in use.")
-
-  protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
   folder_name <- paste0(protocol_code, "_", short_title)
   folder_name <- tolower(folder_name)
   protocol_filename <- folder_name
@@ -647,4 +592,87 @@ get_path_to_protocol <- function(protocol_code,
       return(path_to_protocol)
     }
   }
+}
+
+
+
+#' Create protocol code from it's components
+#'
+#' A protocol code of format `s[f|p]p-###-[nl|en]` will be created.
+#' The number will be determined automatically based on theme (in case of sfp)
+#' and a rank order of all existing
+#'
+#' @param protocol_type Either `sfp` (standard field protocol) or `spp` (
+#' standard project protocol)
+#' @param theme A character string equal to one of `"generic"` (default),
+#' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`. It is used as
+#' the folder location (`src/thematic/theme`) where standard field protocols
+#' that belong to the same theme will be stored.
+#' Ignored if protocol_type = `"spp"`.
+#' @param protocol_number A character string giving the protocol number.
+#' This parameter should normally not be specified (i.e. NULL), unless
+#' `from_docx` is specified.
+#' A protocol number is a three digit string where the first digit corresponds
+#' with a theme and the last two digits identify a protocol within a theme for
+#' standard field protocols. A protocol number for a project-specific protocol
+#' is just a three digit string.
+#' If NULL (the default), a protocol number will be determined automatically
+#' based on pre-existing protocol numbers.
+#' Protocol numbers that are already in use can be retrieved with
+#' `get_protocolnumbers()`.
+#' @param language Language of the protocol, either `"nl"` (Dutch),
+#' the default, or `"en"` (English).
+#'
+#' @importFrom stringr str_subset str_extract
+#'
+#' @return A character string containing the protocol_code
+#'
+#' @keywords internal
+create_protocol_code <- function(
+  protocol_type, theme, protocol_number, language
+  ) {
+  if (protocol_type == "sfp") {
+    protocol_leading_number <- themes_df[themes_df$theme == theme,
+                                         "theme_number"]
+    if (is.null(protocol_number)) {
+      all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
+                                         language = language)
+
+      if (length(all_numbers) == 0) {
+        protocol_trailing_number <- "01"
+      } else {
+        numbers <- str_subset(all_numbers, paste0("^", protocol_leading_number))
+        protocol_trailing_number <- max(
+          as.integer(
+            str_extract(numbers, "\\d{2}$")),
+          0,
+          na.rm = TRUE
+        ) + 1
+        protocol_trailing_number <- formatC(protocol_trailing_number,
+                                            width = 2, format = "d", flag = "0")
+      }
+
+      protocol_number <- paste0(protocol_leading_number,
+                                protocol_trailing_number)
+    }
+  }
+  if (protocol_type == "spp") {
+    if (is.null(protocol_number)) {
+      all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
+                                         language = language)
+      if (length(all_numbers) == 0) {
+        protocol_number <- "001"
+      } else {
+        protocol_number <- max(
+          as.integer(all_numbers),
+          0,
+          na.rm = TRUE
+        ) + 1
+        protocol_number <- formatC(protocol_number,
+                                   width = 3, format = "d", flag = "0")
+      }
+    }
+  }
+  protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
+  return(protocol_code)
 }
