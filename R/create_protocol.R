@@ -145,38 +145,32 @@ create_protocol <- function(
   folder_name <- paste0(protocol_code, "_", short_title)
   folder_name <- tolower(folder_name)
   protocol_filename <- folder_name
-
-  # directory setup
-  if (protocol_type == "sfp") {
-    path_to_protocol <- get_path_to_protocol(theme = theme,
-                                             protocol_code = protocol_code,
-                                             short_title = short_title)
-  }
-  if (protocol_type == "spp") {
-    path_to_protocol <- get_path_to_protocol(project_name = project_name,
-                                             protocol_code = protocol_code,
-                                             short_title = short_title)
-  }
-
   # set _bookdown.yml values
   book_filename <- paste0(protocol_filename, ".Rmd")
   # the output_dir should be set as a relative path to make it reproducible on
   # other machines: it should be relative to path_to_protocol
   # first get the absolute path
   project_root <- find_root(is_git_root)
+
+  # directory setup
   if (protocol_type == "sfp") {
+    path_to_protocol <- get_path_to_protocol(theme = theme,
+                                             protocol_code = protocol_code,
+                                             short_title = short_title)
     nr_theme <- paste0(protocol_leading_number, "_", theme)
     output_dir <- file.path(project_root, "docs", "thematic", nr_theme,
                             folder_name)
   }
   if (protocol_type == "spp") {
+    path_to_protocol <- get_path_to_protocol(project_name = project_name,
+                                             protocol_code = protocol_code,
+                                             short_title = short_title)
     output_dir <- file.path(project_root, "docs", "project", project_name,
                             folder_name)
   }
 
   # next make it relative to path_to_protocol
   output_dir_rel <- path_rel(output_dir, path_to_protocol)
-
 
   # check for existence of the folders
   if (dir.exists(path_to_protocol)) {
