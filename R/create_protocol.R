@@ -115,10 +115,6 @@ create_protocol <- function(
     assert_that(is.string(project_name))
   }
   language <- match.arg(language)
-  if (!is.null(from_docx)) {
-    assert_that(is.string(from_docx),
-                file.exists(from_docx))
-  }
   if (!is.null(protocol_number)) {
     assert_that(
       is.string(protocol_number),
@@ -200,121 +196,64 @@ create_protocol <- function(
   dir.create(file.path(path_to_protocol, "data"))
   dir.create(file.path(path_to_protocol, "media"))
 
-  # move all files from the template folder
-  parent_rmd <- file.path(path_to_protocol, "index.Rmd")
-  template <- paste("template", protocol_type, language, sep = "_")
-  draft(file = parent_rmd,
-        template = template,
-        package = "protocolhelper",
-        edit = FALSE)
+  # create from empty template
+  if (is.null(from_docx)) {
+    # move all files from the template folder
+    parent_rmd <- file.path(path_to_protocol, "index.Rmd")
+    template <- paste("template", protocol_type, language, sep = "_")
+    draft(file = parent_rmd,
+          template = template,
+          package = "protocolhelper",
+          edit = FALSE)
 
-  # create a character vector with the names of all rmd_files
-  # in correct order for compilation
-  rmd_files <- c(
-    "index.Rmd",
-    "NEWS.md",
-    list.files(path = path_to_protocol,
-               pattern = "^\\d{2}.+Rmd$"))
+    # create a character vector with the names of all rmd_files
+    # in correct order for compilation
+    rmd_files <- c(
+      "index.Rmd",
+      "NEWS.md",
+      list.files(path = path_to_protocol,
+                 pattern = "^\\d{2}.+Rmd$"))
 
 
-  # change values in parent rmarkdown and _bookdown.yml
-  filenames <- c(parent_rmd,
-                 file.path(path_to_protocol, "_bookdown.yml"))
-  for (filename in filenames) {
-    original_file <- file(filename, "r")
-    original_file_content <- readLines(filename)
-    data <- list(title = title,
-                 subtitle = subtitle,
-                 authors = authors,
-                 date = date,
-                 reviewers = reviewers,
-                 file_manager = file_manager,
-                 version_number = version_number,
-                 protocol_code = protocol_code,
-                 language = language,
-                 book_filename = book_filename,
-                 output_dir = output_dir_rel,
-                 rmd_files = rmd_files
-    )
-    if (protocol_type == "sfp") {
-      data$theme <- theme
-    }
-    if (protocol_type == "spp") {
-      data$project_name <- project_name
-    }
-    writeLines(map_chr(original_file_content,
-                       whisker.render,
-                       data),
-               filename)
-    close(original_file)
-  }
-
-  # docx
-  temp_filename <- "temp.Rmd"
-  if (!is.null(from_docx)) {
-    convert_docx_to_rmd(
-      from = from_docx,
-      to = temp_filename,
-      dir = path_to_protocol,
-      wrap = 80,
-      overwrite = FALSE,
-      verbose = FALSE)
-    # convert emf to png
-    emf_images <- list.files(path = file.path(path_to_protocol, "media"),
-                             pattern = ".emf",
-                             full.names = TRUE)
-    if (length(emf_images) > 0) {
-      if (!requireNamespace("magick", quietly = TRUE)) {
-        stop("Package \"magick\" needed for docx protocols with emf images. ",
-             "Please install it with 'install.packages(\"magick\")'.",
-             call. = FALSE)
-      }
-      for (img in emf_images) {
-        img_emf <- magick::image_read(path = img)
-        magick::image_write(image = img_emf,
-                            format = "png",
-                            path = str_replace(img, ".emf", ".png"))
-        file.remove(img)
-      }
-    }
-    # move relevant sections
-    contents <- readLines(con = file.path(path_to_protocol,
-                                          temp_filename))
-    contents <- str_replace_all(contents, ".emf", ".png")
-    # replace absolute path to media folder by relative path
-    contents <- str_replace_all(contents, path_to_protocol, ".")
-    is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
-    title_numbers <- formatC(x = cumsum(is_title),
-                             width = 2, format = "d", flag = "0")
-    filenames <- str_remove(string = tolower(contents[is_title]),
-                            pattern = "^(#{1}\\s{1})")
-    filenames <- str_remove(string = filenames,
-                            pattern = "\\s$")
-    filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")
-    filenames <- paste0(unique(title_numbers), "_", filenames, ".Rmd")
-    # delete the empty template chapters
-    file.remove(
-      list.files(
-        path = path_to_protocol,
-        pattern = "^\\d{2}_",
-        full.names = TRUE
+    # change values in parent rmarkdown and _bookdown.yml
+    filenames <- c(parent_rmd,
+                   file.path(path_to_protocol, "_bookdown.yml"))
+    for (filename in filenames) {
+      original_file <- file(filename, "r")
+      original_file_content <- readLines(filename)
+      data <- list(title = title,
+                   subtitle = subtitle,
+                   authors = authors,
+                   date = date,
+                   reviewers = reviewers,
+                   file_manager = file_manager,
+                   version_number = version_number,
+                   protocol_code = protocol_code,
+                   language = language,
+                   book_filename = book_filename,
+                   output_dir = output_dir_rel,
+                   rmd_files = rmd_files
       )
-    )
-    # create new chapters
-    file.create(file.path(path_to_protocol, filenames))
-    # and add chapter contents from docx
-    for (chapter in unique(cumsum(is_title))) {
-      chapter_file <- file.path(path_to_protocol, filenames[chapter])
-      chapter_contents <- contents[chapter == cumsum(is_title)]
-      writeLines(text = chapter_contents,
-                 con = chapter_file)
+      if (protocol_type == "sfp") {
+        data$theme <- theme
+      }
+      if (protocol_type == "spp") {
+        data$project_name <- project_name
+      }
+      writeLines(map_chr(original_file_content,
+                         whisker.render,
+                         data),
+                 filename)
+      close(original_file)
     }
-    # delete the complete Rmd (output of convert_docx_rmd)
-    file.remove(file.path(path_to_protocol, temp_filename))
+  } else {
+    assert_that(is.string(from_docx),
+                file.exists(from_docx))
+    create_from_docx(from_docx = from_docx,
+                     path_to_protocol = path_to_protocol)
   }
 
-
-  # render html
+    # render html
   if (render) {
     render_protocol(protocol_code = protocol_code)
   }
@@ -675,4 +614,82 @@ create_protocol_code <- function(
   }
   protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
   return(protocol_code)
+}
+
+
+
+#' Create an Rmarkdown version from an existing docx protocol
+#'
+#' The docx file is first converted to a single Rmd file with the aid of pandoc
+#' (called from convert_docx_to_rmd).
+#' Next, the file is split by chapter in multiple Rmd files.
+#' Any emf images are converted to png.
+#' All graphics files will be stored in a ./media folder.
+#'
+#' @param from_docx A character string with the path (absolute or relative) to
+#' a `.docx` file containing a pre-existing protocol.
+#' Please make sure to copy-paste all relevant meta-data from the `.docx` file
+#' to the corresponding parameters of this function.
+#' If nothing is provided (i.e. default = NULL), an empty template will be used.
+#' @param path_to_protocol Absolute path to the protocol folder where the
+#' protocol created from docx needs to be written to
+#'
+#' @importFrom stringr str_replace str_replace_all str_detect str_remove
+#'
+#' @keywords internal
+create_from_docx <- function(
+  from_docx,
+  path_to_protocol) {
+  temp_filename <- "temp.Rmd"
+  convert_docx_to_rmd(
+    from = from_docx,
+    to = temp_filename,
+    dir = path_to_protocol,
+    wrap = 80,
+    overwrite = FALSE,
+    verbose = FALSE)
+  # convert emf to png
+  emf_images <- list.files(path = file.path(path_to_protocol, "media"),
+                           pattern = ".emf",
+                           full.names = TRUE)
+  if (length(emf_images) > 0) {
+    if (!requireNamespace("magick", quietly = TRUE)) {
+      stop("Package \"magick\" needed for docx protocols with emf images. ",
+           "Please install it with 'install.packages(\"magick\")'.",
+           call. = FALSE)
+    }
+    for (img in emf_images) {
+      img_emf <- magick::image_read(path = img)
+      magick::image_write(image = img_emf,
+                          format = "png",
+                          path = str_replace(img, ".emf", ".png"))
+      file.remove(img)
+    }
+  }
+  # move relevant sections
+  contents <- readLines(con = file.path(path_to_protocol,
+                                        temp_filename))
+  contents <- str_replace_all(contents, ".emf", ".png")
+  # replace absolute path to media folder by relative path
+  contents <- str_replace_all(contents, path_to_protocol, ".")
+  is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
+  title_numbers <- formatC(x = cumsum(is_title),
+                           width = 2, format = "d", flag = "0")
+  filenames <- str_remove(string = tolower(contents[is_title]),
+                          pattern = "^(#{1}\\s{1})")
+  filenames <- str_remove(string = filenames,
+                          pattern = "\\s$")
+  filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")
+  filenames <- paste0(unique(title_numbers), "_", filenames, ".Rmd")
+  # create new chapters
+  file.create(file.path(path_to_protocol, filenames))
+  # and add chapter contents from docx
+  for (chapter in unique(cumsum(is_title))) {
+    chapter_file <- file.path(path_to_protocol, filenames[chapter])
+    chapter_contents <- contents[chapter == cumsum(is_title)]
+    writeLines(text = chapter_contents,
+               con = chapter_file)
+  }
+  # delete the complete Rmd (output of convert_docx_rmd)
+  file.remove(file.path(path_to_protocol, temp_filename))
 }
