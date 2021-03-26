@@ -265,7 +265,7 @@ add_subprotocols <-
 
     mainprotocol_path_abs <- get_path_to_protocol(code_mainprotocol)
 
-    yml <- yaml_front_matter(file.path(mainprotocol_path_abs, "Index.Rmd"))
+    yml <- yaml_front_matter(file.path(mainprotocol_path_abs, "index.Rmd"))
 
     assert_that(is.logical(yml$params$dependencies_appendix),
                 noNA(yml$params$dependencies_appendix))
