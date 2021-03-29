@@ -17,7 +17,7 @@
 #'
 execshell <- function(commandstring, intern = FALSE, ...) {
   if (.Platform$OS.type == "windows") {
-    res <- shell(commandstring, intern = TRUE, ...)
+    res <- shell(commandstring, intern = TRUE, ...)# nolint
   } else {
     res <- system(commandstring, intern = TRUE, ...)
   }
