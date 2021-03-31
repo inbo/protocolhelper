@@ -10,10 +10,14 @@ show to copy paste the files from the subprotocol to the main protocol}
 get_data_media(rmd_content, code_subprotocol, tag)
 }
 \arguments{
+\item{rmd_content}{Character vector containing lines read from an Rmarkdown
+file}
+
 \item{code_subprotocol}{Character string giving the protocol code from
 which a section or sections will be extracted}
 
-\item{tag}{}
+\item{tag}{A release tag to identify the version of the protocol in the git
+repository}
 }
 \value{
 Silent.

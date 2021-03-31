@@ -163,10 +163,12 @@ insert_protocolsection <-
 #' Extracts all paths to files in data and media from rmd_content and uses git
 #' show to copy paste the files from the subprotocol to the main protocol
 #'
-#' @param rmd_content
+#' @param rmd_content Character vector containing lines read from an Rmarkdown
+#' file
 #' @param code_subprotocol Character string giving the protocol code from
 #' which a section or sections will be extracted
-#' @param tag
+#' @param tag A release tag to identify the version of the protocol in the git
+#' repository
 #'
 #' @return Silent.
 #'
