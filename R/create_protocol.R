@@ -104,7 +104,7 @@ create_protocol <- function(
   assert_that(is.character(authors))
   assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
-  check_versionnumber(gsub("\\.dev", "", version_number))
+  check_versionnumber(gsub("\\.dev", "", version_number)) # nolint
   if (protocol_type == "sfp") {
     theme <- match.arg(theme)
     protocol_leading_number <- themes_df[themes_df$theme == theme,

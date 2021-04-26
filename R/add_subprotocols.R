@@ -36,9 +36,9 @@ add_one_subprotocol <-
            code_mainprotocol,
            fetch_remote = TRUE) {
 
-    check_versionnumber(version_number)
-    check_protocolcode(code_subprotocol)
-    check_protocolcode(code_mainprotocol)
+    check_versionnumber(version_number) # nolint
+    check_protocolcode(code_subprotocol) # nolint
+    check_protocolcode(code_mainprotocol) # nolint
 
     if (!missing(params)) {
       # parse params
