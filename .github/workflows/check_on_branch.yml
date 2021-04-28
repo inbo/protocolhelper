@@ -1,7 +1,7 @@
 on:
   push:
     branches-ignore:
-      - master
+      - main
       - ghpages
 
 name: "check package"
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "check package"
     steps:
-      - uses: inbo/actions/check_pkg@master
+      - uses: inbo/actions/check_pkg@main
         with:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           ORCID_TOKEN: ${{ secrets.ORCID_TOKEN }}

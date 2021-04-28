@@ -9,5 +9,5 @@ Volg subprotocol A <protocol-code>_YYYY.NN om te bepalen of de locatie tot de do
 Volg subprotocol B <protocol-code>_YYYY.NN waarin de staalnameprocedure wordt uitgelegd.
 Volg subprotocol C <protocol-code>_YYYY.NN waarin labo-analyse wordt uitgelegd.
 
-De doelstelling is om de subprotocols te organiseren in een coherent master protocol waarin ontbrekende elementen aangevuld worden die niet in de subprotocols staan, zoals wanneer een bepaald subprotocol wel of niet wordt uitgevoerd, of kleine extra stappen die geen eigen subprotocol vereisen.
+De doelstelling is om de subprotocols te organiseren in een coherent main protocol waarin ontbrekende elementen aangevuld worden die niet in de subprotocols staan, zoals wanneer een bepaald subprotocol wel of niet wordt uitgevoerd, of kleine extra stappen die geen eigen subprotocol vereisen.
 -->
