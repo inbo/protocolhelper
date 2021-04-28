@@ -2,7 +2,8 @@
 % Please edit documentation in R/render_all.R
 \name{render_all}
 \alias{render_all}
-\title{Function to render all protocols into a folder \code{publish/version_number}.}
+\title{Function to render all protocols into a folder
+\code{publish/version_number}.}
 \usage{
 render_all(output_root = "publish", version_number)
 }
@@ -15,7 +16,7 @@ giving order of release in a year).}
 }
 \description{
 This function renders all protocols (which have been merged to
-the master branch) into a folder \code{publish/version_number}, where
+the main branch) into a folder \code{publish/version_number}, where
 \code{version_number} is of the form \code{YYYY.NN} (year, number giving order of
 release in a year).
 }

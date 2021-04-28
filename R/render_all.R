@@ -1,7 +1,8 @@
-#' @title Function to render all protocols into a folder `publish/version_number`.
+#' @title Function to render all protocols into a folder
+#' `publish/version_number`.
 #'
 #' @description This function renders all protocols (which have been merged to
-#' the master branch) into a folder `publish/version_number`, where
+#' the main branch) into a folder `publish/version_number`, where
 #' `version_number` is of the form `YYYY.NN` (year, number giving order of
 #'  release in a year).
 #'
@@ -70,9 +71,10 @@ render_all <- function(output_root = "publish",
           # rename html to index.html
           yml <- read_yaml("_bookdown.yml")
           original_name <- yml$book_filename
-          file.rename(from = path_ext_set(path(output_new_root, y, original_name),
-                                          ext = "html"),
-                      to = path(output_new_root, y, "index.html"))
+          file.rename(from = path_ext_set(
+            path(output_new_root, y, original_name),
+            ext = "html"),
+            to = path(output_new_root, y, "index.html"))
           setwd(old_wd)
          })
 
@@ -103,9 +105,10 @@ render_all <- function(output_root = "publish",
           # rename html to index.html
           yml <- read_yaml("_bookdown.yml")
           original_name <- yml$book_filename
-          file.rename(from = path_ext_set(path(output_new_root, y, original_name),
-                                          ext = "html"),
-                      to = path(output_new_root, y, "index.html"))
+          file.rename(
+            from = path_ext_set(path(output_new_root, y, original_name),
+                                ext = "html"),
+            to = path(output_new_root, y, "index.html"))
           setwd(old_wd)
         })
 

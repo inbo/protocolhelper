@@ -8,12 +8,12 @@ Either provide the full path of an existing, given folder name,
 or construct one for non-existing protocols using (new) folder name plus
 the theme or project name.
 
-For existing protocol folders, arguments \code{theme} and \code{project_name} are always
-ignored.
+For existing protocol folders, arguments \code{theme} and \code{project_name} are
+always ignored.
 
 To create a new protocol folder,
-also either the \code{theme} or the \code{project_name} argument are required apart from
-the \code{protocol_folder_name}.}
+also either the \code{theme} or the \code{project_name} argument are required apart
+from the \code{protocol_folder_name}.}
 \usage{
 get_path_to_protocol(
   protocol_code,
@@ -51,12 +51,12 @@ Either provide the full path of an existing, given folder name,
 or construct one for non-existing protocols using (new) folder name plus
 the theme or project name.
 
-For existing protocol folders, arguments \code{theme} and \code{project_name} are always
-ignored.
+For existing protocol folders, arguments \code{theme} and \code{project_name} are
+always ignored.
 
 To create a new protocol folder,
-also either the \code{theme} or the \code{project_name} argument are required apart from
-the \code{protocol_folder_name}.
+also either the \code{theme} or the \code{project_name} argument are required apart
+from the \code{protocol_folder_name}.
 }
 \examples{
 \dontrun{

@@ -1,52 +1,56 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     c(person(given = "Hans",
              family = "Van Calster",
              role = c("aut", "cre"),
              email = "hans.vancalster@inbo.be",
              comment = c(ORCID = "0000-0001-8595-8426")),
-     person(given = "Thierry",
+      person(given = "Thierry",
              family = "Onkelinx",
-             role = c("aut"),
+             role = "aut",
              email = "thierry.onkelinx@inbo.be",
              comment = c(ORCID = "0000-0001-8804-4216")),
-     person(given = "Floris", 
-            family = "Vanderhaeghe", 
-            email = "floris.vanderhaeghe@inbo.be", 
-            role = c("aut"),
-            comment = c(ORCID = "0000-0002-6378-6229")), 
+      person(given = "Floris",
+             family = "Vanderhaeghe",
+             role = "aut",
+             email = "floris.vanderhaeghe@inbo.be",
+             comment = c(ORCID = "0000-0002-6378-6229")),
       person(given = "Research Institute for Nature and Forest",
              role = c("cph", "fnd"),
              email = "info@inbo.be"))
-Description: This package contains helper functions to manage INBO protocols.
-License: GPL-3 + file LICENSE
+Description: Helper functions to manage INBO protocols.
+License: GPL-3
+URL: https://inbo.github.io/protocolhelper,
+    https://github.com/inbo/protocolhelper
+BugReports: https://github.com/inbo/protocolhelper/issues
+Depends: 
+    R (>= 2.10)
+Imports: 
+    assertthat,
+    bookdown,
+    commonmark,
+    fs,
+    jsonlite,
+    knitr,
+    purrr,
+    rmarkdown,
+    rprojroot,
+    stringr,
+    whisker,
+    xml2,
+    yaml
 Suggests: 
-    git2r,
-    testthat (>= 2.1.0),
-    magick,
-    lubridate,
+    dplyr,
     gert,
+    git2r,
+    lubridate,
+    magick,
     png,
-    dplyr
+    testthat (>= 2.1.0)
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Depends: R (>= 2.10)
-Imports: 
-    rmarkdown,
-    assertthat,
-    rprojroot,
-    stringr,
-    whisker,
-    purrr,
-    bookdown,
-    fs,
-    yaml,
-    knitr,
-    jsonlite,
-    commonmark,
-    xml2

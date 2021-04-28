@@ -1,0 +1,11 @@
+description: Configuration file for checklist::check_pkg()
+package: yes
+allowed:
+  warnings: []
+  notes:
+  - motivation: package will not be submitted to CRAN
+    value: |-
+      checking CRAN incoming feasibility ... NOTE
+      Maintainer: 'Hans Van Calster <hans.vancalster@inbo.be>'
+
+      New submission

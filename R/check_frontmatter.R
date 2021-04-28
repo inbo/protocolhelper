@@ -1,13 +1,15 @@
 #' @title Checks protocol metadata
 #'
 #' @description This function reads metadata from the yaml front matter stored
-#' the index.Rmd file of a protocol and checks if the metadata format is correct.
+#' the index.Rmd file of a protocol and checks if the metadata format is
+#' correct.
 #' This function is intended for checking if a protocol is ready to be rendered
-#' and published (for instance, it will fail if version number is `YYYY.NN.dev`).
+#' and published (for instance, it will fail if version number is
+#' `YYYY.NN.dev`).
 #'
 #' @inheritParams get_path_to_protocol
-#' @param yaml Boolean. If \code{FALSE} the function will only print error messages,
-#' otherwise (default) the parsed yml front matter will be returned
+#' @param yaml Boolean. If \code{FALSE} the function will only print error
+#' messages, otherwise (default) the parsed yml front matter will be returned
 #'
 #' @return parsed yml front matter if \code{yaml} is \code{TRUE}, otherwise
 #' nothing is returned.
@@ -67,9 +69,10 @@ check_frontmatter <- function(
               msg = "'lang' must be 'nl' or 'en'")
 
   if (has_name(yml$params, "theme")) {
-    assert_that(yml$params$theme %in% c("generic", "water", "air", "soil", "vegetation",
-                                 "species"),
-                is.string(yml$params$theme))
+    assert_that(
+      yml$params$theme %in% c("generic", "water", "air", "soil", "vegetation",
+                              "species"),
+      is.string(yml$params$theme))
   }
 
   if (has_name(yml$params, "project_name")) {

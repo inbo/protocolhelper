@@ -9,8 +9,8 @@ check_frontmatter(protocol_code, yaml = TRUE)
 \arguments{
 \item{protocol_code}{Character string giving the protocol code}
 
-\item{yaml}{Boolean. If \code{FALSE} the function will only print error messages,
-otherwise (default) the parsed yml front matter will be returned}
+\item{yaml}{Boolean. If \code{FALSE} the function will only print error
+messages, otherwise (default) the parsed yml front matter will be returned}
 }
 \value{
 parsed yml front matter if \code{yaml} is \code{TRUE}, otherwise
@@ -18,7 +18,9 @@ nothing is returned.
 }
 \description{
 This function reads metadata from the yaml front matter stored
-the index.Rmd file of a protocol and checks if the metadata format is correct.
+the index.Rmd file of a protocol and checks if the metadata format is
+correct.
 This function is intended for checking if a protocol is ready to be rendered
-and published (for instance, it will fail if version number is \code{YYYY.NN.dev}).
+and published (for instance, it will fail if version number is
+\code{YYYY.NN.dev}).
 }

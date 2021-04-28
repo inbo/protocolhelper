@@ -81,7 +81,8 @@ maintainer of the form First name Last name}
 
 \item{version_number}{A version number of the form \code{YYYY.##}.
 For development versions \code{.dev} is added.
-The default is \code{paste0(format(Sys.Date(), "\%Y"), ".00.dev")} (See \code{from_docx}).
+The default is \code{paste0(format(Sys.Date(), "\%Y"), ".00.dev")}
+(See \code{from_docx}).
 When the protocol is ready to be released, this should be changed by a repo-
 admin.}
 
@@ -121,14 +122,23 @@ Protocol numbers that are already in use can be retrieved with
 \item{render}{Whether or not to render the protocol to html.
 Defaults to FALSE.}
 }
-\value{
+\description{
+This function will create a new folder based on values that are
+passed on via the parameters and creates a R-markdown (bookdown) skeleton
+based on a template file to start working on a new protocol.
+Optionally, the rmarkdown chapters are rendered to an html file which will
+be saved in a matching subfolder of the \code{docs} folder.
+}
+\details{
+It is assumed that the \code{src} folder is a subfolder of an RStudio
+project with git version control.
 A target folder to which files will be written will be created as
 subdirectories beneath \code{src}.
 The subfolder structure is of the form
-\verb{/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/} for standard field
-protocols.
-Or \verb{/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/} for
-standard project protocols.
+\verb{/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/} for
+standard field protocols.
+Or \verb{/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/}
+for standard project protocols.
 The folder names are determined by the corresponding arguments of the
 function.
 A matching subfolder structure will be created beneath the \code{docs} folder (and
@@ -147,15 +157,4 @@ The \code{media} folder will contain image files extracted from the docx protoco
 when the \code{from_docx} argument is used.
 The \code{data} folder can be used to store tabular data that are needed for the
 protocol.
-}
-\description{
-This function will create a new folder based on values that are
-passed on via the parameters and creates a R-markdown (bookdown) skeleton
-based on a template file to start working on a new protocol.
-Optionally, the rmarkdown chapters are rendered to an html file which will
-be saved in a matching subfolder of the \code{docs} folder.
-}
-\details{
-It is assumed that the \code{src} folder is a subfolder of an RStudio
-project with git version control.
 }

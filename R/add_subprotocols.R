@@ -36,24 +36,9 @@ add_one_subprotocol <-
            code_mainprotocol,
            fetch_remote = TRUE) {
 
-    assert_that(is.string(version_number))
-    right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
-    assert_that(
-      right_format,
-      msg = "version number not in YYYY.XX format"
-    )
-    assert_that(is.string(code_subprotocol))
-    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_subprotocol)
-    assert_that(
-      right_format,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-    )
-    assert_that(is.string(code_mainprotocol))
-    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
-    assert_that(
-      right_format,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-    )
+    check_versionnumber(version_number) # nolint
+    check_protocolcode(code_subprotocol) # nolint
+    check_protocolcode(code_mainprotocol) # nolint
 
     if (!missing(params)) {
       # parse params
@@ -130,7 +115,7 @@ add_one_subprotocol <-
     #render the protocol
     #with params and with bookdown::markdown_document2() as output format
     #and output to the main bookdown working directory
-    mdfile <- paste0(code_subprotocol,"-", version_number, ".md")
+    mdfile <- paste0(code_subprotocol, "-", version_number, ".md")
     old_wd <- getwd()
     setwd(dir = file.path(mainprotocol_path_abs, version_number))
     yaml_sub <- yaml_front_matter("index.Rmd")
@@ -204,7 +189,7 @@ add_one_subprotocol <-
       } else {
         # deal with sub-sub protocols
         # which already have protocolcode prepended
-        if (grepl("\\s\\{\\#s[fpiao]p.+\\}",header_text)) {
+        if (grepl("\\s\\{\\#s[fpiao]p.+\\}", header_text)) {
           header_text #keep as is
         } else {
           header_text <- sub("\\s\\{\\#.+\\}", "", header_text)
@@ -223,9 +208,9 @@ add_one_subprotocol <-
     headings_modif <- map2_chr(heading_text, code_subprotocol, add_identifiers)
     headings_modif <- map2_chr(heading_level, headings_modif, add_atx)
     headings_modif <- map2_chr("||", headings_modif, paste, sep = "")
-    headings_modif <- map2_chr(headings_modif,"||", paste, sep = "")
+    headings_modif <- map2_chr(headings_modif, "||", paste, sep = "")
     headings_orig <- map2_chr(heading_level, heading_text, add_atx)
-    headings_orig <- map2_chr("||",headings_orig, paste, sep = "")
+    headings_orig <- map2_chr("||", headings_orig, paste, sep = "")
     headings_orig <- map2_chr(headings_orig, "||", paste, sep = "")
     names(headings_modif) <- headings_orig
     md_string <- paste(mdcontents, collapse = "||")
@@ -280,7 +265,7 @@ add_subprotocols <-
 
     mainprotocol_path_abs <- get_path_to_protocol(code_mainprotocol)
 
-    yml <- yaml_front_matter(file.path(mainprotocol_path_abs, "Index.Rmd"))
+    yml <- yaml_front_matter(file.path(mainprotocol_path_abs, "index.Rmd"))
 
     assert_that(is.logical(yml$params$dependencies_appendix),
                 noNA(yml$params$dependencies_appendix))
@@ -296,7 +281,7 @@ add_subprotocols <-
         appendix = yml$params$dependencies_appendix
     )
 
-    for (i in 1:nrow(dependencies)) {
+    for (i in seq_len(nrow(dependencies))) {
       if (dependencies$appendix[i]) {
         add_one_subprotocol(
           code_subprotocol = dependencies$protocol_code[i],
