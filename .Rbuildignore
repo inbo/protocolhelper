@@ -13,10 +13,11 @@
 ^docs$
 ^LICENSE.md$
 ^LICENSE\.md$
+^man-roxygen$
+^NEWS\.md$
 ^pkgdown$
 ^protocolhelper\.Rproj$
 ^publish$
-^README\.Rmd$
 ^README\.md$
-^NEWS\.md$
+^README\.Rmd$
 ^src$
