@@ -74,7 +74,7 @@
 #' @importFrom bookdown render_book
 #' @importFrom purrr map_chr
 #' @importFrom whisker whisker.render
-#' @importFrom fs path_rel
+#' @importFrom fs path_rel dir_create dir_ls
 #'
 #'
 #' @export
@@ -171,23 +171,45 @@ create_protocol <- function(
   # next make it relative to path_to_protocol
   output_dir_rel <- path_rel(output_dir, path_to_protocol)
 
-  # check for existence of the folders
-  if (dir.exists(path_to_protocol)) {
+  # check for existence of non-empty folders
+  if (dir.exists(path_to_protocol) &&
+      !identical(
+        unname(
+          unclass(
+            dir_ls(
+              path_to_protocol,
+              type = file)
+          )
+        ),
+        character(0)
+      )
+  ) {
     stop(sprintf(paste0("The protocol repository already has ",
                         "a folder %s!"), path_to_protocol))
   }
-  if (dir.exists(output_dir)) {
+  if (dir.exists(output_dir) &&
+      !identical(
+        unname(
+          unclass(
+            dir_ls(
+              output_dir,
+              type = file)
+          )
+        ),
+        character(0)
+      )
+  ) {
     stop(sprintf(paste0("The protocol repository already has ",
                         "a folder %s!"), output_dir))
   }
   # create new directories
-  dir.create(file.path(path_to_protocol),
+  dir_create(file.path(path_to_protocol),
              recursive = TRUE)
-  dir.create(file.path(output_dir),
+  dir_create(file.path(output_dir),
              recursive = TRUE)
   # create subfolders data and media
-  dir.create(file.path(path_to_protocol, "data"))
-  dir.create(file.path(path_to_protocol, "media"))
+  dir_create(file.path(path_to_protocol, "data"))
+  dir_create(file.path(path_to_protocol, "media"))
 
   # create from empty template
   if (is.null(from_docx)) {
