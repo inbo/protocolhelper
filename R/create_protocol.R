@@ -172,7 +172,7 @@ create_protocol <- function(
   output_dir_rel <- path_rel(output_dir, path_to_protocol)
 
   # check for existence of non-empty folders
-  if (dir.exists(path_to_protocol) &&
+  assert_that(!(dir.exists(path_to_protocol) &&
       !identical(
         unname(
           unclass(
@@ -182,12 +182,11 @@ create_protocol <- function(
           )
         ),
         character(0)
+      )),
+      msg = sprintf(paste0("The protocol repository already has ",
+                        "a non-empty folder %s!"), path_to_protocol)
       )
-  ) {
-    stop(sprintf(paste0("The protocol repository already has ",
-                        "a folder %s!"), path_to_protocol))
-  }
-  if (dir.exists(output_dir) &&
+  assert_that(!(dir.exists(output_dir) &&
       !identical(
         unname(
           unclass(
@@ -197,11 +196,10 @@ create_protocol <- function(
           )
         ),
         character(0)
+      )),
+      msg = sprintf(paste0("The protocol repository already has ",
+                        "a non-empty folder %s!"), output_dir)
       )
-  ) {
-    stop(sprintf(paste0("The protocol repository already has ",
-                        "a folder %s!"), output_dir))
-  }
   # create new directories
   dir_create(file.path(path_to_protocol),
              recursive = TRUE)
@@ -262,8 +260,7 @@ create_protocol <- function(
       close(original_file)
     }
   } else {
-    assert_that(is.string(from_docx),
-                file.exists(from_docx))
+    assert_that(file.exists(from_docx))
     create_from_docx(from_docx = from_docx,
                      path_to_protocol = path_to_protocol)
   }
