@@ -180,7 +180,7 @@ create_protocol <- function(
           unclass(
             dir_ls(
               path_to_protocol,
-              type = file)
+              type = "file")
           )
         ),
         character(0)
@@ -194,7 +194,7 @@ create_protocol <- function(
           unclass(
             dir_ls(
               output_dir,
-              type = file)
+              type = "file")
           )
         ),
         character(0)
