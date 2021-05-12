@@ -1,3 +1,7 @@
+# protocolhelper 0.1.4
+
+* fixes a bug introduced in 0.1.3
+
 # protocolhelper 0.1.3
 
 * When a protocol is created from an existing docx version, template files will
