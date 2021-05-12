@@ -27,12 +27,12 @@
 #' the target folder beneath `src`.
 #' Besides Rmarkdown files, this target folder will also contain files needed to
 #' render to a Bookdown gitbook such as a `_bookdown.yml`.
-#' The `NEWS.Rmd` file must be used to document the changes between revisions
+#' The `NEWS.md` file must be used to document the changes between revisions
 #' of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
 #' of the target folder.
-#' The `media` folder will contain image files extracted from the docx protocol
-#' when the `from_docx` argument is used.
+#' The `media` folder can be used to store image files and will contain image
+#' files extracted from the docx protocol when the `from_docx` argument is used.
 #' The `data` folder can be used to store tabular data that are needed for the
 #' protocol.
 #'
@@ -532,7 +532,7 @@ get_path_to_protocol <- function(protocol_code,
 #'
 #' A protocol code of format `s[f|p]p-###-[nl|en]` will be created.
 #' The number will be determined automatically based on theme (in case of sfp)
-#' and a rank order of all existing
+#' and a rank order of all existing protocol numbers
 #'
 #' @param protocol_type Either `sfp` (standard field protocol) or `spp` (
 #' standard project protocol)
