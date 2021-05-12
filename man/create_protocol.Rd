@@ -144,17 +144,19 @@ function.
 A matching subfolder structure will be created beneath the \code{docs} folder (and
 output files needed for rendering to html output will be placed in it if
 \code{render = TRUE}.
-The template Rmarkdown files, or the Rmarkdown files that result from
+The template Rmarkdown files and the Rmarkdown files that result from
 converting a docx protocol (see \code{from_docx} argument), will be written to
 the target folder beneath \code{src}.
+Template Rmarkdown files with the same name as Rmarkdown files that result
+from converting a docx protocol will be overwritten by the latter.
 Besides Rmarkdown files, this target folder will also contain files needed to
 render to a Bookdown gitbook such as a \verb{_bookdown.yml}.
-The \code{NEWS.Rmd} file must be used to document the changes between revisions
+The \code{NEWS.md} file must be used to document the changes between revisions
 of the protocol.
 Furthermore, a \code{data} and a \code{media} folder will be created as subdirectories
 of the target folder.
-The \code{media} folder will contain image files extracted from the docx protocol
-when the \code{from_docx} argument is used.
+The \code{media} folder can be used to store image files and will contain image
+files extracted from the docx protocol when the \code{from_docx} argument is used.
 The \code{data} folder can be used to store tabular data that are needed for the
 protocol.
 }
