@@ -22,17 +22,19 @@
 #' A matching subfolder structure will be created beneath the `docs` folder (and
 #' output files needed for rendering to html output will be placed in it if
 #' `render = TRUE`.
-#' The template Rmarkdown files, or the Rmarkdown files that result from
+#' The template Rmarkdown files and the Rmarkdown files that result from
 #' converting a docx protocol (see `from_docx` argument), will be written to
 #' the target folder beneath `src`.
+#' Template Rmarkdown files with the same name as Rmarkdown files that result
+#' from converting a docx protocol will be overwritten by the latter.
 #' Besides Rmarkdown files, this target folder will also contain files needed to
 #' render to a Bookdown gitbook such as a `_bookdown.yml`.
-#' The `NEWS.Rmd` file must be used to document the changes between revisions
+#' The `NEWS.md` file must be used to document the changes between revisions
 #' of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
 #' of the target folder.
-#' The `media` folder will contain image files extracted from the docx protocol
-#' when the `from_docx` argument is used.
+#' The `media` folder can be used to store image files and will contain image
+#' files extracted from the docx protocol when the `from_docx` argument is used.
 #' The `data` folder can be used to store tabular data that are needed for the
 #' protocol.
 #'
@@ -74,7 +76,7 @@
 #' @importFrom bookdown render_book
 #' @importFrom purrr map_chr
 #' @importFrom whisker whisker.render
-#' @importFrom fs path_rel
+#' @importFrom fs path_rel dir_create dir_ls
 #'
 #'
 #' @export
@@ -171,82 +173,101 @@ create_protocol <- function(
   # next make it relative to path_to_protocol
   output_dir_rel <- path_rel(output_dir, path_to_protocol)
 
-  # check for existence of the folders
-  if (dir.exists(path_to_protocol)) {
-    stop(sprintf(paste0("The protocol repository already has ",
-                        "a folder %s!"), path_to_protocol))
-  }
-  if (dir.exists(output_dir)) {
-    stop(sprintf(paste0("The protocol repository already has ",
-                        "a folder %s!"), output_dir))
-  }
+  # check for existence of non-empty folders
+  assert_that(!(dir.exists(path_to_protocol) &&
+      !identical(
+        unname(
+          unclass(
+            dir_ls(
+              path_to_protocol,
+              type = file)
+          )
+        ),
+        character(0)
+      )),
+      msg = sprintf(paste0("The protocol repository already has ",
+                        "a non-empty folder %s!"), path_to_protocol)
+      )
+  assert_that(!(dir.exists(output_dir) &&
+      !identical(
+        unname(
+          unclass(
+            dir_ls(
+              output_dir,
+              type = file)
+          )
+        ),
+        character(0)
+      )),
+      msg = sprintf(paste0("The protocol repository already has ",
+                        "a non-empty folder %s!"), output_dir)
+      )
   # create new directories
-  dir.create(file.path(path_to_protocol),
-             recursive = TRUE)
-  dir.create(file.path(output_dir),
-             recursive = TRUE)
+  dir_create(file.path(path_to_protocol),
+             recurse = TRUE)
+  dir_create(file.path(output_dir),
+             recurse = TRUE)
   # create subfolders data and media
-  dir.create(file.path(path_to_protocol, "data"))
-  dir.create(file.path(path_to_protocol, "media"))
+  dir_create(file.path(path_to_protocol, "data"))
+  dir_create(file.path(path_to_protocol, "media"))
 
   # create from empty template
-  if (is.null(from_docx)) {
-    # move all files from the template folder
-    parent_rmd <- file.path(path_to_protocol, "index.Rmd")
-    template <- paste("template", protocol_type, language, sep = "_")
-    draft(file = parent_rmd,
-          template = template,
-          package = "protocolhelper",
-          edit = FALSE)
+  # move all files from the template folder
+  parent_rmd <- file.path(path_to_protocol, "index.Rmd")
+  template <- paste("template", protocol_type, language, sep = "_")
+  draft(file = parent_rmd,
+        template = template,
+        package = "protocolhelper",
+        edit = FALSE)
 
-    # create a character vector with the names of all rmd_files
-    # in correct order for compilation
-    rmd_files <- c(
-      "index.Rmd",
-      "NEWS.md",
-      list.files(path = path_to_protocol,
-                 pattern = "^\\d{2}.+Rmd$"))
+  # create a character vector with the names of all rmd_files
+  # in correct order for compilation
+  rmd_files <- c(
+    "index.Rmd",
+    "NEWS.md",
+    list.files(path = path_to_protocol,
+               pattern = "^\\d{2}.+Rmd$"))
 
 
-    # change values in parent rmarkdown and _bookdown.yml
-    filenames <- c(parent_rmd,
-                   file.path(path_to_protocol, "_bookdown.yml"))
-    for (filename in filenames) {
-      original_file <- file(filename, "r")
-      original_file_content <- readLines(filename)
-      data <- list(title = title,
-                   subtitle = subtitle,
-                   authors = authors,
-                   date = date,
-                   reviewers = reviewers,
-                   file_manager = file_manager,
-                   version_number = version_number,
-                   protocol_code = protocol_code,
-                   language = language,
-                   book_filename = book_filename,
-                   output_dir = output_dir_rel,
-                   rmd_files = rmd_files
-      )
-      if (protocol_type == "sfp") {
-        data$theme <- theme
-      }
-      if (protocol_type == "spp") {
-        data$project_name <- project_name
-      }
-      writeLines(map_chr(original_file_content,
-                         whisker.render,
-                         data),
-                 filename)
-      close(original_file)
+  # change values in parent rmarkdown and _bookdown.yml
+  filenames <- c(parent_rmd,
+                 file.path(path_to_protocol, "_bookdown.yml"))
+  for (filename in filenames) {
+    original_file <- file(filename, "r")
+    original_file_content <- readLines(filename)
+    data <- list(title = title,
+                 subtitle = subtitle,
+                 authors = authors,
+                 date = date,
+                 reviewers = reviewers,
+                 file_manager = file_manager,
+                 version_number = version_number,
+                 protocol_code = protocol_code,
+                 language = language,
+                 book_filename = book_filename,
+                 output_dir = output_dir_rel,
+                 rmd_files = rmd_files
+    )
+    if (protocol_type == "sfp") {
+      data$theme <- theme
     }
-  } else {
-    assert_that(is.string(from_docx),
-                file.exists(from_docx))
+    if (protocol_type == "spp") {
+      data$project_name <- project_name
+    }
+    writeLines(map_chr(original_file_content,
+                       whisker.render,
+                       data),
+               filename)
+    close(original_file)
+  }
+
+  if (!is.null(from_docx)) {
+    assert_that(file.exists(from_docx))
     create_from_docx(from_docx = from_docx,
                      path_to_protocol = path_to_protocol)
   }
 
-    # render html
+  # render html
   if (render) {
     render_protocol(protocol_code = protocol_code)
   }
@@ -532,7 +553,7 @@ get_path_to_protocol <- function(protocol_code,
 #'
 #' A protocol code of format `s[f|p]p-###-[nl|en]` will be created.
 #' The number will be determined automatically based on theme (in case of sfp)
-#' and a rank order of all existing
+#' and a rank order of all existing protocol numbers
 #'
 #' @param protocol_type Either `sfp` (standard field protocol) or `spp` (
 #' standard project protocol)
