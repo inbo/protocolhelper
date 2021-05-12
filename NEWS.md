@@ -1,7 +1,8 @@
 # protocolhelper 0.1.3
 
-* Make sure an `index.Rmd` file is created when creating a protocol from a 
-  `docx` file
+* When a protocol is created from an existing docx version, template files will
+  be generated as well (and overwritten by the docx chapter if the filename
+  is the same, i.e. confirms to current template standards)
 
 # protocolhelper 0.1.2
 
