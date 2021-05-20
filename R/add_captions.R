@@ -36,7 +36,7 @@ add_captions <- function(from, to) {
   text_1string <-
     gsub(
       pattern = "!\\[[^]]*\\]\\(([^\\)]*)\\)\\{([^\\}]*)\\}\\n\\n(Figuur \\d*\\D*\\d*)[.:]? (.+?)\\n\\n", #nolint
-      replacement = "![\\4 \\\\label{\\3}](\\1){\\2}\n\n",
+      replacement = "![\\4 \\\\label{\\3}](\\1){\\2}\n\n", #nolint
       x = text_1string
     )
   # replace figure reference
