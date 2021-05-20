@@ -56,14 +56,14 @@ add_captions <- function(from, to) {
   # replace table caption of table starting with +--
   text_1string <-
     gsub(
-      pattern = "\\n\\n(Tabel \\d*\\D*\\d*)[.:]? (.+?)\\n\\n\\+--",
+      pattern = "\\n\\n\\*?\\*?(Tabel \\d*\\D*\\d*)[.:]?\\*?\\*? (.+?)\\n\\n\\+--",
       replacement = "\n\nTable: \\2\\\\label{\\1}\n\n+--",
       x = text_1string
     )
   # replace table caption of table starting with caption
   text_1string <-
     gsub(
-      pattern = "\\n\\n(Tabel \\d*\\D*\\d*)[.:]? (.+?)\\n\\n (.+?)\\n  --",
+      pattern = "\\n\\n\\*?\\*?(Tabel \\d*\\D*\\d*)[.:]?\\*?\\*? (.+?)\\n\\n ?(.+?)\\n ? ?--",
       replacement = "\n\nTable: \\2\\\\label{\\1}\n\n \\3\n  --",
       x = text_1string
     )
