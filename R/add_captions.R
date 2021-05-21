@@ -48,24 +48,24 @@ add_captions <- function(
     gsub(
       pattern =
         sprintf(
-          "!\\[[^]]*\\]\\(([^\\)]*)\\)\\{([^\\}]*)\\}\\n\\n\\*?\\*?(%s \\d*\\D?\\d*)[.:]?\\*?\\*? (.+?)\\n\\n", #nolint
+          "!\\[[^]]*\\]\\(([^\\)]*)\\)\\{([^\\}]*)\\}\\n\\n\\*?\\*?(%s) (\\d*\\D?\\d*)[.:]?\\*?\\*? (.+?)\\n\\n", #nolint
           name_figure
         ),
-      replacement = "![(#fig:\\3) \\4](\\1){\\2}\n\n", #nolint
+      replacement = "![(#fig:\\3\\4) \\5](\\1){\\2}\n\n", #nolint
       x = text_1string
     )
   # replace figure reference
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#fig\\:])(%s \\d*\\D?\\d*)", name_figure),
-      replacement = "\\1Figuur \\\\@ref(fig:\\2)",
+      pattern = sprintf("([^\\#fig\\:])(%s) (\\d*\\D?\\d*)", name_figure),
+      replacement = "\\1Figuur \\\\@ref(fig:\\2\\3)",
       x = text_1string
     )
   # replace figure reference met line ending
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#fig\\:])(%s\\n\\d*\\D?\\d*)", name_figure),
-      replacement = "\\1Figuur\n\\\\@ref(fig:\\2)",
+      pattern = sprintf("([^\\#fig\\:])(%s)\\n(\\d*\\D?\\d*)", name_figure),
+      replacement = "\\1Figuur\n\\\\@ref(fig:\\2\\3)",
       x = text_1string
     )
   # replace table caption of table starting with +--
@@ -73,10 +73,10 @@ add_captions <- function(
     gsub(
       pattern =
         sprintf(
-          "\\n\\n\\*?\\*?(%s \\d*\\D?\\d*)[.:]?\\*?\\*? (.+?)\\n\\n\\+--",
+          "\\n\\n\\*?\\*?(%s) (\\d*\\D?\\d*)[.:]?\\*?\\*? (.+?)\\n\\n\\+--",
           name_table
         ),
-      replacement = "\n\nTable: (#tab:\\1) \\2\n\n+--",
+      replacement = "\n\nTable: (#tab:\\1\\2) \\3\n\n+--",
       x = text_1string
     )
   # replace table caption of table starting with caption
@@ -84,24 +84,24 @@ add_captions <- function(
     gsub(
       pattern =
         sprintf(
-          "\\n\\n\\*?\\*?(%s \\d*\\D?\\d*)[.:]?\\*?\\*? (.+?)\\n\\n ?(.+?)\\n ? ?--", #nolint
+          "\\n\\n\\*?\\*?(%s) (\\d*\\D?\\d*)[.:]?\\*?\\*? (.+?)\\n\\n ?(.+?)\\n ? ?--", #nolint
           name_table
         ),
-      replacement = "\n\nTable: (#tab:\\1) \\2\n\n \\3\n  --",
+      replacement = "\n\nTable: (#tab:\\1\\2) \\3\n\n \\4\n  --",
       x = text_1string
     )
   # replace table reference
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#tab\\:])(%s \\d*\\D?\\d*)", name_table),
-      replacement = "\\1Tabel \\\\@ref(tab:\\2)",
+      pattern = sprintf("([^\\#tab\\:])(%s) (\\d*\\D?\\d*)", name_table),
+      replacement = "\\1Tabel \\\\@ref(tab:\\2\\3)",
       x = text_1string
     )
   # replace table reference with line ending
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#tab\\:])(%s\\n\\d*\\D?\\d*)", name_table),
-      replacement = "\\1Tabel\n\\\\@ref(tab:\\2)",
+      pattern = sprintf("([^\\#tab\\:])(%s)\\n(\\d*\\D?\\d*)", name_table),
+      replacement = "\\1Tabel\n\\\\@ref(tab:\\2\\3)",
       x = text_1string
     )
   text2 <- c(unlist(strsplit(text_1string, split = "\\n")), "")
