@@ -41,7 +41,7 @@ add_captions <- function(
   name_figure = "Figuur",
   name_table = "Tabel") {
 
-  text <- readLines(from)
+  text <- readLines(from, encoding = "UTF-8")
   text_1string <- paste(text, collapse = "\n")
   # replace figure caption
   text_1string <-
@@ -105,5 +105,5 @@ add_captions <- function(
       x = text_1string
     )
   text2 <- c(unlist(strsplit(text_1string, split = "\\n")), "")
-  writeLines(text2, to)
+  writeLines(text2, file(to, encoding = "UTF-8"))
 }
