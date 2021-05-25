@@ -68,7 +68,7 @@ add_captions <- function(
       replacement = "\\1Figuur\n\\\\@ref(fig:\\2\\3)",
       x = text_1string
     )
-  # replace table caption of table starting with +--
+  # replace table caption
   text_1string <-
     gsub(
       pattern =
