@@ -10,7 +10,7 @@ test_that("function add_captions works", {
     name_figure = "foto"
   )
   expect_equal(
-    readLines(paste(temp_dir, "final_result.Rmd", sep = "\\")),
+    readLines(file.path(temp_dir, "final_result.Rmd")),
     readLines("../testdata/result_captions.Rmd")
   )
 })
