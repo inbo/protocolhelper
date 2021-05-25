@@ -116,5 +116,8 @@ add_captions <- function(
       x = text_1string
     )
   text2 <- c(unlist(strsplit(text_1string, split = "\\n")), "")
-  writeLines(text2, file(to, encoding = "UTF-8"))
-}
+  con <- file(to, encoding = "UTF-8")
+  writeLines(text2, con = con)
+  close(con)
+  return(invisible(NULL))
+  }
