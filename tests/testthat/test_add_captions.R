@@ -5,7 +5,7 @@ test_that("function add_captions works", {
     to = file.path(temp_dir, "step1.Rmd")
   )
   add_captions(
-    from = paste(temp_dir, "step1.Rmd", sep = "\\"),
+    from = file.path(temp_dir, "step1.Rmd"),
     to = file.path(temp_dir, "final_result.Rmd"),
     name_figure = "foto"
   )
