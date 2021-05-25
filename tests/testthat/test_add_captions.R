@@ -6,7 +6,7 @@ test_that("function add_captions works", {
   )
   add_captions(
     from = paste(temp_dir, "step1.Rmd", sep = "\\"),
-    to = paste(temp_dir, "final_result.Rmd", sep = "\\"),
+    to = file.path(temp_dir, "final_result.Rmd"),
     name_figure = "foto"
   )
   expect_equal(
