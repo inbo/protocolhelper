@@ -2,7 +2,7 @@ test_that("function add_captions works", {
   temp_dir <- tempdir()
   add_captions(
     from = "../testdata/test_captions.Rmd",
-    to = paste(temp_dir, "step1.Rmd", sep = "\\")
+    to = file.path(temp_dir, "step1.Rmd")
   )
   add_captions(
     from = paste(temp_dir, "step1.Rmd", sep = "\\"),
