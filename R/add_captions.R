@@ -56,6 +56,7 @@ add_captions <- function(
   assert_that(endsWith(from, ".Rmd"))
   assert_that(!missing(to), is.string(to))
   assert_that(dir.exists(dirname(to)))
+  assert_that(endsWith(to, ".Rmd"))
   assert_that(is.string(name_figure_from))
   assert_that(is.string(name_table_from))
   assert_that(is.string(name_figure_to))
