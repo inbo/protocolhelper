@@ -53,6 +53,7 @@ add_captions <- function(
   # input checks
   assert_that(!missing(from))
   from <- normalizePath(from)
+  assert_that(endsWith(from, ".Rmd"))
   assert_that(!missing(to), is.string(to))
   assert_that(dir.exists(dirname(to)))
   assert_that(is.string(name_figure_from))
