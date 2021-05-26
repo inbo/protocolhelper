@@ -71,7 +71,8 @@ add_captions <- function(
   # replace figure reference met line ending
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#fig\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_figure_from),
+      pattern =
+        sprintf("([^\\#fig\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_figure_from),
       replacement = sprintf("\\1%s\n\\\\@ref(fig:\\2\\3)", name_figure_to),
       x = text_1string
     )
@@ -100,7 +101,8 @@ add_captions <- function(
   # replace table reference with line ending
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#tab\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_table_from),
+      pattern =
+        sprintf("([^\\#tab\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_table_from),
       replacement = sprintf("\\1%s\n\\\\@ref(tab:\\2\\3)", name_table_to),
       x = text_1string
     )
