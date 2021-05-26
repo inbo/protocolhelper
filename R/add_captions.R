@@ -37,6 +37,9 @@
 #' @param name_table_to name that should be given to tables in cross
 #' references in the output `.Rmd` (default is `Tabel`)
 #'
+#' @importFrom tools file_path_sans_ext
+#' @importFrom assertthat is.string
+#'
 #' @export
 #'
 add_captions <- function(
@@ -46,6 +49,16 @@ add_captions <- function(
   name_table_from = "Tabel",
   name_figure_to = "Figuur",
   name_table_to = "Tabel") {
+
+  # input checks
+  assert_that(!missing(from))
+  from <- normalizePath(from)
+  assert_that(!missing(to), is.string(to))
+  assert_that(dir.exists(dirname(to)))
+  assert_that(is.string(name_figure_from))
+  assert_that(is.string(name_table_from))
+  assert_that(is.string(name_figure_to))
+  assert_that(is.string(name_table_from))
 
   text <- readLines(from, encoding = "UTF-8")
   text_1string <- paste(text, collapse = "\n")
