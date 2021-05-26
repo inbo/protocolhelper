@@ -52,8 +52,8 @@ Content Cell  | Content Cell
 
 In Tabel 1 is er een header opgenomen, in Tabel 2.2 niet. Andere notaties zijn
 Tab.1, Tab 1 of tabel 1, maar deze gaan we hier niet accepteren omdat ze
-verschillend zijn van de schrijfwijze van de tabelhoofding.  En referentie tabel
-1 ook eens splitsen over meerdere regels, en (tabel 2.2) tussen haakjes. En
+verschillend zijn van de schrijfwijze van de tabelhoofding.  En referentie Tabel
+1 ook eens splitsen over meerdere regels, en (Tabel 2.2) tussen haakjes. En
 niet vergeten te verwijzen naar Tabel 3-4.
 
 Tabel 3-4 is qua opbouw een zeer eenvoudige tabel, maar wat atypisch door het

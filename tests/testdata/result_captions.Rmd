@@ -44,8 +44,8 @@ Content Cell  | Content Cell
 
 In Tabel \@ref(tab:Tabel1) is er een header opgenomen, in Tabel \@ref(tab:Tabel2.2) niet. Andere notaties zijn
 Tab.1, Tab 1 of tabel 1, maar deze gaan we hier niet accepteren omdat ze
-verschillend zijn van de schrijfwijze van de tabelhoofding.  En referentie tabel
-1 ook eens splitsen over meerdere regels, en (tabel 2.2) tussen haakjes. En
+verschillend zijn van de schrijfwijze van de tabelhoofding.  En referentie Tabel
+\@ref(tab:Tabel1) ook eens splitsen over meerdere regels, en (Tabel \@ref(tab:Tabel2.2)) tussen haakjes. En
 niet vergeten te verwijzen naar Tabel \@ref(tab:Tabel3-4).
 
 Tabel \@ref(tab:Tabel3-4) is qua opbouw een zeer eenvoudige tabel, maar wat atypisch door het
