@@ -4,7 +4,12 @@
 \alias{add_captions}
 \title{Touch up figure and table captions after using \code{convert_docx_to_rmd()}}
 \usage{
-add_captions(from, to, name_figure = "Figuur", name_table = "Tabel")
+add_captions(
+  from,
+  to,
+  name_figure_from = "Figuur",
+  name_table_from = "Tabel",
+)
 }
 \arguments{
 \item{from}{The \code{.Rmd} file to convert.
@@ -13,11 +18,11 @@ Can be given as an absolute or relative path.}
 \item{to}{The filename to write the resulting \code{.Rmd} file.
 Can be given as an absolute or relative path.}
 
-\item{name_figure}{name that is given to figures in captions and cross
-references (default is \code{Figuur})}
+\item{name_figure_from}{name that is given to figures in captions and cross
+references in the \code{.Rmd} provided in \code{from} (default is \code{Figuur})}
 
-\item{name_table}{name that is given to tables in captions and cross
-references (default is \code{Tabel})}
+\item{name_table_from}{name that is given to tables in captions and cross
+references in the \code{.Rmd} provided in \code{from} (default is \code{Tabel})}
 }
 \description{
 After using \code{convert_docx_to_rmd()}, figure and table captions

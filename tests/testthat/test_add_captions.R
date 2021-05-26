@@ -7,7 +7,7 @@ test_that("function add_captions works", {
   add_captions(
     from = file.path(temp_dir, "step1.Rmd"),
     to = file.path(temp_dir, "final_result.Rmd"),
-    name_figure = "foto"
+    name_figure_from = "foto"
   )
   expect_equal(
     readLines(file.path(temp_dir, "final_result.Rmd")),

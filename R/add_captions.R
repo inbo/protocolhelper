@@ -28,18 +28,18 @@
 #' Can be given as an absolute or relative path.
 #' @param to The filename to write the resulting `.Rmd` file.
 #' Can be given as an absolute or relative path.
-#' @param name_figure name that is given to figures in captions and cross
-#' references (default is `Figuur`)
-#' @param name_table name that is given to tables in captions and cross
-#' references (default is `Tabel`)
+#' @param name_figure_from name that is given to figures in captions and cross
+#' references in the `.Rmd` provided in `from` (default is `Figuur`)
+#' @param name_table_from name that is given to tables in captions and cross
+#' references in the `.Rmd` provided in `from` (default is `Tabel`)
 #'
 #' @export
 #'
 add_captions <- function(
   from,
   to,
-  name_figure = "Figuur",
-  name_table = "Tabel") {
+  name_figure_from = "Figuur",
+  name_table_from = "Tabel",
 
   text <- readLines(from, encoding = "UTF-8")
   text_1string <- paste(text, collapse = "\n")
@@ -49,7 +49,7 @@ add_captions <- function(
       pattern =
         sprintf(
           "!\\[[^]]*\\]\\(([^\\)]*)\\)\\{([^\\}]*)\\}\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? (.+?)\\n\\n", #nolint
-          name_figure
+          name_figure_from
         ),
       replacement = "![(#fig:\\3\\4) \\6](\\1){\\2}\n\n", #nolint
       x = text_1string
@@ -57,15 +57,16 @@ add_captions <- function(
   # replace figure reference
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#fig\\:])(%s) (\\d+(\\D\\d+)?)", name_figure),
       replacement = "\\1Figuur \\\\@ref(fig:\\2\\3)",
+      pattern =
+        sprintf("([^\\#fig\\:])(%s) (\\d+(\\D\\d+)?)", name_figure_from),
       x = text_1string
     )
   # replace figure reference met line ending
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#fig\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_figure),
       replacement = "\\1Figuur\n\\\\@ref(fig:\\2\\3)",
+      pattern = sprintf("([^\\#fig\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_figure_from),
       x = text_1string
     )
 
@@ -76,7 +77,7 @@ add_captions <- function(
       pattern =
         sprintf(
           "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? (.+?)\\n\\n",
-          name_table
+          name_table_from
         ),
       replacement = "\\1\n\nTable: (#tab:\\2\\3) \\5\n\n",
       x = split_string
@@ -86,15 +87,15 @@ add_captions <- function(
   # replace table reference
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#tab\\:])(%s) (\\d+(\\D\\d+)?)", name_table),
       replacement = "\\1Tabel \\\\@ref(tab:\\2\\3)",
+      pattern = sprintf("([^\\#tab\\:])(%s) (\\d+(\\D\\d+)?)", name_table_from),
       x = text_1string
     )
   # replace table reference with line ending
   text_1string <-
     gsub(
-      pattern = sprintf("([^\\#tab\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_table),
       replacement = "\\1Tabel\n\\\\@ref(tab:\\2\\3)",
+      pattern = sprintf("([^\\#tab\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_table_from),
       x = text_1string
     )
   text2 <- c(unlist(strsplit(text_1string, split = "\\n")), "")
