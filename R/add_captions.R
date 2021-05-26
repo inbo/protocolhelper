@@ -32,6 +32,10 @@
 #' references in the `.Rmd` provided in `from` (default is `Figuur`)
 #' @param name_table_from name that is given to tables in captions and cross
 #' references in the `.Rmd` provided in `from` (default is `Tabel`)
+#' @param name_figure_to name that should be given to figures in cross
+#' references in the output `.Rmd` (default is `Figuur`)
+#' @param name_table_to name that should be given to tables in cross
+#' references in the output `.Rmd` (default is `Tabel`)
 #'
 #' @export
 #'
@@ -40,6 +44,8 @@ add_captions <- function(
   to,
   name_figure_from = "Figuur",
   name_table_from = "Tabel",
+  name_figure_to = "Figuur",
+  name_table_to = "Tabel") {
 
   text <- readLines(from, encoding = "UTF-8")
   text_1string <- paste(text, collapse = "\n")
@@ -57,16 +63,16 @@ add_captions <- function(
   # replace figure reference
   text_1string <-
     gsub(
-      replacement = "\\1Figuur \\\\@ref(fig:\\2\\3)",
       pattern =
         sprintf("([^\\#fig\\:])(%s) (\\d+(\\D\\d+)?)", name_figure_from),
+      replacement = sprintf("\\1%s \\\\@ref(fig:\\2\\3)", name_figure_to),
       x = text_1string
     )
   # replace figure reference met line ending
   text_1string <-
     gsub(
-      replacement = "\\1Figuur\n\\\\@ref(fig:\\2\\3)",
       pattern = sprintf("([^\\#fig\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_figure_from),
+      replacement = sprintf("\\1%s\n\\\\@ref(fig:\\2\\3)", name_figure_to),
       x = text_1string
     )
 
@@ -87,15 +93,15 @@ add_captions <- function(
   # replace table reference
   text_1string <-
     gsub(
-      replacement = "\\1Tabel \\\\@ref(tab:\\2\\3)",
       pattern = sprintf("([^\\#tab\\:])(%s) (\\d+(\\D\\d+)?)", name_table_from),
+      replacement = sprintf("\\1%s \\\\@ref(tab:\\2\\3)", name_table_to),
       x = text_1string
     )
   # replace table reference with line ending
   text_1string <-
     gsub(
-      replacement = "\\1Tabel\n\\\\@ref(tab:\\2\\3)",
       pattern = sprintf("([^\\#tab\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_table_from),
+      replacement = sprintf("\\1%s\n\\\\@ref(tab:\\2\\3)", name_table_to),
       x = text_1string
     )
   text2 <- c(unlist(strsplit(text_1string, split = "\\n")), "")

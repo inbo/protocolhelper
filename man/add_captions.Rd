@@ -9,6 +9,8 @@ add_captions(
   to,
   name_figure_from = "Figuur",
   name_table_from = "Tabel",
+  name_figure_to = "Figuur",
+  name_table_to = "Tabel"
 )
 }
 \arguments{
@@ -23,6 +25,12 @@ references in the \code{.Rmd} provided in \code{from} (default is \code{Figuur})
 
 \item{name_table_from}{name that is given to tables in captions and cross
 references in the \code{.Rmd} provided in \code{from} (default is \code{Tabel})}
+
+\item{name_figure_to}{name that should be given to figures in cross
+references in the output \code{.Rmd} (default is \code{Figuur})}
+
+\item{name_table_to}{name that should be given to tables in cross
+references in the output \code{.Rmd} (default is \code{Tabel})}
 }
 \description{
 After using \code{convert_docx_to_rmd()}, figure and table captions
