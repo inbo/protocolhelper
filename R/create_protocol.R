@@ -639,6 +639,8 @@ create_protocol_code <- function(
 #' Next, the file is split by chapter in multiple Rmd files.
 #' Any emf images are converted to png.
 #' All graphics files will be stored in a ./media folder.
+#' Bookdown compatible captions and cross-references for Figures and Tables are
+#' added if and only if 'Figuur' and 'Tabel' is used in the original document.
 #'
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
@@ -680,9 +682,14 @@ create_from_docx <- function(
       file.remove(img)
     }
   }
+  # add captions
+  temp2_filename <- "temp2.Rmd"
+  add_captions(from = file.path(path_to_protocol, temp_filename),
+               to = file.path(path_to_protocol, temp2_filename)
+               )
   # move relevant sections
   contents <- readLines(con = file.path(path_to_protocol,
-                                        temp_filename))
+                                        temp2_filename))
   contents <- str_replace_all(contents, ".emf", ".png")
   # replace absolute path to media folder by relative path
   contents <- str_replace_all(contents, path_to_protocol, ".")
@@ -706,4 +713,5 @@ create_from_docx <- function(
   }
   # delete the complete Rmd (output of convert_docx_rmd)
   file.remove(file.path(path_to_protocol, temp_filename))
+  file.remove(file.path(path_to_protocol, temp2_filename))
 }
