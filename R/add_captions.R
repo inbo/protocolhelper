@@ -68,17 +68,20 @@ add_captions <- function(
       replacement = "\\1Figuur\n\\\\@ref(fig:\\2\\3)",
       x = text_1string
     )
+
   # replace table caption
-  text_1string <-
+  split_string <- c(unlist(strsplit(text_1string, split = "-----")))
+  split_string <-
     gsub(
       pattern =
         sprintf(
-          "\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? (.+?)\\n\\n",
+          "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? (.+?)\\n\\n",
           name_table
         ),
-      replacement = "\n\nTable: (#tab:\\1\\2) \\4\n\n",
-      x = text_1string
+      replacement = "\\1\n\nTable: (#tab:\\2\\3) \\5\n\n",
+      x = split_string
     )
+  text_1string <- paste(split_string, collapse = "-----")
 
   # replace table reference
   text_1string <-
