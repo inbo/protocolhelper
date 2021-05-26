@@ -3,6 +3,8 @@
 Zie figuur 1 of Fig. 1, maar het kan ook Figuur \@ref(fig:Figuur1) zijn, of aan het einde van de
 zin Figuur \@ref(fig:Figuur1).  Of tussen haakjes (Figuur \@ref(fig:Figuur1)).
 
+Figuur \@ref(fig:Figuur1) is trouwens een voorbeeld van een hoofding in vet.
+
 
 ![(#fig:Figuur1) een hoofding op één regel](./path/naar/image1.png){width="3.3in" height="2.9in"}
 
@@ -45,6 +47,9 @@ Tab.1, Tab 1 of tabel 1, maar deze gaan we hier niet accepteren omdat ze
 verschillend zijn van de schrijfwijze van de tabelhoofding.  En referentie tabel
 1 ook eens splitsen over meerdere regels, en (tabel 2.2) tussen haakjes. En
 niet vergeten te verwijzen naar Tabel \@ref(tab:Tabel3-4).
+
+Tabel \@ref(tab:Tabel3-4) is qua opbouw een zeer eenvoudige tabel, maar wat atypisch door het
+cijfer in de hoofding.
 
 Table: (#tab:Tabel2.2) Een tabel met een iets andere vorm, en als hoofding een alinea
 opgesplitst over meerdere lijnen
