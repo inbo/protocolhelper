@@ -22,5 +22,7 @@ The docx file is first converted to a single Rmd file with the aid of pandoc
 Next, the file is split by chapter in multiple Rmd files.
 Any emf images are converted to png.
 All graphics files will be stored in a ./media folder.
+Bookdown compatible captions and cross-references for Figures and Tables are
+added if and only if 'Figuur' and 'Tabel' is used in the original document.
 }
 \keyword{internal}

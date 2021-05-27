@@ -1,3 +1,7 @@
+# protocolhelper 0.1.5
+
+* adds function add_captions()
+
 # protocolhelper 0.1.4
 
 * fixes a bug introduced in 0.1.3
