@@ -45,6 +45,7 @@
 #' folder and filenames
 #' @param authors A character vector for authors of the form First name Last
 #' name
+#' @param orcids A character vector of orcid IDs, equal in length to authors.
 #' @param date A character string of the date in ISO 8601 format (YYYY-MM-DD)
 #' @param reviewers A character vector for reviewers of the form First name
 #' Last name
@@ -86,6 +87,7 @@ create_protocol <- function(
   subtitle,
   short_title,
   authors,
+  orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
@@ -104,6 +106,8 @@ create_protocol <- function(
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
   assert_that(is.character(authors))
+  assert_that(is.character(orcids),
+              length(authors) == length(orcids))
   assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
   check_versionnumber(gsub("\\.dev", "", version_number)) # nolint

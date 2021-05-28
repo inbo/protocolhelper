@@ -1,7 +1,9 @@
 ---
 title: {{{title}}}
 subtitle: {{{subtitle}}}
-author: [{{{authors}}}]
+author: 
+  - name: [{{{authors}}}]
+    orcid: [{{{orcids}}}]
 date: {{{date}}}
 params:
   reviewers: [{{{reviewers}}}]
@@ -19,6 +21,7 @@ output:
   bookdown::gitbook:
     split_by: chapter+number
     split_bib: FALSE
+    template: !expr protocolhelper::protocol_css()
 ---
 
 <!--

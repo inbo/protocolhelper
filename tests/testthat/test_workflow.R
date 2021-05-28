@@ -29,7 +29,8 @@ test_that("complete workflow works", {
   version_number <- "2021.01"
   create_sfp(
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "me", reviewers = "someone else", file_manager = "who?",
+    authors = "me", orcids = "0000-0001-2345-6789",
+    reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", lang = "en"
   )
 
@@ -54,7 +55,9 @@ test_that("complete workflow works", {
   create_sfp(
     title = "subsubprotocoltest", subtitle = "subtitle",
     short_title = "vegetation 1",
-    authors = "me", reviewers = "someone else", file_manager = "who?",
+    authors = c("me", "you"),
+    orcids = c("0000-0001-2345-6789", "0000-0001-2345-6789"),
+    reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "vegetation", lang = "en"
   )
 
@@ -81,6 +84,7 @@ test_that("complete workflow works", {
              subtitle = "",
              short_title = "second subprotocol",
              authors = "me",
+             orcids = "0000-0001-2345-6789",
              reviewers = "someone else",
              file_manager = "who?",
              version_number = version_number,
@@ -159,6 +163,7 @@ test_that("complete workflow works", {
   version_number <- "2021.04"
   create_spp(
     title = "project protocol", subtitle = "subtitle",
+    orcids = "0000-0001-2345-6789",
     short_title = "mne protocol",
     authors = "me", reviewers = "someone else", file_manager = "who?",
     version_number = version_number, project_name = "mne", lang = "en"

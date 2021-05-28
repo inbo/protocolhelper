@@ -19,7 +19,9 @@ test_that("Test that insert_protocolsection works", {
   version_number <- "2020.01"
   create_sfp(
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "me", reviewers = "someone else", file_manager = "who?",
+    authors = "me",
+    orcids = "0000-0001-2345-6789",
+    reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", lang = "nl"
   )
 
@@ -113,6 +115,7 @@ test_that("Test that insert_protocolsection works", {
     title = "project protocol", subtitle = "subtitle",
     short_title = "mne protocol",
     authors = "me", reviewers = "someone else", file_manager = "who?",
+    orcids = "0000-0001-2345-6789",
     version_number = version_number, project_name = "mne", lang = "nl"
   )
 
