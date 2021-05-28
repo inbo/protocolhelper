@@ -25,3 +25,16 @@ execshell <- function(commandstring, intern = FALSE, ...) {
     if (length(res) > 0) cat(res, sep = "\n") else return(invisible())
     } else return(res)
 }
+
+
+
+#' set path to html template to be used by gitbook
+#' @export
+protocol_css <- function() {
+  source_dir <- system.file(
+    "css",
+    package = "protocolhelper"
+  )
+  file.copy(source_dir, getwd(), recursive = TRUE, overwrite = TRUE)
+  return("css/gitbook.html")
+}
