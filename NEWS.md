@@ -1,5 +1,6 @@
 # protocolhelper 0.1.6
 
+* adds orcid information (#32)
 * simplify check on different OS (#49)
 
 # protocolhelper 0.1.5
