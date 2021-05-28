@@ -1,3 +1,7 @@
+# protocolhelper 0.1.6
+
+* simplify check on different OS (#49)
+
 # protocolhelper 0.1.5
 
 * adds function add_captions()
