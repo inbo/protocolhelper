@@ -37,7 +37,6 @@
 #' @param name_table_to name that should be given to tables in cross
 #' references in the output `.Rmd` (default is `Tabel`)
 #'
-#' @importFrom tools file_path_sans_ext
 #' @importFrom assertthat is.string
 #'
 #' @export
