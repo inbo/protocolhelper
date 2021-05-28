@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.1.5
+Version: 0.1.6
 Authors@R: 
     c(person(given = "Hans",
              family = "Van Calster",
@@ -26,7 +26,7 @@ URL: https://inbo.github.io/protocolhelper,
     https://github.com/inbo/protocolhelper
 BugReports: https://github.com/inbo/protocolhelper/issues
 Depends: 
-    R (>= 2.10)
+    R (>= 3.6)
 Imports: 
     assertthat,
     bookdown,
