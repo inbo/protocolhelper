@@ -36,9 +36,9 @@ add_one_subprotocol <-
            code_mainprotocol,
            fetch_remote = TRUE) {
 
-    check_versionnumber(version_number) # nolint
-    check_protocolcode(code_subprotocol) # nolint
-    check_protocolcode(code_mainprotocol) # nolint
+    check_versionnumber(version_number)
+    check_protocolcode(code_subprotocol)
+    check_protocolcode(code_mainprotocol)
 
     if (!missing(params)) {
       # parse params
@@ -53,8 +53,6 @@ add_one_subprotocol <-
     protocol_path_rel <-
       get_path_to_protocol(code_subprotocol) %>%
       path_rel(start = find_root(is_git_root))
-
-
 
     if (fetch_remote) {
       firstremote <- execshell("git remote", intern = TRUE)[1]
