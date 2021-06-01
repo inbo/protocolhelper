@@ -14,7 +14,7 @@
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
 #' @importFrom yaml read_yaml
-#' @importFrom fs path
+#' @importFrom fs path dir_exists dir_copy
 #' @importFrom jsonlite read_json write_json
 #'
 #' @export
@@ -32,6 +32,14 @@ render_protocol <- function(protocol_code = NULL,
   path_to_protocol <- get_path_to_protocol(
       protocol_code = protocol_code
     )
+
+  # copy css
+  if (!dir_exists(file.path(path_to_protocol, "css"))) {
+    dir_copy(
+      system.file("css", package = "protocolhelper"),
+      file.path(path_to_protocol, "css")
+    )
+  }
 
   # render html
   old_wd <- getwd()
