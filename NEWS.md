@@ -1,7 +1,17 @@
 # protocolhelper 0.1.6
 
+## Breaking changes
+
+* restructured yaml of skeleton.Rmd in templates: moved metadata under params
+  section to toplevel of yaml
+
+## New features
+
 * adds orcid information (#32)
-* simplify check on different OS (#49)
+
+## Bug fixes 
+
+* remove unnecessary failing check from check on different OS (#49)
 
 # protocolhelper 0.1.5
 
