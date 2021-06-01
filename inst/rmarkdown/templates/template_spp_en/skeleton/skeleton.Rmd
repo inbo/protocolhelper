@@ -5,13 +5,13 @@ author:
   - name: [{{{authors}}}]
     orcid: [{{{orcids}}}]
 date: {{{date}}}
+reviewers: [{{{reviewers}}}]
+file_manager: {{{file_manager}}}
+protocol_code: {{{protocol_code}}}
+version_number: "{{{version_number}}}"
+language: {{{language}}}
+project_name: {{{project_name}}}
 params:
-  reviewers: [{{{reviewers}}}]
-  file_manager: {{{file_manager}}}
-  protocol_code: {{{protocol_code}}}
-  version_number: "{{{version_number}}}"
-  language: {{{language}}}
-  project_name: {{{project_name}}}
   dependencies_protocolcode: !r NA
   dependencies_versionnumber: !r NA
   dependencies_params: !r NA
@@ -73,7 +73,6 @@ library(purrr)
 
 | Reviewers | File manager | Protocol code | Version number | Language | Project |
 | --------- | ----------------- | ------------- | ------------ | ---- | ----- |
-| `r paste(params$reviewers, collapse = ", ")` | `r params$file_manager` | `r params$protocol_code` | `r params$version_number` | `r params$language` | `r params$project_name` |
-
+| `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$project_name` |
 
 
