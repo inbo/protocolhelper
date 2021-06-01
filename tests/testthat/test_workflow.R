@@ -92,11 +92,21 @@ test_that("complete workflow works", {
              lang = "en"
              )
   # test non-default params
-  test_params <- "\nThe reviewers are `r params$reviewers`"
+  test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
     file = "src/thematic/1_water/sfp-102-en_second-subprotocol/07_stappenplan.Rmd",
     append = TRUE)
+  # add the projectspecific parameter to index yaml
+  index <- readLines(
+    "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
+  index <- c(index[1:14],
+             "  protocolspecific: defaultvalue",
+             index[15:length(index)])
+  writeLines(index,
+             con = "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
+
+
   # test data and media
   write.csv(
     x = cars,
@@ -179,7 +189,7 @@ test_that("complete workflow works", {
   index[grepl("  dependencies_versionnumber:", index)] <-
     "  dependencies_versionnumber: ['2021.01', '2021.03']"
   index[grepl("  dependencies_params:", index)] <-
-    "  dependencies_params: ['list()', 'list(reviewers = c(\"reviewer1\", \"reviewer2\"))']"
+    "  dependencies_params: ['list()', 'list(protocolspecific = c(\"newvalue\"))']"
   index[grepl("  dependencies_appendix:", index)] <-
     "  dependencies_appendix: [TRUE, TRUE]"
   writeLines(
