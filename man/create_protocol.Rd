@@ -74,7 +74,9 @@ folder and filenames}
 \item{authors}{A character vector for authors of the form First name Last
 name}
 
-\item{orcids}{A character vector of orcid IDs, equal in length to authors.}
+\item{orcids}{A character vector of orcid IDs, equal in length to authors.
+If one of the authors does not have an orcid ID, use \code{NA} to indicate this in
+the corresponding position of the character vector (or get an orcid ID).}
 
 \item{date}{A character string of the date in ISO 8601 format (YYYY-MM-DD)}
 

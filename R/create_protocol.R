@@ -46,6 +46,8 @@
 #' @param authors A character vector for authors of the form First name Last
 #' name
 #' @param orcids A character vector of orcid IDs, equal in length to authors.
+#' If one of the authors does not have an orcid ID, use `NA` to indicate this in
+#' the corresponding position of the character vector (or get an orcid ID).
 #' @param date A character string of the date in ISO 8601 format (YYYY-MM-DD)
 #' @param reviewers A character vector for reviewers of the form First name
 #' Last name
