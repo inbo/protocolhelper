@@ -8,7 +8,7 @@ of which it is a dependency}
 add_one_subprotocol(
   code_subprotocol,
   version_number,
-  params = NULL,
+  params2 = NULL,
   code_mainprotocol,
   fetch_remote = TRUE
 )
@@ -19,7 +19,7 @@ which a subprotocol will be made (usually a sfp-type protocol)}
 
 \item{version_number}{Character string with format YYYY.NN}
 
-\item{params}{A list of parameter key-value pairs.}
+\item{params2}{A list of parameter key-value pairs.}
 
 \item{code_mainprotocol}{Character string giving the protocol code for the
 main protocol}
