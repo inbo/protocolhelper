@@ -1,21 +1,16 @@
 ---
-title: {{{title}}}
-subtitle: {{{subtitle}}}
-author: 
-  - name: [{{{authors}}}]
-    orcid: [{{{orcids}}}]
-date: {{{date}}}
-reviewers: [{{{reviewers}}}]
-file_manager: {{{file_manager}}}
-protocol_code: {{{protocol_code}}}
-version_number: "{{{version_number}}}"
-language: {{{language}}}
-project_name: {{{project_name}}}
-params:
-  dependencies_protocolcode: !r NA
-  dependencies_versionnumber: !r NA
-  dependencies_params: !r NA
-  dependencies_appendix: !r NA
+title:
+subtitle:
+author:
+  - name:
+    orcid:
+date:
+reviewers:
+file_manager:
+protocol_code:
+version_number:
+language:
+project_name:
 site: bookdown::bookdown_site
 output: 
   bookdown::gitbook:
@@ -25,23 +20,6 @@ output:
 ---
 
 <!--
-Instructies bij declaratie van dependencies in de yaml header:
-Er zijn vier velden in de yaml header die je moet aanpassen voor project-specifieke protocols:
-dependencies_protocolcode, dependencies_versionnumber, dependencies_params en dependencies_appendix.
-Elk van deze 'keys' worden gedefinieerd als onderdeel van het 'params' yaml veld.
-Aan elk van deze keys moet je informatie doorgeven over de dependencies van je protocol.
-Deze informatie wordt doorgegeven als een vector tussen vierkante haken en komma als scheidingsteken.
-Elk van de vier vectoren moet even lang zijn en de volgorde van de elementen moet overeenkomen (dus eerste element van dependencies_protocolcode komt overeen met eerste element van dependencies_versionnumber)
-
-dependencies_protocolcode: hier geef je de protocolcodes door waar het project-specifieke protocol van afhankelijk is. [sfp-###-en, sfp-###-en]
-
-dependencies_versionnumber: hier geef je de versienummers door waar het project-specifieke protocol van afhankelijk is. [YYYY.NN, YYYY.NN]
-
-dependencies_params: Hier geef je de key-value pairs door van de parameters waar je van de defaultwaarden wil afwijken. Je geeft deze door als ["list(width_m = 4, length_m = 4)", "list()"]. In dit voorbeeld zijn width_m en length_m twee namen van de keys. 
-Indien je niet van de defaultwaarden wil afwijken, geef je een lege lijst door als "list()".
-
-dependencies_appendix: een TRUE FALSE vector die aangeeft welke dependencies je als bijlage wil opnemen in het projectspecifieke protocol. bv [TRUE, FALSE]
-
 Instructies bij opmaak van het protocol:
 
 Hieronder vind je de verschillende onderdelen van een protocol.
