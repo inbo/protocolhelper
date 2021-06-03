@@ -31,7 +31,7 @@ test_that("complete workflow works", {
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
     authors = "me", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, theme = "water", lang = "en"
+    version_number = version_number, theme = "water", language = "en"
   )
 
   update_news(
@@ -58,7 +58,7 @@ test_that("complete workflow works", {
     authors = c("me", "you"),
     orcids = c("0000-0001-2345-6789", "0000-0001-2345-6789"),
     reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, theme = "vegetation", lang = "en"
+    version_number = version_number, theme = "vegetation", language = "en"
   )
 
   update_news(
@@ -89,7 +89,7 @@ test_that("complete workflow works", {
              file_manager = "who?",
              version_number = version_number,
              theme = "water",
-             lang = "en"
+             language = "en"
              )
   # test non-default params
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
@@ -98,13 +98,26 @@ test_that("complete workflow works", {
     file = "src/thematic/1_water/sfp-102-en_second-subprotocol/07_stappenplan.Rmd",
     append = TRUE)
   # add the projectspecific parameter to index yaml
-  index <- readLines(
+  index_yml <- rmarkdown::yaml_front_matter(
     "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
-  index <- c(index[1:14],
-             "  protocolspecific: defaultvalue",
-             index[15:length(index)])
-  writeLines(index,
-             con = "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
+  unlink("css", recursive = TRUE)
+  index_yml <- ymlthis::as_yml(index_yml)
+  index_yml <- ymlthis::yml_params(index_yml, protocolspecific = "defaultvalue")
+  template_rmd <-
+    "src/thematic/1_water/sfp-102-en_second-subprotocol/template.Rmd"
+  file.copy(
+    from = "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd",
+    to = template_rmd)
+  unlink("src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
+  ymlthis::use_index_rmd(
+    .yml = index_yml,
+    path = "src/thematic/1_water/sfp-102-en_second-subprotocol/",
+    template = template_rmd,
+    include_body = TRUE,
+    include_yaml = FALSE,
+    quiet = TRUE,
+    open_doc = FALSE)
+  unlink(template_rmd)
 
 
   # test data and media
@@ -114,7 +127,7 @@ test_that("complete workflow works", {
   z <- tempfile()
   download.file("https://www.r-project.org/logo/Rlogo.png",
                 z,
-                mode="wb")
+                mode = "wb")
   pic <- png::readPNG(z)
   png::writePNG(
     pic,
@@ -133,20 +146,13 @@ test_that("complete workflow works", {
 
   # add a sub-subprotocol to
   # src/thematic/1_water/sfp-102-en_second-subprotocol
-  #debugonce(add_subprotocols)
-  index <- readLines(
-    con = "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
-  index[grepl("  dependencies_protocolcode:", index)] <-
-    "  dependencies_protocolcode: ['sfp-401-en']"
-  index[grepl("  dependencies_versionnumber:", index)] <-
-    "  dependencies_versionnumber: ['2021.02']"
-  index[grepl("  dependencies_params:", index)] <-
-    "  dependencies_params: ['list()']"
-  index[grepl("  dependencies_appendix:", index)] <-
-    "  dependencies_appendix: [TRUE]"
-  writeLines(
-    index,
-    con = "src/thematic/1_water/sfp-102-en_second-subprotocol/index.Rmd")
+  add_dependencies(
+    code_mainprotocol = "sfp-102-en",
+    protocol_code = 'sfp-401-en',
+    version_number = '2021.02',
+    params = NA,
+    appendix = TRUE
+  )
 
   add_subprotocols(
     fetch_remote = FALSE,
@@ -176,25 +182,20 @@ test_that("complete workflow works", {
     orcids = "0000-0001-2345-6789",
     short_title = "mne protocol",
     authors = "me", reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, project_name = "mne", lang = "en"
+    version_number = version_number, project_name = "mne", language = "en"
   )
 
   # add subprotocols to
   # src/project/mne/spp-001-en_mne-protocol/
   #debugonce(add_subprotocols)
-  index <- readLines(
-    con = "src/project/mne/spp-001-en_mne-protocol/index.Rmd")
-  index[grepl("  dependencies_protocolcode:", index)] <-
-    "  dependencies_protocolcode: ['sfp-101-en', 'sfp-102-en']"
-  index[grepl("  dependencies_versionnumber:", index)] <-
-    "  dependencies_versionnumber: ['2021.01', '2021.03']"
-  index[grepl("  dependencies_params:", index)] <-
-    "  dependencies_params: ['list()', 'list(protocolspecific = c(\"newvalue\"))']"
-  index[grepl("  dependencies_appendix:", index)] <-
-    "  dependencies_appendix: [TRUE, TRUE]"
-  writeLines(
-    index,
-    con = "src/project/mne/spp-001-en_mne-protocol/index.Rmd")
+  add_dependencies(
+    code_mainprotocol = "spp-001-en",
+    protocol_code = c('sfp-101-en', 'sfp-102-en'),
+    version_number = c('2021.01', '2021.03'),
+    params = list(NA, list(protocolspecific = "newvalue")),
+    appendix = c(TRUE, TRUE)
+  )
+
   add_subprotocols(
     fetch_remote = FALSE,
     code_mainprotocol = 'spp-001-en')
