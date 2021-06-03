@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.1.6
+Version: 0.2.0
 Authors@R: 
     c(person(given = "Hans",
              family = "Van Calster",

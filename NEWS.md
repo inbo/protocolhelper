@@ -1,15 +1,18 @@
-# protocolhelper 0.1.6
+# protocolhelper 0.2.0
 
 ## Breaking changes
 
 * restructured yaml of skeleton.Rmd in templates: moved metadata under params
   section to toplevel of yaml
+* new YAML syntax to add dependencies to the params section the YAML
 
 ## New features
 
 * adds orcid information (#32)
+* adds a link to dependencies table when params are missing (#46)
+* adds a new function to aid adding dependencies to YAML header
 
-## Bug fixes 
+## Bug fixes
 
 * remove unnecessary failing check from check on different OS (#49)
 
