@@ -19,6 +19,16 @@
 #' @importFrom purrr transpose
 #'
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' protocolhelper::add_dependencies(
+#'   code_mainprotocol = "spp-999-en",
+#'   protocol_code = c("sfp-123-en", "spp-124-en"),
+#'   version_number = c("2020.01", "2020.02"),
+#'   params = list(NA, list(width = 8, height = 8))
+#'   )
+#'}
 add_dependencies <- function(code_mainprotocol,
                              protocol_code,
                              version_number,

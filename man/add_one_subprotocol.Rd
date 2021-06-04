@@ -34,3 +34,8 @@ subfolder of the directory of the project-specific protocol.
 This function should normally not be called directly.
 Use \code{\link[=add_subprotocols]{add_subprotocols()}} instead.
 }
+\examples{
+\dontrun{
+  add_subprotocols(code_mainprotocol = 'spp-999-en')
+}
+}

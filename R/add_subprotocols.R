@@ -28,6 +28,10 @@
 #'
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   add_subprotocols(code_mainprotocol = 'spp-999-en')
+#' }
 
 add_one_subprotocol <-
   function(code_subprotocol,
