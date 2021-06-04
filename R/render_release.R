@@ -120,7 +120,11 @@ render_release <- function(output_root = "publish") {
         css = "css/inbo_rapport.css",
         config = list(
           toc = list(
-            before = '<li class="toc-logo"><a href="./"><img src="css/img/inbo_en.jpg"></a></li>' #nolint
+            before =
+              ifelse(yaml[[i]][["language"]] == "en",
+                     '<li class="toc-logo"><a href="./"><img src="css/img/inbo-en.jpg"></a></li>', #nolint
+                     '<li class="toc-logo"><a href="./"><img src="css/img/inbo-nl.jpg"></a></li>' #nolint
+              )
             )
           )
       ),

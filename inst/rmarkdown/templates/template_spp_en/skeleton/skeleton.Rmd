@@ -21,7 +21,7 @@ output:
     config:
        toc:
          before: |
-           <li class="toc-logo"><a href="./"><img src="css/img/inbo_en.jpg"></a></li>
+           <li class="toc-logo"><a href="./"><img src="css/img/inbo-en.jpg"></a></li>
 ---
 
 <!--
