@@ -17,6 +17,11 @@ output:
     split_by: chapter+number
     split_bib: FALSE
     template: !expr protocolhelper::protocol_css()
+    css: css/inbo_rapport.css
+    config:
+       toc:
+         before: |
+           <li class="toc-logo"><a href="./"><img src="css/img/inbo_nl.jpg"></a></li>
 ---
 
 <!--

@@ -116,7 +116,13 @@ render_release <- function(output_root = "publish") {
           ),
           pandoc_variable_arg("lang", yaml[[i]][["language"]])
         ),
-        template = "css/gitbook.html"
+        template = "css/gitbook.html",
+        css = "css/inbo_rapport.css",
+        config = list(
+          toc = list(
+            before = '<li class="toc-logo"><a href="./"><img src="css/img/inbo_en.jpg"></a></li>' #nolint
+            )
+          )
       ),
       output_file = "index.html",
       output_dir = target_dir,

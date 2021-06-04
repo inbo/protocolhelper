@@ -11,6 +11,7 @@
 * adds orcid information (#32)
 * adds a link to dependencies table when params are missing (#46)
 * adds a new function to aid adding dependencies to YAML header
+* adds a logo to the sidebar (#44)
 
 ## Bug fixes
 
