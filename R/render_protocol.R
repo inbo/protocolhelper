@@ -11,11 +11,8 @@
 #' @details The rendered html file and associated files needed by the html file
 #' will be put in the directory implied by the output_dir parameter.
 #'
-#' @importFrom rprojroot find_root is_git_root
 #' @importFrom assertthat assert_that is.string
-#' @importFrom yaml read_yaml
 #' @importFrom fs path dir_exists dir_copy
-#' @importFrom jsonlite read_json write_json
 #'
 #' @export
 #'
