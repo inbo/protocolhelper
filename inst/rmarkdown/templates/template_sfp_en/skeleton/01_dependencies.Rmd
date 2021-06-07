@@ -8,40 +8,41 @@ Indien er dependencies zijn deze invullen in de yaml sectie van index.Rmd
 
 
 ```{r dependencies}
-dependencies <- tibble(
-  protocol_code = character(),
-  version_number = character(),
-  params = character(),
-  appendix = logical()
-)
-
-pc <- unlist(params$dependencies_protocolcode)
-vn <- unlist(params$dependencies_versionnumber)
-pm <- unlist(params$dependencies_params)
-ap <- as.logical(unlist(params['dependencies_appendix']))
-
-if (!any(is.na(pc))) {
-  dependencies <- dependencies %>%
-    bind_rows(tibble(protocol_code = pc, 
-                   version_number = vn,
-                   params = pm,
-                   appendix = ap))
-} 
-
-if (nrow(dependencies) > 0) {
-  dependencies %>%
-    rename(
-      `Protocol code` = protocol_code,
-      `Version number` = version_number,
-      `Included as appendix` = appendix) %>%
-    kable()
-} else {
-  dependencies %>%
+empty_table <- tibble(
+    protocol_code = character(),
+    version_number = character(),
+    params = character(),
+    appendix = logical()
+  ) %>%
     add_row() %>%
     rename(
       `Protocol code` = protocol_code,
       `Version number` = version_number,
-      `Included as appendix` = appendix) %>%
+      `Included as subprotocol` = appendix) %>%
     kable()
+
+if (exists("params")) {
+  if (!is.null(params$dependencies)) {
+    transpose(params$dependencies) %>%
+    as_tibble() %>%
+    mutate(protocol_code = as.character(protocol_code),
+           version_number = as.character(version_number),
+           params = as.character(params),
+           version_number = ifelse(params == "NA",
+                           paste0("[", version_number, "](../", 
+                                  version_number,"/", "index.html)"),
+                           version_number),
+           appendix = as.logical(appendix)) %>%
+    rename(
+      `Protocol code` = protocol_code,
+      `Version number` = version_number,
+      `Included as subprotocol` = appendix) %>%
+    kable()
+  } else {
+    empty_table
+  }
+} else {
+  empty_table
 }
+rm(empty_table)
 ```

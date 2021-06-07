@@ -11,7 +11,7 @@
 #' @param code_subprotocol Character string giving the protocol code from
 #' which a subprotocol will be made (usually a sfp-type protocol)
 #' @param version_number Character string with format YYYY.NN
-#' @param params A list of parameter key-value pairs.
+#' @param params2 A list of parameter key-value pairs.
 #' @inheritParams add_subprotocols
 #'
 #' @importFrom assertthat assert_that is.string is.flag noNA
@@ -28,22 +28,24 @@
 #'
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   add_subprotocols(code_mainprotocol = 'spp-999-en')
+#' }
 
 add_one_subprotocol <-
   function(code_subprotocol,
            version_number,
-           params = NULL,
+           params2 = NULL,
            code_mainprotocol,
            fetch_remote = TRUE) {
 
-    check_versionnumber(version_number) # nolint
-    check_protocolcode(code_subprotocol) # nolint
-    check_protocolcode(code_mainprotocol) # nolint
+    check_versionnumber(version_number)
+    check_protocolcode(code_subprotocol)
+    check_protocolcode(code_mainprotocol)
 
-    if (!missing(params)) {
-      # parse params
-      params <- eval(str2lang(params))
-      assert_that(is.list(params))
+    if (!missing(params2)) {
+      assert_that(is.list(params2) | is.na(params2))
     }
 
     assert_that(is.flag(fetch_remote), noNA(fetch_remote))
@@ -53,8 +55,6 @@ add_one_subprotocol <-
     protocol_path_rel <-
       get_path_to_protocol(code_subprotocol) %>%
       path_rel(start = find_root(is_git_root))
-
-
 
     if (fetch_remote) {
       firstremote <- execshell("git remote", intern = TRUE)[1]
@@ -119,20 +119,20 @@ add_one_subprotocol <-
     old_wd <- getwd()
     setwd(dir = file.path(mainprotocol_path_abs, version_number))
     yaml_sub <- yaml_front_matter("index.Rmd")
-    if (length(params) >= 1) {
+    if (!is.na(params2)) {
       render_book(input = "index.Rmd",
                   output_format = markdown_document2(
                     variant = "markdown",
                     number_sections = FALSE,
                     keep_md = TRUE,
                     pandoc_args = c(
-                      "--atx-headers",
-                      "--base-header-level=2"
+                      "--markdown-headings=atx",
+                      "--shift-heading-level-by=1"
                     )
                   ),
                   output_file = mdfile,
                   output_dir = ".",
-                  params = params,
+                  params = params2,
                   envir = new.env())
     } else {
       render_book(input = "index.Rmd",
@@ -141,8 +141,8 @@ add_one_subprotocol <-
                     number_sections = FALSE,
                     keep_md = TRUE,
                     pandoc_args = c(
-                      "--atx-headers",
-                      "--base-header-level=2"
+                      "--markdown-headings=atx",
+                      "--shift-heading-level-by=1"
                     )
                   ),
                   output_file = mdfile,
@@ -232,7 +232,8 @@ add_one_subprotocol <-
 #'
 #' @description The function should be called interactively (in the console)
 #' after the dependencies section in the `YAML` header of the `index.Rmd` file
-#' of the main protocol has been filled in.
+#' of the main protocol has been filled in with the aid of the
+#' `protocolhelper::add_dependencies()` function.
 #' For reproducibility, it is good practice to save the call in a
 #' separate R script.
 #' For each subprotocol a single markdown file and associated media and
@@ -248,6 +249,7 @@ add_one_subprotocol <-
 #'
 #' @importFrom assertthat assert_that is.string is.flag noNA
 #' @importFrom rmarkdown yaml_front_matter
+#' @importFrom purrr map map_lgl
 #'
 #' @export
 add_subprotocols <-
@@ -266,27 +268,35 @@ add_subprotocols <-
     mainprotocol_path_abs <- get_path_to_protocol(code_mainprotocol)
 
     yml <- yaml_front_matter(file.path(mainprotocol_path_abs, "index.Rmd"))
+    unlink("css", recursive = TRUE)
 
-    assert_that(is.logical(yml$params$dependencies_appendix),
-                noNA(yml$params$dependencies_appendix))
-    # note: right format assertions are done in add_one_subprotocol()
-    assert_that(is.character(yml$params$dependencies_protocolcode))
-    assert_that(is.character(yml$params$dependencies_versionnumber))
-    assert_that(is.character(yml$params$dependencies_params))
-
-    dependencies <- data.frame(
-        protocol_code = yml$params$dependencies_protocolcode,
-        version_number = yml$params$dependencies_versionnumber,
-        params = yml$params$dependencies_params,
-        appendix = yml$params$dependencies_appendix
+    app <- map(yml$params$dependencies$value, "appendix")
+    app_logical <- map_lgl(app, is.logical)
+    app_notna <- map_lgl(app, noNA)
+    assert_that(
+      all(app_logical),
+      all(app_notna)
     )
+    # note: right format assertions are done in add_one_subprotocol()
+    pc <- map(yml$params$dependencies$value, "protocol_code")
+    pc_string <- map_lgl(pc, is.string)
+    assert_that(all(pc_string))
 
-    for (i in seq_len(nrow(dependencies))) {
-      if (dependencies$appendix[i]) {
+    vn <- map(yml$params$dependencies$value, "version_number")
+    vn_string <- map_lgl(vn, is.string)
+    assert_that(all(vn_string))
+
+    prm <- map(yml$params$dependencies$value, "params")
+    prm_list <- map_lgl(prm, is.list)
+    prm_na <- map_lgl(prm, is.na)
+    assert_that(all(prm_list | prm_na))
+
+    for (i in seq_len(length(yml$params$dependencies$value))) {
+      if (yml$params$dependencies$value[[i]]$appendix) {
         add_one_subprotocol(
-          code_subprotocol = dependencies$protocol_code[i],
-          version_number = dependencies$version_number[i],
-          params = dependencies$params[i],
+          code_subprotocol = yml$params$dependencies$value[[i]]$protocol_code,
+          version_number = yml$params$dependencies$value[[i]]$version_number,
+          params2 = yml$params$dependencies$value[[i]]$params,
           code_mainprotocol = code_mainprotocol,
           fetch_remote = fetch_remote)
       }

@@ -45,6 +45,9 @@
 #' folder and filenames
 #' @param authors A character vector for authors of the form First name Last
 #' name
+#' @param orcids A character vector of orcid IDs, equal in length to authors.
+#' If one of the authors does not have an orcid ID, use `NA` to indicate this in
+#' the corresponding position of the character vector (or get an orcid ID).
 #' @param date A character string of the date in ISO 8601 format (YYYY-MM-DD)
 #' @param reviewers A character vector for reviewers of the form First name
 #' Last name
@@ -72,10 +75,15 @@
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
-#' @importFrom rmarkdown draft
+#' @importFrom rmarkdown draft yaml_front_matter
 #' @importFrom bookdown render_book
-#' @importFrom purrr map_chr
-#' @importFrom whisker whisker.render
+#' @importFrom yaml read_yaml
+#' @importFrom ymlthis
+#' yml_author
+#' yml_replace
+#' yml_date
+#' use_yml_file
+#' use_index_rmd
 #' @importFrom fs path_rel dir_create dir_ls
 #'
 #'
@@ -86,6 +94,7 @@ create_protocol <- function(
   subtitle,
   short_title,
   authors,
+  orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
@@ -104,6 +113,8 @@ create_protocol <- function(
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
   assert_that(is.character(authors))
+  assert_that(is.character(orcids),
+              length(authors) == length(orcids))
   assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
   check_versionnumber(gsub("\\.dev", "", version_number)) # nolint
@@ -230,36 +241,62 @@ create_protocol <- function(
 
 
   # change values in parent rmarkdown and _bookdown.yml
-  filenames <- c(parent_rmd,
-                 file.path(path_to_protocol, "_bookdown.yml"))
-  for (filename in filenames) {
-    original_file <- file(filename, "r")
-    original_file_content <- readLines(filename)
-    data <- list(title = title,
-                 subtitle = subtitle,
-                 authors = authors,
-                 date = date,
-                 reviewers = reviewers,
-                 file_manager = file_manager,
-                 version_number = version_number,
-                 protocol_code = protocol_code,
-                 language = language,
-                 book_filename = book_filename,
-                 output_dir = output_dir_rel,
-                 rmd_files = rmd_files
+  index_yml <- rmarkdown::yaml_front_matter(parent_rmd)
+  unlink("css", recursive = TRUE)
+  index_yml <- ymlthis::as_yml(index_yml)
+  index_yml <- ymlthis::yml_replace(
+    index_yml,
+    title = title,
+    subtitle = subtitle,
+    reviewers = reviewers,
+    file_manager = file_manager,
+    version_number = version_number,
+    protocol_code = protocol_code,
+    language = language
     )
-    if (protocol_type == "sfp") {
-      data$theme <- theme
-    }
-    if (protocol_type == "spp") {
-      data$project_name <- project_name
-    }
-    writeLines(map_chr(original_file_content,
-                       whisker.render,
-                       data),
-               filename)
-    close(original_file)
+  index_yml <- ymlthis::yml_author(
+    index_yml,
+    name = authors,
+    orcid = orcids)
+  index_yml <- ymlthis::yml_date(
+    index_yml,
+    date = date)
+  if (protocol_type == "sfp") {
+    index_yml <- ymlthis::yml_replace(index_yml,
+                                     theme = theme)
   }
+  if (protocol_type == "spp") {
+    index_yml <- ymlthis::yml_replace(index_yml,
+                                     project_name = project_name)
+  }
+
+  bookdown_yml <- yaml::read_yaml(file.path(path_to_protocol, "_bookdown.yml"))
+  bookdown_yml <- ymlthis::as_yml(bookdown_yml)
+  bookdown_yml <- ymlthis::yml_replace(bookdown_yml,
+                                        book_filename = book_filename,
+                                        output_dir = output_dir_rel,
+                                        rmd_files = rmd_files)
+  # overwrite old yaml sections
+
+  template_rmd <- file.path(path_to_protocol, "template.rmd")
+  file.copy(from = parent_rmd, to = template_rmd)
+  unlink(parent_rmd)
+  ymlthis::use_index_rmd(
+    .yml = index_yml,
+    path = path_to_protocol,
+    template = template_rmd,
+    include_body = TRUE,
+    include_yaml = FALSE,
+    quiet = TRUE,
+    open_doc = FALSE)
+  unlink(template_rmd)
+
+  unlink(file.path(path_to_protocol, "_bookdown.yml"))
+  ymlthis::use_yml_file(
+    .yml = bookdown_yml,
+    path = file.path(path_to_protocol, "_bookdown.yml"),
+    quiet = TRUE)
+
 
   if (!is.null(from_docx)) {
     assert_that(file.exists(from_docx))
@@ -292,6 +329,7 @@ create_sfp <- function(
   subtitle,
   short_title,
   authors,
+  orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
@@ -306,6 +344,7 @@ create_sfp <- function(
                   subtitle = subtitle,
                   short_title = short_title,
                   authors = authors,
+                  orcids = orcids,
                   date = date,
                   reviewers = reviewers,
                   file_manager = file_manager,
@@ -324,6 +363,7 @@ create_spp <- function(
   subtitle,
   short_title,
   authors,
+  orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
@@ -338,6 +378,7 @@ create_spp <- function(
                   subtitle = subtitle,
                   short_title = short_title,
                   authors = authors,
+                  orcids = orcids,
                   date = date,
                   reviewers = reviewers,
                   file_manager = file_manager,

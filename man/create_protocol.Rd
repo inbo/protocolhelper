@@ -13,6 +13,7 @@ create_protocol(
   subtitle,
   short_title,
   authors,
+  orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
@@ -30,6 +31,7 @@ create_sfp(
   subtitle,
   short_title,
   authors,
+  orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
@@ -46,6 +48,7 @@ create_spp(
   subtitle,
   short_title,
   authors,
+  orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
@@ -70,6 +73,10 @@ folder and filenames}
 
 \item{authors}{A character vector for authors of the form First name Last
 name}
+
+\item{orcids}{A character vector of orcid IDs, equal in length to authors.
+If one of the authors does not have an orcid ID, use \code{NA} to indicate this in
+the corresponding position of the character vector (or get an orcid ID).}
 
 \item{date}{A character string of the date in ISO 8601 format (YYYY-MM-DD)}
 

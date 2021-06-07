@@ -109,7 +109,14 @@ $else$
   $endif$
   $for(author)$
     $if(author.name)$
-      <h3 class="author">$author.name$</h3>
+      <h3 class="author">$if(author.firstname)$$author.firstname$ $endif$$author.name$
+      $if(author.orcid)$
+        <a href="https://orcid.org/$author.orcid$">
+        <img alt="ORCID logo" src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16" />
+        $author.orcid$
+        </a>
+      $endif$
+      </h3>
       $if(author.affiliation)$
         <address class="author_afil">
         $author.affiliation$

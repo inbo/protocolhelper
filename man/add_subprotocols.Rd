@@ -16,7 +16,8 @@ main protocol}
 \description{
 The function should be called interactively (in the console)
 after the dependencies section in the \code{YAML} header of the \code{index.Rmd} file
-of the main protocol has been filled in.
+of the main protocol has been filled in with the aid of the
+\code{protocolhelper::add_dependencies()} function.
 For reproducibility, it is good practice to save the call in a
 separate R script.
 For each subprotocol a single markdown file and associated media and

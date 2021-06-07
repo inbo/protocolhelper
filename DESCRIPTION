@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.1.5
+Version: 0.2.0
 Authors@R: 
     c(person(given = "Hans",
              family = "Van Calster",
@@ -22,29 +22,27 @@ Authors@R:
              email = "info@inbo.be"))
 Description: Helper functions to manage INBO protocols.
 License: GPL-3
-URL: https://inbo.github.io/protocolhelper,
+URL: https://inbo.github.io/protocolhelper/,
     https://github.com/inbo/protocolhelper
 BugReports: https://github.com/inbo/protocolhelper/issues
 Depends: 
-    R (>= 2.10)
+    R (>= 3.6)
 Imports: 
     assertthat,
     bookdown,
     commonmark,
     fs,
-    jsonlite,
     knitr,
     purrr,
     rmarkdown,
     rprojroot,
     stringr,
-    whisker,
     xml2,
-    yaml
+    yaml,
+    ymlthis
 Suggests: 
     dplyr,
     gert,
-    git2r,
     lubridate,
     magick,
     png,

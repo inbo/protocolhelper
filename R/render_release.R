@@ -54,8 +54,7 @@ render_release <- function(output_root = "publish") {
     regexp = "index\\.Rmd"
   )
   yaml <- map(protocol_index, yaml_front_matter)
-  parameters <- map(yaml, "params")
-  version <- map(parameters, "version_number")
+  version <- map(yaml, "version_number")
   missing_version <- !map_lgl(version, is.string)
   if (any(missing_version)) {
     stop(
@@ -63,7 +62,7 @@ render_release <- function(output_root = "publish") {
       paste(protocol_index[missing_version], collapse = "; ")
     )
   }
-  version <- map_chr(parameters, "version_number")
+  version <- map_chr(yaml, "version_number")
   wrong_format <- !grepl("[0-9]{4}\\.[0-9]{2}", version)
   if (any(wrong_format)) {
     stop(
@@ -73,7 +72,6 @@ render_release <- function(output_root = "publish") {
   }
   protocol_index <- protocol_index[order(version)]
   yaml <- yaml[order(version)]
-  parameters <- parameters[order(version)]
   version <- sort(version)
   for (i in seq_along(protocol_index)) {
     target_dir <- file.path(output_root, version[i])
@@ -98,41 +96,51 @@ render_release <- function(output_root = "publish") {
         pandoc_args = c(
           as.vector(
             sapply(
-              parameters[[i]][["reviewers"]],
+              yaml[[i]][["reviewers"]],
               pandoc_variable_arg,
               name = "reviewer"
             )
           ),
           pandoc_variable_arg(
-            "file_manager", parameters[[i]][["file_manager"]]
+            "file_manager", yaml[[i]][["file_manager"]]
           ),
           pandoc_variable_arg(
-            "protocol_code", parameters[[i]][["protocol_code"]]
+            "protocol_code", yaml[[i]][["protocol_code"]]
           ),
           pandoc_variable_arg(
-            "version_number", parameters[[i]][["version_number"]]
+            "version_number", yaml[[i]][["version_number"]]
           ),
           pandoc_variable_arg(
             "thema",
-            c(parameters[[i]][["theme"]], parameters[[i]][["project_name"]])[1]
+            c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
           ),
-          pandoc_variable_arg("lang", parameters[[i]][["language"]])
+          pandoc_variable_arg("lang", yaml[[i]][["language"]])
         ),
-        template = "css/gitbook.html"
+        template = "css/gitbook.html",
+        css = "css/inbo_rapport.css",
+        config = list(
+          toc = list(
+            before =
+              ifelse(yaml[[i]][["language"]] == "en",
+                     '<li class="toc-logo"><a href="./"><img src="css/img/inbo-en.jpg"></a></li>', #nolint
+                     '<li class="toc-logo"><a href="./"><img src="css/img/inbo-nl.jpg"></a></li>' #nolint
+              )
+            )
+          )
       ),
       output_file = "index.html",
       output_dir = target_dir,
       envir = new.env()
     )
     yaml[[i]][["output"]] <- list(`rmarkdown::html_document` = "default")
-    protocol_code <- map_chr(parameters, "protocol_code")
+    protocol_code <- map_chr(yaml, "protocol_code")
     relevant <- protocol_code == protocol_code[[i]]
     news <- map_chr(
       dirname(names(protocol_code[relevant])),
       ~paste(tail(readLines(file.path(.x, "NEWS.md")), -1), collapse = "\n")
     )
     if (length(news) > 1) {
-      lang <- map_chr(parameters[relevant], "language")
+      lang <- map_chr(yaml[relevant], "language")
       lang <- factor(
         lang,
         c("nl", "en"),
@@ -145,7 +153,7 @@ render_release <- function(output_root = "publish") {
       "render_NEWS.Rmd"
     )
     target_dir <- file.path(
-      output_root, yaml[[i]][["params"]][["protocol_code"]]
+      output_root, yaml[[i]][["protocol_code"]]
     )
     if (dir_exists(target_dir)) {
       dir_delete(target_dir)
