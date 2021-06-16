@@ -77,7 +77,7 @@ pandoc_docx_to_md <- function(from,
   filter_opts <- character(0)
   from_format <- "docx"
   other_opts <- c("--standalone",
-                  "--atx-headers",
+                  "--markdown-headings=atx",
                   paste0("--extract-media=", dir)
                   )
   opts <- c(filter_opts, wrap_opts, other_opts)
