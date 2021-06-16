@@ -8,7 +8,7 @@ convert_docx_to_rmd(
   from,
   to = sub("docx$", "Rmd", from),
   dir_media = ".",
-  wrap = 80,
+  wrap = NA,
   overwrite = FALSE,
   verbose = FALSE,
   wd = getwd()
@@ -26,8 +26,7 @@ relative to the folder where the \code{.Rmd} is written.
 Defaults to '.' (the path where the \code{.Rmd} file is written).}
 
 \item{wrap}{The width at which to wrap text.
-If \code{NA}, text is not wrapped.
-Defaults to 80.}
+If \code{NA} (default), text is not wrapped.}
 
 \item{overwrite}{Whether or not to overwrite the \code{to} file if it already
 existed.

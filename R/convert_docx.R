@@ -23,8 +23,7 @@
 #' relative to the folder where the `.Rmd` is written.
 #' Defaults to '.' (the path where the `.Rmd` file is written).
 #' @param wrap The width at which to wrap text.
-#' If `NA`, text is not wrapped.
-#' Defaults to 80.
+#' If `NA` (default), text is not wrapped.
 #' @param overwrite Whether or not to overwrite the `to` file if it already
 #' existed.
 #' Defaults to `FALSE`.
@@ -40,7 +39,7 @@ convert_docx_to_rmd <- function(
   from,
   to = sub("docx$", "Rmd", from),
   dir_media = ".",
-  wrap = 80,
+  wrap = NA,
   overwrite = FALSE,
   verbose = FALSE,
   wd = getwd()) {
@@ -69,7 +68,7 @@ pandoc_docx_to_md <- function(from,
                               wd) {
   from <- normalizePath(from)
 
-  if (missing(wrap)) {
+  if (is.na(wrap)) {
     wrap_opts <- "--wrap=none"
   } else {
     wrap_opts <- c("--wrap=auto", paste0("--columns=", wrap))

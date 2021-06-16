@@ -4,7 +4,7 @@
 
 * arguments determining paths to save results of convert_docx_to_rmd() are
   reconsidered (#52 and #..)
-
+* change default of argument wrap in convert_docx_to_rmd() to NA
 
 # protocolhelper 0.2.0
 
