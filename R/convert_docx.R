@@ -17,11 +17,11 @@
 #'
 #' @param from The `.docx` file to convert.
 #' Can be given as an absolute or relative path.
-#' @param to The filename to write the resulting `.Rmd` file (without path).
-#' The default is to use the same basename as the `.docx` document.
-#' @param dir The directory to write the `.Rmd` to.
-#' Defaults to current working directory.
-#' Any images will be written to `dir/media`.
+#' @param to The filename including path to write the resulting `.Rmd` file.
+#' The default is to use the same name and path as the `.docx` document.
+#' @param dir_media The directory to write the folder `media` with images to,
+#' relative to the folder where the `.Rmd` is written.
+#' Defaults to '.' (the path where the `.Rmd` file is written).
 #' @param wrap The width at which to wrap text.
 #' If `NA`, text is not wrapped.
 #' Defaults to 80.
@@ -30,29 +30,31 @@
 #' Defaults to `FALSE`.
 #' @param verbose Whether to print pandoc progress text.
 #' Defaults to `FALSE`.
+#' @param wd Current working directory (used to handle relative paths).
 #'
 #' @importFrom rmarkdown pandoc_convert
-#' @importFrom tools file_path_sans_ext
 #' @importFrom stringr str_replace_all
+#' @importFrom assertthat assert_that
 #' @export
 convert_docx_to_rmd <- function(
   from,
-  to,
-  dir,
+  to = sub("docx$", "Rmd", from),
+  dir_media = ".",
   wrap = 80,
   overwrite = FALSE,
-  verbose = FALSE) {
+  verbose = FALSE,
+  wd = getwd()) {
 
-  if (missing(to)) {
-    to <- paste0(file_path_sans_ext(basename(from)), ".Rmd")
-  } else {
-    assert_that(is.string(to))
-  }
-  if (missing(dir)) dir <- "."
-  to <- file.path(dir, to)
+  assert_that(is.string(from))
+  assert_that(grepl("\\.docx$", from))
+  assert_that(is.string(to))
+  assert_that(grepl("\\.Rmd$", to))
+
+  wd <- file.path(wd, dirname(to))
+  if (!dir.exists(wd)) dir.create(wd)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
 
-  md <- pandoc_docx_to_md(from, wrap, dir, verbose)
+  md <- pandoc_docx_to_md(from, wrap, dir_media, verbose, wd)
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
 
   writeLines(md, con = to)
@@ -63,7 +65,8 @@ convert_docx_to_rmd <- function(
 pandoc_docx_to_md <- function(from,
                               wrap,
                               dir,
-                              verbose) {
+                              verbose,
+                              wd) {
   from <- normalizePath(from)
 
   if (missing(wrap)) {
@@ -84,7 +87,8 @@ pandoc_docx_to_md <- function(from,
                  to = "markdown",
                  output = md_tmp,
                  options = opts,
-                 verbose = verbose
+                 verbose = verbose,
+                 wd = wd
   )
   return(readfile(md_tmp))
 }

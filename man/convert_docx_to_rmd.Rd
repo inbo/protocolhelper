@@ -6,23 +6,24 @@
 \usage{
 convert_docx_to_rmd(
   from,
-  to,
-  dir,
+  to = sub("docx$", "Rmd", from),
+  dir_media = ".",
   wrap = 80,
   overwrite = FALSE,
-  verbose = FALSE
+  verbose = FALSE,
+  wd = getwd()
 )
 }
 \arguments{
 \item{from}{The \code{.docx} file to convert.
 Can be given as an absolute or relative path.}
 
-\item{to}{The filename to write the resulting \code{.Rmd} file (without path).
-The default is to use the same basename as the \code{.docx} document.}
+\item{to}{The filename including path to write the resulting \code{.Rmd} file.
+The default is to use the same name and path as the \code{.docx} document.}
 
-\item{dir}{The directory to write the \code{.Rmd} to.
-Defaults to current working directory.
-Any images will be written to \code{dir/media}.}
+\item{dir_media}{The directory to write the folder \code{media} with images to,
+relative to the folder where the \code{.Rmd} is written.
+Defaults to '.' (the path where the \code{.Rmd} file is written).}
 
 \item{wrap}{The width at which to wrap text.
 If \code{NA}, text is not wrapped.
@@ -34,6 +35,8 @@ Defaults to \code{FALSE}.}
 
 \item{verbose}{Whether to print pandoc progress text.
 Defaults to \code{FALSE}.}
+
+\item{wd}{Current working directory (used to handle relative paths).}
 }
 \description{
 This function is derived from the
