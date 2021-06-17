@@ -97,7 +97,7 @@ add_captions <- function(
     gsub(
       pattern =
         sprintf(
-          "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?([^\\*]+?)\\*?\\*?\\n\\n",
+          "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?([^\\*]+?)\\*?\\*?\\n\\n", #nolint
           name_table_from
         ),
       replacement = "\\1\n\nTable: (#tab:\\2\\3) \\5\n\n",
