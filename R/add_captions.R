@@ -63,6 +63,7 @@ add_captions <- function(
 
   text <- readLines(from, encoding = "UTF-8")
   text_1string <- paste(text, collapse = "\n")
+  text_1string <- gsub(pattern = "\\n\\n(\\n)+", "\n\n", text_1string)
   # replace figure caption
   split_string <- c(unlist(strsplit(text_1string, split = "\\!\\[")))
   split_string <-
