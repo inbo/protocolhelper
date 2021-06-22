@@ -35,6 +35,7 @@
 #' @importFrom rmarkdown pandoc_convert
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that
+#' @importFrom fs path_rel
 #' @export
 convert_docx_to_rmd <- function(
   from,
@@ -50,7 +51,9 @@ convert_docx_to_rmd <- function(
   assert_that(is.string(to))
   assert_that(grepl("\\.Rmd$", to))
 
-  wd <- file.path(wd, dirname(to))
+  dir_to <- dirname(to)
+  dir_to <- path_rel(dir_to, wd)
+  wd <- file.path(wd, dir_to)
   if (!dir.exists(wd)) dir.create(wd)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
 
