@@ -3,7 +3,7 @@
 ## Breaking changes
 
 * arguments determining paths to save results of convert_docx_to_rmd() are
-  reconsidered (#52 and #..)
+  reconsidered (#52 and #53)
 * change default of argument wrap in convert_docx_to_rmd() to NA
 * .emf files will converted to .png in convert_docx_to_rmd()
 
