@@ -54,7 +54,7 @@ convert_docx_to_rmd <- function(
   dir_to <- dirname(to)
   dir_to <- path_rel(dir_to, wd)
   wd <- file.path(wd, dir_to)
-  if (!dir.exists(wd)) dir.create(wd)
+  if (!dir.exists(wd)) dir.create(wd, recursive = TRUE)
   if (!overwrite && file.exists(to)) stop(to, " exists and overwrite = FALSE")
 
   md <- pandoc_docx_to_md(from, wrap, dir_media, verbose, wd)
