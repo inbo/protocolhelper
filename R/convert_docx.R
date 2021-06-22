@@ -56,6 +56,30 @@ convert_docx_to_rmd <- function(
   md <- pandoc_docx_to_md(from, wrap, dir_media, verbose, wd)
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
 
+  # convert emf to png
+  emf_images <- list.files(path = file.path(wd,
+                                            ifelse(dir_media == ".",
+                                                   "",
+                                                   dir_media),
+                                            "media"),
+                           pattern = ".emf",
+                           full.names = TRUE)
+  if (length(emf_images) > 0) {
+    if (!requireNamespace("magick", quietly = TRUE)) {
+      stop("Package \"magick\" needed for docx protocols with emf images. ",
+           "Please install it with 'install.packages(\"magick\")'.",
+           call. = FALSE)
+    }
+    for (img in emf_images) {
+      img_emf <- magick::image_read(path = img)
+      magick::image_write(image = img_emf,
+                          format = "png",
+                          path = str_replace(img, ".emf", ".png"))
+      file.remove(img)
+    }
+  }
+  md <- str_replace_all(md, "\\.emf", ".png")
+
   writeLines(md, con = to)
   return(to)
 }

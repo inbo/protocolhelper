@@ -705,24 +705,6 @@ create_from_docx <- function(
     wrap = 80,
     overwrite = FALSE,
     verbose = FALSE)
-  # convert emf to png
-  emf_images <- list.files(path = file.path(path_to_protocol, "media"),
-                           pattern = ".emf",
-                           full.names = TRUE)
-  if (length(emf_images) > 0) {
-    if (!requireNamespace("magick", quietly = TRUE)) {
-      stop("Package \"magick\" needed for docx protocols with emf images. ",
-           "Please install it with 'install.packages(\"magick\")'.",
-           call. = FALSE)
-    }
-    for (img in emf_images) {
-      img_emf <- magick::image_read(path = img)
-      magick::image_write(image = img_emf,
-                          format = "png",
-                          path = str_replace(img, ".emf", ".png"))
-      file.remove(img)
-    }
-  }
   # add captions
   temp2_filename <- "temp2.Rmd"
   add_captions(from = file.path(path_to_protocol, temp_filename),
@@ -731,7 +713,6 @@ create_from_docx <- function(
   # move relevant sections
   contents <- readLines(con = file.path(path_to_protocol,
                                         temp2_filename))
-  contents <- str_replace_all(contents, ".emf", ".png")
   # replace absolute path to media folder by relative path
   contents <- str_replace_all(contents, path_to_protocol, ".")
   is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
