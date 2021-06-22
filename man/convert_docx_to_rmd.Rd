@@ -46,6 +46,7 @@ syntax as close as possible to Rmarkdown files in RStudio.
 During conversion, graphics (e.g. png, jpg) will be extracted from the docx
 archive and placed in a folder \code{./media} and named \code{image1}, \code{image2},
 etcetera.
+Additionally, .emf files will be converted to .png.
 }
 \details{
 Metadata in the page headers and footers of the docx are ignored
