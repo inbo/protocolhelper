@@ -5,6 +5,7 @@
 * arguments determining paths to save results of convert_docx_to_rmd() are
   reconsidered (#52 and #..)
 * change default of argument wrap in convert_docx_to_rmd() to NA
+* .emf files will converted to .png in convert_docx_to_rmd()
 
 # protocolhelper 0.2.0
 
