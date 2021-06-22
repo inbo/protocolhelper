@@ -8,6 +8,7 @@
 #' During conversion, graphics (e.g. png, jpg) will be extracted from the docx
 #' archive and placed in a folder `./media` and named `image1`, `image2`,
 #' etcetera.
+#' Additionally, .emf files will be converted to .png.
 #'
 #' @details Metadata in the page headers and footers of the docx are ignored
 #' and will thus be lost during conversion.
