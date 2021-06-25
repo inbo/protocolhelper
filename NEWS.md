@@ -1,6 +1,10 @@
 # protocolhelper 0.2.1
 
-## Breaking changes
+## New features
+
+* protocol templates include CC-BY license
+
+## Minor changes
 
 * arguments determining paths to save results of convert_docx_to_rmd() are
   reconsidered (#52 and #53)
