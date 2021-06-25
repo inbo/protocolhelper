@@ -63,17 +63,20 @@ add_captions <- function(
 
   text <- readLines(from, encoding = "UTF-8")
   text_1string <- paste(text, collapse = "\n")
+  text_1string <- gsub(pattern = "\\n\\n(\\n)+", "\n\n", text_1string)
   # replace figure caption
-  text_1string <-
+  split_string <- c(unlist(strsplit(text_1string, split = "\\!\\[")))
+  split_string <-
     gsub(
       pattern =
         sprintf(
-          "!\\[[^]]*\\]\\(([^\\)]*)\\)\\{([^\\}]*)\\}\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? (.+?)\\n\\n", #nolint
+          "^(.+)?\\]\\((.*)\\)\\{([^\\}]*)\\}\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?(.+?)\\*?\\*?\\n\\n(.*)", #nolint
           name_figure_from
         ),
-      replacement = "![(#fig:\\3\\4) \\6](\\1){\\2}\n\n", #nolint
-      x = text_1string
+      replacement = "(#fig:\\4\\5) \\7](\\2){\\3}\n\n\\8", #nolint
+      x = split_string
     )
+  text_1string <- paste(split_string, collapse = "![")
   # replace figure reference
   text_1string <-
     gsub(
@@ -97,7 +100,7 @@ add_captions <- function(
     gsub(
       pattern =
         sprintf(
-          "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? (.+?)\\n\\n",
+          "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?(.+?)\\*?\\*?\\n\\n", #nolint
           name_table_from
         ),
       replacement = "\\1\n\nTable: (#tab:\\2\\3) \\5\n\n",

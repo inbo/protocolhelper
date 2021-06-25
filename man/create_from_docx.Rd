@@ -8,10 +8,7 @@ create_from_docx(from_docx, path_to_protocol)
 }
 \arguments{
 \item{from_docx}{A character string with the path (absolute or relative) to
-a \code{.docx} file containing a pre-existing protocol.
-Please make sure to copy-paste all relevant meta-data from the \code{.docx} file
-to the corresponding parameters of this function.
-If nothing is provided (i.e. default = NULL), an empty template will be used.}
+a \code{.docx} file containing a pre-existing protocol.}
 
 \item{path_to_protocol}{Absolute path to the protocol folder where the
 protocol created from docx needs to be written to}
@@ -19,8 +16,8 @@ protocol created from docx needs to be written to}
 \description{
 The docx file is first converted to a single Rmd file with the aid of pandoc
 (called from convert_docx_to_rmd).
-Next, the file is split by chapter in multiple Rmd files.
 Any emf images are converted to png.
+Next, the file is split by chapter in multiple Rmd files.
 All graphics files will be stored in a ./media folder.
 Bookdown compatible captions and cross-references for Figures and Tables are
 added if and only if 'Figuur' and 'Tabel' is used in the original document.

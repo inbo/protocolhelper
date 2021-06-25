@@ -7185,3 +7185,19 @@ blockquote {
 .summary > li:first-child {
   height: auto !important;
 }
+
+.cc {
+  width: 100px !important;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+.cc img {
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+
+.summary > li:first-child {
+  height: auto !important;
+}

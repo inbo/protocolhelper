@@ -6,27 +6,27 @@
 \usage{
 convert_docx_to_rmd(
   from,
-  to,
-  dir,
-  wrap = 80,
+  to = sub("docx$", "Rmd", from),
+  dir_media = ".",
+  wrap = NA,
   overwrite = FALSE,
-  verbose = FALSE
+  verbose = FALSE,
+  wd = getwd()
 )
 }
 \arguments{
 \item{from}{The \code{.docx} file to convert.
 Can be given as an absolute or relative path.}
 
-\item{to}{The filename to write the resulting \code{.Rmd} file (without path).
-The default is to use the same basename as the \code{.docx} document.}
+\item{to}{The filename including path to write the resulting \code{.Rmd} file.
+The default is to use the same name and path as the \code{.docx} document.}
 
-\item{dir}{The directory to write the \code{.Rmd} to.
-Defaults to current working directory.
-Any images will be written to \code{dir/media}.}
+\item{dir_media}{The directory to write the folder \code{media} with images to,
+relative to the folder where the \code{.Rmd} is written.
+Defaults to '.' (the path where the \code{.Rmd} file is written).}
 
 \item{wrap}{The width at which to wrap text.
-If \code{NA}, text is not wrapped.
-Defaults to 80.}
+If \code{NA} (default), text is not wrapped.}
 
 \item{overwrite}{Whether or not to overwrite the \code{to} file if it already
 existed.
@@ -34,6 +34,8 @@ Defaults to \code{FALSE}.}
 
 \item{verbose}{Whether to print pandoc progress text.
 Defaults to \code{FALSE}.}
+
+\item{wd}{Current working directory (used to handle relative paths).}
 }
 \description{
 This function is derived from the
@@ -44,6 +46,7 @@ syntax as close as possible to Rmarkdown files in RStudio.
 During conversion, graphics (e.g. png, jpg) will be extracted from the docx
 archive and placed in a folder \code{./media} and named \code{image1}, \code{image2},
 etcetera.
+Additionally, .emf files will be converted to .png.
 }
 \details{
 Metadata in the page headers and footers of the docx are ignored

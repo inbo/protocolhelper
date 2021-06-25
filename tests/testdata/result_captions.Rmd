@@ -5,14 +5,12 @@ zin Figuur \@ref(fig:Figuur1).  Of tussen haakjes (Figuur \@ref(fig:Figuur1)).
 
 Figuur \@ref(fig:Figuur1) is trouwens een voorbeeld van een hoofding in vet.
 
-
 ![(#fig:Figuur1) een hoofding op één regel](./path/naar/image1.png){width="3.3in" height="2.9in"}
 
 Idem voor figuren met dubbele nummering: figuur 1.2 of Figuur \@ref(fig:Figuur1.2) kan
 geschreven zijn als Fig. 1.2 of fig. 1.2 en aan het einde van de zin staan:
 Figuur \@ref(fig:Figuur1.2).  En tussen haakjes (Figuur \@ref(fig:Figuur1.2)).  Figuren 1 en 1.2 wordt niet als
 dusdanig herkend.
-
 
 ![(#fig:Figuur1.2) een hoofding op meer dan één regel omdat de alinea gesplitst
 werd over meerdere lijnen van maximaal 80 tekens](./path/naar/image2.png){width="3.3in" height="2.9in"}
@@ -30,9 +28,11 @@ uitgesplitst over meerdere lijnen](./media/image1.jpg){width="3.3in" height="2.9
 
 ![](./path/naar/fig/without/heading.png){width="3.3in" height="2.9in"}
 
+En nog een beetje tekst tussen de figuren.
+
+![(#fig:Figuur2-5) Een hoofding in italics.](./path/naar/image4.png){width="3.3in" height="2.9in"}
 
 # Tabellen
-
 
 Table: (#tab:Tabel1) hoofding van de tabel
 
@@ -40,7 +40,6 @@ First Header  | Second Header
   ----------- | -------------
 Content Cell  | Content Cell
 Content Cell  | Content Cell
-
 
 In Tabel \@ref(tab:Tabel1) is er een header opgenomen, in Tabel \@ref(tab:Tabel2.2) niet. Andere notaties zijn
 Tab.1, Tab 1 of tabel 1, maar deze gaan we hier niet accepteren omdat ze

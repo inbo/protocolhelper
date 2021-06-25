@@ -677,17 +677,14 @@ create_protocol_code <- function(
 #'
 #' The docx file is first converted to a single Rmd file with the aid of pandoc
 #' (called from convert_docx_to_rmd).
-#' Next, the file is split by chapter in multiple Rmd files.
 #' Any emf images are converted to png.
+#' Next, the file is split by chapter in multiple Rmd files.
 #' All graphics files will be stored in a ./media folder.
 #' Bookdown compatible captions and cross-references for Figures and Tables are
 #' added if and only if 'Figuur' and 'Tabel' is used in the original document.
 #'
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
-#' Please make sure to copy-paste all relevant meta-data from the `.docx` file
-#' to the corresponding parameters of this function.
-#' If nothing is provided (i.e. default = NULL), an empty template will be used.
 #' @param path_to_protocol Absolute path to the protocol folder where the
 #' protocol created from docx needs to be written to
 #'
@@ -700,29 +697,11 @@ create_from_docx <- function(
   temp_filename <- "temp.Rmd"
   convert_docx_to_rmd(
     from = from_docx,
-    to = temp_filename,
-    dir = path_to_protocol,
-    wrap = 80,
+    to = file.path(path_to_protocol, temp_filename),
+    dir_media = ".",
+    wrap = NA,
     overwrite = FALSE,
     verbose = FALSE)
-  # convert emf to png
-  emf_images <- list.files(path = file.path(path_to_protocol, "media"),
-                           pattern = ".emf",
-                           full.names = TRUE)
-  if (length(emf_images) > 0) {
-    if (!requireNamespace("magick", quietly = TRUE)) {
-      stop("Package \"magick\" needed for docx protocols with emf images. ",
-           "Please install it with 'install.packages(\"magick\")'.",
-           call. = FALSE)
-    }
-    for (img in emf_images) {
-      img_emf <- magick::image_read(path = img)
-      magick::image_write(image = img_emf,
-                          format = "png",
-                          path = str_replace(img, ".emf", ".png"))
-      file.remove(img)
-    }
-  }
   # add captions
   temp2_filename <- "temp2.Rmd"
   add_captions(from = file.path(path_to_protocol, temp_filename),
@@ -731,7 +710,6 @@ create_from_docx <- function(
   # move relevant sections
   contents <- readLines(con = file.path(path_to_protocol,
                                         temp2_filename))
-  contents <- str_replace_all(contents, ".emf", ".png")
   # replace absolute path to media folder by relative path
   contents <- str_replace_all(contents, path_to_protocol, ".")
   is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
