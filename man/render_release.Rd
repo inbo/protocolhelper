@@ -12,10 +12,9 @@ number. Default is "publish".}
 }
 \description{
 This function renders the protocols which are ready for a new
-release into a folder \code{publish/version_number/language}, where
+release into a folder \code{publish/version_number}, where
 \code{version_number} is of the form \code{YYYY.NN} (year, number giving order of
-release in a year) and \code{language} can be \code{nl} or \code{en} (both folders will
-be created in case of multi-language protocols). In addition, earlier
+release in a year). In addition, earlier
 released and older versions of protocols remain available in the \code{publish}
 folder (see also \code{details}).
 }

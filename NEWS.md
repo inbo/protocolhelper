@@ -1,3 +1,11 @@
+# protocolhelper 0.2.2
+
+## Minor changes
+
+* fixed relative links in template NEWS.md html comments
+* removed function render_all(); it is superseded by the internal function
+  protocolhelper:::render_release()
+
 # protocolhelper 0.2.1
 
 ## New features
