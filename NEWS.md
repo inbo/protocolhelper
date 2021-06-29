@@ -1,3 +1,9 @@
+# protocolhelper 0.2.2
+
+## Minor changes
+
+* fixed relative links in template NEWS.md html comments
+
 # protocolhelper 0.2.1
 
 ## New features
