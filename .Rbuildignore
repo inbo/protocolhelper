@@ -18,6 +18,5 @@
 ^pkgdown$
 ^protocolhelper\.Rproj$
 ^publish$
-^README\.md$
 ^README\.Rmd$
 ^src$
