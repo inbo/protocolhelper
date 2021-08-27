@@ -5,10 +5,10 @@
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 ![GitHub](https://img.shields.io/github/license/inbo/protocolhelper)
 [![R build
-status](https://github.com/inbo/protocolhelper/workflows/R-CMD-check/badge.svg)](https://github.com/inbo/protocolhelper/actions)
+status](https://github.com/inbo/protocolhelper/workflows/check%20package%20on%20main/badge.svg)](https://github.com/inbo/protocolhelper/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/inbo/protocolhelper/branch/main/graph/badge.svg)](https://codecov.io/gh/inbo/protocolhelper?branch=main)
 ![GitHub code size in
@@ -23,10 +23,18 @@ to manage the INBO/protocols repository.
 
 ## Installation
 
-You can install protocolhelper from
-[github](https://github.com/inbo/protocolhelper) with:
+You can install protocolhelper with:
 
 ``` r
+# Enable inbo r-universe
+options(repos = c(
+    inbo = 'https://inbo.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'))
+
+# Install the package
+install.packages('checklist')
+
+# alternatively: install from github
 if (!requireNamespace("remotes")) install.packages("remotes")
 remotes::install_github("inbo/protocolhelper")
 ```
