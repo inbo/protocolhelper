@@ -14,7 +14,6 @@
 ^LICENSE.md$
 ^LICENSE\.md$
 ^man-roxygen$
-^NEWS\.md$
 ^pkgdown$
 ^protocolhelper\.Rproj$
 ^publish$
