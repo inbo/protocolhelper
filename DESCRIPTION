@@ -32,6 +32,8 @@ Imports:
     bookdown,
     commonmark,
     fs,
+    gert,
+    jsonlite,
     knitr,
     purrr,
     rmarkdown,
@@ -42,7 +44,6 @@ Imports:
     ymlthis
 Suggests: 
     dplyr,
-    gert,
     lubridate,
     magick,
     png,

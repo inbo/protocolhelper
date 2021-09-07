@@ -1,5 +1,9 @@
 # protocolhelper 0.2.2
 
+## New features
+
+* internal function to update .zenodo.json file (add new authors)
+
 ## Minor changes
 
 * fixed relative links in template NEWS.md html comments
