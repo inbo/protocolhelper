@@ -116,8 +116,7 @@ test_that(
     gert::git_tag_create(name = specific_tag, message = "bla")
     gert::git_tag_create(name = generic_tag, message = "bla")
 
-    testobject <- protocolhelper:::update_zenodo(jsontxt, write = FALSE,
-                                                 main = FALSE)
+    testobject <- protocolhelper:::update_zenodo(jsontxt, write = FALSE)
 
     expectedobject <- jsonlite::fromJSON(jsonresult, simplifyVector = FALSE)
     expectedobject <- jsonlite::toJSON(expectedobject,

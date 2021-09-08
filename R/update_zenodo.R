@@ -7,21 +7,15 @@
 #' @param json a JSON string, url or file
 #' @param write whether to write a .zenodo.json file (TRUE) or to return a json
 #' string
-#' @param main whether to checkout the main branch. Default TRUE
 #'
 #' @importFrom purrr map flatten map_chr
 #' @importFrom jsonlite fromJSON write_json toJSON
-#' @importFrom gert git_branch_checkout
 #' @importFrom fs dir_ls
 #' @importFrom rmarkdown yaml_front_matter
 #'
 #' @return a .zenodo.json file (write = TRUE) or a json string (write = FALSE)
 #'
-update_zenodo <- function(json = ".zenodo.json", write = TRUE, main = TRUE) {
-  # checkout main branch
-  if (main) {
-    gert::git_branch_checkout("main")
-  }
+update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
 
   # list all index.Rmd files
   indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd")
