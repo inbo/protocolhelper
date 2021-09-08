@@ -2,7 +2,9 @@
 
 ## New features
 
-* internal function to update .zenodo.json file (add new authors)
+* internal function to get protocol tags and optionally bump development version
+  number (#27)
+* internal function to update .zenodo.json file (add new authors) (#25)
 
 ## Minor changes
 
