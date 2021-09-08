@@ -4,13 +4,15 @@
 \alias{update_zenodo}
 \title{Update the .zenodo.json file}
 \usage{
-update_zenodo(json = ".zenodo.json", write = TRUE)
+update_zenodo(json = ".zenodo.json", write = TRUE, main = TRUE)
 }
 \arguments{
 \item{json}{a JSON string, url or file}
 
 \item{write}{whether to write a .zenodo.json file (TRUE) or to return a json
 string}
+
+\item{main}{whether to checkout the main branch. Default TRUE}
 }
 \value{
 a .zenodo.json file (write = TRUE) or a json string (write = FALSE)
