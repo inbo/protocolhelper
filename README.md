@@ -32,7 +32,7 @@ options(repos = c(
     CRAN = 'https://cloud.r-project.org'))
 
 # Install the package
-install.packages('checklist')
+install.packages('protocolhelper')
 
 # alternatively: install from github
 if (!requireNamespace("remotes")) install.packages("remotes")
