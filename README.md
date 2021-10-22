@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R build
 status](https://github.com/inbo/protocolhelper/workflows/check%20package%20on%20main/badge.svg)](https://github.com/inbo/protocolhelper/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/inbo/protocolhelper/branch/main/graph/badge.svg)](https://codecov.io/gh/inbo/protocolhelper?branch=main)
+coverage](https://app.codecov.io/gh/inbo/protocolhelper/branch/main/graph/badge.svg)](https://app.codecov.io/gh/inbo/protocolhelper?branch=main)
 ![GitHub code size in
 bytes](https://img.shields.io/github/languages/code-size/inbo/protocolhelper.svg)
 ![GitHub repo
