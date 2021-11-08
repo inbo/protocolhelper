@@ -1,10 +1,9 @@
 #' @title Function to render the protocols that are ready for a new release.
 #'
 #' @description This function renders the protocols which are ready for a new
-#' release into a folder `publish/version_number/language`, where
+#' release into a folder `publish/version_number`, where
 #' `version_number` is of the form `YYYY.NN` (year, number giving order of
-#'  release in a year) and `language` can be `nl` or `en` (both folders will
-#'  be created in case of multi-language protocols). In addition, earlier
+#'  release in a year). In addition, earlier
 #'  released and older versions of protocols remain available in the `publish`
 #'  folder (see also \code{details}).
 #'

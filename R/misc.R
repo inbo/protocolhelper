@@ -8,6 +8,7 @@
 #' The system command to be invoked, as a string.
 #' Multiple commands can be combined in this single string, e.g. with a
 #' multiline string.
+#' @param path The path from where the commandstring needs to be executed
 #' @param ... Other arguments passed to \code{\link[base]{system}} or
 #' \code{\link[base]{shell}}.
 #'
@@ -15,7 +16,10 @@
 #'
 #' @keywords internal
 #'
-execshell <- function(commandstring, intern = FALSE, ...) {
+execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
+  old_wd <- setwd(path)
+  on.exit(setwd(old_wd), add = TRUE)
+
   if (.Platform$OS.type == "windows") {
     res <- shell(commandstring, intern = TRUE, ...)# nolint
   } else {
@@ -23,7 +27,7 @@ execshell <- function(commandstring, intern = FALSE, ...) {
   }
   if (!intern) {
     if (length(res) > 0) cat(res, sep = "\n") else return(invisible())
-    } else return(res)
+  } else return(res)
 }
 
 

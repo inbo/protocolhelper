@@ -1,3 +1,28 @@
+# protocolhelper 0.2.2
+
+## New features
+
+* function to update a protocol (start development of a new version)
+* internal function to get protocol tags and optionally bump development version
+  number (#27)
+* internal function to update .zenodo.json file (add new authors) (#25)
+
+## Minor changes
+
+* fixed relative links in template NEWS.md html comments
+* removed function render_all(); it is superseded by the internal function
+  protocolhelper:::render_release().
+  This function is internal because it should only be used by administrators
+  as part of the workflow to publish a new protocol or update an existing
+  protocol.
+  The exported function protocolhelper::render_protocol() can be used to render
+  an individual protocol.
+
+## Bug fixes
+
+* fixed bugs in check_frontmatter() due to changes in the way YAML metadata are
+  stored
+
 # protocolhelper 0.2.1
 
 ## New features

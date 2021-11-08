@@ -6,6 +6,7 @@
 ^_pkgdown.yml$
 ^_pkgdown\.yml$
 ^checklist.yml$
+^CITATION\.cff$
 ^codecov\.yml$
 ^cran-comments\.md$
 ^data-raw$
@@ -14,10 +15,8 @@
 ^LICENSE.md$
 ^LICENSE\.md$
 ^man-roxygen$
-^NEWS\.md$
 ^pkgdown$
 ^protocolhelper\.Rproj$
 ^publish$
-^README\.md$
 ^README\.Rmd$
 ^src$

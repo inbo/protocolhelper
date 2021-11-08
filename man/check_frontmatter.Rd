@@ -13,12 +13,13 @@ check_frontmatter(protocol_code, yaml = TRUE)
 messages, otherwise (default) the parsed yml front matter will be returned}
 }
 \value{
-parsed yml front matter if \code{yaml} is \code{TRUE}, otherwise
-nothing is returned.
+If one of the checks fails, an error message will be returned.
+Otherwise, the parsed yml front matter if \code{yaml} is
+\code{TRUE} is returned, or a message that everything is OK otherwise.
 }
 \description{
 This function reads metadata from the yaml front matter stored
-the index.Rmd file of a protocol and checks if the metadata format is
+in the index.Rmd file of a protocol and checks if the metadata format is
 correct.
 This function is intended for checking if a protocol is ready to be rendered
 and published (for instance, it will fail if version number is
