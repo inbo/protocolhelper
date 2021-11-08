@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+authors:
+- family-names: Van Calster
+  given-names: Hans
+  orcid: https://orcid.org/0000-0001-8595-8426
+- family-names: Onkelinx
+  given-names: Thierry
+  orcid: https://orcid.org/0000-0001-8804-4216
+- family-names: Vanderhaeghe
+  given-names: Floris
+  orcid: https://orcid.org/0000-0002-6378-6229
+contact:
+- email: hans.vancalster@inbo.be
+  family-names: Van Calster
+  given-names: Hans
+- email: info@inbo.be
+  name: Research Institute for Nature and Forest
+title: 'protocolhelper: Helper Functions to Manage Protocols'
+version: 0.2.2
+abstract: Helper functions to manage INBO protocols.
+license: GPL-3.0
+type: software
+repository-code: https://github.com/inbo/protocolhelper
+identifiers:
+- type: url
+  value: https://inbo.github.io/protocolhelper/
