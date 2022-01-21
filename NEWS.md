@@ -1,3 +1,7 @@
+# protocolhelper 0.2.4
+
+* various fixes to comply with new version of `checklist` package
+
 # protocolhelper 0.2.3
 
 * fix problem in github action workflow (install more recent version of pandoc)
