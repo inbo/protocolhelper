@@ -105,7 +105,7 @@ insert_protocolsection <-
       assert_that(any(has_section), msg = "The section was not found.")
 
       # assuming section is header level 2
-      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk
+      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
       # grab the section
       start_section <- which(has_section)
       if (length(start_section) > 1) {
@@ -120,9 +120,9 @@ insert_protocolsection <-
     }
     # demote headers
     if (demote_header != 0) {
-      h1 <- grepl("^#\\s[A-Z]", rmd_content) & !is_chunk
-      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk
-      h3 <- grepl("^###\\s[A-Z]", rmd_content) & !is_chunk
+      h1 <- grepl("^#\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
+      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
+      h3 <- grepl("^###\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
       if (demote_header == -1) {
         if (any(h1)) {
           stop("demote header -1 not possible when a level 1 header is present")
@@ -219,7 +219,7 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
 #' @keywords internal
 check_versionnumber <- function(version_number) {
   assert_that(is.string(version_number))
-  right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
+  right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number) # nolint: nonportable_path_linter, line_length_linter.
   assert_that(
     right_format,
     msg = "version number not in YYYY.XX format"

@@ -1,7 +1,7 @@
 test_that("function add_captions works", {
   temp_dir <- tempdir()
   add_captions(
-    from = "../testdata/test_captions.Rmd",
+    from = file.path("..", "testdata", "test_captions.Rmd"),
     to = file.path(temp_dir, "step1.Rmd")
   )
   add_captions(
@@ -11,6 +11,6 @@ test_that("function add_captions works", {
   )
   expect_equal(
     readLines(file.path(temp_dir, "final_result.Rmd")),
-    readLines("../testdata/result_captions.Rmd")
+    readLines(file.path("..", "testdata", "result_captions.Rmd"))
   )
 })

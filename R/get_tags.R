@@ -27,7 +27,7 @@ get_tags <- function(
 
   # get all non-dev version-numbers
   # list all index.Rmd files
-  indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd")
+  indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd") # nolint: nonportable_path_linter, line_length_linter.
 
   # read YAML front matter
   yamllists <- purrr::map(indexpaths, rmarkdown::yaml_front_matter)

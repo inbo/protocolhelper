@@ -35,12 +35,12 @@ clean_git <- function(repo =  ".", verbose = TRUE) {
   execshell("git remote prune origin", intern = FALSE, path = repo)
   # determine main branch
   main_branch <- ifelse(
-    any(branch_info$name == "origin/main"), "main",
-    ifelse(any(branch_info$name == "origin/master"), "master", "unknown")
+    any(branch_info$name == "origin/main"), "main", # nolint: nonportable_path_linter, line_length_linter.
+    ifelse(any(branch_info$name == "origin/master"), "master", "unknown") # nolint: nonportable_path_linter, line_length_linter.
   )
   assert_that(
     main_branch %in% c("main", "master"),
-    msg = "no branch `origin/main` or `origin/master` found."
+    msg = "no branch `origin/main` or `origin/master` found." # nolint: nonportable_path_linter, line_length_linter.
   )
 
   origin_main_branch <- branch_info$name[
@@ -140,7 +140,7 @@ clean_git <- function(repo =  ".", verbose = TRUE) {
   ) {
     git_branch_create(
       branch = main_branch,
-      ref = paste("refs/remotes/origin", main_branch, sep = "/"),
+      ref = paste("refs/remotes/origin", main_branch, sep = "/"), # nolint: nonportable_path_linter, line_length_linter.
       checkout = TRUE,
       repo = repo)
   } else {

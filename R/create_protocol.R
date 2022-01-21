@@ -237,7 +237,7 @@ create_protocol <- function(
     "index.Rmd",
     "NEWS.md",
     list.files(path = path_to_protocol,
-               pattern = "^\\d{2}.+Rmd$"))
+               pattern = "^\\d{2}.+Rmd$")) # nolint: nonportable_path_linter.
 
 
   # change values in parent rmarkdown and _bookdown.yml
@@ -712,11 +712,11 @@ create_from_docx <- function(
                                         temp2_filename))
   # replace absolute path to media folder by relative path
   contents <- str_replace_all(contents, path_to_protocol, ".")
-  is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
+  is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})") # nolint: nonportable_path_linter, line_length_linter.
   title_numbers <- formatC(x = cumsum(is_title),
                            width = 2, format = "d", flag = "0")
   filenames <- str_remove(string = tolower(contents[is_title]),
-                          pattern = "^(#{1}\\s{1})")
+                          pattern = "^(#{1}\\s{1})") # nolint: nonportable_path_linter, line_length_linter.
   filenames <- str_remove(string = filenames,
                           pattern = "\\s$")
   filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")

@@ -79,7 +79,7 @@ check_frontmatter <- function(
   assert_that(str_detect(yml$protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
 
   assert_that(has_name(yml, "version_number"))
-  assert_that(str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$"))
+  assert_that(str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$")) # nolint: nonportable_path_linter, line_length_linter.
 
   assert_that(has_name(yml, "language"))
   assert_that(any(yml$language %in% c("nl", "en")),
