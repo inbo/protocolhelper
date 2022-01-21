@@ -40,12 +40,12 @@ Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van t
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(
-  echo = FALSE, 
+  echo = FALSE,
   eval = TRUE,
   dpi = 300,
   fig.width = 150 / 25.4,
   fig.height = 100 / 25.4,
-  out.width = '100%',
+  out.width = "100%",
   warning = FALSE,
   error = TRUE,
   message = FALSE

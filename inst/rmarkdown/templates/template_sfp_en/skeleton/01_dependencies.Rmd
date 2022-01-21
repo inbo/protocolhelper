@@ -29,8 +29,8 @@ if (exists("params")) {
            version_number = as.character(version_number),
            params = as.character(params),
            version_number = ifelse(params == "NA",
-                           paste0("[", version_number, "](../", 
-                                  version_number,"/", "index.html)"),
+                           paste0("[", version_number, "](../",
+                                  version_number, "/", "index.html)"),
                            version_number),
            appendix = as.logical(appendix)) %>%
     rename(
