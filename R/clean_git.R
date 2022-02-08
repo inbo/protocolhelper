@@ -140,7 +140,7 @@ clean_git <- function(repo =  ".", verbose = TRUE) {
   ) {
     git_branch_create(
       branch = main_branch,
-      ref = paste("refs/remotes/origin", main_branch, sep = "/"), # nolint: nonportable_path_linter, line_length_linter.
+      ref = paste("refs", "remotes", "origin", main_branch, sep = "/"),
       checkout = TRUE,
       repo = repo)
   } else {
