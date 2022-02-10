@@ -9,7 +9,7 @@ reviewers:
 file_manager:
 protocol_code:
 version_number:
-language:
+language: nl
 project_name:
 site: bookdown::bookdown_site
 output: 
