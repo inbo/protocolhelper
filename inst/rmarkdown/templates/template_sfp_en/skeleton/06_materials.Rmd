@@ -15,7 +15,7 @@ Duidelijk aangeven welke materialen toelaatbaar zijn, welke volumes, afmetingen,
 vb. vermeld niet staalnamepotje, maar wel: vierkant flesje, volume 250 ml, gegradueerd, vervaardigd uit PE, met afsluitbare deksel uit PP.
 -->
 
-## Reagentia en oplossingen (indien van toepassing)
+## Reagents and solutions (if applicable)
 
 <!--
 Een opsomming van reagentia, welke zuiverheid, volume, veiligheidsvoorschriften.
