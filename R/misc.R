@@ -39,6 +39,8 @@ protocol_css <- function() {
     "css",
     package = "protocolhelper"
   )
-  file.copy(source_dir, getwd(), recursive = TRUE, overwrite = TRUE)
+  if (!interactive()) {
+    file.copy(source_dir, getwd(), recursive = TRUE, overwrite = TRUE)
+  }
   return(file.path("css", "gitbook.html"))
 }
