@@ -1,0 +1,12 @@
+# Description of process steps
+
+<!--
+Gedetailleerde omschrijving van alle stappen die doorlopen moeten worden om het protocol uit te voeren.
+Deze stappen staan schematisch weergegeven in het processchema.
+Subtitels gebruiken om elke stap te omschrijven.
+-->
+
+## Subtitle 1
+
+## Subtitle 2
+
