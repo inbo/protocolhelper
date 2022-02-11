@@ -1,5 +1,7 @@
 # protocolhelper 0.2.4
 
+* added templates for standard analysis procedures (sap)
+* added templates for standard instrument procedures (sip)
 * added templates for standard operating procedures (sop)
 * various fixes to comply with new version of `checklist` package
 
