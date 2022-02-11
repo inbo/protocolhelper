@@ -1,0 +1,65 @@
+# Calibration
+
+All actions concerning calibrations are kept with the registration form of the device:
+name + link.
+
+```{r calibration}
+calib <- data.frame(
+  calibration = c("R^2", "Slope", "Area Blanco", "Area Standard"),
+  Criterium = "",
+  Term = "")
+
+kable(calib)
+```
+
+# Control
+
+All actions concerning controls are kept with the registration form of the device:
+name + link.
+
+```{r control}
+control <- data.frame(
+  Part = "",
+  Control = "",
+  Criterium = "",
+  Term = "")
+
+kable(control)
+```
+
+# Maintenance
+
+All actions concerning maintenance are kept with the registration form of the device:
+name + link.
+
+```{r maintenance}
+maintenance <- data.frame(
+  Maintenance = c("Extern", "Intern"),
+  Action = "",
+  Criterium = "",
+  Term = "")
+
+kable(maintenance)
+```
+
+## External maintenance
+
+## Internal maintenance
+
+### Maintenance parts
+
+Reagents and materials:
+
+- 
+- 
+
+Actions:
+
+- 
+- 
+
+
+# Error
+
+All actions concerning errors are kept with the registration form of the device:
+name + link.
