@@ -1,0 +1,17 @@
+# Apparatuur en materiaal
+
+## Apparatuur
+
+<!--
+Opsomming van de apparatuur die nodig is en verwijzingen naar de sip's (Standard Instrument Procedure; <protocol-code>-YYYY.NN) indien die er zijn.
+Indien geen specifiek sip's voorhanden, illustreer de toegelaten apparatuur met foto's, geef het exacte type apparatuur mee, ...
+-->
+
+## Materiaal
+
+<!--
+Opsomming van gebruikte materialen.
+Duidelijk aangeven welke materialen toelaatbaar zijn, welke volumes, afmetingen, materiaal, ... 
+vb. vermeld niet staalnamepotje, maar wel: vierkant flesje, volume 250 ml, gegradueerd, vervaardigd uit PE, met afsluitbare deksel uit PP.
+-->
+

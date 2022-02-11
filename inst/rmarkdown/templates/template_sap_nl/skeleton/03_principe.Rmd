@@ -1,0 +1,5 @@
+# Principe
+
+<!--
+Korte omschrijving van de principes waarop het protocol gebaseerd is.
+-->
