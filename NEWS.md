@@ -1,5 +1,6 @@
 # protocolhelper 0.2.4
 
+* added templates for standard operating procedures (sop)
 * various fixes to comply with new version of `checklist` package
 
 # protocolhelper 0.2.3
