@@ -41,8 +41,6 @@
 #' @inheritParams create_protocol_code
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
-#' @param short_title A character string of less than 20 characters to use in
-#' folder and filenames
 #' @param authors A character vector for authors of the form First name Last
 #' name
 #' @param orcids A character vector of orcid IDs, equal in length to authors.
@@ -64,6 +62,8 @@
 #' the same project will be stored. Preferably a short name or acronym. If the
 #' folder does not exist, it will be created.
 #' Ignored if protocol_type = `"sfp"`.
+#' @param short_title A character string of less than 20 characters to use in
+#' folder and filenames
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
 #' Please make sure to copy-paste all relevant meta-data from the `.docx` file
@@ -91,7 +91,6 @@
 create_protocol <- function(
   protocol_type = c("sfp", "spp"),
   title,
-  subtitle,
   short_title,
   authors,
   orcids,
@@ -102,6 +101,7 @@ create_protocol <- function(
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   project_name,
   language = c("nl", "en"),
+  subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
   render = FALSE) {
@@ -109,7 +109,9 @@ create_protocol <- function(
   # check parameters
   protocol_type <- match.arg(protocol_type)
   assert_that(is.string(title))
-  assert_that(is.string(subtitle))
+  if (!is.null(subtitle)) {
+    assert_that(is.string(subtitle))
+  }
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
   assert_that(is.character(authors))
@@ -254,6 +256,9 @@ create_protocol <- function(
     protocol_code = protocol_code,
     language = language
     )
+  if (is.null(subtitle)) {
+    index_yml <- ymlthis::yml_discard(index_yml, "subtitle")
+  }
   index_yml <- ymlthis::yml_author(
     index_yml,
     name = authors,
