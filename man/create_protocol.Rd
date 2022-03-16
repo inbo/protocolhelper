@@ -10,7 +10,7 @@ protocol and optionally render to html}
 create_protocol(
   protocol_type = c("sfp", "spp"),
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,

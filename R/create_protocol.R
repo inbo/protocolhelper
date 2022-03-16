@@ -91,7 +91,7 @@
 create_protocol <- function(
   protocol_type = c("sfp", "spp"),
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -109,7 +109,9 @@ create_protocol <- function(
   # check parameters
   protocol_type <- match.arg(protocol_type)
   assert_that(is.string(title))
-  assert_that(is.string(subtitle))
+  if (!is.null(subtitle)) {
+    assert_that(is.string(subtitle))
+  }
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
   assert_that(is.character(authors))
@@ -254,6 +256,9 @@ create_protocol <- function(
     protocol_code = protocol_code,
     language = language
     )
+  if (is.null(subtitle)) {
+    index_yml <- ymlthis::yml_discard(index_yml, "subtitle")
+  }
   index_yml <- ymlthis::yml_author(
     index_yml,
     name = authors,
