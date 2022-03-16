@@ -38,7 +38,7 @@ check_frontmatter <- function(
 
   if (has_name(yml, "subtitle")) {
     assert_that(is.string(yml$subtitle),
-                msg = "Subtitle is not a string, maybe empty, please remove in the yaml header if not needed.")
+                msg = "Subtitle is not a string, maybe empty, please remove in the yaml header if not needed.") #nolint
   }
 
   assert_that(has_name(yml, "author"))
