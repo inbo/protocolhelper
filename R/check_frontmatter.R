@@ -80,7 +80,9 @@ check_frontmatter <- function(
   assert_that(str_detect(yml$protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
 
   assert_that(has_name(yml, "version_number"))
-  assert_that(str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$")) # nolint: nonportable_path_linter, line_length_linter.
+  assert_that(
+    str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$"), # nolint: nonportable_path_linter.
+    msg = "version_number should be YYYY.NN with NN a 2 digit number above 0")
 
   assert_that(has_name(yml, "language"))
   assert_that(any(yml$language %in% c("nl", "en")),
