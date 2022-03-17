@@ -10,7 +10,6 @@ protocol and optionally render to html}
 create_protocol(
   protocol_type = c("sfp", "spp"),
   title,
-  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -21,6 +20,7 @@ create_protocol(
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   project_name,
   language = c("nl", "en"),
+  subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
   render = FALSE
@@ -66,8 +66,6 @@ standard project protocol)}
 
 \item{title}{A character string giving the main title of the protocol}
 
-\item{subtitle}{A character string for an optional subtitle}
-
 \item{short_title}{A character string of less than 20 characters to use in
 folder and filenames}
 
@@ -107,6 +105,8 @@ Ignored if protocol_type = \code{"sfp"}.}
 
 \item{language}{Language of the protocol, either \code{"nl"} (Dutch),
 the default, or \code{"en"} (English).}
+
+\item{subtitle}{A character string for an optional subtitle}
 
 \item{from_docx}{A character string with the path (absolute or relative) to
 a \code{.docx} file containing a pre-existing protocol.
