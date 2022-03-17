@@ -37,8 +37,9 @@ check_frontmatter <- function(
   assert_that(is.string(yml$title))
 
   if (has_name(yml, "subtitle")) {
-    assert_that(is.string(yml$subtitle),
-                msg = "Subtitle is not a string, maybe empty, please remove in the yaml header if not needed.") #nolint
+    assert_that(
+      is.string(yml$subtitle),
+      msg = "Subtitle is not a string, maybe empty, please remove in the yaml header if not needed.") #nolint: line_length_linter
   }
 
   assert_that(has_name(yml, "author"))
@@ -81,7 +82,7 @@ check_frontmatter <- function(
 
   assert_that(has_name(yml, "version_number"))
   assert_that(
-    str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$"), # nolint: nonportable_path_linter.
+    str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$"), # nolint: nonportable_path_linter, line_length_linter.
     msg = "version_number should be YYYY.NN with NN a 2 digit number above 0")
 
   assert_that(has_name(yml, "language"))
