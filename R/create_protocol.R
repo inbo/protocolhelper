@@ -117,6 +117,12 @@ create_protocol <- function(
   assert_that(is.character(authors))
   assert_that(is.character(orcids),
               length(authors) == length(orcids))
+  assert_that(
+    all(!is.na(orcids)),
+    msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
+  assert_that(
+    all(nchar(orcids) == 19),
+    msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
   assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
   check_versionnumber(gsub("\\.dev", "", version_number)) # nolint
