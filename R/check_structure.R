@@ -65,7 +65,8 @@ check_structure <- function(protocol_code) {
     assert_that(
       !any(grepl("^[[:space:]]+#", headings)),
       msg =
-        paste(protocol_code, ", file", file, "Headings have to start with a '#'")
+        paste(protocol_code, ", file", file,
+              "Headings have to start with a '#'")
     )
     assert_that(
       !any(grepl("[[:space:]]+$", headings)),
@@ -122,7 +123,8 @@ check_structure <- function(protocol_code) {
 
   # references
   if (
-    any(grepl("^\\d{2}_referen", files_protocol[grepl(".Rmd$", files_protocol)]))
+    any(grepl("^\\d{2}_referen",
+              files_protocol[grepl(".Rmd$", files_protocol)]))
   ) {
     #should we also check for this in the yaml heading???
     assert_that(
