@@ -3,6 +3,7 @@
 * added templates for standard analysis procedures (sap)
 * added templates for standard instrument procedures (sip)
 * added templates for standard operating procedures (sop)
+* added function `check_structure()` to check document structure of protocols
 * various fixes to comply with new version of `checklist` package
 
 # protocolhelper 0.2.3
