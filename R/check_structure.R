@@ -20,7 +20,7 @@ check_structure <- function(protocol_code) {
     protocol_code = protocol_code)
   template_name <-
     gsub(
-      pattern = "(s\\wp)-\\d*-(\\w{2})", replacement = "template_\\1_\\2",
+      pattern = "(s\\wp)-\\d*-(\\w{2})_.*", replacement = "template_\\1_\\2",
       protocol_code
     )
   path_to_template <-
