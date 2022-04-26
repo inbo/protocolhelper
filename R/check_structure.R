@@ -93,13 +93,13 @@ check_structure <- function(protocol_code) {
                 headings_template[!headings_template %in% headings],
                 "lack(s) in file", file)
       )
+      headings1 <- headings[grepl("^# .*", headings)]
+      headings1_template <- headings_template[grepl("^# .*", headings_template)]
       assert_that(
-        all(headings[grepl("^# .*", headings)] %in%
-              headings_template[grepl("^# .*", headings_template)]),
+        all(headings1 %in% headings1_template),
         msg = paste(protocol_code, "Heading 1",
-               !headings[grepl("^# .*", headings)] %in%
-                 headings_template[grepl("^# .*", headings_template)],
-               "is not allowed in file", file)
+                    headings1[!headings1 %in% headings1_template],
+                    "is not allowed in file", file)
       )
       assert_that(
         all(headings[headings %in% headings_template] == headings_template),
