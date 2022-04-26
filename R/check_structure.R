@@ -65,8 +65,10 @@ check_structure <- function(protocol_code) {
     assert_that(
       !any(grepl("^[[:space:]]+#", headings)),
       msg =
-        paste(protocol_code, ", file", file,
-              "Headings have to start with a '#'")
+        paste(
+          protocol_code, ", file", file,
+          "Headings have to start with a '#', remove the leading whitespace."
+        )
     )
     assert_that(
       !any(grepl("[[:space:]]+$", headings)),
