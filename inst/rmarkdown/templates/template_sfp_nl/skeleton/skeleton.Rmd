@@ -12,6 +12,8 @@ version_number:
 language: nl
 theme:
 site: bookdown::bookdown_site
+bibliography: referenties.yaml
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl
 output: 
   bookdown::gitbook:
     split_by: none

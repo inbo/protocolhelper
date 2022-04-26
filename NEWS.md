@@ -1,5 +1,7 @@
 # protocolhelper 0.2.4
 
+* templates now also have a references.yaml file and corresponding bibliography
+  fields in yaml front matter
 * added templates for standard analysis procedures (sap)
 * added templates for standard instrument procedures (sip)
 * added templates for standard operating procedures (sop)
