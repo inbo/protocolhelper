@@ -196,14 +196,14 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
 
     # use git show to get the contents of data and media
     # and copy it to the project protocol
-    create_command <- function(file_path, dest_path) {
+    create_command <- function(file_path, dest_path, tag) {
       paste0("git show ",
              tag, ":",
              file_path, " > ",
              dest_path
       )
     }
-    git_commands <- map2(git_filepaths, all_files, create_command)
+    git_commands <- map2(git_filepaths, all_files, tag, create_command)
     map(git_commands, execshell, intern = FALSE)
   }
 }

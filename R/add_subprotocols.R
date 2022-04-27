@@ -87,7 +87,7 @@ add_one_subprotocol <-
         file.path(protocol_files) %>%
         path_rel(start = find_root(is_git_root))
 
-      create_command <- function(file_path, dest_path) {
+      create_command <- function(file_path, dest_path, tag) {
         paste0("git show ",
                tag, ":",
                file_path, " > ",
@@ -105,7 +105,7 @@ add_one_subprotocol <-
       dest_paths <- file.path(mainprotocol_path_abs, version_number,
                               protocol_files) %>%
         path_rel(start = find_root(is_git_root))
-      git_commands <- map2(git_filepaths, dest_paths, create_command)
+      git_commands <- map2(git_filepaths, dest_paths, tag, create_command)
       map(git_commands, execshell, intern = FALSE)
     } else {
       stop("no protocol files found")
