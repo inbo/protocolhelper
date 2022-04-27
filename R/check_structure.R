@@ -20,7 +20,8 @@ check_structure <- function(protocol_code) {
     protocol_code = protocol_code)
   template_name <-
     gsub(
-      pattern = "(s\\wp)-\\d*-(\\w{2})_.*", replacement = "template_\\1_\\2",
+      pattern = "(s\\wp)-\\d*-(\\w{2})_.*",
+      replacement = "template_\\1_\\2", #nolint: nonportable_path_linter
       protocol_code
     )
   path_to_template <-
@@ -34,8 +35,10 @@ check_structure <- function(protocol_code) {
   files_template_i <-
     c(files_template[files_template != "skeleton.Rmd"], "index.Rmd")
   difffiles <- files_template_i[!files_template_i %in% files_protocol]
-  difffiles <- difffiles[!grep("^\\d{2}_appendices.Rmd", difffiles)]
-  difffiles <- difffiles[!grep("^\\d{2}_subprocotols.Rmd", difffiles)]
+  difffiles <-
+    difffiles[!grep("^\\d{2}_appendices.Rmd", difffiles)] #nolint: nonportable_path_linter, line_length_linter
+  difffiles <-
+    difffiles[!grep("^\\d{2}_subprocotols.Rmd", difffiles)] #nolint: nonportable_path_linter, line_length_linter
   assert_that(
     length(difffiles) == 0,
     msg = paste(protocol_code, "lacks file(s)", difffiles)
@@ -125,7 +128,7 @@ check_structure <- function(protocol_code) {
 
   # references
   if (
-    any(grepl("^\\d{2}_referen",
+    any(grepl("^\\d{2}_referen", #nolint: nonportable_path_linter
               files_protocol[grepl(".Rmd$", files_protocol)]))
   ) {
     #should we also check for this in the yaml heading???
