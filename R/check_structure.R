@@ -11,6 +11,7 @@
 #' @return If one of the checks fails, an error message will be returned.
 #'
 #' @importFrom assertthat assert_that
+#' @importFrom rmarkdown yaml_front_matter
 #' @importFrom utils head tail
 #'
 #' @export
@@ -127,14 +128,11 @@ check_structure <- function(protocol_code) {
   }
 
   # references
-  if (
-    any(grepl("^\\d{2}_referen", #nolint: nonportable_path_linter
-              files_protocol[grepl(".Rmd$", files_protocol)]))
-  ) {
-    #should we also check for this in the yaml heading???
-    assert_that(
-      any(grep("\\.bib$", files_protocol)),
-      msg = paste(protocol_code, ".bib-file needed for references")
-    )
+  yml <- yaml_front_matter(file.path(path_to_protocol, "index.Rmd"))
+  if (has_name(yml, "bibliography")) {
+    for (bibfile in yml$bibliography) {
+      assert_that(bibfile %in% files_protocol,
+                  msg = paste(bibfile, "not found (needed for references)"))
+    }
   }
 }
