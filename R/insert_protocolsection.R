@@ -175,7 +175,7 @@ insert_protocolsection <-
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_extract_all
 #' @importFrom fs path_rel
-#' @importFrom purrr map2 map
+#' @importFrom purrr map pmap
 #'
 #' @keywords internal
 get_data_media <- function(rmd_content, code_subprotocol, tag) {
@@ -203,7 +203,7 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
              dest_path
       )
     }
-    git_commands <- map2(git_filepaths, all_files, tag, create_command)
+    git_commands <- pmap(list(git_filepaths, all_files, tag), create_command)
     map(git_commands, execshell, intern = FALSE)
   }
 }
