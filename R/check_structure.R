@@ -22,7 +22,7 @@ check_structure <- function(protocol_code) {
   template_name <-
     gsub(
       pattern = "(s\\wp)-\\d*-(\\w{2})_.*",
-      replacement = "template_\\1_\\2", #nolint: nonportable_path_linter
+      replacement = "template_\\1_\\2",
       protocol_code
     )
   path_to_template <-
@@ -37,9 +37,9 @@ check_structure <- function(protocol_code) {
     c(files_template[files_template != "skeleton.Rmd"], "index.Rmd")
   difffiles <- files_template_i[!files_template_i %in% files_protocol]
   difffiles <-
-    difffiles[!grep("^\\d{2}_appendices.Rmd", difffiles)] #nolint: nonportable_path_linter, line_length_linter
+    difffiles[!grep("^\\d{2}_appendices.Rmd", difffiles)]
   difffiles <-
-    difffiles[!grep("^\\d{2}_subprocotols.Rmd", difffiles)] #nolint: nonportable_path_linter, line_length_linter
+    difffiles[!grep("^\\d{2}_subprocotols.Rmd", difffiles)]
   assert_that(
     length(difffiles) == 0,
     msg = paste(protocol_code, "lacks file(s)", difffiles)
