@@ -562,8 +562,8 @@ get_path_to_protocol <- function(protocol_code,
     return(path_to_protocol)
   } else {
     # second case: the path does not yet exist
-    if (is.null(theme) & is.null(project_name) |
-        is.string(theme) & is.string(project_name)) {
+    if (is.null(theme) && is.null(project_name) ||
+        (is.string(theme) && is.string(project_name))) {
       stop(
         paste0("Check the spelling of protocol_code - or - provide ",
         "a string value for theme or project, not both.")
