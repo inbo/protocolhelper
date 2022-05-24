@@ -13,14 +13,6 @@ render_protocol(protocol_code = NULL, output_dir = NULL, ...)
 \code{output_dir} in the configuration file \file{_bookdown.yml} will be
 used (possibly not specified, either, in which case a directory name
 \file{_book} will be used).}
-
-\item{...}{Arguments to be passed to
-\code{rmarkdown::\link{render}()}. For \code{preview_chapter()}, \code{...}
-is passed to \code{render_book()}. See \code{rmarkdown::\link{render}()}
-and \href{https://bookdown.org/yihui/bookdown/build-the-book.html}{the
-bookdown reference book} for details on how output formatting options are
-set from YAML or parameters supplied by the user when calling
-\code{render_book()}.}
 }
 \description{
 This function is a simple wrapper around
