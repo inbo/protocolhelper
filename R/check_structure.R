@@ -17,7 +17,7 @@
 #' @export
 #'
 check_structure <- function(protocol_code) {
-  x <- load_protocolcheck(protocol_code = protocol_code)
+  x <- load_protocolcheck(x = protocol_code)
   template_name <-
     gsub(
       pattern = "(s\\wp)-\\d*-(\\w{2})_.*",

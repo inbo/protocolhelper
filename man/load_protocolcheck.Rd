@@ -7,7 +7,7 @@
 load_protocolcheck(x)
 }
 \arguments{
-\item{Either}{a \code{Protocolcheck} object or the variable \code{protocol_code}.}
+\item{x}{Either a \code{Protocolcheck} object or the variable \code{protocol_code}.}
 }
 \value{
 A \code{Protocolcheck} object.
