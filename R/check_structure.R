@@ -109,11 +109,15 @@ check_structure <- function(protocol_code, fail = !interactive()) {
       )
 
       if (
+        length(headings[headings %in% headings_template]) ==
+          length(headings_template) &&
         !all(headings[headings %in% headings_template] == headings_template)
       ) {
         x$add_error(
           msg = paste(protocol_code, "Headings of file", file,
-                      "are not in this order:", headings_template)
+                      "are not in this order:",
+                      paste(headings_template, collapse = " > ")
+          )
         )
       }
 
