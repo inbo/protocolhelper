@@ -42,7 +42,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     difffiles[!grepl("^\\d{2}_appendices.Rmd", difffiles)]
   difffiles <-
     difffiles[!grepl("^\\d{2}_subprocotols.Rmd", difffiles)]
-  x$add_error(msg = sprintf("%s lacks file(s) %s", protocol_code, difffiles))
+  x$add_error(msg = sprintf("the protocol lacks file(s) %s", difffiles))
 
   for (file in files_protocol[grepl(".Rmd$", files_protocol)]) {
 
@@ -56,7 +56,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     ) {
       x$add_error(
         msg =
-          paste(protocol_code, ", file", file, "has a problem with R chunks"))
+          paste(", file", file, "has a problem with R chunks"))
     }
 
     for (i in rev(seq_along(start_chunk))) {
@@ -71,15 +71,15 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     headings <- rmd[grepl("^[[:space:]]?#", rmd)]
     x$add_error(
       msg = sprintf(
-        "%s: file %s: Headings have to start with a '#',
+        "file %s: Headings have to start with a '#',
         remove the leading whitespace in headings %s",
-        protocol_code, file, headings[grepl("^[[:space:]]+#", headings)])
+        file, headings[grepl("^[[:space:]]+#", headings)])
     )
     x$add_error(
       msg = sprintf(
-        "%s: file %s: Whitespace at the end of a heading is not allowed,
+        "file %s: Whitespace at the end of a heading is not allowed,
         remove them in headings %s",
-        protocol_code, file, headings[grepl("[[:space:]]+$", headings)])
+        file, headings[grepl("[[:space:]]+$", headings)])
     )
 
     # compare headings with template
@@ -90,8 +90,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
         headings_template[!grepl("^### Subtit", headings_template)]
       x$add_error(
         msg = sprintf(
-          "%s: Heading(s) %s lack(s) in file %s",
-          protocol_code,
+          "Heading(s) %s lack(s) in file %s",
           headings_template[!headings_template %in% headings],
           file
         )
@@ -101,8 +100,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
       headings1_template <- headings_template[grepl("^# .*", headings_template)]
       x$add_error(
         msg = sprintf(
-          "%s: Heading 1 %s is not allowed in file %s",
-          protocol_code,
+          "Heading 1 %s is not allowed in file %s",
           headings1[!headings1 %in% headings1_template],
           file
         )
@@ -114,7 +112,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
         !all(headings[headings %in% headings_template] == headings_template)
       ) {
         x$add_error(
-          msg = paste(protocol_code, "Headings of file", file,
+          msg = paste("Headings of file", file,
                       "are not in this order:",
                       paste(headings_template, collapse = " > ")
           )
@@ -129,11 +127,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
       rmd_end <- rmd[max(grep("^[[:space:]]?#", rmd)):length(rmd)]
       if (!all(template_end == rmd_end)) {
         x$add_error(
-          msg =
-            paste(
-              protocol_code,
-              "Heading 'Metadata' or the table below have changed"
-            )
+          msg = "Heading 'Metadata' or the table below have changed"
         )
       }
     }
