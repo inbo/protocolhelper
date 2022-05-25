@@ -15,18 +15,25 @@ protocolcheck <- R6Class(
         protocol_code = protocol_code)
       invisible(self)  #werkt dat, of niet?  wat is de bedoeling?
     },
-    # print = function() {
-    #   output <- c(
-    #     paste("protocol_code =", self$protocol_code)
-    #   )
-    #   cat()
-    # },
     add_error = function(msg) {
       self$error <- c(self$error, msg)
     }
-  )#,
+  ),
 
-  # private = list(
-  #   path = character(0) #private of public?  en idem voor error, en wat is active?
-  # )
+  active = list(
+    check = function(fail) {
+      if (length(self$error) > 0) {
+        output <- c(
+          paste0("Errors in protocol ", self$protocol_code, ":"),
+          self$error
+        )
+        cat(output, sep = "\n- ")
+        if (fail) {
+          stop("Some problems occur in the protocol: see errors above.")
+        }
+      } else {
+        cat("Well done! No problems found.")
+      }
+    }
+  )
 )

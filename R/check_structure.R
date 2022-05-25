@@ -7,8 +7,11 @@
 #' and published.
 #'
 #' @inheritParams get_path_to_protocol
+#' @param fail Should the function drop an error in case of a problem?
+#' Defaults to `TRUE` in a non-interactive session and `FALSE` in an interactive
+#' session.
 #'
-#' @return If one of the checks fails, an error message will be returned.
+#' @return A report of all failed checks.
 #'
 #' @importFrom assertthat assert_that
 #' @importFrom rmarkdown yaml_front_matter
@@ -16,7 +19,7 @@
 #'
 #' @export
 #'
-check_structure <- function(protocol_code) {
+check_structure <- function(protocol_code, fail = !interactive()) {
   x <- load_protocolcheck(x = protocol_code)
   template_name <-
     gsub(
@@ -150,5 +153,5 @@ check_structure <- function(protocol_code) {
     )
   }
 
-  return(x)
+  return(x$check <- fail)
 }

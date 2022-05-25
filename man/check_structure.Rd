@@ -4,13 +4,17 @@
 \alias{check_structure}
 \title{Checks protocol document structure}
 \usage{
-check_structure(protocol_code)
+check_structure(protocol_code, fail = !interactive())
 }
 \arguments{
 \item{protocol_code}{Character string giving the protocol code}
+
+\item{fail}{Should the function drop an error in case of a problem?
+Defaults to \code{TRUE} in a non-interactive session and \code{FALSE} in an interactive
+session.}
 }
 \value{
-If one of the checks fails, an error message will be returned.
+A report of all failed checks.
 }
 \description{
 This function reads the protocol and checks if the document
