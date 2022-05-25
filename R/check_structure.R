@@ -36,9 +36,9 @@ check_structure <- function(protocol_code) {
     c(files_template[files_template != "skeleton.Rmd"], "index.Rmd")
   difffiles <- files_template_i[!files_template_i %in% files_protocol]
   difffiles <-
-    difffiles[!grep("^\\d{2}_appendices.Rmd", difffiles)]
+    difffiles[!grepl("^\\d{2}_appendices.Rmd", difffiles)]
   difffiles <-
-    difffiles[!grep("^\\d{2}_subprocotols.Rmd", difffiles)]
+    difffiles[!grepl("^\\d{2}_subprocotols.Rmd", difffiles)]
   if (length(difffiles) > 0) {
     x$add_error(msg = paste(protocol_code, "lacks file(s)", difffiles))
   }
