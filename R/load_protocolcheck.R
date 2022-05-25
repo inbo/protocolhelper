@@ -7,7 +7,6 @@
 #'
 #' @return A `Protocolcheck` object.
 #'
-#' @export
 #' @importFrom assertthat assert_that is.string
 #'
 load_protocolcheck <- function(x) {
