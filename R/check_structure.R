@@ -45,92 +45,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
   x$add_error(msg = sprintf("the protocol lacks file(s) %s", difffiles))
 
   for (file in files_protocol[grepl(".Rmd$", files_protocol)]) {
-
-    # check if chunks in Rmd files are correct
-    rmd <- readLines(file.path(x$path, file))
-    start_chunk <- grep("^```\\{r.*}", rmd)
-    end_chunk <- grep("^```[:space:]?$", rmd)
-    if (
-      !(length(start_chunk) == length(end_chunk) &&
-        all(start_chunk < end_chunk))
-    ) {
-      x$add_error(
-        msg =
-          paste(", file", file, "has a problem with R chunks"))
-    }
-
-    for (i in rev(seq_along(start_chunk))) {
-      rmd <- c(
-        head(rmd, start_chunk[i] - 1),
-        "{r code chunk}",
-        tail(rmd, length(rmd) - end_chunk[i])
-      )
-    }
-
-    # check headings general
-    headings <- rmd[grepl("^[[:space:]]?#", rmd)]
-    x$add_error(
-      msg = sprintf(
-        "file %s: Headings have to start with a '#',
-        remove the leading whitespace in headings %s",
-        file, headings[grepl("^[[:space:]]+#", headings)])
-    )
-    x$add_error(
-      msg = sprintf(
-        "file %s: Whitespace at the end of a heading is not allowed,
-        remove them in headings %s",
-        file, headings[grepl("[[:space:]]+$", headings)])
-    )
-
-    # compare headings with template
-    if (file %in% files_template) {
-      template <- readLines(file.path(path_to_template, file))
-      headings_template <- template[grepl("^[[:space:]]?#", template)]
-      headings_template <-
-        headings_template[!grepl("^### Subtit", headings_template)]
-      x$add_error(
-        msg = sprintf(
-          "Heading(s) %s lack(s) in file %s",
-          headings_template[!headings_template %in% headings],
-          file
-        )
-      )
-
-      headings1 <- headings[grepl("^# .*", headings)]
-      headings1_template <- headings_template[grepl("^# .*", headings_template)]
-      x$add_error(
-        msg = sprintf(
-          "Heading 1 %s is not allowed in file %s",
-          headings1[!headings1 %in% headings1_template],
-          file
-        )
-      )
-
-      if (
-        length(headings[headings %in% headings_template]) ==
-          length(headings_template) &&
-        !all(headings[headings %in% headings_template] == headings_template)
-      ) {
-        x$add_error(
-          msg = paste("Headings of file", file,
-                      "are not in this order:",
-                      paste(headings_template, collapse = " > ")
-          )
-        )
-      }
-
-    }
-    if (file == "index.Rmd") {
-      template <- readLines(file.path(path_to_template, "skeleton.Rmd"))
-      template_end <-
-        template[max(grep("^[[:space:]]?#", template)):length(template)]
-      rmd_end <- rmd[max(grep("^[[:space:]]?#", rmd)):length(rmd)]
-      if (!all(template_end == rmd_end)) {
-        x$add_error(
-          msg = "Heading 'Metadata' or the table below have changed"
-        )
-      }
-    }
+    x <- check_file(file, x, files_template, path_to_template)
   }
 
   # references
@@ -144,4 +59,95 @@ check_structure <- function(protocol_code, fail = !interactive()) {
   }
 
   return(x$check <- fail)
+}
+
+
+
+check_file <- function(filename, x, files_template, path_to_template) {
+  # check if chunks in Rmd files are correct
+  rmd <- readLines(file.path(x$path, filename))
+  start_chunk <- grep("^```\\{r.*}", rmd)
+  end_chunk <- grep("^```[:space:]?$", rmd)
+  if (
+    !(length(start_chunk) == length(end_chunk) &&
+      all(start_chunk < end_chunk))
+  ) {
+    x$add_error(
+      msg =
+        paste(", file", filename, "has a problem with R chunks"))
+  }
+
+  for (i in rev(seq_along(start_chunk))) {
+    rmd <- c(
+      head(rmd, start_chunk[i] - 1),
+      "{r code chunk}",
+      tail(rmd, length(rmd) - end_chunk[i])
+    )
+  }
+
+  # check headings general
+  headings <- rmd[grepl("^[[:space:]]?#", rmd)]
+  x$add_error(
+    msg = sprintf(
+      "file %s: Headings have to start with a '#',
+        remove the leading whitespace in headings %s",
+      filename, headings[grepl("^[[:space:]]+#", headings)])
+  )
+  x$add_error(
+    msg = sprintf(
+      "file %s: Whitespace at the end of a heading is not allowed,
+        remove them in headings %s",
+      filename, headings[grepl("[[:space:]]+$", headings)])
+  )
+
+  # compare headings with template
+  if (filename %in% files_template) {
+    template <- readLines(file.path(path_to_template, filename))
+    headings_template <- template[grepl("^[[:space:]]?#", template)]
+    headings_template <-
+      headings_template[!grepl("^### Subtit", headings_template)]
+    x$add_error(
+      msg = sprintf(
+        "Heading(s) %s lack(s) in file %s",
+        headings_template[!headings_template %in% headings],
+        filename
+      )
+    )
+
+    headings1 <- headings[grepl("^# .*", headings)]
+    headings1_template <- headings_template[grepl("^# .*", headings_template)]
+    x$add_error(
+      msg = sprintf(
+        "Heading 1 %s is not allowed in file %s",
+        headings1[!headings1 %in% headings1_template],
+        filename
+      )
+    )
+
+    if (
+      length(headings[headings %in% headings_template]) ==
+      length(headings_template) &&
+      !all(headings[headings %in% headings_template] == headings_template)
+    ) {
+      x$add_error(
+        msg = paste("Headings of file", filename,
+                    "are not in this order:",
+                    paste(headings_template, collapse = " > ")
+        )
+      )
+    }
+
+  }
+  if (filename == "index.Rmd") {
+    template <- readLines(file.path(path_to_template, "skeleton.Rmd"))
+    template_end <-
+      template[max(grep("^[[:space:]]?#", template)):length(template)]
+    rmd_end <- rmd[max(grep("^[[:space:]]?#", rmd)):length(rmd)]
+    if (!all(template_end == rmd_end)) {
+      x$add_error(
+        msg = "Heading 'Metadata' or the table below have changed"
+      )
+    }
+  }
+  return(x)
 }
