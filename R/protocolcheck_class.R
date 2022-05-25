@@ -1,7 +1,10 @@
 #' @title The protocolcheck R6 class
-#' @description A class which contains all check results.
+#'
+#' @description A class that collects and shows all check results.
+#'
 #' @export
 #' @importFrom R6 R6Class
+#'
 protocolcheck <- R6Class(
   "Protocolcheck",
 

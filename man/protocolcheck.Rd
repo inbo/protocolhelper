@@ -4,7 +4,7 @@
 \alias{protocolcheck}
 \title{The protocolcheck R6 class}
 \description{
-A class which contains all check results.
+A class that collects and shows all check results.
 }
 \section{Methods}{
 \subsection{Public methods}{
