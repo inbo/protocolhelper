@@ -42,9 +42,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     difffiles[!grepl("^\\d{2}_appendices.Rmd", difffiles)]
   difffiles <-
     difffiles[!grepl("^\\d{2}_subprocotols.Rmd", difffiles)]
-  if (length(difffiles) > 0) {
-    x$add_error(msg = paste(protocol_code, "lacks file(s)", difffiles))
-  }
+  x$add_error(msg = sprintf("%s lacks file(s) %s", protocol_code, difffiles))
 
   for (file in files_protocol[grepl(".Rmd$", files_protocol)]) {
 
@@ -71,25 +69,18 @@ check_structure <- function(protocol_code, fail = !interactive()) {
 
     # check headings general
     headings <- rmd[grepl("^[[:space:]]?#", rmd)]
-    if (any(grepl("^[[:space:]]+#", headings))) {
-      x$add_error(
-        msg =
-          paste(
-            protocol_code, ", file", file,
-            "Headings have to start with a '#', remove the leading whitespace."
-          )
-      )
-    }
-    if (any(grepl("[[:space:]]+$", headings))) {
-      x$add_error(
-        msg = paste(
-          protocol_code,
-          "Whitespace at the end of a heading is not allowed",
-          paste(headings[grepl("[[:space:]]+$", headings)], collapse = "\n"),
-          sep = "\n"
-        )
-      )
-    }
+    x$add_error(
+      msg = sprintf(
+        "%s: file %s: Headings have to start with a '#',
+        remove the leading whitespace in headings %s",
+        protocol_code, file, headings[grepl("^[[:space:]]+#", headings)])
+    )
+    x$add_error(
+      msg = sprintf(
+        "%s: file %s: Whitespace at the end of a heading is not allowed,
+        remove them in headings %s",
+        protocol_code, file, headings[grepl("[[:space:]]+$", headings)])
+    )
 
     # compare headings with template
     if (file %in% files_template) {
@@ -97,24 +88,25 @@ check_structure <- function(protocol_code, fail = !interactive()) {
       headings_template <- template[grepl("^[[:space:]]?#", template)]
       headings_template <-
         headings_template[!grepl("^### Subtit", headings_template)]
-      if (!all(headings_template %in% headings)) {
-        x$add_error(
-          msg =
-            paste(protocol_code, "Heading(s)",
-                  headings_template[!headings_template %in% headings],
-                  "lack(s) in file", file)
+      x$add_error(
+        msg = sprintf(
+          "%s: Heading(s) %s lack(s) in file %s",
+          protocol_code,
+          headings_template[!headings_template %in% headings],
+          file
         )
-      }
+      )
 
       headings1 <- headings[grepl("^# .*", headings)]
       headings1_template <- headings_template[grepl("^# .*", headings_template)]
-      if (!all(headings1 %in% headings1_template)) {
-        x$add_error(
-          msg = paste(protocol_code, "Heading 1",
-                      headings1[!headings1 %in% headings1_template],
-                      "is not allowed in file", file)
+      x$add_error(
+        msg = sprintf(
+          "%s: Heading 1 %s is not allowed in file %s",
+          protocol_code,
+          headings1[!headings1 %in% headings1_template],
+          file
         )
-      }
+      )
 
       if (
         !all(headings[headings %in% headings_template] == headings_template)
