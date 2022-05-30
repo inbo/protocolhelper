@@ -13,6 +13,8 @@ render_protocol(protocol_code = NULL, output_dir = NULL, ...)
 \code{output_dir} in the configuration file \file{_bookdown.yml} will be
 used (possibly not specified, either, in which case a directory name
 \file{_book} will be used).}
+
+\item{...}{additional parameters passed on to \code{bookdown::render_book()}}
 }
 \description{
 This function is a simple wrapper around

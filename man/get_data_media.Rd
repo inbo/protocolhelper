@@ -2,10 +2,7 @@
 % Please edit documentation in R/insert_protocolsection.R
 \name{get_data_media}
 \alias{get_data_media}
-\title{Internal function to get media and data files.
-
-Extracts all paths to files in data and media from rmd_content and uses git
-show to copy paste the files from the subprotocol to the main protocol}
+\title{Internal function to get media and data files.}
 \usage{
 get_data_media(rmd_content, code_subprotocol, tag)
 }
@@ -23,9 +20,8 @@ repository}
 Silent.
 }
 \description{
-Internal function to get media and data files.
-
-Extracts all paths to files in data and media from rmd_content and uses git
-show to copy paste the files from the subprotocol to the main protocol
+Extracts all paths to files in data and media from rmd_content
+and uses git show to copy paste the files from the subprotocol to the main
+protocol
 }
 \keyword{internal}

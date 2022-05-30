@@ -2,10 +2,7 @@
 % Please edit documentation in R/insert_protocolsection.R
 \name{mark_chunks}
 \alias{mark_chunks}
-\title{Mark line as part of chunk
-
-The function will search for beginning and end of chunk and mark all lines
-in between as TRUE, otherwise FALSE}
+\title{Mark line as part of chunk}
 \usage{
 mark_chunks(rmd_content)
 }
@@ -17,9 +14,7 @@ Rmarkdown file)}
 A logical vector
 }
 \description{
-Mark line as part of chunk
-
-The function will search for beginning and end of chunk and mark all lines
-in between as TRUE, otherwise FALSE
+The function will search for beginning and end of chunk and mark
+all lines in between as TRUE, otherwise FALSE
 }
 \keyword{internal}

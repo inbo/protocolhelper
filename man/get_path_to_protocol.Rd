@@ -2,18 +2,7 @@
 % Please edit documentation in R/create_protocol.R
 \name{get_path_to_protocol}
 \alias{get_path_to_protocol}
-\title{Internal function to get (or set) the full path to a protocol.
-
-Either provide the full path of an existing, given folder name,
-or construct one for non-existing protocols using (new) folder name plus
-the theme or project name.
-
-For existing protocol folders, arguments \code{theme} and \code{project_name} are
-always ignored.
-
-To create a new protocol folder,
-also either the \code{theme} or the \code{project_name} argument are required apart
-from the \code{protocol_folder_name}.}
+\title{Internal function to get (or set) the full path to a protocol.}
 \usage{
 get_path_to_protocol(
   protocol_code,
@@ -45,8 +34,6 @@ Only needed if no folder with the name of the protocol code exists.}
 A character vector containing the full path to the protocol.
 }
 \description{
-Internal function to get (or set) the full path to a protocol.
-
 Either provide the full path of an existing, given folder name,
 or construct one for non-existing protocols using (new) folder name plus
 the theme or project name.
