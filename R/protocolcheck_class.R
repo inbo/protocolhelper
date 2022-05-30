@@ -32,8 +32,7 @@ protocolcheck <- R6Class(
     #' @param msg Error message to be added.
     add_error = function(msg) {
       self$error <- c(self$error, msg)
-    }
-  ),
+    },
 
     #' @description Give error report from Protocolcheck object.
     #' @param fail Should an error be dropped if the report contains errors?
