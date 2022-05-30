@@ -505,7 +505,7 @@ get_short_titles <- function(
 
 #' @title Internal function to get (or set) the full path to a protocol.
 #'
-#' Either provide the full path of an existing, given folder name,
+#' @description Either provide the full path of an existing, given folder name,
 #' or construct one for non-existing protocols using (new) folder name plus
 #' the theme or project name.
 #'

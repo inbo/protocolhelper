@@ -160,8 +160,9 @@ insert_protocolsection <-
 
 #' @title Internal function to get media and data files.
 #'
-#' Extracts all paths to files in data and media from rmd_content and uses git
-#' show to copy paste the files from the subprotocol to the main protocol
+#' @description Extracts all paths to files in data and media from rmd_content
+#' and uses git show to copy paste the files from the subprotocol to the main
+#' protocol
 #'
 #' @param rmd_content Character vector containing lines read from an Rmarkdown
 #' file
@@ -210,7 +211,7 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
 
 #' @title Check the version number format
 #'
-#' Check if version number is of format YYYY.NN
+#' @description Check if version number is of format YYYY.NN
 #'
 #' @param version_number Character string with format YYYY.NN#'
 #'
@@ -230,7 +231,7 @@ check_versionnumber <- function(version_number) {
 
 #' @title Check the protocolcode format
 #'
-#' Check if protocolcode is of format `s[f|p|i|o|a]p-###-[nl|en]`
+#' @description Check if protocolcode is of format `s[f|p|i|o|a]p-###-[nl|en]`
 #'
 #' @param version_number Character string with format YYYY.NN#'
 #'
@@ -249,8 +250,8 @@ check_protocolcode <- function(protocolcode) {
 
 #' @title Mark line as part of chunk
 #'
-#' The function will search for beginning and end of chunk and mark all lines
-#' in between as TRUE, otherwise FALSE
+#' @description The function will search for beginning and end of chunk and mark
+#' all lines in between as TRUE, otherwise FALSE
 #'
 #' @return A logical vector
 #'
