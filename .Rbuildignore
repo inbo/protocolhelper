@@ -1,10 +1,10 @@
-^_pkgdown.yml$
-^_pkgdown\.yml$
 ^.*\.Rproj$
 ^\.github$
 ^\.httr-oauth$
 ^\.Rproj\.user$
 ^\.zenodo\.json$
+^_pkgdown.yml$
+^_pkgdown\.yml$
 ^checklist.yml$
 ^CITATION\.cff$
 ^codecov\.yml$

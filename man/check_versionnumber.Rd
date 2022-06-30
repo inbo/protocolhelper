@@ -2,9 +2,7 @@
 % Please edit documentation in R/insert_protocolsection.R
 \name{check_versionnumber}
 \alias{check_versionnumber}
-\title{Check the version number format
-
-Check if version number is of format YYYY.NN}
+\title{Check the version number format}
 \usage{
 check_versionnumber(version_number)
 }
@@ -12,8 +10,6 @@ check_versionnumber(version_number)
 \item{version_number}{Character string with format YYYY.NN#'}
 }
 \description{
-Check the version number format
-
 Check if version number is of format YYYY.NN
 }
 \keyword{internal}

@@ -503,8 +503,9 @@ get_short_titles <- function(
   return(ld)
 }
 
-#' @title Internal function to get (or set) the full path to a protocol.
+#' @title Internal function to get (or set) the full path to a protocol
 #'
+#' @description
 #' Either provide the full path of an existing, given folder name,
 #' or construct one for non-existing protocols using (new) folder name plus
 #' the theme or project name.
@@ -562,8 +563,8 @@ get_path_to_protocol <- function(protocol_code,
     return(path_to_protocol)
   } else {
     # second case: the path does not yet exist
-    if (is.null(theme) & is.null(project_name) |
-        is.string(theme) & is.string(project_name)) {
+    if (is.null(theme) && is.null(project_name) ||
+        is.string(theme) && is.string(project_name)) {
       stop(
         paste0("Check the spelling of protocol_code - or - provide ",
         "a string value for theme or project, not both.")
