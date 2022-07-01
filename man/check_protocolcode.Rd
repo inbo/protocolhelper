@@ -2,9 +2,7 @@
 % Please edit documentation in R/insert_protocolsection.R
 \name{check_protocolcode}
 \alias{check_protocolcode}
-\title{Check the protocolcode format
-
-Check if protocolcode is of format \verb{s[f|p|i|o|a]p-###-[nl|en]}}
+\title{Check the protocolcode format}
 \usage{
 check_protocolcode(protocolcode)
 }
@@ -12,8 +10,6 @@ check_protocolcode(protocolcode)
 \item{version_number}{Character string with format YYYY.NN#'}
 }
 \description{
-Check the protocolcode format
-
 Check if protocolcode is of format \verb{s[f|p|i|o|a]p-###-[nl|en]}
 }
 \keyword{internal}
