@@ -36,7 +36,39 @@ GitHub username, and links to relevant issue(s)/PR(s).
     1. Run `x <- checklist::check_package()`.
       Fix any issues that arise during the checks.
     1. Run `x <- checklist::check_package()` again until you get _No problems found_ at the end of the checklist output.
-    1. Commit any remaining changes.
+    1. Commit and push any remaining changes.
+
+### Testing a function from the package
+
+If you need to test some changes you made to an existing function, you can probably use one of the unit tests (in folder `./tests/testthat`).
+It's possible the unit test itself needs to be updated to reflect the changes you made.
+
+If you contribute a new function, you should also consider writing unit tests for that function (or ask for help with this process).
+To test the functions in this package it will often be necessary to create a protocol in an empty project in a temporary directory.
+To do this, you can use the following code:
+
+```
+  old_wd <- getwd()
+  on.exit(setwd(old_wd))
+  test_repo <- tempfile("test_protocol")
+  dir.create(test_repo)
+  setwd(test_repo)
+  repo <- gert::git_init()
+  gert::git_config_set(name = "user.name", value = "someone")
+  gert::git_config_set(name = "user.email", value = "someone@example.org")
+
+  # create a protocol in the temporary directory
+  version_number <- "2020.01"
+  create_sfp(
+    title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+    authors = "me",
+    orcids = "0000-0001-2345-6789",
+    reviewers = "someone else", file_manager = "who?",
+    version_number = version_number, theme = "water", lang = "nl"
+  )
+```
+
+
 
 
 ### Code of Conduct
