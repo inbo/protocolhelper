@@ -93,4 +93,3 @@ get_path_to_protocol <- function(protocol_code,
     }
   }
 }
-
