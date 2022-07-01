@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_protocol.R
 \name{get_path_to_protocol}
 \alias{get_path_to_protocol}
-\title{Internal function to get (or set) the full path to a protocol.}
+\title{Internal function to get (or set) the full path to a protocol}
 \usage{
 get_path_to_protocol(
   protocol_code,

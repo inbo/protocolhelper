@@ -14,7 +14,7 @@ Rmarkdown file)}
 A logical vector
 }
 \description{
-The function will search for beginning and end of chunk and mark
-all lines in between as TRUE, otherwise FALSE
+The function will search for beginning and end of chunk and mark all lines
+in between as TRUE, otherwise FALSE
 }
 \keyword{internal}

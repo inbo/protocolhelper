@@ -220,4 +220,3 @@ render_release <- function(output_root = "publish") {
   )
   writeLines(homepage, "homepage.Rmd")
 }
-

@@ -95,7 +95,8 @@ test_that("complete workflow works", {
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
-    file = "src/thematic/1_water/sfp-102-en_second-subprotocol/07_stappenplan.Rmd",
+    file = file.path("src/thematic/1_water/sfp-102-en_second-subprotocol",
+                     "07_stappenplan.Rmd"),
     append = TRUE)
   # add the projectspecific parameter to index yaml
   index_yml <- rmarkdown::yaml_front_matter(
@@ -133,7 +134,8 @@ test_that("complete workflow works", {
     pic,
     "src/thematic/1_water/sfp-102-en_second-subprotocol/media/Rlogo.png")
   data_media_staged <- gert::git_add(files = ".")
-  chunk1 <- "```{r, out.width='25%'}\nknitr::include_graphics(path = './media/Rlogo.png')\n```"
+  chunk1 <- paste0("```{r, out.width='25%'}\nknitr::include_graphics(path",
+                   " = './media/Rlogo.png')\n```")
   chunk2 <- "```{r}\nread.csv('./data/cars.csv')\n```"
   write(
     x = chunk1,
@@ -148,15 +150,15 @@ test_that("complete workflow works", {
   # src/thematic/1_water/sfp-102-en_second-subprotocol
   add_dependencies(
     code_mainprotocol = "sfp-102-en",
-    protocol_code = 'sfp-401-en',
-    version_number = '2021.02',
+    protocol_code = "sfp-401-en",
+    version_number = "2021.02",
     params = NA,
     appendix = TRUE
   )
 
   add_subprotocols(
     fetch_remote = FALSE,
-    code_mainprotocol = 'sfp-102-en')
+    code_mainprotocol = "sfp-102-en")
 
   update_news(
     path = file.path("src", "thematic", "1_water",
@@ -187,18 +189,17 @@ test_that("complete workflow works", {
 
   # add subprotocols to
   # src/project/mne/spp-001-en_mne-protocol/
-  #debugonce(add_subprotocols)
   add_dependencies(
     code_mainprotocol = "spp-001-en",
-    protocol_code = c('sfp-101-en', 'sfp-102-en'),
-    version_number = c('2021.01', '2021.03'),
+    protocol_code = c("sfp-101-en", "sfp-102-en"),
+    version_number = c("2021.01", "2021.03"),
     params = list(NA, list(protocolspecific = "newvalue")),
     appendix = c(TRUE, TRUE)
   )
 
   add_subprotocols(
     fetch_remote = FALSE,
-    code_mainprotocol = 'spp-001-en')
+    code_mainprotocol = "spp-001-en")
 
   update_news(
     path = file.path("src", "project", "mne",
