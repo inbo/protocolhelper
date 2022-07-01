@@ -34,7 +34,7 @@
 #' @importFrom assertthat assert_that is.string
 #' @importFrom stringr str_subset
 #'
-#'
+#' @export
 #' @examples
 #' \dontrun{
 #' get_path_to_protocol(protocol_code = "sfp-401-nl")
