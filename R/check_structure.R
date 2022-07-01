@@ -58,7 +58,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     )
   }
 
-  return(x$check <- fail)
+  return(x$check(fail = fail))
 }
 
 
