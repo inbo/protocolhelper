@@ -1,4 +1,4 @@
-# protocolhelper 0.2.4
+# protocolhelper 0.3.0
 
 * templates now also have a references.yaml file and corresponding bibliography
   fields in yaml front matter
