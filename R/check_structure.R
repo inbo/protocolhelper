@@ -44,18 +44,46 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     difffiles[!grepl("^\\d{2}_subprocotols.Rmd", difffiles)]
   x$add_error(msg = sprintf("the protocol lacks file(s) %s", difffiles))
 
-  for (file in files_protocol[grepl(".Rmd$", files_protocol)]) {
+  protocol_rmds <- files_protocol[grepl(".Rmd$", files_protocol)]
+  for (file in protocol_rmds) {
     x <- check_file(file, x, files_template, path_to_template)
   }
 
+  # check if multiple Rmd files with the same chapter number exist
+  chapters <- protocol_rmds[grepl("^\\d{2}", protocol_rmds)]
+  chapter_numbers <- gsub(
+    pattern = "(?<=^\\d{2})(\\w|\\.)+",
+    replacement = "",
+    x = chapters,
+    perl = TRUE)
+  chapter_numbers <- as.numeric(chapter_numbers)
+  x$add_error(msg =
+                sprintf("multiple file names starting with %s",
+                        formatC(
+                          chapter_numbers[duplicated(chapter_numbers)],
+                          width = 2, flag = "0"
+                        )
+                )
+  )
+  # check numbers are in order
+  if (!all(chapter_numbers == seq_along(length(chapter_numbers)))) {
+    x$add_error(msg = "Chapter numbers are not in order")
+  }
+
   # references
-  yml <- yaml_front_matter(file.path(x$path, "index.Rmd"))
-  if (has_name(yml, "bibliography")) {
+  if (!file.exists(file.path(x$path, "index.Rmd"))) {
     x$add_error(
-      msg =
-        sprintf("%s not found (needed for references)",
-                yml$bibliography[!yml$bibliography %in% files_protocol])
+      msg = "No index.Rmd file, cannot check bibliography yaml field."
     )
+  } else {
+    yml <- yaml_front_matter(file.path(x$path, "index.Rmd"))
+    if (has_name(yml, "bibliography")) {
+      x$add_error(
+        msg =
+          sprintf("%s not found (needed for references)",
+                  yml$bibliography[!yml$bibliography %in% files_protocol])
+      )
+    }
   }
 
   return(x$check(fail = fail))

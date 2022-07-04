@@ -54,4 +54,30 @@ test_that("check structure works", {
     check_structure("sfp-101-en", fail = FALSE),
     "references.yaml not found")
 
+  # add reference file back again and remove a template Rmd file
+  file.create(file.path(get_path_to_protocol("sfp-101-en"),
+                        "references.yaml"))
+  x <- readLines(file.path(get_path_to_protocol("sfp-101-en"),
+                           "index.Rmd"))
+  file.remove(file.path(get_path_to_protocol("sfp-101-en"),
+                        "index.Rmd"))
+  expect_error(check_structure("sfp-101-en", fail = TRUE),
+               "Some problems")
+  expect_output(
+    check_structure("sfp-101-en", fail = FALSE),
+    "index.Rmd")
+  writeLines(x, file.path(get_path_to_protocol("sfp-101-en"),
+                          "index.Rmd"))
+
+  # add Rmd file with duplicate chapter number
+  file.create(file.path(get_path_to_protocol("sfp-101-en"),
+                        "01_afhankelijkheden.Rmd"))
+  expect_error(check_structure("sfp-101-en", fail = TRUE),
+               "Some problems")
+  expect_output(
+    check_structure("sfp-101-en", fail = FALSE),
+    "01")
+  file.remove(file.path(get_path_to_protocol("sfp-101-en"),
+                        "01_afhankelijkheden.Rmd"))
+
 })
