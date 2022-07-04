@@ -66,7 +66,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
                 )
   )
   # check numbers are in order
-  if (!all(chapter_numbers == seq_along(length(chapter_numbers)))) {
+  if (!all(chapter_numbers == seq_along(chapter_numbers))) {
     x$add_error(msg = "Chapter numbers are not in order")
   }
 
