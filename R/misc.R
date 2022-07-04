@@ -26,7 +26,11 @@ execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
     res <- system(commandstring, intern = TRUE, ...)
   }
   if (!intern) {
-    if (length(res) > 0) cat(res, sep = "\n") else return(invisible())
+    if (length(res) > 0) {
+      cat(res, sep = "\n")
+    } else {
+      return(invisible())
+    }
   } else {
     return(res)
   }
