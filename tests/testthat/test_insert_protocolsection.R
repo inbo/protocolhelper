@@ -36,27 +36,27 @@ test_that("Test that insert_protocolsection works", {
   # test addition of a chapter
   insert_protocolsection(code_subprotocol = "sfp-101-nl",
                   version_number = "2020.01",
-                  file_name = "07_stappenplan.Rmd",
+                  file_name = "07_werkwijze.Rmd",
                   fetch_remote = FALSE)
 
   # test addition of a chapter + demote_header
   insert_protocolsection(code_subprotocol = "sfp-101-nl",
                   version_number = "2020.01",
-                  file_name = "07_stappenplan.Rmd",
+                  file_name = "07_werkwijze.Rmd",
                   demote_header = 1,
                   fetch_remote = FALSE)
 
   # test add a section from a chapter
   insert_protocolsection(code_subprotocol = "sfp-101-nl",
                   version_number = "2020.01",
-                  file_name = "07_stappenplan.Rmd",
+                  file_name = "07_werkwijze.Rmd",
                   section = "## Uitvoering",
                   fetch_remote = FALSE)
 
   # test add a section from a chapter + demote_header by -1
   insert_protocolsection(code_subprotocol = "sfp-101-nl",
                   version_number = "2020.01",
-                  file_name = "07_stappenplan.Rmd",
+                  file_name = "07_werkwijze.Rmd",
                   section = "## Uitvoering",
                   demote_header = -1,
                   fetch_remote = FALSE)
@@ -65,7 +65,7 @@ test_that("Test that insert_protocolsection works", {
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
-    file = "src/thematic/1_water/sfp-101-nl_water-1/07_stappenplan.Rmd",
+    file = "src/thematic/1_water/sfp-101-nl_water-1/07_werkwijze.Rmd",
     append = TRUE)
   # add the protocolspecific parameter to index yaml
   index <- readLines(
@@ -86,7 +86,7 @@ test_that("Test that insert_protocolsection works", {
   # insert_protocolsection does not deal with it
   insert_protocolsection(code_subprotocol = "sfp-101-nl",
                   version_number = "2020.02",
-                  file_name = "07_stappenplan.Rmd",
+                  file_name = "07_werkwijze.Rmd",
                   fetch_remote = FALSE)
 
   # Cleanup

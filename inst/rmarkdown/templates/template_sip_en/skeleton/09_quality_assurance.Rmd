@@ -1,4 +1,6 @@
-# Calibration
+# Quality assurance
+
+## Calibration
 
 All actions concerning calibrations are kept with the registration form of the device:
 name + link.
@@ -12,7 +14,7 @@ calib <- data.frame(
 kable(calib)
 ```
 
-# Control
+## Control
 
 All actions concerning controls are kept with the registration form of the device:
 name + link.
@@ -27,7 +29,7 @@ control <- data.frame(
 kable(control)
 ```
 
-# Maintenance
+## Maintenance
 
 All actions concerning maintenance are kept with the registration form of the device:
 name + link.
@@ -42,11 +44,11 @@ maintenance <- data.frame(
 kable(maintenance)
 ```
 
-## External maintenance
+### External maintenance
 
-## Internal maintenance
+### Internal maintenance
 
-### Maintenance parts
+#### Maintenance parts
 
 Reagents and materials:
 
@@ -59,7 +61,7 @@ Actions:
 - 
 
 
-# Error
+## Error
 
 All actions concerning errors are kept with the registration form of the device:
 name + link.

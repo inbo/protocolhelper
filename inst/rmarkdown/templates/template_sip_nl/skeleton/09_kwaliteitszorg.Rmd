@@ -1,4 +1,6 @@
-# Kalibratie
+# Kwaliteitszorg
+
+## Kalibratie
 
 Alle acties betreffende kalibratie worden bijgehouden in het toestel registratieformulier:
 naam + link.
@@ -12,7 +14,7 @@ kalib <- data.frame(
 kable(kalib)
 ```
 
-# Controle
+## Controle
 
 Alle acties betreffende controle worden bijgehouden in het toestel registratieformulier:
 naam + link.
@@ -27,7 +29,7 @@ controle <- data.frame(
 kable(controle)
 ```
 
-# Onderhoud
+## Onderhoud
 
 Alle acties betreffende het onderhoud worden bijgehouden in het toestel registratieformulier:
 naam + link.
@@ -42,11 +44,11 @@ onderhoud <- data.frame(
 kable(onderhoud)
 ```
 
-## Extern onderhoud
+### Extern onderhoud
 
-## Intern onderhoud
+### Intern onderhoud
 
-### Onderhoud onderdeel
+#### Onderhoud onderdeel
 
 Reagentia en materiaal:
 
@@ -58,7 +60,7 @@ Handeling:
 - 
 - 
 
-# Error
+## Error
 
 Alle acties betreffende ‘ERROR’ worden bijgehouden in het toestel registratieformulier:
 naam + link.
