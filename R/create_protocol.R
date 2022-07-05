@@ -41,8 +41,8 @@
 #' @inheritParams create_protocol_code
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
-#' @param authors A character vector for authors of the form First name Last
-#' name
+#' @param authors A character vector for authors of the form
+#' `c("lastname1, firstname1", "lastname2, firstname2")`
 #' @param orcids A character vector of orcid IDs, equal in length to authors.
 #' If one of the authors does not have an orcid ID, use `NA` to indicate this in
 #' the corresponding position of the character vector (or get an orcid ID).
@@ -88,7 +88,7 @@
 #'
 #'
 #' @export
-#' @example
+#' @examples
 #' \dontrun{
 #' protocolhelper::create_protocol(
 #'   title = "Test 1", subtitle = "subtitle", short_title = "water 1",
@@ -127,8 +127,19 @@ create_protocol <- function(
   assert_that(is.character(authors))
   assert_that(is.character(orcids))
   assert_that(
-    !all(str_detect(authors, ",|;")),
-    msg = "Multiple authors should be passed as c(\"author1\", \"author2\")")
+    !all(str_detect(authors, ";")),
+    msg = paste0("Multiple authors should be passed as: ",
+                 "c(\"lastname1, firstname1\", \"lastname2, firstname2\")"))
+  assert_that(
+    (is.string(authors) & all(str_detect(authors, ",{1}"))) |
+      is.character(authors),
+    msg = "A single author should be passed as: c(\"lastname1, firstname1\")")
+  assert_that(
+    (is.string(authors) & !all(str_detect(authors, ",{2,}"))) |
+      is.character(authors),
+    msg = paste0("Multiple commas detected in author string.",
+                 "Multiple authors should be passed as: ",
+                 "c(\"lastname1, firstname1\", \"lastname2, firstname2\")"))
   assert_that(
     !all(str_detect(orcids, ",|;")),
     msg = "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")")

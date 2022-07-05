@@ -69,8 +69,8 @@ standard project protocol)}
 \item{short_title}{A character string of less than 20 characters to use in
 folder and filenames}
 
-\item{authors}{A character vector for authors of the form First name Last
-name}
+\item{authors}{A character vector for authors of the form
+\code{c("lastname1, firstname1", "lastname2, firstname2")}}
 
 \item{orcids}{A character vector of orcid IDs, equal in length to authors.
 If one of the authors does not have an orcid ID, use \code{NA} to indicate this in
@@ -166,4 +166,14 @@ The \code{media} folder can be used to store image files and will contain image
 files extracted from the docx protocol when the \code{from_docx} argument is used.
 The \code{data} folder can be used to store tabular data that are needed for the
 protocol.
+}
+\examples{
+\dontrun{
+protocolhelper::create_protocol(
+  title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+  authors = c("Someone, Else", "Another, One"),
+  orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
+  reviewers = "me", file_manager = "who?",
+  theme = "water", language = "en")
+}
 }

@@ -14,7 +14,7 @@ test_that("Update of a protocol works", {
   version_number <- "2021.01"
   create_sfp(
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "me", orcids = "0000-0001-2345-6789",
+    authors = "John, Doe", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
   )
