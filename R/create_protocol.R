@@ -109,7 +109,7 @@ create_protocol <- function(
   file_manager,
   version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-  project_name,
+  project_name = NULL,
   language = c("nl", "en"),
   subtitle = NULL,
   from_docx = NULL,
