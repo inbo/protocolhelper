@@ -47,9 +47,10 @@ check_frontmatter <- function(
 
   # check if all yaml keys are present
   yml_missing <- yml_template[!names(yml_template) %in% names(yml_protocol)]
+  yml_missing$subtitle <- NULL
   problems <- sprintf(
     "The yaml-key '%s' is missing",
-    yml_missing
+    names(yml_missing)
   )
 
   # checks common to all protocol types
@@ -61,16 +62,15 @@ check_frontmatter <- function(
                   names(yml_string)[!map_lgl(yml_string, is.string)])
   )
 
-  yml_subtitle <- list("subtitle" = yml_protocol$subtitle)
-  problems <- c(problems,
-                sprintf(
-                  paste0(
-                    "%s is not a string, maybe empty, ",
-                    "please remove in the yaml header if not needed."
-                    ),
-                  names(yml_subtitle)[!map_lgl(yml_subtitle, is.string)]
-                ))
-
+  if (!is.null(yml_protocol$subtitle)) {
+    problems <- c(problems,
+                    paste0(
+                      "subtitle is not a string, or an empty string, ",
+                      "please remove in the yaml header if not needed."
+                    )[!is.string(yml_protocol$subtitle) |
+                        yml_protocol$subtitle == ""]
+    )
+  }
   author_name <- map_lgl(yml_protocol$author, ~is.string(.$name))
   author_orcid <- map_lgl(yml_protocol$author, ~is.string(.$orcid))
   problems <- c(problems,

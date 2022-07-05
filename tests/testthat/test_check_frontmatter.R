@@ -14,8 +14,8 @@ test_that("Check frontmatter works", {
 
   # create a protocol
   version_number <- "2021.01"
-  protocolhelper::create_sfp(
-    title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+  protocolhelper::create_protocol(
+    title = "Test 1", short_title = "water 1",
     authors = c("Someone, Else", "Another, One"),
     orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
     reviewers = "me", file_manager = "who?",
@@ -35,8 +35,9 @@ test_that("Check frontmatter works", {
     index_yml,
     title = c("bla", "bla"),
     version_number = "2020.01.dev",
-    language = "espagnol"
-  )
+    language = "espagnol") %>%
+    ymlthis::yml_author(name = "Doe, John",
+                        orcid = "0000-1234-4321")
   template_rmd <- file.path(path_to_protocol, "template.rmd")
   parent_rmd <- file.path(path_to_protocol, "index.Rmd")
   file.copy(from = parent_rmd, to = template_rmd)
