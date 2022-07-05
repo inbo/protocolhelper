@@ -1,12 +1,23 @@
 # protocolhelper 0.3.0
 
+## New features
+
 * templates now also have a references.yaml file and corresponding bibliography
   fields in yaml front matter
 * added templates for standard analysis procedures (sap)
 * added templates for standard instrument procedures (sip)
 * added templates for standard operating procedures (sop)
 * added function `check_structure()` to check document structure of protocols
+
+## Minor changes
+
 * various fixes to comply with new version of `checklist` package
+* improved checks when passing authors and orcids in `create_protocol()`
+
+## Bug fixes
+
+* fix a problem with backslashes in path to media files after converting docx
+  to markdown
 
 # protocolhelper 0.2.3
 
