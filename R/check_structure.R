@@ -13,13 +13,17 @@
 #'
 #' @return A report of all failed checks.
 #'
-#' @importFrom assertthat assert_that
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom utils head tail
+#' @importFrom assertthat assert_that is.flag noNA
+#' @importFrom stringr str_detect
 #'
 #' @export
 #'
 check_structure <- function(protocol_code, fail = !interactive()) {
+  assert_that(str_detect(protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
+  assert_that(is.flag(fail), noNA(fail))
+
   x <- load_protocolcheck(x = protocol_code)
   template_name <-
     gsub(
@@ -66,7 +70,7 @@ check_structure <- function(protocol_code, fail = !interactive()) {
                 )
   )
   # check numbers are in order
-  if (!all(chapter_numbers == seq_along(chapter_numbers))) {
+  if (!all(sort(chapter_numbers) == seq_along(chapter_numbers))) {
     x$add_error(msg = "Chapter numbers are not in order")
   }
 
