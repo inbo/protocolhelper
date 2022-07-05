@@ -13,6 +13,8 @@
 
 * various fixes to comply with new version of `checklist` package
 * improved checks when passing authors and orcids in `create_protocol()`
+* some template markdown files or chapter titles have been changed so that file
+  name and chapter title are similar
 
 ## Bug fixes
 
