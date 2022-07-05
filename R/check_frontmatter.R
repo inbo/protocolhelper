@@ -8,107 +8,140 @@
 #' `YYYY.NN.dev`).
 #'
 #' @inheritParams get_path_to_protocol
-#' @param yaml Boolean. If \code{FALSE} the function will only print error
-#' messages, otherwise (default) the parsed yml front matter will be returned
+#' @param fail Should the function drop an error in case of a problem?
+#' Defaults to `TRUE` in a non-interactive session and `FALSE` in an interactive
+#' session.
 #'
-#' @return If one of the checks fails, an error message will be returned.
-#' Otherwise, the parsed yml front matter if \code{yaml} is
-#' \code{TRUE} is returned, or a message that everything is OK otherwise.
+#' @return A report of all failed checks.
 #'
 #' @importFrom rmarkdown yaml_front_matter
-#' @importFrom assertthat assert_that is.string has_name
+#' @importFrom assertthat assert_that is.string has_name is.flag noNA
 #' @importFrom stringr str_detect
-#' @importFrom purrr map_lgl
+#' @importFrom purrr map_lgl map_chr
 #'
 #' @export
 #'
 #'
 check_frontmatter <- function(
-  protocol_code,
-  yaml = TRUE
-  ) {
+    protocol_code,
+    fail = !interactive()
+) {
+  assert_that(str_detect(protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
+  assert_that(is.flag(fail), noNA(fail))
 
-  path_to_protocol <- get_path_to_protocol(
-    protocol_code = protocol_code)
-
-  yml <- yaml_front_matter(file.path(path_to_protocol, "index.Rmd"))
-
-  assert_that(has_name(yml, "title"))
-  assert_that(is.string(yml$title))
-
-  if (has_name(yml, "subtitle")) {
-    assert_that(
-      is.string(yml$subtitle),
-      msg = "Subtitle is not a string, maybe empty, please remove in the yaml header if not needed.") #nolint: line_length_linter
-  }
-
-  assert_that(has_name(yml, "author"))
-  assert_that(
-    all(
-      purrr::map_lgl(yml$author, ~has_name(., "name"))
-      ),
-    all(
-      purrr::map_lgl(yml$author, ~has_name(., "orcid"))
+  x <- load_protocolcheck(x = protocol_code)
+  template_name <-
+    gsub(
+      pattern = "(s\\w{1}p)-\\d*-(\\w{2})",
+      replacement = "template_\\1_\\2",
+      protocol_code
     )
+  path_to_template <-
+    system.file(
+      file.path("rmarkdown", "templates", template_name, "skeleton"),
+      package = "protocolhelper")
+
+  yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
+  yml_template <- yaml_front_matter(input = file.path(path_to_template,
+                                                      "skeleton.Rmd"))
+
+  # check if all yaml keys are present
+  yml_missing <- yml_template[!names(yml_template) %in% names(yml_protocol)]
+  problems <- sprintf(
+    "The yaml-key '%s' is missing",
+    yml_missing
   )
-  assert_that(
-    all(
-      purrr::map_lgl(yml$author, ~is.string(.$name))
-    ),
-    all(
-      purrr::map_lgl(yml$author, ~is.string(.$orcid))
-    )
+
+  # checks common to all protocol types
+  yml_string <- list("title" = yml_protocol$title,
+                  "file_manager" = yml_protocol$file_manager)
+  problems <- c(problems,
+                sprintf(
+                  "'%s' must be a string",
+                  names(yml_string)[!map_lgl(yml_string, is.string)])
   )
-  assert_that(has_name(yml, "date"))
+
+  yml_subtitle <- list("subtitle" = yml_protocol$subtitle)
+  problems <- c(problems,
+                sprintf(
+                  paste0(
+                    "%s is not a string, maybe empty, ",
+                    "please remove in the yaml header if not needed."
+                    ),
+                  names(yml_subtitle)[!map_lgl(yml_subtitle, is.string)]
+                ))
+
+  author_name <- map_lgl(yml_protocol$author, ~is.string(.$name))
+  author_orcid <- map_lgl(yml_protocol$author, ~is.string(.$orcid))
+  problems <- c(problems,
+                sprintf(
+                  "Author name %s is not a string",
+                  map_chr(yml_protocol$author, "name")[!author_name]
+                ))
+  problems <- c(problems,
+                sprintf(
+                  "Author orcid %s is not a string",
+                  map_chr(yml_protocol$author, "orcid")[!author_orcid]
+                ))
+
   if (!requireNamespace("lubridate", quietly = TRUE)) {
     stop("Package \"lubridate\" needed for checking of date. ",
          "Please install it with 'install.packages(\"lubridate\")'.",
          call. = FALSE)
   }
-  assert_that(isTRUE(
-    all.equal(yml$date,
-              lubridate::format_ISO8601(as.Date(yml$date)))
-  ),
-  msg = "'date' must be in YYYY-MM-DD format")
-
-  assert_that(has_name(yml, "reviewers"))
-  assert_that(is.character(yml$reviewers))
-
-  assert_that(has_name(yml, "file_manager"))
-  assert_that(is.string(yml$file_manager))
-
-  assert_that(has_name(yml, "protocol_code"))
-  assert_that(str_detect(yml$protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
-
-  assert_that(has_name(yml, "version_number"))
-  assert_that(
-    str_detect(yml$version_number, "^\\d{4}\\.\\d{2}$"), # nolint: nonportable_path_linter, line_length_linter.
-    msg = "version_number should be YYYY.NN with NN a 2 digit number above 0")
-
-  assert_that(has_name(yml, "language"))
-  assert_that(any(yml$language %in% c("nl", "en")),
-              is.string(yml$language),
-              msg = "'lang' must be 'nl' or 'en'")
-
-  if (has_name(yml, "theme")) {
-    assert_that(
-      any(yml$theme %in% c("generic", "water", "air", "soil", "vegetation",
-                              "species")),
-      is.string(yml$theme),
-      msg = paste0(
-        "Please check theme in yaml metadata\n",
-        "It should be one of generic, water, air, soil or vegetation")
-      )
+  if (
+    isFALSE(
+      all.equal(yml_protocol$date,
+                lubridate::format_ISO8601(as.Date(yml_protocol$date)))
+    )
+  ) {
+    problems <- c(problems,
+                  "'date' must be in YYYY-MM-DD format")
+  }
+  if (!is.character(yml_protocol$reviewers)) {
+    problems <- c(problems,
+                  "'reviewers' must be a character vector")
+  }
+  if (!str_detect(yml_protocol$protocol_code,
+                  "^s[fioap]p-\\d{3}-(nl|en)$")) {
+    problems <- c(problems,
+                  "protocol code has wrong format")
+  }
+  if (!str_detect(yml_protocol$version_number, "^\\d{4}\\.\\d{2}$")) {
+    problems <- c(
+      problems,
+      "version_number should be YYYY.NN with NN a 2 digit number above 0")
+  }
+  if (!any(yml_protocol$language %in% c("nl", "en"))) {
+    problems <- c(problems,
+                  "'lang' must be 'nl' or 'en'")
   }
 
-  if (has_name(yml, "project_name")) {
-    assert_that(is.string(yml$project_name))
+  # protocol type specific checks
+  if (has_name(yml_protocol, "theme")) {
+    if (!any(yml_protocol$theme %in%
+             c("generic", "water", "air", "soil", "vegetation", "species"))) {
+      problems <- c(
+        problems,
+        paste0(
+          "Please check theme in yaml metadata\n",
+          "It should be one of generic, water, air, soil or vegetation")
+        )
+    }
   }
 
-  if (yaml) {
-    return(yml)
-  } else {
-    message("Everything is OK")
+  if (has_name(yml_protocol, "project_name")) {
+    if (!is.string(yml_protocol$project_name)) {
+      problems <- c(
+        problems,
+        paste0(
+          "Please check project_name in yaml metadata\n",
+          "It should be a character string")
+        )
+    }
   }
 
+  x$add_error(problems)
+
+  return(x$check(fail = fail))
 }

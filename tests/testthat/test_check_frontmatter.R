@@ -21,17 +21,42 @@ test_that("Check frontmatter works", {
     reviewers = "me", file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
   )
-  # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
 
-  yamlcheck <- check_frontmatter(protocol_code = "sfp-101-en",
-                                 yaml = FALSE)
+  expect_output(check_frontmatter(protocol_code = "sfp-101-en",
+                                  fail = FALSE),
+               "Well done! No problems found")
 
-  expect_equal(yamlcheck,
-               message("Everything is OK"))
+  # create some problems
+  path_to_protocol <- get_path_to_protocol("sfp-101-en")
+  index_yml <- rmarkdown::yaml_front_matter(
+    file.path(path_to_protocol, "index.Rmd"))
+  index_yml <- ymlthis::as_yml(index_yml)
+  index_yml <- ymlthis::yml_replace(
+    index_yml,
+    title = c("bla", "bla"),
+    version_number = "2020.01.dev",
+    language = "espagnol"
+  )
+  template_rmd <- file.path(path_to_protocol, "template.rmd")
+  parent_rmd <- file.path(path_to_protocol, "index.Rmd")
+  file.copy(from = parent_rmd, to = template_rmd)
+  unlink(parent_rmd)
+  ymlthis::use_index_rmd(
+    .yml = index_yml,
+    path = path_to_protocol,
+    template = template_rmd,
+    include_body = TRUE,
+    include_yaml = FALSE,
+    quiet = TRUE,
+    open_doc = FALSE)
+  unlink(template_rmd)
+
+  expect_error(check_frontmatter(protocol_code = "sfp-101-en",
+                                 fail = TRUE),
+               "Some problems occur")
+
+  expect_output(check_frontmatter(protocol_code = "sfp-101-en",
+                    fail = FALSE),
+                "Errors in protocol sfp-101-en:")
+
 })

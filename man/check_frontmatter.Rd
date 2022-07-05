@@ -4,18 +4,17 @@
 \alias{check_frontmatter}
 \title{Checks protocol metadata}
 \usage{
-check_frontmatter(protocol_code, yaml = TRUE)
+check_frontmatter(protocol_code, fail = !interactive())
 }
 \arguments{
 \item{protocol_code}{Character string giving the protocol code}
 
-\item{yaml}{Boolean. If \code{FALSE} the function will only print error
-messages, otherwise (default) the parsed yml front matter will be returned}
+\item{fail}{Should the function drop an error in case of a problem?
+Defaults to \code{TRUE} in a non-interactive session and \code{FALSE} in an interactive
+session.}
 }
 \value{
-If one of the checks fails, an error message will be returned.
-Otherwise, the parsed yml front matter if \code{yaml} is
-\code{TRUE} is returned, or a message that everything is OK otherwise.
+A report of all failed checks.
 }
 \description{
 This function reads metadata from the yaml front matter stored
