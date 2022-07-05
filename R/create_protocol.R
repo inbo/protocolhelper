@@ -73,7 +73,7 @@
 #' Defaults to FALSE.
 #'
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_replace_all str_detect
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
 #' @importFrom rmarkdown draft yaml_front_matter
 #' @importFrom bookdown render_book
@@ -88,6 +88,16 @@
 #'
 #'
 #' @export
+#' @example
+#' \dontrun{
+#' protocolhelper::create_protocol(
+#'   title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+#'   authors = c("Someone, Else", "Another, One"),
+#'   orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
+#'   reviewers = "me", file_manager = "who?",
+#'   theme = "water", language = "en")
+#' }
+
 create_protocol <- function(
   protocol_type = c("sfp", "spp"),
   title,
@@ -115,8 +125,14 @@ create_protocol <- function(
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
   assert_that(is.character(authors))
-  assert_that(is.character(orcids),
-              length(authors) == length(orcids))
+  assert_that(is.character(orcids))
+  assert_that(
+    !all(str_detect(authors, ",|;")),
+    msg = "Multiple authors should be passed as c(\"author1\", \"author2\")")
+  assert_that(
+    !all(str_detect(orcids, ",|;")),
+    msg = "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")")
+  assert_that(length(authors) == length(orcids))
   assert_that(
     all(!is.na(orcids)),
     msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
