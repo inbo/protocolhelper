@@ -68,7 +68,7 @@ check_frontmatter <- function(
                       "subtitle is not a string, NULL, or an empty string, ",
                       "please remove in the yaml header if not needed."
                     )[!is.string(yml_protocol$subtitle) ||
-                        yml_protocol$subtitle == ""]
+                        nchar(yml_protocol$subtitle) <= 1]
     )
   }
   author_name <- map_lgl(yml_protocol$author, ~is.string(.$name))

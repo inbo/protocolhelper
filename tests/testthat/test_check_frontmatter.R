@@ -25,7 +25,7 @@ test_that("Check frontmatter works", {
   version_number <- "2021.02"
   protocolhelper::create_protocol(
     title = "Test 2",
-    subtitle = "",
+    subtitle = "bla",
     short_title = "water 2",
     authors = c("Someone, Else", "Another, One"),
     orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
@@ -39,7 +39,7 @@ test_that("Check frontmatter works", {
 
   expect_output(check_frontmatter(protocol_code = "sfp-102-en",
                     fail = FALSE),
-                "subtitle is not")
+                "Well done! No problems found")
 
   # create some problems
   path_to_protocol <- get_path_to_protocol("sfp-102-en")

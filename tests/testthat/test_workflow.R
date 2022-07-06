@@ -81,7 +81,7 @@ test_that("complete workflow works", {
   # create a second protocol to be used as subprotocol
   version_number <- "2021.03"
   create_sfp(title = "Second subprotocol",
-             subtitle = "",
+             subtitle = "subtitle",
              short_title = "second subprotocol",
              authors = "me, again",
              orcids = "0000-0001-2345-6789",

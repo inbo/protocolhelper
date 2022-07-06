@@ -120,7 +120,7 @@ create_protocol <- function(
   protocol_type <- match.arg(protocol_type)
   assert_that(is.string(title))
   if (!is.null(subtitle)) {
-    assert_that(is.string(subtitle))
+    assert_that(is.string(subtitle), nchar(subtitle) > 1)
   }
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
