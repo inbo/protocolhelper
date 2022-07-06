@@ -74,41 +74,53 @@ check_frontmatter <- function(
   }
   author_name <- map_lgl(yml_protocol$author, ~is.string(.$name))
   author_orcid <- map_lgl(yml_protocol$author, ~is.string(.$orcid))
-  problems <- c(problems,
-                sprintf(
-                  "Author name %s is not a string",
-                  map_chr(yml_protocol$author, "name")[!author_name]
-                ))
-  problems <- c(problems,
-                sprintf(
-                  "Author orcid %s is not a string",
-                  map_chr(yml_protocol$author, "orcid")[!author_orcid]
-                ))
 
-  names <- map_chr(yml_protocol$author, "name")
-  orcids <- map_chr(yml_protocol$author, "orcid")
-  problems <- c(problems,
-                "Number of author names not equal to number of orcids"[
-                  length(names) != length(orcids)])
-  problems <- c(problems,
-                "Please provide `orcids` in the `0000-0000-0000-0000` format."[
-                  !all(nchar(orcids) == 19)])
-  problems <- c(
-    problems,
-    "A single author should be passed as: c(\"lastname1, firstname1\")"[
-      !((is.string(names) & all(str_detect(names, ",{1}"))) |
-        is.character(names))])
-  problems <- c(
-    problems,
-    paste0("Multiple commas detected in author string.",
-           "Multiple authors should be passed as: ",
-           "c(\"lastname1, firstname1\", \"lastname2, firstname2\")")[
-             !((is.string(names) & !all(str_detect(names, ",{2,}"))) |
-               is.character(names))])
-  problems <- c(
-    problems,
-    "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")"[
-      any(str_detect(orcids, ",|;"))])
+  if (all(author_name)) {
+    names <- map_chr(yml_protocol$author, "name")
+    problems <- c(
+      problems,
+      "A single author should be passed as: c(\"lastname1, firstname1\")"[
+        !((is.string(names) & all(str_detect(names, ",{1}"))) |
+            is.character(names))])
+    problems <- c(
+      problems,
+      paste0("Multiple commas detected in author string.",
+             "Multiple authors should be passed as: ",
+             "c(\"lastname1, firstname1\", \"lastname2, firstname2\")")[
+               !((is.string(names) & !all(str_detect(names, ",{2,}"))) |
+                   is.character(names))])
+  } else {
+    problems <-
+      c(problems,
+        sprintf(
+          "Author nr %s had an invalid name (no string)",
+          seq_len(length(author_name))[!author_name]
+        ))
+  }
+
+  if (all(author_orcid)) {
+    orcids <- map_chr(yml_protocol$author, "orcid")
+    problems <-
+      c(problems,
+        "Please provide `orcids` in the `0000-0000-0000-0000` format."[
+          !all(nchar(orcids) == 19)])
+    problems <- c(
+      problems,
+      "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")"[
+        any(str_detect(orcids, ",|;"))])
+  } else {
+    problems <-
+      c(problems,
+        sprintf(
+          "Author nr %s had an invalid orcid (no string)",
+          seq_len(length(author_orcid))[!author_orcid]
+        ))
+  }
+  if (all(author_name) && all(author_orcid)) {
+    problems <- c(problems,
+                  "Number of author names not equal to number of orcids"[
+                    length(names) != length(orcids)])
+  }
 
   if (!requireNamespace("lubridate", quietly = TRUE)) {
     stop("Package \"lubridate\" needed for checking of date. ",
