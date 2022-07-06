@@ -22,12 +22,30 @@ test_that("Check frontmatter works", {
     version_number = version_number, theme = "water", language = "en"
   )
 
+  version_number <- "2021.02"
+  protocolhelper::create_protocol(
+    title = "Test 2",
+    subtitle = "",
+    short_title = "water 2",
+    authors = c("Someone, Else", "Another, One"),
+    orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
+    reviewers = "me", file_manager = "who?",
+    version_number = version_number, theme = "water", language = "en"
+  )
+
   expect_output(check_frontmatter(protocol_code = "sfp-101-en",
                                   fail = FALSE),
                "Well done! No problems found")
 
+  expect_output(check_frontmatter(protocol_code = "sfp-102-en",
+                    fail = FALSE),
+                "subtitle is not")
+
   # create some problems
-  path_to_protocol <- get_path_to_protocol("sfp-101-en")
+  path_to_protocol <- get_path_to_protocol("sfp-102-en")
+  x <- readLines(file.path(path_to_protocol, "index.Rmd"))
+  x[[3]] <- "subtitle:"
+  writeLines(x, file.path(path_to_protocol, "index.Rmd"))
   index_yml <- rmarkdown::yaml_front_matter(
     file.path(path_to_protocol, "index.Rmd"))
   index_yml <- ymlthis::as_yml(index_yml)
@@ -35,9 +53,11 @@ test_that("Check frontmatter works", {
     index_yml,
     title = c("bla", "bla"),
     version_number = "2020.01.dev",
-    language = "espagnol") %>%
-    ymlthis::yml_author(name = "Doe, John",
-                        orcid = "0000-1234-4321")
+    language = "espagnol")
+  index_yml <- ymlthis::yml_author(
+    index_yml,
+    name = "Doe, John",
+    orcid = "0000-1234-4321")
   template_rmd <- file.path(path_to_protocol, "template.rmd")
   parent_rmd <- file.path(path_to_protocol, "index.Rmd")
   file.copy(from = parent_rmd, to = template_rmd)
@@ -52,12 +72,12 @@ test_that("Check frontmatter works", {
     open_doc = FALSE)
   unlink(template_rmd)
 
-  expect_error(check_frontmatter(protocol_code = "sfp-101-en",
+  expect_error(check_frontmatter(protocol_code = "sfp-102-en",
                                  fail = TRUE),
                "Some problems occur")
 
-  expect_output(check_frontmatter(protocol_code = "sfp-101-en",
+  expect_output(check_frontmatter(protocol_code = "sfp-102-en",
                     fail = FALSE),
-                "Errors in protocol sfp-101-en:")
+                "Errors in protocol sfp-102-en:")
 
 })
