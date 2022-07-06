@@ -118,6 +118,10 @@ check_frontmatter <- function(
   }
   if (all(author_name) && all(author_orcid)) {
     problems <- c(problems,
+                  "No authors provided, please provide at least one"[
+                    length(names) == 0
+                  ])
+    problems <- c(problems,
                   "Number of author names not equal to number of orcids"[
                     length(names) != length(orcids)])
   }
