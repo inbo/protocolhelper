@@ -74,6 +74,18 @@ check_frontmatter <- function(
   }
   author_name <- map_lgl(yml_protocol$author, ~is.string(.$name))
   author_orcid <- map_lgl(yml_protocol$author, ~is.string(.$orcid))
+  problems <-
+    c(problems,
+      sprintf(
+        "Author nr %s had an invalid name (no string)",
+        seq_len(length(author_name))[!author_name]
+      ))
+  problems <-
+    c(problems,
+      sprintf(
+        "Author nr %s had an invalid orcid (no string)",
+        seq_len(length(author_orcid))[!author_orcid]
+      ))
 
   if (all(author_name)) {
     names <- map_chr(yml_protocol$author, "name")
@@ -89,15 +101,7 @@ check_frontmatter <- function(
              "c(\"lastname1, firstname1\", \"lastname2, firstname2\")")[
                !((is.string(names) & !all(str_detect(names, ",{2,}"))) |
                    is.character(names))])
-  } else {
-    problems <-
-      c(problems,
-        sprintf(
-          "Author nr %s had an invalid name (no string)",
-          seq_len(length(author_name))[!author_name]
-        ))
   }
-
   if (all(author_orcid)) {
     orcids <- map_chr(yml_protocol$author, "orcid")
     problems <-
@@ -108,13 +112,6 @@ check_frontmatter <- function(
       problems,
       "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")"[
         any(str_detect(orcids, ",|;"))])
-  } else {
-    problems <-
-      c(problems,
-        sprintf(
-          "Author nr %s had an invalid orcid (no string)",
-          seq_len(length(author_orcid))[!author_orcid]
-        ))
   }
   if (all(author_name) && all(author_orcid)) {
     problems <- c(problems,
@@ -131,24 +128,28 @@ check_frontmatter <- function(
          "Please install it with 'install.packages(\"lubridate\")'.",
          call. = FALSE)
   }
-  if (
-    !isTRUE(
-      all.equal(yml_protocol$date,
-                lubridate::format_ISO8601(as.Date(yml_protocol$date)))
-    )
-  ) {
-    problems <- c(problems,
-                  "'date' must be in YYYY-MM-DD format")
-  }
-  if (!is.character(yml_protocol$reviewers)) {
-    problems <- c(problems,
-                  "'reviewers' must be a character vector")
-  }
-  if (!str_detect(yml_protocol$protocol_code,
-                  "^s[fioap]p-\\d{3}-(nl|en)$")) {
-    problems <- c(problems,
-                  "protocol code has wrong format")
-  }
+
+  problems <-
+    c(problems,
+      "'date' must be in YYYY-MM-DD format"[
+        !isTRUE(
+          all.equal(yml_protocol$date,
+                    lubridate::format_ISO8601(as.Date(yml_protocol$date)))
+        )
+      ])
+
+  problems <-
+    c(problems,
+      "'reviewers' must be a character vector"[
+        !is.character(yml_protocol$reviewers)])
+
+  problems <-
+    c(problems,
+      "protocol code has wrong format"[
+        !str_detect(yml_protocol$protocol_code,
+                    "^s[fioap]p-\\d{3}-(nl|en)$")
+      ])
+
   if (!str_detect(yml_protocol$version_number, "^\\d{4}\\.\\d{2}$")) {
     problems <- c(
       problems,
