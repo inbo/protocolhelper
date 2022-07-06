@@ -521,11 +521,11 @@ get_short_titles <- function(
   )
   ld <- str_subset(string = ld,
                    pattern = protocol_type)
-  ld <- str_subset(string = ld,
-                   pattern = paste0("(", language, ")$"))
   ld <- str_extract(string = ld,
-                    pattern = "(?<=\\d{3}_)([a-z]|-)*")
+                    pattern = paste0("(?<=\\d{3}-", language,
+                                     "_)([a-z]|-|[:digit:])*"))
   ld <- ld[!is.na(ld)]
+  ld <- unique(ld)
 
   return(ld)
 }
