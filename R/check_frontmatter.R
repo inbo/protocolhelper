@@ -115,7 +115,7 @@ check_frontmatter <- function(
          call. = FALSE)
   }
   if (
-    isFALSE(
+    !isTRUE(
       all.equal(yml_protocol$date,
                 lubridate::format_ISO8601(as.Date(yml_protocol$date)))
     )
