@@ -55,7 +55,8 @@ check_frontmatter <- function(
 
   # checks common to all protocol types
   yml_string <- list("title" = yml_protocol$title,
-                  "file_manager" = yml_protocol$file_manager)
+                  "file_manager" = yml_protocol$file_manager,
+                  "bibliography" = yml_protocol$bibliography)
   problems <- c(problems,
                 sprintf(
                   "'%s' must be a string",
