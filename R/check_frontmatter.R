@@ -55,13 +55,17 @@ check_frontmatter <- function(
 
   # checks common to all protocol types
   yml_string <- list("title" = yml_protocol$title,
-                  "file_manager" = yml_protocol$file_manager,
-                  "bibliography" = yml_protocol$bibliography)
+                  "file_manager" = yml_protocol$file_manager)
   problems <- c(problems,
                 sprintf(
                   "'%s' must be a string",
                   names(yml_string)[!map_lgl(yml_string, is.string)])
   )
+  problems <-
+    c(problems,
+      "bibliography in yaml header should refer to a bibliography file"[
+        !is.character(yml_protocol$bibliography)
+      ])
 
   if (has_name(yml_protocol, "subtitle")) {
     problems <- c(problems,
