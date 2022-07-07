@@ -78,7 +78,7 @@ check_frontmatter <- function(
     c(problems,
       sprintf(
         "Author nr %s had an invalid name (no string)",
-        seq_len(length(author_name))[!author_name]
+        seq_along(author_name)[!author_name]
       ))
   problems <-
     c(problems,
