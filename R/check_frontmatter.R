@@ -84,7 +84,7 @@ check_frontmatter <- function(
     c(problems,
       sprintf(
         "Author nr %s had an invalid orcid (no string)",
-        seq_len(length(author_orcid))[!author_orcid]
+        seq_along(author_orcid)[!author_orcid]
       ))
 
   if (all(author_name)) {
