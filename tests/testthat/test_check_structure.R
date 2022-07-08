@@ -12,6 +12,19 @@ test_that("check structure works", {
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
+  update_news <- function(path, version_number) {
+    news <- readLines(file.path(path, "NEWS.md"))
+    writeLines(
+      c(
+        head(news, 2),
+        sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
+        rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
+        tail(news, -2)
+      ),
+      file.path(path, "NEWS.md")
+    )
+  }
+
   # create a protocol
   version_number <- "2021.01"
   create_sfp(
@@ -19,6 +32,11 @@ test_that("check structure works", {
     authors = "me", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
+  )
+
+  update_news(
+    path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
+    version_number = version_number
   )
 
   expect_output(
@@ -79,5 +97,8 @@ test_that("check structure works", {
     "01")
   file.remove(file.path(get_path_to_protocol("sfp-101-en"),
                         "01_afhankelijkheden.Rmd"))
+
+  # Cleanup
+  unlink(test_repo, recursive = TRUE)
 
 })
