@@ -1,11 +1,20 @@
 description: Configuration file for checklist::check_pkg()
 package: yes
 allowed:
-  warnings: []
-  notes:
+  warnings:
   - motivation: package will not be submitted to CRAN
     value: |-
-      checking CRAN incoming feasibility ... NOTE
+      checking CRAN incoming feasibility ... WARNING
       Maintainer: 'Hans Van Calster <hans.vancalster@inbo.be>'
 
       New submission
+
+      Strong dependencies not in mainstream repositories:
+        checklist
+      Availability using Additional_repositories specification:
+        checklist   yes   https://inbo.r-universe.dev
+  notes: []
+citation_roles:
+- aut
+- cre
+keywords: R package
