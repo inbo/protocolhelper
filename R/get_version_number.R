@@ -13,7 +13,7 @@
 #' @importFrom fs dir_ls
 #' @importFrom purrr map map_chr
 #' @importFrom rmarkdown yaml_front_matter
-#' @importFrom gert git_branch git_branch_checkout
+#' @importFrom gert git_branch git_branch_checkout git_branch_list
 #'
 #' @return A string containing the next (incremented) version number
 #' @export
@@ -22,7 +22,13 @@ get_version_number <- function(path = ".") {
 
   # checkout main branch
   current_branch <- git_branch(repo = path)
-  git_branch_checkout(branch = "main")
+  branch_info <- git_branch_list(repo = path)
+  main_branch <- ifelse(any(branch_info$name == "origin/main"),
+                        "main", ifelse(any(branch_info$name == "origin/master"),
+                                       "master", "unknown"))
+  assert_that(main_branch %in% c("main", "master"),
+              msg = "no branch `origin/main` or `origin/master` found.")
+  git_branch_checkout(branch = main_branch)
 
   # list all index.Rmd files
   indexpaths <- dir_ls(path = path, recurse = TRUE, regexp = "index\\.Rmd")
