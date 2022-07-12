@@ -23,9 +23,9 @@ Imports:
     R6,
     assertthat,
     bookdown,
+    checklist (>= 0.2.4),
     commonmark,
     fs,
-    gert,
     jsonlite,
     knitr,
     purrr,
@@ -37,10 +37,12 @@ Imports:
     ymlthis
 Suggests: 
     dplyr,
+    gert,
     lubridate,
     magick,
     png,
     testthat (>= 2.1.0)
+Additional_repositories: https://inbo.r-universe.dev
 Encoding: UTF-8
 Language: eng
 LazyData: true
