@@ -10,7 +10,7 @@
 #' @keywords internal
 check_versionnumber <- function(version_number) {
   assert_that(is.string(version_number))
-  right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number) # nolint: nonportable_path_linter, line_length_linter.
+  right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number)
   assert_that(
     right_format,
     msg = "version number not in YYYY.XX format"
