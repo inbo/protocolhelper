@@ -1,8 +1,10 @@
 #' @title Get version number for a protocol
 #'
 #' @description
-#' Looks up pre-existing version numbers of protocols in the current branch.
-#' The current branch should be aligned with the main branch.
+#' Looks up pre-existing version numbers of protocols in the main branch and
+#' calculates an incremented (next) version number for the currently checkout
+#' branch containing the created/in development/updated/ready to be released
+#' protocol.
 #'
 #' @param path Defaults to current working directory.
 #' This should correspond with the root directory of the protocolsource repo.
@@ -11,11 +13,17 @@
 #' @importFrom fs dir_ls
 #' @importFrom purrr map map_chr
 #' @importFrom rmarkdown yaml_front_matter
+#' @importFrom gert git_branch git_branch_checkout
 #'
 #' @return A string containing the next (incremented) version number
 #' @export
 get_version_number <- function(path = ".") {
   clean_git(repo = path)
+
+  # checkout main branch
+  current_branch <- git_branch(repo = path)
+  git_branch_checkout(branch = "main")
+
   # list all index.Rmd files
   indexpaths <- dir_ls(path = path, recurse = TRUE, regexp = "index\\.Rmd")
 
@@ -26,6 +34,10 @@ get_version_number <- function(path = ".") {
   versions <- map_chr(yamllists, "version_number")
 
   new_version <- increment_version_number(versions = versions)
+
+  # switch back to current branch
+  git_branch_checkout(current_branch)
+
   return(new_version)
 }
 

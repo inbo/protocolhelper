@@ -14,6 +14,8 @@ This should correspond with the root directory of the protocolsource repo.}
 A string containing the next (incremented) version number
 }
 \description{
-Looks up pre-existing version numbers of protocols in the current branch.
-The current branch should be aligned with the main branch.
+Looks up pre-existing version numbers of protocols in the main branch and
+calculates an incremented (next) version number for the currently checkout
+branch containing the created/in development/updated/ready to be released
+protocol.
 }

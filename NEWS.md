@@ -2,12 +2,13 @@
 
 ## New features
 
-* templates now also have a references.yaml file and corresponding bibliography
-  fields in yaml front matter
+* templates now also have a `references.yaml` file and corresponding
+  bibliography fields in yaml front matter
 * added templates for standard analysis procedures (sap)
 * added templates for standard instrument procedures (sip)
 * added templates for standard operating procedures (sop)
 * added function `check_structure()` to check document structure of protocols
+* added function `get_version_number()` to determine version number
 
 ## Minor changes
 
@@ -15,6 +16,8 @@
 * improved checks when passing authors and orcids in `create_protocol()`
 * some template markdown files or chapter titles have been changed so that file
   name and chapter title are similar
+* functions `clean_git` and `new_branch` are now imported from `checklist`
+  package
 
 ## Bug fixes
 

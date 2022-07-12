@@ -26,6 +26,7 @@ Imports:
     checklist (>= 0.2.4),
     commonmark,
     fs,
+    gert,
     jsonlite,
     knitr,
     purrr,
@@ -37,7 +38,6 @@ Imports:
     ymlthis
 Suggests: 
     dplyr,
-    gert,
     lubridate,
     magick,
     png,
