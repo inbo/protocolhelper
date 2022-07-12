@@ -22,7 +22,7 @@
 #'
 update_news_release <- function(protocol_code, path = ".") {
   assert_that(is.string(path))
-  assert_that(str_detect(protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
+  check_protocolcode(protocol_code)
 
   news_file <- file.path(path, "NEWS.md")
   news_contents <- readLines(news_file)
