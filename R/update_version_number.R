@@ -5,20 +5,24 @@
 #' version number.
 #' @param path Default is current working directory. Should correspond with
 #' root directory of protocolsource repo.
+#' @param commit Logical. Default TRUE. Whether or not to add and commit the
+#' changes to the protocol branch
 #'
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom fs is_dir
 #' @importFrom assertthat assert_that
 #' @importFrom ymlthis use_index_rmd as_yml
+#' @importFrom gert git_commit_all
 #'
 #' @return invisible NULL
 #' @export
 #'
 update_version_number <- function(
     protocol_code,
+    commit = TRUE,
     path = ".") {
   # assertions
-  check_protocolcode(protocolcode)
+  check_protocolcode(protocol_code)
   assert_that(is_dir(path))
 
   # what should be the version number?
@@ -50,8 +54,13 @@ update_version_number <- function(
       open_doc = FALSE)
     unlink(copy_rmd)
 
-    message("Bumped ", old_version, " to ", new_version,
-            " in index.Rmd")
+    message_text <- paste0("Bumped ", old_version, " to ", new_version,
+                     " in index.Rmd")
+    message(message_text)
+
+    if (commit) {
+      git_commit_all(message_text, repo = path)
+    }
     return(invisible(NULL))
   }
 }
