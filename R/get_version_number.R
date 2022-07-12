@@ -10,14 +10,16 @@
 #' This should correspond with the root directory of the protocolsource repo.
 #'
 #' @importFrom checklist clean_git
-#' @importFrom fs dir_ls
+#' @importFrom fs dir_ls is_dir
 #' @importFrom purrr map map_chr
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom gert git_branch git_branch_checkout git_branch_list
+#' @importFrom assertthat assert_that
 #'
 #' @return A string containing the next (incremented) version number
 #' @export
 get_version_number <- function(path = ".") {
+  assert_that(is_dir(path))
   clean_git(repo = path)
 
   # checkout main branch
