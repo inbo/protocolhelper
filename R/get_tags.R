@@ -27,7 +27,7 @@ get_tags <- function(
 
   # get all non-dev version-numbers
   # list all index.Rmd files
-  indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd") # nolint: nonportable_path_linter, line_length_linter.
+  indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd")
 
   # read YAML front matter
   yamllists <- purrr::map(indexpaths, rmarkdown::yaml_front_matter)
@@ -85,43 +85,4 @@ get_tags <- function(
 
   }
 
-}
-
-#' Increment version number
-#'
-#' Given a set of published protocol version numbers, calculate the next version
-#' number
-#'
-#' @param versions a character vector with previously published version numbers
-#'
-#' @importFrom assertthat assert_that
-#' @importFrom stringr str_detect
-increment_version_number <- function(versions) {
-
-  assert_that(is.character(versions))
-
-  # remove dev versions
-  versions <- versions[!str_detect(string = versions, pattern = "dev$")]
-
-  if (length(versions) >= 1) {
-    versions <- sort(versions)
-
-    # last version
-    last <- versions[length(versions)]
-
-    # increase version number
-    lastyear <- str_extract(last, "\\d{4}")
-    lastincrement <- str_extract(last, "\\d{2}$")
-    currentyear <- format(Sys.Date(), "%Y")
-    increment <- formatC(as.numeric(lastincrement) + 1,
-                         width = 2, flag = 0)
-    new_version <- ifelse(
-      lastyear == currentyear,
-      paste0(lastyear, ".", increment),
-      paste0(currentyear, ".01"))
-    return(new_version)
-  } else {
-    new_version <- paste0(format(Sys.Date(), "%Y"), ".01")
-    return(new_version)
-  }
 }
