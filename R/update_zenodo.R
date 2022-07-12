@@ -18,7 +18,7 @@
 update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
 
   # list all index.Rmd files
-  indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd") # nolint: nonportable_path_linter, line_length_linter.
+  indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd")
 
   # read YAML front matter
   yamllists <- purrr::map(indexpaths, rmarkdown::yaml_front_matter)
