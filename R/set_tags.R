@@ -35,10 +35,6 @@ set_tags <- function(
 
   assert_that(is_dir(path))
   check_protocolcode(protocol_code)
-  update_version_number(
-    protocol_code = protocol_code,
-    commit = commit,
-    path = path)
 
   old_config <- git_config(repo = path)
   on.exit(
