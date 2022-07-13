@@ -14,7 +14,7 @@
 #' @importFrom ymlthis use_index_rmd as_yml
 #' @importFrom gert git_commit_all
 #'
-#' @return invisible NULL
+#' @return TRUE if version number in yaml is updated. FALSE otherwise.
 #' @export
 #'
 update_version_number <- function(
@@ -35,7 +35,7 @@ update_version_number <- function(
 
   if (new_version == old_version) {
     message("The version number is up to date")
-    return(invisible(NULL))
+    return(FALSE)
   } else {
     yml$version_number <- new_version
 
@@ -61,6 +61,6 @@ update_version_number <- function(
     if (commit) {
       git_commit_all(message_text, repo = path)
     }
-    return(invisible(NULL))
+    return(TRUE)
   }
 }

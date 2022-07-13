@@ -18,7 +18,7 @@ changes to the protocol branch}
 root directory of protocolsource repo.}
 }
 \value{
-invisible NULL
+TRUE if version number in yaml is updated. FALSE otherwise.
 }
 \description{
 Updates the version number in the YAML section of a protocol
