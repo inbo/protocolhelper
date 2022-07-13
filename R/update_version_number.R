@@ -1,8 +1,8 @@
 #' @title Updates the version number in the YAML section of a protocol
 #' index.Rmd file
 #'
-#' @param protocol_code The protocol_code for which you want to update the
-#' version number.
+#' @param protocol_code The protocol_code corresponding with the name of the
+#' branch that contains the new or updated protocol.
 #' @param path Default is current working directory. Should correspond with
 #' root directory of protocolsource repo.
 #' @param commit Logical. Default TRUE. Whether or not to add and commit the
