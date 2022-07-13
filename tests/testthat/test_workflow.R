@@ -42,7 +42,6 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
-  update_news_release("sfp-101-en")
 
 
   # add, commit and tag it
@@ -72,7 +71,6 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
-  update_news_release("sfp-401-en")
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -173,7 +171,6 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
-  update_news_release("sfp-102-en")
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -216,7 +213,6 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
-  update_news_release("spp-001-en")
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
@@ -249,7 +245,6 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
-  update_news_release("sfp-101-en")
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
