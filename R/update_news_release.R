@@ -5,8 +5,8 @@
 #' and protocol titles.
 #' Not intended for interactive use.
 #' Should be used in a GitHub Action.
-#' Assumes the branch containing the protocol for the next release is checked
-#' out, and it is up to date with the main branch.
+#' Reads the NEWS.md from the main branch and switches back to current
+#' protocol branch to write the updated NEWS.md
 #'
 #'
 #' @param protocol_code protocol code of the protocol that is to be published in
@@ -17,6 +17,9 @@
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom assertthat assert_that is.string
 #' @importFrom stringr str_detect
+#' @importFrom gert git_branch git_branch_list git_branch_checkout
+#'
+#' @return invisible null
 #'
 #' @export
 #'
@@ -24,8 +27,21 @@ update_news_release <- function(protocol_code, path = ".") {
   assert_that(is.string(path))
   check_protocolcode(protocol_code)
 
+  # checkout main branch
+  current_branch <- git_branch(repo = path)
+  branch_info <- git_branch_list(repo = path)
+  main_branch <- ifelse(any(branch_info$name == "origin/main"),
+                        "main", ifelse(any(branch_info$name == "origin/master"),
+                                       "master", "unknown"))
+  assert_that(main_branch %in% c("main", "master"),
+              msg = "no branch `origin/main` or `origin/master` found.")
+  git_branch_checkout(branch = main_branch)
+
   news_file <- file.path(path, "NEWS.md")
   news_contents <- readLines(news_file)
+
+  # switch back to current branch
+  git_branch_checkout(current_branch)
 
   # protocol metadata
   path_protocol <- get_path_to_protocol(protocol_code)
@@ -43,5 +59,6 @@ update_news_release <- function(protocol_code, path = ".") {
 
   writeLines(news,
              file.path(path, "NEWS.md"))
+  return(invisible(NULL))
 
 }

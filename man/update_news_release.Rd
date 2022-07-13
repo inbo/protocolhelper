@@ -13,11 +13,14 @@ this release}
 \item{path}{Default current working directory. The root folder of the
 protocolsource repo.}
 }
+\value{
+invisible null
+}
 \description{
 Constructs and writes a NEWS.md file based on version numbers, protocol codes
 and protocol titles.
 Not intended for interactive use.
 Should be used in a GitHub Action.
-Assumes the branch containing the protocol for the next release is checked
-out, and it is up to date with the main branch.
+Reads the NEWS.md from the main branch and switches back to current
+protocol branch to write the updated NEWS.md
 }
