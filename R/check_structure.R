@@ -96,6 +96,14 @@ check_structure <- function(protocol_code, fail = !interactive()) {
 
 
 check_file <- function(filename, x, files_template, path_to_template) {
+  # check if file is present in template
+  if (!filename %in% c(files_template, "index.Rmd")) {
+    x$add_error(
+      msg = sprintf("file %s should be removed (after moving the content)",
+                    filename))
+    return(x)
+  }
+
   # check if chunks in Rmd files are correct
   rmd <- readLines(file.path(x$path, filename))
   start_chunk <- grep("^```\\{r.*}", rmd)
