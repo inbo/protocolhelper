@@ -221,10 +221,8 @@ check_news_protocol <- function(x) {
     version_number <- yml$version_number
 
     if (!any(str_detect(version_number, headings_text))) {
-      return(
         x$add_error(
           "An entry is missing in NEWS.md for this version of the protocol")
-      )
     }
 
     problems <- sprintf(
