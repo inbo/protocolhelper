@@ -97,11 +97,11 @@ check_structure <- function(protocol_code, fail = !interactive()) {
 
 check_file <- function(filename, x, files_template, path_to_template) {
   # check if file is present in template
-  if (!filename %in% c(files_template, "index.Rmd")) {
+  if (!filename %in% c(files_template, "index.Rmd") &&
+      grepl("^\\d{2}_", filename)) {
     x$add_error(
       msg = sprintf("file %s should be removed (after moving the content)",
                     filename))
-    return(x)
   }
 
   # check if chunks in Rmd files are correct
@@ -177,6 +177,17 @@ check_file <- function(filename, x, files_template, path_to_template) {
       )
     }
 
+  } else {
+    if (!grepl("^\\d{2}_", filename)) {
+      headings1 <- headings[grepl("^# .*", headings)]
+      x$add_error(
+        msg = sprintf(
+          paste(filename,
+            "should not have headings of level 1, please adapt header(s): %s"),
+          headings1
+        )
+      )
+    }
   }
   if (filename == "index.Rmd") {
     template <- readLines(file.path(path_to_template, "skeleton.Rmd"))
