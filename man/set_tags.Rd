@@ -29,3 +29,4 @@ The tag message is generated from the related entry from \code{NEWS.md} as
 message.
 This tag will turn into a release.
 }
+\keyword{internal}

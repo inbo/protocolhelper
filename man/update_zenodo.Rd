@@ -20,3 +20,4 @@ Updating is done by scanning the index.Rmd files for author metadata and
 adding missing author metadata to the list of creators in the .zenodo.json.
 This internal function should only be used by one of the administrators.
 }
+\keyword{internal}

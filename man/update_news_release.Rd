@@ -24,3 +24,4 @@ Should be used in a GitHub Action.
 Reads the NEWS.md from the main branch and switches back to current
 protocol branch to write the updated NEWS.md
 }
+\keyword{internal}
