@@ -23,6 +23,7 @@ test_that("Check frontmatter works", {
                  set_upstream = TRUE,
                  repo = repo)
 
+  branch_info <- gert::git_branch_list(repo = repo)
   main_branch <- ifelse(any(branch_info$name == "origin/main"),
                         "main", ifelse(any(branch_info$name == "origin/master"),
                                        "master", "unknown"))
