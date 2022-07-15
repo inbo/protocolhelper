@@ -22,6 +22,10 @@ test_that("Check frontmatter works", {
                  refspec =  refspec,
                  set_upstream = TRUE,
                  repo = repo)
+
+  main_branch <- ifelse(any(branch_info$name == "origin/main"),
+                        "main", ifelse(any(branch_info$name == "origin/master"),
+                                       "master", "unknown"))
   # create a protocol
   version_number <- get_version_number()
   create_sfp(
@@ -53,7 +57,7 @@ test_that("Check frontmatter works", {
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout("main")
+  gert::git_branch_checkout(main_branch)
   gert::git_merge(ref = refspec, repo = repo)
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
