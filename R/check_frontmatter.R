@@ -154,11 +154,19 @@ check_frontmatter <- function(
                     "^s[fioap]p-\\d{3}-(nl|en)$")
       ])
 
-  if (!str_detect(yml_protocol$version_number, "^\\d{4}\\.\\d{2}$")) {
-    problems <- c(
+  problems <- c(
       problems,
-      "version_number should be YYYY.NN with NN a 2 digit number above 0")
-  }
+      "version_number should be YYYY.NN with NN a 2 digit number above 0"[
+        !str_detect(yml_protocol$version_number, "^\\d{4}\\.\\d{2}$")])
+
+  problems <- c(
+    problems,
+    paste0("version number in the YAML of index.Rmd needs to be updated.\n",
+           "Please use protocolhelper::update_version_number().")[
+      !identical(get_version_number(), yml_protocol$version_number)
+    ]
+  )
+
   if (!any(yml_protocol$language %in% c("nl", "en"))) {
     problems <- c(problems,
                   "'lang' must be 'nl' or 'en'")
