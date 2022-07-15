@@ -17,7 +17,7 @@
 #' @importFrom gert git_tag_create git_config git_config_set
 #'
 #' @return invisible NULL
-#' @export
+#' @keywords internal
 #'
 set_tags <- function(
   protocol_code,

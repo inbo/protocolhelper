@@ -21,7 +21,7 @@
 #'
 #' @return invisible null
 #'
-#' @export
+#' @keywords internal
 #'
 update_news_release <- function(protocol_code, path = ".") {
   assert_that(is.string(path))

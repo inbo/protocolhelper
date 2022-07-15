@@ -13,6 +13,8 @@
 #' @importFrom fs dir_ls
 #' @importFrom rmarkdown yaml_front_matter
 #'
+#' @keywords internal
+#'
 #' @return a .zenodo.json file (write = TRUE) or a json string (write = FALSE)
 #'
 update_zenodo <- function(json = ".zenodo.json", write = TRUE) {

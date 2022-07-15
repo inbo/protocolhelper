@@ -29,8 +29,6 @@
 #'
 #' @keywords internal
 #'
-#' @export
-#'
 #'
 #' @examples
 #' \dontrun{
