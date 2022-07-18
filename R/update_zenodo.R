@@ -34,12 +34,12 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
   # extract creators
   creators <- zenodo$creators
 
-  # check for authors not in creators
-  authornames <- purrr::flatten(authormeta)
-  authornames <- purrr::map_chr(authornames, "name")
-  creatornames <- purrr::map_chr(creators, "name")
-  to_add <- which(!authornames %in%
-                    creatornames
+  # check for authors not in creators based on orcid
+  orcids <- purrr::flatten(authormeta)
+  orcids <- purrr::map_chr(orcids, "orcid")
+  creatororcids <- purrr::map_chr(creators, "orcid")
+  to_add <- which(!orcids %in%
+                    creatororcids
                   )
 
   # add missing author metadata to creators
