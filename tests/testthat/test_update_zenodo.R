@@ -133,7 +133,8 @@ test_that(
     version_number <- "2021.02"
     protocolhelper::create_sfp(
       title = "Test 1", subtitle = "subtitle", short_title = "water 2",
-      authors = "Someone, Else", orcids = "0000-0001-2345-6789",
+      authors = c("Hans Van Calster", "Someone, Else"),
+      orcids = c("0000-0001-8595-8426", "0000-0001-2345-6789"),
       reviewers = "me", file_manager = "who?",
       version_number = version_number, theme = "water", language = "en"
     )

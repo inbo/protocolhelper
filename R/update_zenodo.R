@@ -43,7 +43,7 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
                   )
 
   # add missing author metadata to creators
-  authors_to_add <- purrr::flatten(unname(authormeta[to_add]))
+  authors_to_add <- purrr::flatten(unname(authormeta))[to_add]
   for (i in seq_along(authors_to_add)) {
     authors_to_add[[i]] <- append(
       authors_to_add[[i]],
