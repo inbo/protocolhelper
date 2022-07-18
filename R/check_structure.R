@@ -165,7 +165,7 @@ check_file <- function(filename, x, files_template, path_to_template) {
         "Heading 1 %s is not allowed in file %s",
         headings1[!headings1 %in% headings1_template],
         filename
-      )
+      )[!grepl("^\\d{2}_appendices.Rmd", filename)]
     )
 
     if (
