@@ -96,18 +96,27 @@ check_structure <- function(protocol_code, fail = !interactive()) {
 
 
 check_file <- function(filename, x, files_template, path_to_template) {
+  # check if file is present in template
+  x$add_error(
+    msg =
+      sprintf(
+        "file %s should be removed (after moving the content)",
+        filename[!filename %in% c(files_template, "index.Rmd") &&
+                   grepl("^\\d{2}_", filename)]
+      )
+  )
+
   # check if chunks in Rmd files are correct
   rmd <- readLines(file.path(x$path, filename))
   start_chunk <- grep("^```\\{r.*}", rmd)
   end_chunk <- grep("^```[:space:]?$", rmd)
-  if (
-    !(length(start_chunk) == length(end_chunk) &&
-      all(start_chunk < end_chunk))
-  ) {
-    x$add_error(
-      msg =
-        paste(", file", filename, "has a problem with R chunks"))
-  }
+  x$add_error(
+    msg =
+      paste(", file", filename, "has a problem with R chunks")[
+        !(length(start_chunk) == length(end_chunk) &&
+            all(start_chunk < end_chunk))
+      ]
+  )
 
   for (i in rev(seq_along(start_chunk))) {
     rmd <- c(
@@ -169,6 +178,17 @@ check_file <- function(filename, x, files_template, path_to_template) {
       )
     }
 
+  } else {
+    if (!grepl("^\\d{2}_", filename) && filename != "index.Rmd") {
+      headings1 <- headings[grepl("^# .*", headings)]
+      x$add_error(
+        msg = sprintf(
+          paste(filename,
+            "should not have headings of level 1, please adapt header(s): %s"),
+          headings1
+        )
+      )
+    }
   }
   if (filename == "index.Rmd") {
     template <- readLines(file.path(path_to_template, "skeleton.Rmd"))
