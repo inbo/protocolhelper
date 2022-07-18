@@ -116,6 +116,12 @@ check_frontmatter <- function(
       problems,
       "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")"[
         any(str_detect(orcids, ",|;"))])
+    valid_orcids <- map_lgl(orcids, validate_orcid)
+    problems <- c(
+      problems,
+      sprintf("protocolhelper::validate_orcid() indicates %s is not valid",
+              orcids)[!valid_orcids]
+    )
   }
   if (all(author_name) && all(author_orcid)) {
     problems <- c(problems,

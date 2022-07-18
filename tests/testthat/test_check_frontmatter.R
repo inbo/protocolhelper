@@ -31,7 +31,7 @@ test_that("Check frontmatter works", {
   version_number <- get_version_number()
   create_sfp(
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "John, Doe", orcids = "0000-0001-2345-6789",
+    authors = "Van Calster, Hans", orcids = "0000-0001-8595-8426",
     reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
   )
@@ -74,8 +74,8 @@ test_that("Check frontmatter works", {
     title = "Test 2",
     subtitle = "bla",
     short_title = "water 2",
-    authors = c("Someone, Else", "Another, One"),
-    orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
+    authors = c("Van Calster, Hans", "Lommelen, Els"),
+    orcids = c("0000-0001-8595-8426", "0000-0002-3481-5684"),
     reviewers = "me", file_manager = "who?",
     version_number = version_number_2, theme = "water", language = "en"
   )
