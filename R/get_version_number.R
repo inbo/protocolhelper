@@ -20,7 +20,10 @@
 #' @export
 get_version_number <- function(path = ".") {
   assert_that(is_dir(path))
-  clean_git(repo = path)
+  if (interactive()) {
+    clean_git(repo = path)
+  }
+
 
   # checkout main branch
   current_branch <- git_branch(repo = path)
