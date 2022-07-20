@@ -4,14 +4,11 @@
 \alias{set_tags}
 \title{Set general and specific protocol tags}
 \usage{
-set_tags(protocol_code, commit = TRUE, path = ".")
+set_tags(protocol_code, path = ".")
 }
 \arguments{
 \item{protocol_code}{The protocol_code corresponding with the name of the
 branch that contains the new or updated protocol.}
-
-\item{commit}{Logical. Default TRUE. Whether or not to add and commit the
-changes to the protocol branch}
 
 \item{path}{Default is current working directory. Should correspond with
 root directory of protocolsource repo.}

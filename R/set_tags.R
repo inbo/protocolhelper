@@ -21,7 +21,6 @@
 #'
 set_tags <- function(
   protocol_code,
-  commit = TRUE,
   path = ".") {
 
   if (
