@@ -6,6 +6,9 @@
 #'  release in a year). In addition, earlier
 #'  released and older versions of protocols remain available in the `publish`
 #'  folder (see also \code{details}).
+#'  This function is for internal use only.
+#'  If you are looking for a function to preview your protocol,
+#'  see `protocolhelper::render_protocol()`.
 #'
 #'
 #' @param output_root A character string giving the root folder without version
@@ -28,8 +31,6 @@
 #' @importFrom yaml as.yaml
 #'
 #' @keywords internal
-#'
-#' @export
 #'
 #'
 #' @examples

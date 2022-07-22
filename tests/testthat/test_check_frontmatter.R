@@ -2,40 +2,96 @@ test_that("Check frontmatter works", {
   if (!requireNamespace("gert", quietly = TRUE)) {
     stop("please install 'gert' package for these tests to work")
   }
+  origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
+  on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
+  repo <- gert::git_clone(url = origin_repo,
+                          path = tempfile("protocol_local"), verbose = FALSE)
+  on.exit(unlink(repo, recursive = TRUE), add = TRUE)
+  old_wd <- setwd(repo)
+  on.exit(setwd(old_wd), add = TRUE)
 
-  old_wd <- getwd()
-  on.exit(setwd(old_wd))
-  test_repo <- tempfile("test_protocol")
-  dir.create(test_repo)
-  setwd(test_repo)
-  repo <- gert::git_init()
-  gert::git_config_set(name = "user.name", value = "someone")
-  gert::git_config_set(name = "user.email", value = "someone@example.org")
+  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
+  gert::git_config_set(name = "user.email", value = "someone@example.org",
+                       repo = repo)
+  file.create("NEWS.md")
+  gert::git_add("NEWS.md")
+  gert::git_commit_all(message = "add empty NEWS repo file")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
 
+  branch_info <- gert::git_branch_list(repo = repo)
+  main_branch <- ifelse(any(branch_info$name == "origin/main"),
+                        "main", ifelse(any(branch_info$name == "origin/master"),
+                                       "master", "unknown"))
   # create a protocol
-  version_number <- "2021.01"
-  protocolhelper::create_protocol(
-    title = "Test 1", short_title = "water 1",
-    authors = c("Someone, Else", "Another, One"),
-    orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
-    reviewers = "me", file_manager = "who?",
+  version_number <- get_version_number()
+  create_sfp(
+    title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+    authors = "Van Calster, Hans", orcids = "0000-0001-8595-8426",
+    reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
   )
 
-  version_number <- "2021.02"
+  # add, commit and tag it
+  checklist::new_branch("sfp-101-en", repo = repo)
+  sfp_staged <- gert::git_add(files = ".")
+  gert::git_commit_all(message = "sfp-101-en_water-1")
+  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
+  generic_tag <- paste("protocols", version_number, sep = "-")
+  gert::git_tag_create(name = specific_tag, message = "bla")
+  gert::git_tag_create(name = generic_tag, message = "bla")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+
+  expect_output(check_frontmatter(protocol_code = "sfp-101-en",
+                                  fail = FALSE),
+                "Well done! No problems found")
+
+  # merge into main
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_branch_checkout(main_branch)
+  gert::git_merge(ref = refspec, repo = repo)
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+
+  # another protocol
+  checklist::new_branch("sfp-102-en", repo = repo)
+  version_number_2 <- get_version_number(path = repo)
   protocolhelper::create_protocol(
     title = "Test 2",
     subtitle = "bla",
     short_title = "water 2",
-    authors = c("Someone, Else", "Another, One"),
-    orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
+    authors = c("Van Calster, Hans", "Lommelen, Els"),
+    orcids = c("0000-0001-8595-8426", "0000-0002-3481-5684"),
     reviewers = "me", file_manager = "who?",
-    version_number = version_number, theme = "water", language = "en"
+    version_number = version_number_2, theme = "water", language = "en"
   )
+  sfp_staged <- gert::git_add(files = ".")
+  gert::git_commit_all(message = "sfp-102-en_water-2")
+  specific_tag <- paste("sfp-102-en", version_number_2, sep = "-")
+  generic_tag <- paste("protocols", version_number_2, sep = "-")
+  gert::git_tag_create(name = specific_tag, message = "bla")
+  gert::git_tag_create(name = generic_tag, message = "bla")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
 
-  expect_output(check_frontmatter(protocol_code = "sfp-101-en",
-                                  fail = FALSE),
-               "Well done! No problems found")
 
   expect_output(check_frontmatter(protocol_code = "sfp-102-en",
                     fail = FALSE),
@@ -71,6 +127,14 @@ test_that("Check frontmatter works", {
     quiet = TRUE,
     open_doc = FALSE)
   unlink(template_rmd)
+
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_commit_all(message = "mess up sfp-102-en_water-2")
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
 
   expect_error(check_frontmatter(protocol_code = "sfp-102-en",
                                  fail = TRUE),

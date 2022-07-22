@@ -16,7 +16,7 @@ create_protocol(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "\%Y"), ".00.dev"),
+  version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   project_name = NULL,
   language = c("nl", "en"),
@@ -85,11 +85,8 @@ Last name}
 maintainer of the form First name Last name}
 
 \item{version_number}{A version number of the form \code{YYYY.##}.
-For development versions \code{.dev} is added.
-The default is \code{paste0(format(Sys.Date(), "\%Y"), ".00.dev")}
-(See \code{from_docx}).
-When the protocol is ready to be released, this should be changed by a repo-
-admin.}
+The default is a function which will determine this number automatically.
+It should normally not be changed.}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}. It is used as

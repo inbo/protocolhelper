@@ -105,7 +105,7 @@ insert_protocolsection <-
       assert_that(any(has_section), msg = "The section was not found.")
 
       # assuming section is header level 2
-      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
+      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk
       # grab the section
       start_section <- which(has_section)
       if (length(start_section) > 1) {
@@ -120,9 +120,9 @@ insert_protocolsection <-
     }
     # demote headers
     if (demote_header != 0) {
-      h1 <- grepl("^#\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
-      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
-      h3 <- grepl("^###\\s[A-Z]", rmd_content) & !is_chunk # nolint: nonportable_path_linter, line_length_linter.
+      h1 <- grepl("^#\\s[A-Z]", rmd_content) & !is_chunk
+      h2 <- grepl("^##\\s[A-Z]", rmd_content) & !is_chunk
+      h3 <- grepl("^###\\s[A-Z]", rmd_content) & !is_chunk
       if (demote_header == -1) {
         if (any(h1)) {
           stop("demote header -1 not possible when a level 1 header is present")
@@ -209,45 +209,6 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
   }
 }
 
-#' @title Check the version number format
-#'
-#' @description
-#' Check if version number is of format YYYY.NN
-#'
-#' @param version_number Character string with format YYYY.NN#'
-#'
-#' @importFrom assertthat assert_that is.string
-#'
-#' @keywords internal
-check_versionnumber <- function(version_number) {
-  assert_that(is.string(version_number))
-  right_format <- grepl("[0-9]{4}\\.[0-9]{2}", version_number) # nolint: nonportable_path_linter, line_length_linter.
-  assert_that(
-    right_format,
-    msg = "version number not in YYYY.XX format"
-  )
-}
-
-
-
-#' @title Check the protocolcode format
-#'
-#' @description
-#' Check if protocolcode is of format `s[f|p|i|o|a]p-###-[nl|en]`
-#'
-#' @param version_number Character string with format YYYY.NN#'
-#'
-#' @importFrom assertthat assert_that is.string
-#'
-#' @keywords internal
-check_protocolcode <- function(protocolcode) {
-  assert_that(is.string(protocolcode))
-  right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", protocolcode)
-  assert_that(
-    right_format,
-    msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-  )
-}
 
 
 #' @title Mark line as part of chunk

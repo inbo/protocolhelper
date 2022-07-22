@@ -25,6 +25,9 @@ test_that("complete workflow works", {
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
+  # create empty NEWS.md repo file
+  file.create("NEWS.md")
+
   # create a protocol to be used as subprotocol
   version_number <- "2021.01"
   create_sfp(
@@ -38,6 +41,7 @@ test_that("complete workflow works", {
     path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
     version_number = version_number
   )
+
 
 
   # add, commit and tag it
@@ -66,6 +70,7 @@ test_that("complete workflow works", {
                      "sfp-401-en_vegetation-1"),
     version_number = version_number
   )
+
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -166,6 +171,7 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
+
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-102-en_second-subprotocol")
@@ -207,6 +213,7 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
+
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "spp-001-en_mne-protocol")
@@ -225,8 +232,8 @@ test_that("complete workflow works", {
     file.path("src", "thematic", "1_water", "sfp-101-en_water-1", "index.Rmd")
   )
   index_file <- gsub(
-    "version_number: \"[0-9]{4}.[0-9]{2}\"",
-    paste0("version_number: \"", version_number, "\""),
+    "version_number: '[0-9]{4}.[0-9]{2}'",
+    paste0("version_number: '", version_number, "'"),
     index_file
   )
   writeLines(
@@ -237,6 +244,7 @@ test_that("complete workflow works", {
     path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
     version_number = version_number
   )
+
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")

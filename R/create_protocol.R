@@ -52,11 +52,8 @@
 #' @param file_manager A character string for the name of the document
 #' maintainer of the form First name Last name
 #' @param version_number A version number of the form `YYYY.##`.
-#' For development versions `.dev` is added.
-#' The default is `paste0(format(Sys.Date(), "%Y"), ".00.dev")`
-#' (See `from_docx`).
-#' When the protocol is ready to be released, this should be changed by a repo-
-#' admin.
+#' The default is a function which will determine this number automatically.
+#' It should normally not be changed.
 #' @param project_name A character string that is used as the folder location
 #' (`src/project/project_name`) where project-specific protocols that belong to
 #' the same project will be stored. Preferably a short name or acronym. If the
@@ -107,7 +104,7 @@ create_protocol <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
+  version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   project_name = NULL,
   language = c("nl", "en"),
@@ -152,7 +149,7 @@ create_protocol <- function(
     msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
   assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
-  check_versionnumber(gsub("\\.dev", "", version_number)) # nolint
+  check_versionnumber(version_number)
   if (protocol_type == "sfp") {
     theme <- match.arg(theme)
     protocol_leading_number <- themes_df[themes_df$theme == theme,
@@ -272,8 +269,7 @@ create_protocol <- function(
     "index.Rmd",
     "NEWS.md",
     list.files(path = path_to_protocol,
-               pattern = "^\\d{2}.+Rmd$")) # nolint: nonportable_path_linter.
-
+               pattern = "^\\d{2}.+Rmd$"))
 
   # change values in parent rmarkdown and _bookdown.yml
   index_yml <- rmarkdown::yaml_front_matter(parent_rmd)
@@ -654,11 +650,11 @@ create_from_docx <- function(
                                         temp2_filename))
   # replace absolute path to media folder by relative path
   contents <- str_replace_all(contents, path_to_protocol, ".")
-  is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})") # nolint: nonportable_path_linter, line_length_linter.
+  is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
   title_numbers <- formatC(x = cumsum(is_title),
                            width = 2, format = "d", flag = "0")
   filenames <- str_remove(string = tolower(contents[is_title]),
-                          pattern = "^(#{1}\\s{1})") # nolint: nonportable_path_linter, line_length_linter.
+                          pattern = "^(#{1}\\s{1})")
   filenames <- str_remove(string = filenames,
                           pattern = "\\s$")
   filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")

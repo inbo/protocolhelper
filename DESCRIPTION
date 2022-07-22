@@ -23,6 +23,7 @@ Imports:
     R6,
     assertthat,
     bookdown,
+    checklist (>= 0.2.4),
     commonmark,
     fs,
     gert,
@@ -41,8 +42,9 @@ Suggests:
     magick,
     png,
     testthat (>= 2.1.0)
+Additional_repositories: https://inbo.r-universe.dev
 Encoding: UTF-8
 Language: eng
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

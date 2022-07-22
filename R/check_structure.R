@@ -53,6 +53,9 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     x <- check_file(file, x, files_template, path_to_template)
   }
 
+  # check protocol-specific NEWS.md file
+  x <- check_news_protocol(x = x)
+
   # check if multiple Rmd files with the same chapter number exist
   chapters <- protocol_rmds[grepl("^\\d{2}", protocol_rmds)]
   chapter_numbers <- gsub(
@@ -161,7 +164,7 @@ check_file <- function(filename, x, files_template, path_to_template) {
       msg = sprintf(
         "Heading 1 %s is not allowed in file %s",
         headings1[!headings1 %in% headings1_template],
-        filename
+        filename[!grepl("^\\d{2}_appendices.Rmd", filename)]
       )
     )
 
@@ -200,6 +203,77 @@ check_file <- function(filename, x, files_template, path_to_template) {
         msg = "Heading 'Metadata' or the table below have changed"
       )
     }
+  }
+  return(x)
+}
+
+
+#' @importFrom commonmark markdown_xml
+#' @importFrom xml2 xml_attr xml_text read_xml xml_find_all xml_children
+#' @importFrom utils file_test
+check_news_protocol <- function(x) {
+  # check file
+  doc_error <- "Use NEWS.md instead of NEWS.Rmd"[
+    file_test("-f", file.path(x$path, "NEWS.Rmd"))
+  ]
+  md_file <- file.path(x$path, "NEWS.md")
+  if (!file_test("-f", md_file)) {
+    doc_error <- c(doc_error, "Missing NEWS.md")
+    x$add_error <- doc_error
+    return(x)
+  }
+  # check file contents for problems
+  news_file <- readLines(md_file, encoding = "UTF8")
+  xml <- markdown_xml(news_file)
+  xml <- read_xml(xml)
+  all_headings <- xml_find_all(xml,
+                               xpath = ".//d1:heading")
+  headings_level_2 <- all_headings[xml_attr(all_headings, "level") == "2"]
+  headings_text <- xml_text(headings_level_2)
+  headings_link <- xml_attr(xml_children(headings_level_2), "destination")
+
+  if (!file.exists(file.path(x$path, "index.Rmd"))) {
+    x$add_error(
+      msg = "No index.Rmd file, cannot check version number field."
+    )
+  } else {
+    yml <- yaml_front_matter(file.path(x$path, "index.Rmd"))
+    version_number <- yml$version_number
+
+    if (!any(str_detect(version_number, headings_text))) {
+        x$add_error(
+          "An entry is missing in NEWS.md for this version of the protocol")
+    }
+
+    problems <- sprintf(
+      paste0(
+        "Mismatch detected between link text '%1$s' ",
+        "and link destination '%2$s' /nin level 2 headings of NEWS.md file"),
+      headings_text,
+      headings_link)[
+        !str_detect(headings_link, headings_text)
+      ]
+
+    current_link <- headings_link[grepl(version_number, headings_link)]
+
+    problems <- c(
+      problems,
+      sprintf(
+        "URL for version %s of the protocol is not correct in NEWS.md",
+        version_number
+      )[!identical(current_link,
+                   paste0("../",
+                          version_number,
+                          "/index.html"))]
+    )
+
+    problems <- c(
+      problems,
+      "The entries in NEWS.md are not sorted from most recent to oldest"[
+        !identical(headings_text, sort(headings_text, decreasing = TRUE))
+      ]
+    )
+    x$add_error(problems)
   }
   return(x)
 }
