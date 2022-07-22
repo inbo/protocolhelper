@@ -24,19 +24,22 @@ test_that("test that adding dependencies to yaml works", {
 
   # add a projectspecific parameter to index yaml
   index_yml <- rmarkdown::yaml_front_matter(
-    "src/thematic/1_water/sfp-101-en_water-1/index.Rmd")
+    file.path("src", "thematic", "1_water", "sfp-101-en_water-1", "index.Rmd"))
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
   index_yml <- ymlthis::yml_params(index_yml, protocolspecific = "defaultvalue")
   template_rmd <-
-    "src/thematic/1_water/sfp-101-en_water-1/template.Rmd"
+    file.path("src", "thematic", "1_water", "sfp-101-en_water-1",
+              "template.Rmd")
   file.copy(
-    from = "src/thematic/1_water/sfp-101-en_water-1/index.Rmd",
+    from = file.path("src", "thematic", "1_water", "sfp-101-en_water-1",
+                     "index.Rmd"),
     to = template_rmd)
-  unlink("src/thematic/1_water/sfp-101-en_water-1/index.Rmd")
+  unlink(file.path("src", "thematic", "1_water", "sfp-101-en_water-1",
+                   "index.Rmd"))
   ymlthis::use_index_rmd(
     .yml = index_yml,
-    path = "src/thematic/1_water/sfp-101-en_water-1/",
+    path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
     template = template_rmd,
     include_body = TRUE,
     include_yaml = FALSE,

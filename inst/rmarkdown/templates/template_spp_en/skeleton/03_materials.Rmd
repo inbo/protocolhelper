@@ -1,4 +1,4 @@
-## Extra required materials compared to subprotocols
+# Extra required materials compared to subprotocols
 
 <!--
 When applicable.

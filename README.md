@@ -19,7 +19,9 @@ size](https://img.shields.io/github/repo-size/inbo/protocolhelper.svg)
 # protocolhelper
 
 The goal of protocolhelper is to provide helper functions and templates
-to manage the INBO/protocols repository.
+to manage the
+[INBO/protocolsource](https://github.com/inbo/protocolsource)
+repository.
 
 ## Installation
 

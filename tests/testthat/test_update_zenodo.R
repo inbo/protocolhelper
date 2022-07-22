@@ -104,7 +104,7 @@ test_that(
     version_number <- "2021.01"
     protocolhelper::create_sfp(
       title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-      authors = "Someone, Else", orcids = "0000-0001-2345-6789",
+      authors = "Hans Van Calster", orcids = "0000-0001-8595-8426",
       reviewers = "me", file_manager = "who?",
       version_number = version_number, theme = "water", language = "en"
     )
@@ -118,6 +118,36 @@ test_that(
 
     testobject <- protocolhelper:::update_zenodo(jsontxt, write = FALSE)
 
+    # the original yaml nothing added
+    expectedobject <- jsonlite::fromJSON(jsontxt, simplifyVector = FALSE)
+    expectedobject <- jsonlite::toJSON(expectedobject,
+                                       pretty = TRUE,
+                                       auto_unbox = TRUE)
+
+    testthat::expect_equal(
+      object = testobject,
+      expected = expectedobject
+    )
+
+    # create a protocol
+    version_number <- "2021.02"
+    protocolhelper::create_sfp(
+      title = "Test 1", subtitle = "subtitle", short_title = "water 2",
+      authors = c("Hans Van Calster", "Someone, Else"),
+      orcids = c("0000-0001-8595-8426", "0000-0001-2345-6789"),
+      reviewers = "me", file_manager = "who?",
+      version_number = version_number, theme = "water", language = "en"
+    )
+    # add, commit and tag it
+    sfp_staged <- gert::git_add(files = ".")
+    gert::git_commit_all(message = "sfp-102-en_water-1")
+    specific_tag <- paste("sfp-102-en", version_number, sep = "-")
+    generic_tag <- paste("protocols", version_number, sep = "-")
+    gert::git_tag_create(name = specific_tag, message = "bla")
+    gert::git_tag_create(name = generic_tag, message = "bla")
+
+    # new author added
+    testobject <- protocolhelper:::update_zenodo(jsontxt, write = FALSE)
     expectedobject <- jsonlite::fromJSON(jsonresult, simplifyVector = FALSE)
     expectedobject <- jsonlite::toJSON(expectedobject,
                                        pretty = TRUE,

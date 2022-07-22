@@ -83,6 +83,7 @@ convert_docx_to_rmd <- function(
     }
   }
   md <- str_replace_all(md, "\\.emf", ".png")
+  md <- str_replace_all(md, "%5C", "/")
 
   writeLines(md, con = to)
   return(to)

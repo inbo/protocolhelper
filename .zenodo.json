@@ -1,27 +1,45 @@
 {
-  "title": ["protocolhelper: Helper Functions to Manage Protocols"],
-  "version": ["0.2.3"],
-  "description": ["Helper functions to manage INBO protocols."],
+  "title": "protocolhelper: Helper Functions to Manage Protocols",
+  "version": "0.3.0",
+  "description": "Helper functions to manage INBO protocols.",
   "creators": [
     {
-      "name": ["Van Calster, Hans"],
-      "orcid": ["https://orcid.org/0000-0001-8595-8426"]
+      "name": "Van Calster, Hans",
+      "orcid": "https://orcid.org/0000-0001-8595-8426"
     },
     {
-      "name": ["Onkelinx, Thierry"],
-      "orcid": ["https://orcid.org/0000-0001-8804-4216"]
+      "name": "Onkelinx, Thierry",
+      "orcid": "https://orcid.org/0000-0001-8804-4216"
     },
     {
-      "name": ["Vanderhaeghe, Floris"],
-      "orcid": ["https://orcid.org/0000-0002-6378-6229"]
+      "name": "Vanderhaeghe, Floris",
+      "orcid": "https://orcid.org/0000-0002-6378-6229"
     }
   ],
-  "contributors": [],
-  "upload_type": ["software"],
-  "access_rights": ["open"],
-  "license": ["GPL-3.0"],
-  "communities": {
-    "identifier": ["inbo"]
-  },
-  "language": ["en"]
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "GPL-3.0",
+  "communities": [
+    {
+      "identifier": "inbo"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Lommelen, Els",
+      "type": "ProjectMember",
+      "orcid": "https://orcid.org/0000-0002-3481-5684"
+    },
+    {
+      "name": "Research Institute for Nature and Forest",
+      "type": "RightsHolder"
+    },
+    {
+      "name": "Van Calster, Hans",
+      "type": "ContactPerson",
+      "orcid": "https://orcid.org/0000-0001-8595-8426"
+    }
+  ],
+  "language": "eng",
+  "keywords": "R package"
 }

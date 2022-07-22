@@ -13,6 +13,8 @@
 #' @importFrom fs dir_ls
 #' @importFrom rmarkdown yaml_front_matter
 #'
+#' @keywords internal
+#'
 #' @return a .zenodo.json file (write = TRUE) or a json string (write = FALSE)
 #'
 update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
@@ -32,16 +34,16 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
   # extract creators
   creators <- zenodo$creators
 
-  # check for authors not in creators
-  authornames <- purrr::flatten(authormeta)
-  authornames <- purrr::map_chr(authornames, "name")
-  creatornames <- purrr::map_chr(creators, "name")
-  to_add <- which(!authornames %in%
-                    creatornames
+  # check for authors not in creators based on orcid
+  orcids <- purrr::flatten(authormeta)
+  orcids <- purrr::map_chr(orcids, "orcid")
+  creatororcids <- purrr::map_chr(creators, "orcid")
+  to_add <- which(!orcids %in%
+                    creatororcids
                   )
 
   # add missing author metadata to creators
-  authors_to_add <- purrr::flatten(unname(authormeta[to_add]))
+  authors_to_add <- purrr::flatten(unname(authormeta))[to_add]
   for (i in seq_along(authors_to_add)) {
     authors_to_add[[i]] <- append(
       authors_to_add[[i]],

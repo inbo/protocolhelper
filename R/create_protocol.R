@@ -41,10 +41,8 @@
 #' @inheritParams create_protocol_code
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
-#' @param short_title A character string of less than 20 characters to use in
-#' folder and filenames
-#' @param authors A character vector for authors of the form First name Last
-#' name
+#' @param authors A character vector for authors of the form
+#' `c("lastname1, firstname1", "lastname2, firstname2")`
 #' @param orcids A character vector of orcid IDs, equal in length to authors.
 #' If one of the authors does not have an orcid ID, use `NA` to indicate this in
 #' the corresponding position of the character vector (or get an orcid ID).
@@ -54,16 +52,15 @@
 #' @param file_manager A character string for the name of the document
 #' maintainer of the form First name Last name
 #' @param version_number A version number of the form `YYYY.##`.
-#' For development versions `.dev` is added.
-#' The default is `paste0(format(Sys.Date(), "%Y"), ".00.dev")`
-#' (See `from_docx`).
-#' When the protocol is ready to be released, this should be changed by a repo-
-#' admin.
+#' The default is a function which will determine this number automatically.
+#' It should normally not be changed.
 #' @param project_name A character string that is used as the folder location
 #' (`src/project/project_name`) where project-specific protocols that belong to
 #' the same project will be stored. Preferably a short name or acronym. If the
 #' folder does not exist, it will be created.
 #' Ignored if protocol_type = `"sfp"`.
+#' @param short_title A character string of less than 20 characters to use in
+#' folder and filenames
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
 #' Please make sure to copy-paste all relevant meta-data from the `.docx` file
@@ -73,7 +70,7 @@
 #' Defaults to FALSE.
 #'
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_replace_all str_detect
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
 #' @importFrom rmarkdown draft yaml_front_matter
 #' @importFrom bookdown render_book
@@ -88,20 +85,30 @@
 #'
 #'
 #' @export
+#' @examples
+#' \dontrun{
+#' protocolhelper::create_protocol(
+#'   title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+#'   authors = c("Someone, Else", "Another, One"),
+#'   orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
+#'   reviewers = "me", file_manager = "who?",
+#'   theme = "water", language = "en")
+#' }
+
 create_protocol <- function(
   protocol_type = c("sfp", "spp"),
   title,
-  subtitle,
   short_title,
   authors,
   orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
+  version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-  project_name,
+  project_name = NULL,
   language = c("nl", "en"),
+  subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
   render = FALSE) {
@@ -109,15 +116,40 @@ create_protocol <- function(
   # check parameters
   protocol_type <- match.arg(protocol_type)
   assert_that(is.string(title))
-  assert_that(is.string(subtitle))
+  if (!is.null(subtitle)) {
+    assert_that(is.string(subtitle), nchar(subtitle) > 1)
+  }
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
   assert_that(is.character(authors))
-  assert_that(is.character(orcids),
-              length(authors) == length(orcids))
+  assert_that(is.character(orcids))
+  assert_that(
+    !all(str_detect(authors, ";")),
+    msg = paste0("Multiple authors should be passed as: ",
+                 "c(\"lastname1, firstname1\", \"lastname2, firstname2\")"))
+  assert_that(
+    (is.string(authors) & all(str_detect(authors, ",{1}"))) |
+      is.character(authors),
+    msg = "A single author should be passed as: c(\"lastname1, firstname1\")")
+  assert_that(
+    (is.string(authors) & !all(str_detect(authors, ",{2,}"))) |
+      is.character(authors),
+    msg = paste0("Multiple commas detected in author string.",
+                 "Multiple authors should be passed as: ",
+                 "c(\"lastname1, firstname1\", \"lastname2, firstname2\")"))
+  assert_that(
+    !all(str_detect(orcids, ",|;")),
+    msg = "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")")
+  assert_that(length(authors) == length(orcids))
+  assert_that(
+    all(!is.na(orcids)),
+    msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
+  assert_that(
+    all(nchar(orcids) == 19),
+    msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
   assert_that(is.character(reviewers))
   assert_that(is.string(file_manager))
-  check_versionnumber(gsub("\\.dev", "", version_number)) # nolint
+  check_versionnumber(version_number)
   if (protocol_type == "sfp") {
     theme <- match.arg(theme)
     protocol_leading_number <- themes_df[themes_df$theme == theme,
@@ -239,7 +271,6 @@ create_protocol <- function(
     list.files(path = path_to_protocol,
                pattern = "^\\d{2}.+Rmd$"))
 
-
   # change values in parent rmarkdown and _bookdown.yml
   index_yml <- rmarkdown::yaml_front_matter(parent_rmd)
   unlink("css", recursive = TRUE)
@@ -254,6 +285,9 @@ create_protocol <- function(
     protocol_code = protocol_code,
     language = language
     )
+  if (is.null(subtitle)) {
+    index_yml <- ymlthis::yml_discard(index_yml, "subtitle")
+  }
   index_yml <- ymlthis::yml_author(
     index_yml,
     name = authors,
@@ -483,109 +517,13 @@ get_short_titles <- function(
   )
   ld <- str_subset(string = ld,
                    pattern = protocol_type)
-  ld <- str_subset(string = ld,
-                   pattern = paste0("(", language, ")$"))
   ld <- str_extract(string = ld,
-                    pattern = "(?<=\\d{3}_)([a-z]|-)*")
+                    pattern = paste0("(?<=\\d{3}-", language,
+                                     "_)([a-z]|-|[:digit:])*"))
   ld <- ld[!is.na(ld)]
+  ld <- unique(ld)
 
   return(ld)
-}
-
-#' @title Internal function to get (or set) the full path to a protocol.
-#'
-#' Either provide the full path of an existing, given folder name,
-#' or construct one for non-existing protocols using (new) folder name plus
-#' the theme or project name.
-#'
-#' For existing protocol folders, arguments `theme` and `project_name` are
-#' always ignored.
-#'
-#' To create a new protocol folder,
-#' also either the `theme` or the `project_name` argument are required apart
-#' from the `protocol_folder_name`.
-#'
-#' @param protocol_code Character string giving the protocol code
-#' @param theme A character string equal to one of `"generic"`,
-#' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
-#' Defaults to NULL.
-#' Only needed if no folder with the name of the protocol code exists and
-#' the request is for a thematic protocol.
-#' @param project_name Character string giving the name of the project folder.
-#' Defaults to NULL.
-#' Only needed if no folder with the name of the protocol code exists and
-#' the request is for a project-specific protocol.
-#' @param short_title A character string of less than 20 characters to use in
-#' folder and filenames.
-#' Defaults to NULL.
-#' Only needed if no folder with the name of the protocol code exists.
-#'
-#' @return A character vector containing the full path to the protocol.
-#'
-#' @importFrom rprojroot find_root is_git_root
-#' @importFrom assertthat assert_that is.string
-#' @importFrom stringr str_subset
-#'
-#' @keywords internal
-#'
-#'
-#' @examples
-#' \dontrun{
-#' get_path_to_protocol(protocol_code = "sfp-401-nl")
-#'}
-get_path_to_protocol <- function(protocol_code,
-                                 theme = NULL,
-                                 project_name = NULL,
-                                 short_title = NULL) {
-  assert_that(is.string(protocol_code))
-
-  # first case: the path exists already
-  project_root <- find_root(is_git_root)
-  ld <- list.dirs(path = file.path(project_root, "src"),
-                  full.names = TRUE,
-                  recursive = TRUE)
-  ld <- str_subset(string = ld,
-                   pattern = protocol_code)
-  if (!identical(ld, character(0))) {
-    path_to_protocol <- ld[[1]]
-    return(path_to_protocol)
-  } else {
-    # second case: the path does not yet exist
-    if (is.null(theme) & is.null(project_name) |
-        is.string(theme) & is.string(project_name)) {
-      stop(
-        paste0("Check the spelling of protocol_code - or - provide ",
-        "a string value for theme or project, not both.")
-        )
-    }
-
-    if (is.null(short_title)) {
-      stop("Provide a short title")
-    } else {
-      protocol_folder_name <- paste(protocol_code, short_title, sep = "_")
-    }
-
-    if (is.string(theme)) {
-      subfolder_of <- "thematic"
-      protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                           "theme_number"]
-      theme <- paste0(protocol_leading_number, "_", theme)
-      path_to_protocol <- file.path(project_root,
-                                    "src",
-                                    subfolder_of,
-                                    theme,
-                                    protocol_folder_name)
-      return(path_to_protocol)
-    } else {
-      subfolder_of <- "project"
-      path_to_protocol <- file.path(project_root,
-                                    "src",
-                                    subfolder_of,
-                                    project_name,
-                                    protocol_folder_name)
-      return(path_to_protocol)
-    }
-  }
 }
 
 

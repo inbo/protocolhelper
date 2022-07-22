@@ -17,7 +17,7 @@
 #' @importFrom assertthat assert_that is.string is.flag noNA
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom fs path_rel path_dir dir_create
-#' @importFrom purrr map map2 map2_chr
+#' @importFrom purrr map map2_chr pmap
 #' @importFrom bookdown render_book markdown_document2
 #' @importFrom stringr str_extract str_replace_all coll
 #' @importFrom knitr knit_child
@@ -87,7 +87,7 @@ add_one_subprotocol <-
         file.path(protocol_files) %>%
         path_rel(start = find_root(is_git_root))
 
-      create_command <- function(file_path, dest_path) {
+      create_command <- function(file_path, dest_path, tag) {
         paste0("git show ",
                tag, ":",
                file_path, " > ",
@@ -105,7 +105,7 @@ add_one_subprotocol <-
       dest_paths <- file.path(mainprotocol_path_abs, version_number,
                               protocol_files) %>%
         path_rel(start = find_root(is_git_root))
-      git_commands <- map2(git_filepaths, dest_paths, create_command)
+      git_commands <- pmap(list(git_filepaths, dest_paths, tag), create_command)
       map(git_commands, execshell, intern = FALSE)
     } else {
       stop("no protocol files found")

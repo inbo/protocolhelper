@@ -25,11 +25,14 @@ test_that("complete workflow works", {
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
+  # create empty NEWS.md repo file
+  file.create("NEWS.md")
+
   # create a protocol to be used as subprotocol
   version_number <- "2021.01"
   create_sfp(
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "me", orcids = "0000-0001-2345-6789",
+    authors = "lastname, firstname", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
   )
@@ -38,6 +41,7 @@ test_that("complete workflow works", {
     path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
     version_number = version_number
   )
+
 
 
   # add, commit and tag it
@@ -55,7 +59,7 @@ test_that("complete workflow works", {
   create_sfp(
     title = "subsubprotocoltest", subtitle = "subtitle",
     short_title = "vegetation 1",
-    authors = c("me", "you"),
+    authors = c("Someone, Else", "Another, One"),
     orcids = c("0000-0001-2345-6789", "0000-0001-2345-6789"),
     reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "vegetation", language = "en"
@@ -66,6 +70,7 @@ test_that("complete workflow works", {
                      "sfp-401-en_vegetation-1"),
     version_number = version_number
   )
+
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -81,9 +86,9 @@ test_that("complete workflow works", {
   # create a second protocol to be used as subprotocol
   version_number <- "2021.03"
   create_sfp(title = "Second subprotocol",
-             subtitle = "",
+             subtitle = "subtitle",
              short_title = "second subprotocol",
-             authors = "me",
+             authors = "me, again",
              orcids = "0000-0001-2345-6789",
              reviewers = "someone else",
              file_manager = "who?",
@@ -95,7 +100,8 @@ test_that("complete workflow works", {
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
-    file = "src/thematic/1_water/sfp-102-en_second-subprotocol/07_stappenplan.Rmd",
+    file = file.path("src/thematic/1_water/sfp-102-en_second-subprotocol",
+                     "07_stappenplan.Rmd"),
     append = TRUE)
   # add the projectspecific parameter to index yaml
   index_yml <- rmarkdown::yaml_front_matter(
@@ -133,7 +139,8 @@ test_that("complete workflow works", {
     pic,
     "src/thematic/1_water/sfp-102-en_second-subprotocol/media/Rlogo.png")
   data_media_staged <- gert::git_add(files = ".")
-  chunk1 <- "```{r, out.width='25%'}\nknitr::include_graphics(path = './media/Rlogo.png')\n```"
+  chunk1 <- paste0("```{r, out.width='25%'}\nknitr::include_graphics(path",
+                   " = './media/Rlogo.png')\n```")
   chunk2 <- "```{r}\nread.csv('./data/cars.csv')\n```"
   write(
     x = chunk1,
@@ -148,21 +155,22 @@ test_that("complete workflow works", {
   # src/thematic/1_water/sfp-102-en_second-subprotocol
   add_dependencies(
     code_mainprotocol = "sfp-102-en",
-    protocol_code = 'sfp-401-en',
-    version_number = '2021.02',
+    protocol_code = "sfp-401-en",
+    version_number = "2021.02",
     params = NA,
     appendix = TRUE
   )
 
   add_subprotocols(
     fetch_remote = FALSE,
-    code_mainprotocol = 'sfp-102-en')
+    code_mainprotocol = "sfp-102-en")
 
   update_news(
     path = file.path("src", "thematic", "1_water",
                      "sfp-102-en_second-subprotocol"),
     version_number = version_number
   )
+
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -181,30 +189,30 @@ test_that("complete workflow works", {
     title = "project protocol", subtitle = "subtitle",
     orcids = "0000-0001-2345-6789",
     short_title = "mne protocol",
-    authors = "me", reviewers = "someone else", file_manager = "who?",
+    authors = "John, Doe", reviewers = "someone else", file_manager = "who?",
     version_number = version_number, project_name = "mne", language = "en"
   )
 
   # add subprotocols to
   # src/project/mne/spp-001-en_mne-protocol/
-  #debugonce(add_subprotocols)
   add_dependencies(
     code_mainprotocol = "spp-001-en",
-    protocol_code = c('sfp-101-en', 'sfp-102-en'),
-    version_number = c('2021.01', '2021.03'),
+    protocol_code = c("sfp-101-en", "sfp-102-en"),
+    version_number = c("2021.01", "2021.03"),
     params = list(NA, list(protocolspecific = "newvalue")),
     appendix = c(TRUE, TRUE)
   )
 
   add_subprotocols(
     fetch_remote = FALSE,
-    code_mainprotocol = 'spp-001-en')
+    code_mainprotocol = "spp-001-en")
 
   update_news(
     path = file.path("src", "project", "mne",
                      "spp-001-en_mne-protocol"),
     version_number = version_number
   )
+
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
@@ -224,8 +232,8 @@ test_that("complete workflow works", {
     file.path("src", "thematic", "1_water", "sfp-101-en_water-1", "index.Rmd")
   )
   index_file <- gsub(
-    "version_number: \"[0-9]{4}.[0-9]{2}\"",
-    paste0("version_number: \"", version_number, "\""),
+    "version_number: '[0-9]{4}.[0-9]{2}'",
+    paste0("version_number: '", version_number, "'"),
     index_file
   )
   writeLines(
@@ -236,6 +244,7 @@ test_that("complete workflow works", {
     path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
     version_number = version_number
   )
+
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")

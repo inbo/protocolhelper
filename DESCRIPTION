@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.2.3
+Version: 0.3.0
 Authors@R: c(
     person("Hans", "Van Calster", , "hans.vancalster@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8595-8426")),
@@ -8,6 +8,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-8804-4216")),
     person("Floris", "Vanderhaeghe", , "floris.vanderhaeghe@inbo.be", role = "aut",
            comment = c(ORCID = "0000-0002-6378-6229")),
+    person("Els", "Lommelen", , "els.lommelen@inbo.be", role = "ctb",
+           comment = c(ORCID = "0000-0002-3481-5684")),
     person("Research Institute for Nature and Forest", , , "info@inbo.be", role = c("cph", "fnd"))
   )
 Description: Helper functions to manage INBO protocols.
@@ -18,8 +20,10 @@ BugReports: https://github.com/inbo/protocolhelper/issues
 Depends: 
     R (>= 3.6)
 Imports: 
+    R6,
     assertthat,
     bookdown,
+    checklist (>= 0.2.4),
     commonmark,
     fs,
     gert,
@@ -38,8 +42,9 @@ Suggests:
     magick,
     png,
     testthat (>= 2.1.0)
+Additional_repositories: https://inbo.r-universe.dev
 Encoding: UTF-8
-Language: en-GB
+Language: eng
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1

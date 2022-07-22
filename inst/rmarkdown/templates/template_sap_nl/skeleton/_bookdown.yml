@@ -1,0 +1,17 @@
+book_filename: {{{book_filename}}}
+output_dir: {{{output_dir}}}
+rmd_files: [{{{rmd_files}}}]
+delete_merged_file: true
+language:
+  label:
+    fig:    'Figuur '
+    tab:    'Tabel '
+    eq:     'Vergelijking '
+    thm:    'Theorema '
+    lem:    'Lemma '
+    def:    'Definitie '
+    cor:    'Bijgevolg '
+    prp:    'Propositie '
+    ex:     'Voorbeeld '
+    proof:  'Bewijs. '
+    remark: 'Opmerking. '

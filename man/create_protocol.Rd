@@ -10,17 +10,17 @@ protocol and optionally render to html}
 create_protocol(
   protocol_type = c("sfp", "spp"),
   title,
-  subtitle,
   short_title,
   authors,
   orcids,
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "\%Y"), ".00.dev"),
+  version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-  project_name,
+  project_name = NULL,
   language = c("nl", "en"),
+  subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
   render = FALSE
@@ -66,13 +66,11 @@ standard project protocol)}
 
 \item{title}{A character string giving the main title of the protocol}
 
-\item{subtitle}{A character string for an optional subtitle}
-
 \item{short_title}{A character string of less than 20 characters to use in
 folder and filenames}
 
-\item{authors}{A character vector for authors of the form First name Last
-name}
+\item{authors}{A character vector for authors of the form
+\code{c("lastname1, firstname1", "lastname2, firstname2")}}
 
 \item{orcids}{A character vector of orcid IDs, equal in length to authors.
 If one of the authors does not have an orcid ID, use \code{NA} to indicate this in
@@ -87,11 +85,8 @@ Last name}
 maintainer of the form First name Last name}
 
 \item{version_number}{A version number of the form \code{YYYY.##}.
-For development versions \code{.dev} is added.
-The default is \code{paste0(format(Sys.Date(), "\%Y"), ".00.dev")}
-(See \code{from_docx}).
-When the protocol is ready to be released, this should be changed by a repo-
-admin.}
+The default is a function which will determine this number automatically.
+It should normally not be changed.}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}. It is used as
@@ -107,6 +102,8 @@ Ignored if protocol_type = \code{"sfp"}.}
 
 \item{language}{Language of the protocol, either \code{"nl"} (Dutch),
 the default, or \code{"en"} (English).}
+
+\item{subtitle}{A character string for an optional subtitle}
 
 \item{from_docx}{A character string with the path (absolute or relative) to
 a \code{.docx} file containing a pre-existing protocol.
@@ -166,4 +163,14 @@ The \code{media} folder can be used to store image files and will contain image
 files extracted from the docx protocol when the \code{from_docx} argument is used.
 The \code{data} folder can be used to store tabular data that are needed for the
 protocol.
+}
+\examples{
+\dontrun{
+protocolhelper::create_protocol(
+  title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+  authors = c("Someone, Else", "Another, One"),
+  orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
+  reviewers = "me", file_manager = "who?",
+  theme = "water", language = "en")
+}
 }

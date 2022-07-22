@@ -17,6 +17,9 @@ release into a folder \code{publish/version_number}, where
 release in a year). In addition, earlier
 released and older versions of protocols remain available in the \code{publish}
 folder (see also \code{details}).
+This function is for internal use only.
+If you are looking for a function to preview your protocol,
+see \code{protocolhelper::render_protocol()}.
 }
 \details{
 The links to earlier releases and older versions can be found
