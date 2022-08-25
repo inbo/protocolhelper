@@ -12,7 +12,7 @@
 #' @importFrom fs is_dir
 #' @importFrom assertthat assert_that
 #' @importFrom ymlthis use_index_rmd as_yml
-#' @importFrom gert git_commit_all
+#' @importFrom gert git_status git_add git_commit
 #'
 #' @return TRUE if version number in yaml is updated. FALSE otherwise.
 #' @export
@@ -59,7 +59,14 @@ update_version_number <- function(
     message(message_text)
 
     if (commit) {
-      git_commit_all(message_text, repo = path)
+      unstaged <- git_status(staged = FALSE, repo = path)
+      changes <- unstaged$file[unstaged$status == "modified"]
+      changes <- grep(pattern = "index", x = changes, value = TRUE)
+      if (length(changes)) {
+        git_add(changes, repo = path)
+      }
+      git_commit(message = message_text,
+                 repo = path)
     }
     return(TRUE)
   }
