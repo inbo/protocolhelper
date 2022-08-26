@@ -37,10 +37,10 @@ headings <- purrr::map_dfr(chapters, function(x) {
 library(dplyr)
 library(tidyr)
 headings <- headings %>%
-  separate(col = file, into = c("c0", "c1", "c2", "c3", "template", "c4", "filename"),
+  separate(col = file,
+           into = c("c0", "c1", "c2", "c3", "template", "c4", "filename"),
            sep = "/") %>%
   select(-starts_with("c")) %>%
   mutate(template = str_remove(template, "template_"),
          filename = str_remove(filename, "\\.Rmd")) %>%
   separate(template, c("template_type", "template_lang"))
-
