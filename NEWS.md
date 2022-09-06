@@ -2,6 +2,10 @@
 
 ## Minor changes
 
+* `update_version_number` only commits a modified `Index.Rmd`
+* `get_version_number` temporarilly stashes changes so they don't get lost when
+  switching between branches
+
 # protocolhelper 0.3.0
 
 ## New features
