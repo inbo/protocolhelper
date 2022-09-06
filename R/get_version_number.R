@@ -36,7 +36,7 @@ get_version_number <- function(path = ".") {
               msg = "no branch `origin/main` or `origin/master` found.")
   status <- git_status(repo = path)
   status <- status[status$status != "new", ]
-  if (nrow(status) > 0) git_stash_save(repo = path)
+  if (nrow(status)) git_stash_save(repo = path)
   git_branch_checkout(branch = main_branch)
 
   # list all index.Rmd files
@@ -52,7 +52,9 @@ get_version_number <- function(path = ".") {
 
   # switch back to current branch
   git_branch_checkout(current_branch)
-  if (nrow(git_stash_list(repo = path)) > 0) git_stash_pop(repo = path)
+  if (nrow(status) && nrow(git_stash_list(repo = path))) {
+    git_stash_pop(repo = path)
+  }
 
   return(new_version)
 }
