@@ -21,6 +21,6 @@ root directory of protocolsource repo.}
 TRUE if version number in yaml is updated. FALSE otherwise.
 }
 \description{
-Updates the version number in the YAML section of a protocol
-index.Rmd file
+Makes use of \code{get_version_number} to get a new version number
+and changes this accordingly in the YAML section of index.Rmd file.
 }

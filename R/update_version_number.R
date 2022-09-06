@@ -1,6 +1,9 @@
 #' @title Updates the version number in the YAML section of a protocol
 #' index.Rmd file
 #'
+#' @description Makes use of `get_version_number` to get a new version number
+#' and changes this accordingly in the YAML section of index.Rmd file.
+#'
 #' @param protocol_code The protocol_code corresponding with the name of the
 #' branch that contains the new or updated protocol.
 #' @param path Default is current working directory. Should correspond with

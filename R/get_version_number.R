@@ -5,6 +5,9 @@
 #' calculates an incremented (next) version number for the currently checkout
 #' branch containing the created/in development/updated/ready to be released
 #' protocol.
+#' Your local main branch needs to up to date (aligned with remote) for this.
+#' If this is not the case, or other issues are detected regarding a non-clean
+#' local git repository - informative error messages will be given.
 #'
 #' @param path Defaults to current working directory.
 #' This should correspond with the root directory of the protocolsource repo.
