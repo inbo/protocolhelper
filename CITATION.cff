@@ -17,7 +17,7 @@ contact:
 - email: info@inbo.be
   name: Research Institute for Nature and Forest
 title: 'protocolhelper: Helper Functions to Manage Protocols'
-version: 0.3.1
+version: 0.3.2
 abstract: Helper functions to manage INBO protocols.
 license: GPL-3.0
 type: software
@@ -25,4 +25,3 @@ repository-code: https://github.com/inbo/protocolhelper
 identifiers:
 - type: url
   value: https://inbo.github.io/protocolhelper/
-keywords: R package
