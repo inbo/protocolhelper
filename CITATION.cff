@@ -25,3 +25,4 @@ repository-code: https://github.com/inbo/protocolhelper
 identifiers:
 - type: url
   value: https://inbo.github.io/protocolhelper/
+keywords: R package
