@@ -5,6 +5,9 @@
 #' calculates an incremented (next) version number for the currently checkout
 #' branch containing the created/in development/updated/ready to be released
 #' protocol.
+#' Your local main branch needs to up to date (aligned with remote) for this.
+#' If this is not the case, or other issues are detected regarding a non-clean
+#' local git repository - informative error messages will be given.
 #'
 #' @param path Defaults to current working directory.
 #' This should correspond with the root directory of the protocolsource repo.
@@ -13,7 +16,8 @@
 #' @importFrom fs dir_ls is_dir
 #' @importFrom purrr map map_chr
 #' @importFrom rmarkdown yaml_front_matter
-#' @importFrom gert git_branch git_branch_checkout git_branch_list
+#' @importFrom gert git_branch git_branch_checkout git_branch_list git_stash_pop
+#' git_stash_save git_stash_list git_status
 #' @importFrom assertthat assert_that
 #'
 #' @return A string containing the next (incremented) version number
@@ -33,6 +37,9 @@ get_version_number <- function(path = ".") {
                                        "master", "unknown"))
   assert_that(main_branch %in% c("main", "master"),
               msg = "no branch `origin/main` or `origin/master` found.")
+  status <- git_status(repo = path)
+  status <- status[status$status != "new", ]
+  if (nrow(status)) git_stash_save(repo = path)
   git_branch_checkout(branch = main_branch)
 
   # list all index.Rmd files
@@ -48,6 +55,9 @@ get_version_number <- function(path = ".") {
 
   # switch back to current branch
   git_branch_checkout(current_branch)
+  if (nrow(status) && nrow(git_stash_list(repo = path))) {
+    git_stash_pop(repo = path)
+  }
 
   return(new_version)
 }

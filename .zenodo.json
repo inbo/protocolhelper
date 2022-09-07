@@ -1,6 +1,6 @@
 {
   "title": "protocolhelper: Helper Functions to Manage Protocols",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Helper functions to manage INBO protocols.",
   "creators": [
     {

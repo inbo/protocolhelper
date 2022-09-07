@@ -1,6 +1,9 @@
 #' @title Updates the version number in the YAML section of a protocol
 #' index.Rmd file
 #'
+#' @description Makes use of `get_version_number` to get a new version number
+#' and changes this accordingly in the YAML section of index.Rmd file.
+#'
 #' @param protocol_code The protocol_code corresponding with the name of the
 #' branch that contains the new or updated protocol.
 #' @param path Default is current working directory. Should correspond with
@@ -12,7 +15,7 @@
 #' @importFrom fs is_dir
 #' @importFrom assertthat assert_that
 #' @importFrom ymlthis use_index_rmd as_yml
-#' @importFrom gert git_commit_all
+#' @importFrom gert git_status git_add git_commit
 #'
 #' @return TRUE if version number in yaml is updated. FALSE otherwise.
 #' @export
@@ -59,7 +62,14 @@ update_version_number <- function(
     message(message_text)
 
     if (commit) {
-      git_commit_all(message_text, repo = path)
+      unstaged <- git_status(staged = FALSE, repo = path)
+      changes <- unstaged$file[unstaged$status == "modified"]
+      changes <- grep(pattern = "index", x = changes, value = TRUE)
+      if (length(changes)) {
+        git_add(changes, repo = path)
+      }
+      git_commit(message = message_text,
+                 repo = path)
     }
     return(TRUE)
   }
