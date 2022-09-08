@@ -1,3 +1,7 @@
+# protocolhelper 0.3.2
+
+* patch to update checklist machinery
+
 # protocolhelper 0.3.1
 
 ## Minor changes
