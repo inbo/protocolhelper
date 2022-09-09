@@ -1,3 +1,9 @@
+# protocolhelper 0.3.3
+
+* added a generic template which can be used as alternative to sfp, sip, sap,
+  and sop templates
+* changed create_protocol to handle sap, sip, sop and generic templates
+
 # protocolhelper 0.3.2
 
 * patch to update checklist machinery
