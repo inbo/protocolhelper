@@ -35,7 +35,7 @@ test_that("check structure works", {
   )
 
   update_news(
-    path = file.path("src", "thematic", "1_water", "sfp-101-en_water-1"),
+    path = file.path("source", "sfp", "1_water", "sfp-101-en_water-1"),
     version_number = version_number
   )
 

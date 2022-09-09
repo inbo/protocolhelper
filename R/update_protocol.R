@@ -17,7 +17,7 @@ update_protocol <- function(protocol_code) {
   # check if protocol_code exists
   check_protocolcode(protocol_code)
   project_root <- find_root(is_git_root)
-  ld <- list.dirs(path = file.path(project_root, "src"),
+  ld <- list.dirs(path = file.path(project_root, "source"),
                   full.names = TRUE,
                   recursive = TRUE)
   ld <- str_subset(string = ld,

@@ -16,7 +16,7 @@
 #'
 #' @details The links to earlier releases and older versions can be found
 #' through a subfolder structure below `publish/version_number` that mirrors the
-#' structure of `src/thematic` and `src/project`.
+#' structure of `source/`.
 #'
 #'
 #' @importFrom assertthat assert_that is.string
@@ -48,7 +48,7 @@ render_release <- function(output_root = "publish") {
   output_root <- file.path(git_root, output_root)
 
   protocol_index <- dir_ls(
-    file.path(git_root, "src"),
+    file.path(git_root, "source"),
     type = "file",
     recurse = 3,
     regexp = "index\\.Rmd"
@@ -197,7 +197,7 @@ render_release <- function(output_root = "publish") {
   )
   meta <- aggregate(Rmd ~ theme, data = meta, FUN = paste, collapse = "\n\n")
   meta$Rmd <- sprintf("# %s\n\n%s", meta$theme, meta$Rmd)
-  setwd(file.path(git_root, "src"))
+  setwd(file.path(git_root, "source"))
   if (!file_exists("homepage.Rmd")) {
     writeLines(
       "---\ntitle: INBO protocols\ndate: '`r Sys.Date()`'\noutput: html_document
@@ -207,10 +207,10 @@ render_release <- function(output_root = "publish") {
   }
   homepage <- readLines("homepage.Rmd")
   writeLines(c(homepage, paste(meta$Rmd, collapse = "\n\n")), "homepage.Rmd")
-  if (!dir_exists(file.path(git_root, "src", "css"))) {
+  if (!dir_exists(file.path(git_root, "source", "css"))) {
     dir_copy(
       system.file("css", package = "protocolhelper"),
-      file.path(git_root, "src", "css")
+      file.path(git_root, "source", "css")
     )
   }
   render(

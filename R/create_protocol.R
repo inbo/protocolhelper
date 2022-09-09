@@ -8,10 +8,10 @@
 #' be saved in a matching subfolder of the `docs` folder.
 #'
 #'
-#' @details It is assumed that the `src` folder is a subfolder of an RStudio
+#' @details It is assumed that the `source` folder is a subfolder of an RStudio
 #' project with git version control.
 #' A target folder to which files will be written will be created as
-#' subdirectories beneath `src`.
+#' subdirectories beneath `source`.
 #' The subfolder structure is of the form
 #' `/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/` for
 #' standard field protocols.
@@ -24,7 +24,7 @@
 #' `render = TRUE`.
 #' The template Rmarkdown files and the Rmarkdown files that result from
 #' converting a docx protocol (see `from_docx` argument), will be written to
-#' the target folder beneath `src`.
+#' the target folder beneath `source`.
 #' Template Rmarkdown files with the same name as Rmarkdown files that result
 #' from converting a docx protocol will be overwritten by the latter.
 #' Besides Rmarkdown files, this target folder will also contain files needed to
@@ -55,10 +55,10 @@
 #' The default is a function which will determine this number automatically.
 #' It should normally not be changed.
 #' @param project_name A character string that is used as the folder location
-#' (`src/project/project_name`) where project-specific protocols that belong to
+#' (`source/spp/project_name`) where project-specific protocols that belong to
 #' the same project will be stored. Preferably a short name or acronym. If the
 #' folder does not exist, it will be created.
-#' Ignored if protocol_type = `"sfp"`.
+#' Ignored if protocol_type is other than `"spp"`.
 #' @param short_title A character string of less than 20 characters to use in
 #' folder and filenames
 #' @param from_docx A character string with the path (absolute or relative) to
@@ -105,7 +105,7 @@ create_protocol <- function(
   reviewers,
   file_manager,
   version_number = get_version_number(),
-  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+  theme = NULL,
   project_name = NULL,
   language = c("nl", "en"),
   subtitle = NULL,
@@ -151,7 +151,8 @@ create_protocol <- function(
   assert_that(is.string(file_manager))
   check_versionnumber(version_number)
   if (protocol_type == "sfp") {
-    theme <- match.arg(theme)
+    assert_that(is.string(theme),
+                theme %in% themes_df$theme)
     protocol_leading_number <- themes_df[themes_df$theme == theme,
                                          "theme_number"]
   }
@@ -197,21 +198,11 @@ create_protocol <- function(
   project_root <- find_root(is_git_root)
 
   # directory setup
-  if (protocol_type == "sfp") {
-    path_to_protocol <- get_path_to_protocol(theme = theme,
-                                             protocol_code = protocol_code,
-                                             short_title = short_title)
-    nr_theme <- paste0(protocol_leading_number, "_", theme)
-    output_dir <- file.path(project_root, "docs", "thematic", nr_theme,
-                            folder_name)
-  }
-  if (protocol_type == "spp") {
-    path_to_protocol <- get_path_to_protocol(project_name = project_name,
-                                             protocol_code = protocol_code,
-                                             short_title = short_title)
-    output_dir <- file.path(project_root, "docs", "project", project_name,
-                            folder_name)
-  }
+  path_to_protocol <- get_path_to_protocol(protocol_code,
+                                           theme = theme,
+                                           project_name = project_name,
+                                           short_title = short_title)
+  output_dir <- gsub("source", "docs", path_to_protocol)
 
   # next make it relative to path_to_protocol
   output_dir_rel <- path_rel(output_dir, path_to_protocol)
@@ -523,7 +514,7 @@ create_sop <- function(
 #' @title Function to list all occupied protocol numbers
 #'
 #' @description This function will search for protocol numbers in filenames of
-#' Rmarkdown files listed underneath the src folder.
+#' Rmarkdown files listed underneath the source folder.
 #' The search will be restricted to files of a given protocol type and given
 #' language.
 #'
@@ -553,8 +544,8 @@ get_protocolnumbers <- function(
   language <- match.arg(language)
 
   project_root <- find_root(is_git_root)
-  path_to_src <- file.path(project_root, "src")
-  ld <- list.dirs(path = path_to_src,
+  path_to_source <- file.path(project_root, "source")
+  ld <- list.dirs(path = path_to_source,
                    recursive = TRUE,
                    full.names = FALSE
   )
@@ -574,7 +565,7 @@ get_protocolnumbers <- function(
 #' @title Function to list all short titles that are already in use.
 #'
 #' @description This function will search for short titles in filenames of
-#' Rmarkdown files listed underneath the src folder.
+#' Rmarkdown files listed underneath the source folder.
 #' The search will be restricted to files of a given protocol type and given
 #' language.
 #'
@@ -604,8 +595,8 @@ get_short_titles <- function(
   language <- match.arg(language)
 
   project_root <- find_root(is_git_root)
-  path_to_src <- file.path(project_root, "src")
-  ld <- list.dirs(path = path_to_src,
+  path_to_source <- file.path(project_root, "source")
+  ld <- list.dirs(path = path_to_source,
                    recursive = TRUE,
                    full.names = FALSE
   )
@@ -633,9 +624,9 @@ get_short_titles <- function(
 #' standard instrument protocol), `sop` (standard operating protocol)
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`. It is used as
-#' the folder location (`src/thematic/theme`) where standard field protocols
+#' the folder location (`source/sfp/theme`) where standard field protocols
 #' that belong to the same theme will be stored.
-#' Ignored if protocol_type = `"spp"`.
+#' Ignored if protocol_type is other than `"sfp"`.
 #' @param protocol_number A character string giving the protocol number.
 #' This parameter should normally not be specified (i.e. NULL), unless
 #' `from_docx` is specified.
