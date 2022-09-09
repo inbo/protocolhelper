@@ -153,8 +153,6 @@ create_protocol <- function(
   if (protocol_type == "sfp") {
     assert_that(is.string(theme),
                 theme %in% themes_df$theme)
-    protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                         "theme_number"]
   }
   if (protocol_type == "spp") {
     assert_that(is.string(project_name))
@@ -194,8 +192,6 @@ create_protocol <- function(
   book_filename <- paste0(protocol_filename, ".Rmd")
   # the output_dir should be set as a relative path to make it reproducible on
   # other machines: it should be relative to path_to_protocol
-  # first get the absolute path
-  project_root <- find_root(is_git_root)
 
   # directory setup
   path_to_protocol <- get_path_to_protocol(protocol_code,
