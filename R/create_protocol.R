@@ -96,7 +96,7 @@
 #' }
 
 create_protocol <- function(
-  protocol_type = c("sfp", "spp"),
+  protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
   title,
   short_title,
   authors,
@@ -367,7 +367,7 @@ create_sfp <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
+  version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -401,7 +401,7 @@ create_spp <- function(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "%Y"), ".00.dev"),
+  version_number = get_version_number(),
   project_name,
   language = c("nl", "en"),
   from_docx = NULL,
@@ -424,7 +424,101 @@ create_spp <- function(
                   render = render)
 }
 
+#' @rdname create_protocol
+#' @export
+create_sap <- function(
+    title,
+    subtitle,
+    short_title,
+    authors,
+    orcids,
+    date = Sys.Date(),
+    reviewers,
+    file_manager,
+    version_number = get_version_number(),
+    language = c("nl", "en"),
+    from_docx = NULL,
+    protocol_number = NULL,
+    render = FALSE) {
+  create_protocol(protocol_type = "sap",
+                  title = title,
+                  subtitle = subtitle,
+                  short_title = short_title,
+                  authors = authors,
+                  orcids = orcids,
+                  date = date,
+                  reviewers = reviewers,
+                  file_manager = file_manager,
+                  version_number = version_number,
+                  language = language,
+                  from_docx = from_docx,
+                  protocol_number = protocol_number,
+                  render = render)
+}
 
+#' @rdname create_protocol
+#' @export
+create_sip <- function(
+    title,
+    subtitle,
+    short_title,
+    authors,
+    orcids,
+    date = Sys.Date(),
+    reviewers,
+    file_manager,
+    version_number = get_version_number(),
+    language = c("nl", "en"),
+    from_docx = NULL,
+    protocol_number = NULL,
+    render = FALSE) {
+  create_protocol(protocol_type = "sip",
+                  title = title,
+                  subtitle = subtitle,
+                  short_title = short_title,
+                  authors = authors,
+                  orcids = orcids,
+                  date = date,
+                  reviewers = reviewers,
+                  file_manager = file_manager,
+                  version_number = version_number,
+                  language = language,
+                  from_docx = from_docx,
+                  protocol_number = protocol_number,
+                  render = render)
+}
+
+#' @rdname create_protocol
+#' @export
+create_sop <- function(
+    title,
+    subtitle,
+    short_title,
+    authors,
+    orcids,
+    date = Sys.Date(),
+    reviewers,
+    file_manager,
+    version_number = get_version_number(),
+    language = c("nl", "en"),
+    from_docx = NULL,
+    protocol_number = NULL,
+    render = FALSE) {
+  create_protocol(protocol_type = "sop",
+                  title = title,
+                  subtitle = subtitle,
+                  short_title = short_title,
+                  authors = authors,
+                  orcids = orcids,
+                  date = date,
+                  reviewers = reviewers,
+                  file_manager = file_manager,
+                  version_number = version_number,
+                  language = language,
+                  from_docx = from_docx,
+                  protocol_number = protocol_number,
+                  render = render)
+}
 
 #' @title Function to list all occupied protocol numbers
 #'
@@ -530,12 +624,13 @@ get_short_titles <- function(
 
 #' Create protocol code from it's components
 #'
-#' A protocol code of format `s[f|p]p-###-[nl|en]` will be created.
+#' A protocol code of format `s[a|f|i|o|p]p-###-[nl|en]` will be created.
 #' The number will be determined automatically based on theme (in case of sfp)
 #' and a rank order of all existing protocol numbers
 #'
-#' @param protocol_type Either `sfp` (standard field protocol) or `spp` (
-#' standard project protocol)
+#' @param protocol_type Either `sfp` (standard field protocol), `spp` (
+#' standard project protocol), `sap` (standard analytical protocol), `sip` (
+#' standard instrument protocol), `sop` (standard operating protocol)
 #' @param theme A character string equal to one of `"generic"` (default),
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`. It is used as
 #' the folder location (`src/thematic/theme`) where standard field protocols
@@ -588,7 +683,7 @@ create_protocol_code <- function(
                                 protocol_trailing_number)
     }
   }
-  if (protocol_type == "spp") {
+  if (protocol_type %in% c("spp", "sap", "sip", "sop")) {
     if (is.null(protocol_number)) {
       all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
                                          language = language)
