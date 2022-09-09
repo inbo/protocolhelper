@@ -1,8 +1,17 @@
-# protocolhelper 0.3.3
+# protocolhelper 0.4.0
+
+## breaking changes
+
+* reworked folder structure (src becomes source, thematic becomes sfp, project
+  becomes spp)
+
+## New features
 
 * added a generic template which can be used as alternative to sfp, sip, sap,
-  and sop templates
+  and sop templates #78
 * changed create_protocol to handle sap, sip, sop and generic templates
+
+## Minor changes
 
 # protocolhelper 0.3.2
 
