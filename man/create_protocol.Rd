@@ -4,11 +4,14 @@
 \alias{create_protocol}
 \alias{create_sfp}
 \alias{create_spp}
+\alias{create_sap}
+\alias{create_sip}
+\alias{create_sop}
 \title{Create a folder with a bookdown (R markdown) template to start a new
 protocol and optionally render to html}
 \usage{
 create_protocol(
-  protocol_type = c("sfp", "spp"),
+  protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
   title,
   short_title,
   authors,
@@ -17,7 +20,7 @@ create_protocol(
   reviewers,
   file_manager,
   version_number = get_version_number(),
-  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+  theme = NULL,
   project_name = NULL,
   language = c("nl", "en"),
   subtitle = NULL,
@@ -35,7 +38,7 @@ create_sfp(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "\%Y"), ".00.dev"),
+  version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -52,8 +55,56 @@ create_spp(
   date = Sys.Date(),
   reviewers,
   file_manager,
-  version_number = paste0(format(Sys.Date(), "\%Y"), ".00.dev"),
+  version_number = get_version_number(),
   project_name,
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  render = FALSE
+)
+
+create_sap(
+  title,
+  subtitle,
+  short_title,
+  authors,
+  orcids,
+  date = Sys.Date(),
+  reviewers,
+  file_manager,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  render = FALSE
+)
+
+create_sip(
+  title,
+  subtitle,
+  short_title,
+  authors,
+  orcids,
+  date = Sys.Date(),
+  reviewers,
+  file_manager,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  render = FALSE
+)
+
+create_sop(
+  title,
+  subtitle,
+  short_title,
+  authors,
+  orcids,
+  date = Sys.Date(),
+  reviewers,
+  file_manager,
+  version_number = get_version_number(),
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
@@ -61,8 +112,9 @@ create_spp(
 )
 }
 \arguments{
-\item{protocol_type}{Either \code{sfp} (standard field protocol) or \code{spp} (
-standard project protocol)}
+\item{protocol_type}{Either \code{sfp} (standard field protocol), \code{spp} (
+standard project protocol), \code{sap} (standard analytical protocol), \code{sip} (
+standard instrument protocol), \code{sop} (standard operating protocol)}
 
 \item{title}{A character string giving the main title of the protocol}
 
@@ -90,15 +142,15 @@ It should normally not be changed.}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}. It is used as
-the folder location (\code{src/thematic/theme}) where standard field protocols
+the folder location (\code{source/sfp/theme}) where standard field protocols
 that belong to the same theme will be stored.
-Ignored if protocol_type = \code{"spp"}.}
+Ignored if protocol_type is other than \code{"sfp"}.}
 
 \item{project_name}{A character string that is used as the folder location
-(\code{src/project/project_name}) where project-specific protocols that belong to
+(\code{source/spp/project_name}) where project-specific protocols that belong to
 the same project will be stored. Preferably a short name or acronym. If the
 folder does not exist, it will be created.
-Ignored if protocol_type = \code{"sfp"}.}
+Ignored if protocol_type is other than \code{"spp"}.}
 
 \item{language}{Language of the protocol, either \code{"nl"} (Dutch),
 the default, or \code{"en"} (English).}
@@ -134,10 +186,10 @@ Optionally, the rmarkdown chapters are rendered to an html file which will
 be saved in a matching subfolder of the \code{docs} folder.
 }
 \details{
-It is assumed that the \code{src} folder is a subfolder of an RStudio
+It is assumed that the \code{source} folder is a subfolder of an RStudio
 project with git version control.
 A target folder to which files will be written will be created as
-subdirectories beneath \code{src}.
+subdirectories beneath \code{source}.
 The subfolder structure is of the form
 \verb{/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/} for
 standard field protocols.
@@ -150,7 +202,7 @@ output files needed for rendering to html output will be placed in it if
 \code{render = TRUE}.
 The template Rmarkdown files and the Rmarkdown files that result from
 converting a docx protocol (see \code{from_docx} argument), will be written to
-the target folder beneath \code{src}.
+the target folder beneath \code{source}.
 Template Rmarkdown files with the same name as Rmarkdown files that result
 from converting a docx protocol will be overwritten by the latter.
 Besides Rmarkdown files, this target folder will also contain files needed to

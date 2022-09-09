@@ -7,14 +7,15 @@
 create_protocol_code(protocol_type, theme, protocol_number, language)
 }
 \arguments{
-\item{protocol_type}{Either \code{sfp} (standard field protocol) or \code{spp} (
-standard project protocol)}
+\item{protocol_type}{Either \code{sfp} (standard field protocol), \code{spp} (
+standard project protocol), \code{sap} (standard analytical protocol), \code{sip} (
+standard instrument protocol), \code{sop} (standard operating protocol)}
 
 \item{theme}{A character string equal to one of \code{"generic"} (default),
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}. It is used as
-the folder location (\code{src/thematic/theme}) where standard field protocols
+the folder location (\code{source/sfp/theme}) where standard field protocols
 that belong to the same theme will be stored.
-Ignored if protocol_type = \code{"spp"}.}
+Ignored if protocol_type is other than \code{"sfp"}.}
 
 \item{protocol_number}{A character string giving the protocol number.
 This parameter should normally not be specified (i.e. NULL), unless
@@ -35,7 +36,7 @@ the default, or \code{"en"} (English).}
 A character string containing the protocol_code
 }
 \description{
-A protocol code of format \verb{s[f|p]p-###-[nl|en]} will be created.
+A protocol code of format \verb{s[a|f|i|o|p]p-###-[nl|en]} will be created.
 The number will be determined automatically based on theme (in case of sfp)
 and a rank order of all existing protocol numbers
 }

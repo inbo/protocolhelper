@@ -22,7 +22,7 @@ protoocol type
 }
 \description{
 This function will search for protocol numbers in filenames of
-Rmarkdown files listed underneath the src folder.
+Rmarkdown files listed underneath the source folder.
 The search will be restricted to files of a given protocol type and given
 language.
 }
