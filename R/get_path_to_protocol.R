@@ -54,7 +54,7 @@ get_path_to_protocol <- function(protocol_code,
                   full.names = TRUE,
                   recursive = TRUE)
   ld <- str_subset(string = ld,
-                   pattern = protocol_code)
+                   pattern = str_replace_all(protocol_code, "-", "_"))
   if (!identical(ld, character(0))) {
     path_to_protocol <- ld[[1]]
     return(path_to_protocol)
@@ -64,7 +64,8 @@ get_path_to_protocol <- function(protocol_code,
   if (is.null(short_title)) {
     stop("Provide a short title")
   } else {
-    protocol_folder_name <- paste(protocol_code, short_title, sep = "_")
+    protocol_folder_name <- paste(
+      str_replace_all(protocol_code, "-", "_"), short_title, sep = "_")
   }
 
   if (protocol_type == "sfp") {

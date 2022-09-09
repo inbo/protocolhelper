@@ -191,10 +191,12 @@ project with git version control.
 A target folder to which files will be written will be created as
 subdirectories beneath \code{source}.
 The subfolder structure is of the form
-\verb{/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/} for
+\verb{/sfp/<theme>/<sfp>_<protocolnumber>_<language>_<short_title>/} for
 standard field protocols.
-Or \verb{/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/}
+Or \verb{/spp/<project_name>/<spp>_<protocolnumber>_<language>_<short_title>/}
 for standard project protocols.
+Or \verb{/sip/<sip>_<protocolnumber>_<language>_<short_title>/} for sips (and
+analogous for sop and sap).
 The folder names are determined by the corresponding arguments of the
 function.
 A matching subfolder structure will be created beneath the \code{docs} folder (and
@@ -219,6 +221,7 @@ protocol.
 \examples{
 \dontrun{
 protocolhelper::create_protocol(
+  protocol_type = "sfp",
   title = "Test 1", subtitle = "subtitle", short_title = "water 1",
   authors = c("Someone, Else", "Another, One"),
   orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),

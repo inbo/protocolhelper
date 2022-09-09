@@ -13,10 +13,12 @@
 #' A target folder to which files will be written will be created as
 #' subdirectories beneath `source`.
 #' The subfolder structure is of the form
-#' `/thematic/<theme>/<sfp>-<protocolnumber>-<language>_<short_title>/` for
+#' `/sfp/<theme>/<sfp>_<protocolnumber>_<language>_<short_title>/` for
 #' standard field protocols.
-#' Or `/project/<project_name>/<spp>-<protocolnumber>-<language>_<short_title>/`
+#' Or `/spp/<project_name>/<spp>_<protocolnumber>_<language>_<short_title>/`
 #' for standard project protocols.
+#' Or `/sip/<sip>_<protocolnumber>_<language>_<short_title>/` for sips (and
+#' analogous for sop and sap).
 #' The folder names are determined by the corresponding arguments of the
 #' function.
 #' A matching subfolder structure will be created beneath the `docs` folder (and
@@ -88,6 +90,7 @@
 #' @examples
 #' \dontrun{
 #' protocolhelper::create_protocol(
+#'   protocol_type = "sfp",
 #'   title = "Test 1", subtitle = "subtitle", short_title = "water 1",
 #'   authors = c("Someone, Else", "Another, One"),
 #'   orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
@@ -177,7 +180,7 @@ create_protocol <- function(
 
 
   short_title <- tolower(short_title)
-  short_title <- str_replace_all(short_title, " ", "-")
+  short_title <- str_replace_all(short_title, " ", "_")
   short_titles <- get_short_titles(protocol_type = protocol_type,
                                    language = language)
   assert_that(!(short_title %in% short_titles),
@@ -185,7 +188,9 @@ create_protocol <- function(
               Give a short title that is not in use.
               Use get_short_titles() to get an overview of short titles
               that are in use.")
-  folder_name <- paste0(protocol_code, "_", short_title)
+  folder_name <- paste0(
+    str_replace_all(protocol_code, "-", "_"),
+    "_", short_title)
   folder_name <- tolower(folder_name)
   protocol_filename <- folder_name
   # set _bookdown.yml values
@@ -548,9 +553,9 @@ get_protocolnumbers <- function(
   ld <- str_subset(string = ld,
                    pattern = protocol_type)
   ld <- str_subset(string = ld,
-                   pattern = paste0("-", language, "_"))
+                   pattern = paste0("_", language, "_"))
   ld <- str_extract(string = ld,
-                    pattern = "(?<=p-)\\d{3}")
+                    pattern = "(?<=p_)\\d{3}")
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
 
@@ -597,10 +602,10 @@ get_short_titles <- function(
                    full.names = FALSE
   )
   ld <- str_subset(string = ld,
-                   pattern = protocol_type)
+                   pattern = str_replace_all(protocol_type, "-", "_"))
   ld <- str_extract(string = ld,
-                    pattern = paste0("(?<=\\d{3}-", language,
-                                     "_)([a-z]|-|[:digit:])*"))
+                    pattern = paste0("(?<=\\d{3}_", language,
+                                     "_)([a-z]|_|[:digit:])*"))
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
 

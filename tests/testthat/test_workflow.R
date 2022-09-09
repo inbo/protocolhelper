@@ -38,7 +38,7 @@ test_that("complete workflow works", {
   )
 
   update_news(
-    path = file.path("source", "sfp", "1_water", "sfp-101-en_water-1"),
+    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
     version_number = version_number
   )
 
@@ -52,7 +52,7 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
 
-  render_release()
+  protocolhelper:::render_release()
 
   # create a protocol which will also be used as subprotocol
   version_number <- "2021.02"
@@ -67,7 +67,7 @@ test_that("complete workflow works", {
 
   update_news(
     path = file.path("source", "sfp", "4_vegetation",
-                     "sfp-401-en_vegetation-1"),
+                     "sfp_401_en_vegetation_1"),
     version_number = version_number
   )
 
@@ -81,7 +81,7 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
 
 
-  render_release()
+  protocolhelper:::render_release()
 
   # create a second protocol to be used as subprotocol
   version_number <- "2021.03"
@@ -100,24 +100,24 @@ test_that("complete workflow works", {
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
-    file = file.path("source/sfp/1_water/sfp-102-en_second-subprotocol",
+    file = file.path("source/sfp/1_water/sfp_102_en_second_subprotocol",
                      "07_stappenplan.Rmd"),
     append = TRUE)
   # add the projectspecific parameter to index yaml
   index_yml <- rmarkdown::yaml_front_matter(
-    "source/sfp/1_water/sfp-102-en_second-subprotocol/index.Rmd")
+    "source/sfp/1_water/sfp_102_en_second_subprotocol/index.Rmd")
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
   index_yml <- ymlthis::yml_params(index_yml, protocolspecific = "defaultvalue")
   template_rmd <-
-    "source/sfp/1_water/sfp-102-en_second-subprotocol/template.Rmd"
+    "source/sfp/1_water/sfp_102_en_second_subprotocol/template.Rmd"
   file.copy(
-    from = "source/sfp/1_water/sfp-102-en_second-subprotocol/index.Rmd",
+    from = "source/sfp/1_water/sfp_102_en_second_subprotocol/index.Rmd",
     to = template_rmd)
-  unlink("source/sfp/1_water/sfp-102-en_second-subprotocol/index.Rmd")
+  unlink("source/sfp/1_water/sfp_102_en_second_subprotocol/index.Rmd")
   ymlthis::use_index_rmd(
     .yml = index_yml,
-    path = "source/sfp/1_water/sfp-102-en_second-subprotocol/",
+    path = "source/sfp/1_water/sfp_102_en_second_subprotocol/",
     template = template_rmd,
     include_body = TRUE,
     include_yaml = FALSE,
@@ -129,7 +129,7 @@ test_that("complete workflow works", {
   # test data and media
   write.csv(
     x = cars,
-    file = "source/sfp/1_water/sfp-102-en_second-subprotocol/data/cars.csv")
+    file = "source/sfp/1_water/sfp_102_en_second_subprotocol/data/cars.csv")
   z <- tempfile()
   download.file("https://www.r-project.org/logo/Rlogo.png",
                 z,
@@ -137,22 +137,22 @@ test_that("complete workflow works", {
   pic <- png::readPNG(z)
   png::writePNG(
     pic,
-    "source/sfp/1_water/sfp-102-en_second-subprotocol/media/Rlogo.png")
+    "source/sfp/1_water/sfp_102_en_second_subprotocol/media/Rlogo.png")
   data_media_staged <- gert::git_add(files = ".")
   chunk1 <- paste0("```{r, out.width='25%'}\nknitr::include_graphics(path",
                    " = './media/Rlogo.png')\n```")
   chunk2 <- "```{r}\nread.csv('./data/cars.csv')\n```"
   write(
     x = chunk1,
-    file = "source/sfp/1_water/sfp-102-en_second-subprotocol/07_workflow.Rmd",
+    file = "source/sfp/1_water/sfp_102_en_second_subprotocol/07_workflow.Rmd",
     append = TRUE)
   write(
     x = chunk2,
-    file = "source/sfp/1_water/sfp-102-en_second-subprotocol/07_workflow.Rmd",
+    file = "source/sfp/1_water/sfp_102_en_second_subprotocol/07_workflow.Rmd",
     append = TRUE)
 
   # add a sub-subprotocol to
-  # source/sfp/1_water/sfp-102-en_second-subprotocol
+  # source/sfp/1_water/sfp_102_en_second_subprotocol
   add_dependencies(
     code_mainprotocol = "sfp-102-en",
     protocol_code = "sfp-401-en",
@@ -167,7 +167,7 @@ test_that("complete workflow works", {
 
   update_news(
     path = file.path("source", "sfp", "1_water",
-                     "sfp-102-en_second-subprotocol"),
+                     "sfp_102_en_second_subprotocol"),
     version_number = version_number
   )
 
@@ -180,7 +180,7 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
 
-  render_release()
+  protocolhelper:::render_release()
 
 
   # create a project protocol
@@ -194,7 +194,7 @@ test_that("complete workflow works", {
   )
 
   # add subprotocols to
-  # source/spp/mne/spp-001-en_mne-protocol/
+  # source/spp/mne/spp_001_en_mne_protocol/
   add_dependencies(
     code_mainprotocol = "spp-001-en",
     protocol_code = c("sfp-101-en", "sfp-102-en"),
@@ -209,7 +209,7 @@ test_that("complete workflow works", {
 
   update_news(
     path = file.path("source", "spp", "mne",
-                     "spp-001-en_mne-protocol"),
+                     "spp_001_en_mne_protocol"),
     version_number = version_number
   )
 
@@ -224,12 +224,12 @@ test_that("complete workflow works", {
 
 
   # render release which will output to publish folder
-  render_release()
+  protocolhelper:::render_release()
 
   # update first protocol
   version_number <- "2021.05"
   index_file <- readLines(
-    file.path("source", "sfp", "1_water", "sfp-101-en_water-1", "index.Rmd")
+    file.path("source", "sfp", "1_water", "sfp_101_en_water_1", "index.Rmd")
   )
   index_file <- gsub(
     "version_number: '[0-9]{4}.[0-9]{2}'",
@@ -238,10 +238,10 @@ test_that("complete workflow works", {
   )
   writeLines(
     index_file,
-    file.path("source", "sfp", "1_water", "sfp-101-en_water-1", "index.Rmd")
+    file.path("source", "sfp", "1_water", "sfp_101_en_water_1", "index.Rmd")
   )
   update_news(
-    path = file.path("source", "sfp", "1_water", "sfp-101-en_water-1"),
+    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
     version_number = version_number
   )
 
@@ -254,7 +254,7 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
 
-  render_release()
+  protocolhelper:::render_release()
 
 
 

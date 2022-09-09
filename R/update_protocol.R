@@ -5,7 +5,7 @@
 #' @inheritParams get_path_to_protocol
 #'
 #' @importFrom rprojroot find_root is_git_root
-#' @importFrom stringr str_subset
+#' @importFrom stringr str_subset str_replace_all
 #' @importFrom assertthat assert_that has_name
 #' @importFrom ymlthis as_yml use_index_rmd
 #' @importFrom checklist new_branch
@@ -21,7 +21,7 @@ update_protocol <- function(protocol_code) {
                   full.names = TRUE,
                   recursive = TRUE)
   ld <- str_subset(string = ld,
-                   pattern = protocol_code)
+                   pattern = str_replace_all(protocol_code, "-", "_"))
   assert_that(!identical(ld, character(0)),
               msg = "The protocol code does not exist.")
 
