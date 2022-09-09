@@ -8,8 +8,8 @@
 #' always ignored.
 #' The function will return the absolute path for that protocol.
 #'
-#' For new protocols, also either the `theme` or the `project_name` argument
-#' and `short_title` are required apart from the `protocol_code`.
+#' For new sfp or spp protocols, also either the `theme` or the `project_name`
+#' argument and `short_title` are required apart from the `protocol_code`.
 #' The function will construct the absolute path where the source code for that
 #' new protocol will be written.
 #'
@@ -18,11 +18,11 @@
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #' Defaults to NULL.
 #' Only needed if no folder with the name of the protocol code exists and
-#' the request is for a thematic protocol.
+#' the request is for a sfp protocol.
 #' @param project_name Character string giving the name of the project folder.
 #' Defaults to NULL.
 #' Only needed if no folder with the name of the protocol code exists and
-#' the request is for a project-specific protocol.
+#' the request is for a spp protocol.
 #' @param short_title A character string of less than 20 characters to use in
 #' folder and filenames.
 #' Defaults to NULL.
@@ -44,6 +44,9 @@ get_path_to_protocol <- function(protocol_code,
                                  project_name = NULL,
                                  short_title = NULL) {
   assert_that(is.string(protocol_code))
+  protocol_type <- regmatches(protocol_code,
+                              regexpr("^s[f|p|i|o|a]p", protocol_code))
+  assert_that(protocol_type %in% c("sfp", "spp", "sip", "sap", "sop"))
 
   # first case: the path exists already
   project_root <- find_root(is_git_root)
@@ -55,41 +58,51 @@ get_path_to_protocol <- function(protocol_code,
   if (!identical(ld, character(0))) {
     path_to_protocol <- ld[[1]]
     return(path_to_protocol)
-  } else {
-    # second case: the path does not yet exist
-    if (is.null(theme) && is.null(project_name) ||
-        (is.string(theme) && is.string(project_name))) {
-      stop(
-        paste0("Check the spelling of protocol_code - or - provide ",
-               "a string value for theme or project, not both.")
-      )
-    }
-
-    if (is.null(short_title)) {
-      stop("Provide a short title")
-    } else {
-      protocol_folder_name <- paste(protocol_code, short_title, sep = "_")
-    }
-
-    if (is.string(theme)) {
-      subfolder_of <- "thematic"
-      protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                           "theme_number"]
-      theme <- paste0(protocol_leading_number, "_", theme)
-      path_to_protocol <- file.path(project_root,
-                                    "src",
-                                    subfolder_of,
-                                    theme,
-                                    protocol_folder_name)
-      return(path_to_protocol)
-    } else {
-      subfolder_of <- "project"
-      path_to_protocol <- file.path(project_root,
-                                    "src",
-                                    subfolder_of,
-                                    project_name,
-                                    protocol_folder_name)
-      return(path_to_protocol)
-    }
   }
+
+  # second case: the path does not yet exist
+  if (is.null(short_title)) {
+    stop("Provide a short title")
+  } else {
+    protocol_folder_name <- paste(protocol_code, short_title, sep = "_")
+  }
+
+  if (protocol_type == "sfp") {
+    assert_that(is.string(theme),
+                theme %in% themes_df$theme)
+    protocol_leading_number <- themes_df[themes_df$theme == theme,
+                                         "theme_number"]
+    theme <- paste0(protocol_leading_number, "_", theme)
+  }
+
+  if (protocol_type == "spp") {
+    assert_that(is.string(project_name))
+  }
+
+  path_to_protocol <- switch(
+    protocol_type,
+    "sfp" = file.path(project_root,
+                      "src",
+                      "sfp",
+                      theme,
+                      protocol_folder_name),
+    "spp" = file.path(project_root,
+                      "src",
+                      "spp",
+                      project_name,
+                      protocol_folder_name),
+    "sap" = file.path(project_root,
+                      "src",
+                      "sap",
+                      protocol_folder_name),
+    "sip" = file.path(project_root,
+                      "src",
+                      "sip",
+                      protocol_folder_name),
+    "sop" = file.path(project_root,
+                      "src",
+                      "sop",
+                      protocol_folder_name)
+  )
+  return(path_to_protocol)
 }
