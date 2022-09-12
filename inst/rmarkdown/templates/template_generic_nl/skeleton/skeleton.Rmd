@@ -1,0 +1,65 @@
+---
+title:
+subtitle:
+author: 
+  - name:
+    orcid:
+date:
+reviewers:
+file_manager:
+protocol_code:
+version_number:
+language: nl
+theme:
+site: bookdown::bookdown_site
+bibliography: referenties.yaml
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl
+output: 
+  bookdown::gitbook:
+    split_by: none
+    split_bib: FALSE
+    template: !expr protocolhelper::protocol_css()
+    css: css/inbo_rapport.css
+    config:
+       toc:
+         before: |
+           <li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>
+         after: |
+           <li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>
+---
+
+
+<!--
+Instructies bij opmaak van het protocol:
+
+Hieronder vind je de verschillende onderdelen van een protocol.
+In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden.
+Het is in die bestanden dat je moet editeren.
+Niet alle onderdelen zijn altijd van toepassing.
+Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
+-->
+
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE,
+  eval = TRUE,
+  dpi = 300,
+  fig.width = 150 / 25.4,
+  fig.height = 100 / 25.4,
+  out.width = "100%",
+  warning = FALSE,
+  error = TRUE,
+  message = FALSE
+)
+library(dplyr)
+library(purrr)
+```
+
+# Metadata {-}
+
+| Reviewers | Documentbeheerder | Protocol code | Versienummer | Taal | Thema |
+| --------- | ----------------- | ------------- | ------------ | ---- | ----- |
+| `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$theme` |
+
