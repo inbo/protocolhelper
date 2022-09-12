@@ -62,12 +62,17 @@
 #' folder does not exist, it will be created.
 #' Ignored if protocol_type is other than `"spp"`.
 #' @param short_title A character string of less than 20 characters to use in
-#' folder and filenames
+#' folder and file names
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
 #' Please make sure to copy-paste all relevant meta-data from the `.docx` file
 #' to the corresponding parameters of this function.
 #' If nothing is provided (i.e. default = NULL), an empty template will be used.
+#' @param template Which template to use?
+#' Default is set equal to protocol_type.
+#' However, you can also set this to `"generic"` in which case a simplified
+#' template will be used that can be used as an alternative to the default
+#' templates.
 #' @param render Whether or not to render the protocol to html.
 #' Defaults to FALSE.
 #'
@@ -114,10 +119,12 @@ create_protocol <- function(
   subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
+  template = protocol_type,
   render = FALSE) {
 
   # check parameters
   protocol_type <- match.arg(protocol_type)
+  assert_that(template %in% c("sfp", "spp", "sap", "sop", "sip", "generic"))
   assert_that(is.string(title))
   if (!is.null(subtitle)) {
     assert_that(is.string(subtitle), nchar(subtitle) > 1)
@@ -249,7 +256,7 @@ create_protocol <- function(
   # create from empty template
   # move all files from the template folder
   parent_rmd <- file.path(path_to_protocol, "index.Rmd")
-  template <- paste("template", protocol_type, language, sep = "_")
+  template <- paste("template", template, language, sep = "_")
   draft(file = parent_rmd,
         template = template,
         package = "protocolhelper",
@@ -379,6 +386,7 @@ create_sfp <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
+                  template = protocol_type,
                   render = render)
 }
 
@@ -413,6 +421,7 @@ create_spp <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
+                  template = protocol_type,
                   render = render)
 }
 
@@ -445,6 +454,7 @@ create_sap <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
+                  template = protocol_type,
                   render = render)
 }
 
@@ -477,6 +487,7 @@ create_sip <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
+                  template = protocol_type,
                   render = render)
 }
 
@@ -509,6 +520,7 @@ create_sop <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
+                  template = protocol_type,
                   render = render)
 }
 
