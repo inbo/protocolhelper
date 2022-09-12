@@ -371,7 +371,9 @@ create_sfp <- function(
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
+  template = c("sfp", "generic"),
   render = FALSE) {
+  template <- match.arg(template)
   create_protocol(protocol_type = "sfp",
                   title = title,
                   subtitle = subtitle,
@@ -386,7 +388,7 @@ create_sfp <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
-                  template = protocol_type,
+                  template = template,
                   render = render)
 }
 
@@ -406,6 +408,7 @@ create_spp <- function(
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
+  template = c("spp"),
   render = FALSE) {
   create_protocol(protocol_type = "spp",
                   title = title,
@@ -421,7 +424,7 @@ create_spp <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
-                  template = protocol_type,
+                  template = template,
                   render = render)
 }
 
@@ -440,7 +443,9 @@ create_sap <- function(
     language = c("nl", "en"),
     from_docx = NULL,
     protocol_number = NULL,
+    template = c("sap", "generic"),
     render = FALSE) {
+  template <- match.arg(template)
   create_protocol(protocol_type = "sap",
                   title = title,
                   subtitle = subtitle,
@@ -454,7 +459,7 @@ create_sap <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
-                  template = protocol_type,
+                  template = template,
                   render = render)
 }
 
@@ -473,7 +478,9 @@ create_sip <- function(
     language = c("nl", "en"),
     from_docx = NULL,
     protocol_number = NULL,
+    template = c("sip", "generic"),
     render = FALSE) {
+  template <- match.arg(template)
   create_protocol(protocol_type = "sip",
                   title = title,
                   subtitle = subtitle,
@@ -487,7 +494,7 @@ create_sip <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
-                  template = protocol_type,
+                  template = template,
                   render = render)
 }
 
@@ -506,7 +513,9 @@ create_sop <- function(
     language = c("nl", "en"),
     from_docx = NULL,
     protocol_number = NULL,
+    template = c("sop", "generic"),
     render = FALSE) {
+  template <- match.arg(template)
   create_protocol(protocol_type = "sop",
                   title = title,
                   subtitle = subtitle,
@@ -520,7 +529,7 @@ create_sop <- function(
                   language = language,
                   from_docx = from_docx,
                   protocol_number = protocol_number,
-                  template = protocol_type,
+                  template = template,
                   render = render)
 }
 

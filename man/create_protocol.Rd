@@ -44,6 +44,7 @@ create_sfp(
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
+  template = c("sfp", "generic"),
   render = FALSE
 )
 
@@ -61,6 +62,7 @@ create_spp(
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
+  template = c("spp"),
   render = FALSE
 )
 
@@ -77,6 +79,7 @@ create_sap(
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
+  template = c("sap", "generic"),
   render = FALSE
 )
 
@@ -93,6 +96,7 @@ create_sip(
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
+  template = c("sip", "generic"),
   render = FALSE
 )
 
@@ -109,6 +113,7 @@ create_sop(
   language = c("nl", "en"),
   from_docx = NULL,
   protocol_number = NULL,
+  template = c("sop", "generic"),
   render = FALSE
 )
 }
