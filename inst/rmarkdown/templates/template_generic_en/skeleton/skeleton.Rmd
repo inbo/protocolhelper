@@ -1,7 +1,7 @@
 ---
 title:
 subtitle:
-author:
+author: 
   - name:
     orcid:
 date:
@@ -10,13 +10,13 @@ file_manager:
 protocol_code:
 version_number:
 language: en
-project_name:
+theme:
 site: bookdown::bookdown_site
 bibliography: references.yaml
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl
 output: 
   bookdown::gitbook:
-    split_by: chapter+number
+    split_by: none
     split_bib: FALSE
     template: !expr protocolhelper::protocol_css()
     css: css/inbo_rapport.css
@@ -27,6 +27,7 @@ output:
          after: |
            <li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>
 ---
+
 
 <!--
 Instructies bij opmaak van het protocol:
@@ -58,8 +59,6 @@ library(purrr)
 
 # Metadata {-}
 
-| Reviewers | File manager | Protocol code | Version number | Language | Project |
+| Reviewers | File manager | Protocol code | Version number | Language | Theme |
 | --------- | ----------------- | ------------- | ------------ | ---- | ----- |
-| `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$project_name` |
-
-
+| `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$theme` |
