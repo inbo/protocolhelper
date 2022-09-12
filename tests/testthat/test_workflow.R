@@ -34,7 +34,8 @@ test_that("complete workflow works", {
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
     authors = "lastname, firstname", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, theme = "water", language = "en"
+    version_number = version_number, theme = "water", language = "en",
+    template = "generic"
   )
 
   update_news(
