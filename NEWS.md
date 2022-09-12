@@ -3,7 +3,7 @@
 ## breaking changes
 
 * reworked folder structure (src becomes source, thematic becomes sfp, project
-  becomes spp)
+  becomes spp) #82
 
 ## New features
 
@@ -12,6 +12,9 @@
 * changed create_protocol to handle sap, sip, sop and generic templates
 
 ## Minor changes
+
+* reworked internal function `protocolhelper:::render_release` to improve
+  homepage of website #84
 
 # protocolhelper 0.3.2
 
