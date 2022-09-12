@@ -26,6 +26,7 @@ create_protocol(
   subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
+  template = protocol_type,
   render = FALSE
 )
 
@@ -119,7 +120,7 @@ standard instrument protocol), \code{sop} (standard operating protocol)}
 \item{title}{A character string giving the main title of the protocol}
 
 \item{short_title}{A character string of less than 20 characters to use in
-folder and filenames}
+folder and file names}
 
 \item{authors}{A character vector for authors of the form
 \code{c("lastname1, firstname1", "lastname2, firstname2")}}
@@ -174,6 +175,12 @@ If NULL (the default), a protocol number will be determined automatically
 based on pre-existing protocol numbers.
 Protocol numbers that are already in use can be retrieved with
 \code{get_protocolnumbers()}.}
+
+\item{template}{Which template to use?
+Default is set equal to protocol_type.
+However, you can also set this to \code{"generic"} in which case a simplified
+template will be used that can be used as an alternative to the default
+templates.}
 
 \item{render}{Whether or not to render the protocol to html.
 Defaults to FALSE.}
