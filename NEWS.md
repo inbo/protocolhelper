@@ -57,7 +57,8 @@
 
 # protocolhelper 0.2.3
 
-* fix problem in `github` action workflow (install more recent version of `pandoc`)
+* fix problem in `github` action workflow (install more recent version of
+  `pandoc`)
 
 # protocolhelper 0.2.2
 
