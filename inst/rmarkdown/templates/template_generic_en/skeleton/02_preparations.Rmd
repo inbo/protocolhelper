@@ -9,20 +9,20 @@ vaccinations, protective clothing, warnings of dangerous chemicals, emergency pr
 ## Material
 
 <!--
-(Equipment, Labeling, Data registration (GPS, sampling table, tablet, phone, ...))
+(Equipment, Labels, Data registration (GPS, sampling table, tablet, phone, ...))
 -->
 
 ## Human resources
 
 <!--
-Which roles and why? Minimal number of people needed for this procedure? Skillset/training needed for this procedure?
+Which roles and why? Minimal number of people needed for this procedure? Skill set/training needed for this procedure?
 -->
 
 ## Dependencies on other procedures
 
 <!--
 Should another procedure be known/studied prior to executing this procedure?
-The table below is automatically filled in based on information in the yaml section of the index.Rmd file
+The table below is automatically filled in based on information in the yaml section of the `index.Rmd` file
 -->
 
 

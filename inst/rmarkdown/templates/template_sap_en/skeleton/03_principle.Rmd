@@ -1,5 +1,5 @@
 # Principle
 
 <!--
-Korte omschrijving van de principes waarop het protocol gebaseerd is.
+Brief description of the principles on which the protocol is based.
 -->

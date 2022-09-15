@@ -10,7 +10,7 @@
 #' @param ... additional parameters passed on to `bookdown::render_book()`
 #'
 #' @details The rendered html file and associated files needed by the html file
-#' will be put in the directory implied by the output_dir parameter.
+#' will be put in the directory implied by the `output_dir` parameter.
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom fs path dir_exists dir_copy

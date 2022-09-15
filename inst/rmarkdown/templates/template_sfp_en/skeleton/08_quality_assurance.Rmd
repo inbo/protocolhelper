@@ -1,8 +1,8 @@
 # Quality assurance
 
 <!--
-Vermeld alle acties bij het uitvoeren van het protocol om tot kwaliteitsvolle resultaten te komen.
-Daarnaast kan ook een checklist toegevoegd worden om na te gaan of alle stappen van het veldprotocol op een correcte manier doorlopen zijn (bv. Zijn alle velden in veldformulier ingevuld, zijn alle stalen gelabeld, ...).
-Indien er niet aan bepaalde kwaliteitscriteria voldaan wordt, kan er eventueel verwezen worden naar corrigerende maatregelen.
-In dit onderdeel kunnen ook bepaalde intercalibratie-oefeningen vermeld worden, die bijvoorbeeld voorafgaand aan elk veldseizoen worden uitgevoerd door de gebruikers van het protocol. 
+Include all actions when performing the protocol to achieve quality results.
+In addition, a checklist can also be added to check whether all steps of the field protocol have been completed correctly (e.g. have all fields in the field form been filled in, are all samples labelled, ...).
+If certain quality criteria are not met, corrective measures may be referred to.
+This section may also list certain intercalibration exercises, for example performed by the users of the protocol prior to each field season.
 -->

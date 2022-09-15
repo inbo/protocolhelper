@@ -8,7 +8,7 @@ get_version_number(path = ".")
 }
 \arguments{
 \item{path}{Defaults to current working directory.
-This should correspond with the root directory of the protocolsource repo.}
+This should correspond with the root directory of the \code{protocolsource} repo.}
 }
 \value{
 A string containing the next (incremented) version number

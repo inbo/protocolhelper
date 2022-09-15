@@ -13,7 +13,7 @@ More information on pretreatment (drying, refining, homogenizing and storage) ca
 
 ### Making the device operational
 
-### Create batch in LIMS and export analysis file
+### Create batch in `LIMS` and export analysis file
 
 ### Method
 
@@ -27,12 +27,12 @@ More information on pretreatment (drying, refining, homogenizing and storage) ca
 
 ### Exporting the results from the device
 
-### Import and approve results in LIMS
+### Import and approve results in `LIMS`
 
 Copy the file with the results from the batch folder to the scheduler under _SCHEDULER\...
 After the results have been read, they must be reviewed and approved.
-How to import and approve the results into LIMS is described in the [procedure on using LIMS](https://drive.google.com/drive/folders/1bt6E5PhKSZlRJIRu9xsLus3apLaNTLTX).
+How to import and approve the results into `LIMS` is described in the [procedure on using `LIMS`](https://drive.google.com/drive/folders/1bt6E5PhKSZlRJIRu9xsLus3apLaNTLTX).
 
 ### Expression of the result
 
-### Reporting in LIMS
+### Reporting in `LIMS`

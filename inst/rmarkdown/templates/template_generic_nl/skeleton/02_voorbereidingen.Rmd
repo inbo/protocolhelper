@@ -9,7 +9,7 @@ vaccinaties, beschermende kledij, waarschuwingen bij gebruikte chemicaliën, wat
 ## Materiaal
 
 <!--
-(Materiaal, labels, data registratie (GPS, tablet, smartphone, ...))
+(Materiaal, labels, data registratie (`GPS`, tablet, smartphone, ...))
 -->
 
 ## Personeel
@@ -23,7 +23,7 @@ Welke rollen en waarom? Minimaal aantal personen nodig? Welke kennis en vaardigh
 <!--
 Moet een ander protocol gekend zijn voor dit protocol kan uitgevoerd worden?
 The tabel hieronder zal automatisch ingevuld worden op basis van informatie
-in de yaml sectie van het index.Rmd bestand
+in de yaml sectie van het `index.Rmd` bestand
 -->
 
 

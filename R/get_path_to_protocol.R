@@ -8,8 +8,9 @@
 #' always ignored.
 #' The function will return the absolute path for that protocol.
 #'
-#' For new sfp or spp protocols, also either the `theme` or the `project_name`
-#' argument and `short_title` are required apart from the `protocol_code`.
+#' For new `sfp` or `spp` protocols, also either the `theme` or the
+#' `project_name` argument and `short_title` are required apart from the
+#' `protocol_code`.
 #' The function will construct the absolute path where the source code for that
 #' new protocol will be written.
 #'
@@ -18,11 +19,11 @@
 #' `"water"`, `"air"`, `"soil"`, `"vegetation"` or `"species"`.
 #' Defaults to NULL.
 #' Only needed if no folder with the name of the protocol code exists and
-#' the request is for a sfp protocol.
+#' the request is for a `sfp` protocol.
 #' @param project_name Character string giving the name of the project folder.
 #' Defaults to NULL.
 #' Only needed if no folder with the name of the protocol code exists and
-#' the request is for a spp protocol.
+#' the request is for a `spp` protocol.
 #' @param short_title A character string of less than 20 characters to use in
 #' folder and filenames.
 #' Defaults to NULL.

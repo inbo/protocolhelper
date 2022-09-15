@@ -1,6 +1,2 @@
 # References {-}
 <div id="refs"></div>
-
-<!--
-Eventueel opsplitsen in sleutelreferentie en overige referenties.
--->

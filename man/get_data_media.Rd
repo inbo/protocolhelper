@@ -20,7 +20,7 @@ repository}
 Silent.
 }
 \description{
-Extracts all paths to files in data and media from rmd_content and uses git
-show to copy paste the files from the subprotocol to the main protocol
+Extracts all paths to files in data and media from \code{rmd_content} and uses git
+show to copy paste the files from the sub-protocol to the main protocol
 }
 \keyword{internal}

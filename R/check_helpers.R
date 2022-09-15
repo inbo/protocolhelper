@@ -1,9 +1,9 @@
 #' @title Check the version number format
 #'
 #' @description
-#' Check if version number is of format YYYY.NN
+#' Check if version number is of format `YYYY.NN`
 #'
-#' @param version_number Character string with format YYYY.NN#'
+#' @param version_number Character string.
 #'
 #' @importFrom assertthat assert_that is.string
 #'
@@ -19,12 +19,12 @@ check_versionnumber <- function(version_number) {
 
 
 
-#' @title Check the protocolcode format
+#' @title Check the `protocolcode` format
 #'
 #' @description
-#' Check if protocolcode is of format `s[f|p|i|o|a]p-###-[nl|en]`
+#' Check if `protocolcode` is of format `s[f|p|i|o|a]p-###-[nl|en]`
 #'
-#' @param version_number Character string with format YYYY.NN#'
+#' @param version_number Character string with format `YYYY.NN`
 #'
 #' @importFrom assertthat assert_that is.string
 #'
@@ -42,7 +42,7 @@ check_protocolcode <- function(protocolcode) {
 #' @title validate an ORCID string
 #'
 #' @description Generates check digit as per ISO 7064 11,2.
-#' The last character in the ORCID iD is a checksum.
+#' The last character in the `ORCID ID` is a checksum.
 #' In accordance with ISO/IEC 7064:2003, MOD 11-2,
 #' this checksum must be "0-9" or "X", a capital letter X which represents
 #' the value 10.

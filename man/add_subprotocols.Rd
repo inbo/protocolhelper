@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_subprotocols.R
 \name{add_subprotocols}
 \alias{add_subprotocols}
-\title{Render all subprotocols belonging to a main protocol to single
+\title{Render all sub-protocols belonging to a main protocol to single
 markdown files}
 \usage{
 add_subprotocols(code_mainprotocol, fetch_remote = TRUE)
@@ -20,10 +20,10 @@ of the main protocol has been filled in with the aid of the
 \code{protocolhelper::add_dependencies()} function.
 For reproducibility, it is good practice to save the call in a
 separate R script.
-For each subprotocol a single markdown file and associated media and
+For each sub-protocol a single markdown file and associated media and
 data files will be written.
-Each subprotocol will be written to a subfolder of the main
+Each sub-protocol will be written to a subfolder of the main
 protocol.
 The subfolder name is the same as the version number of the
-subprotocol.
+sub-protocol.
 }

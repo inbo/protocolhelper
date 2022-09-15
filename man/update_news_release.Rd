@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_news_release.R
 \name{update_news_release}
 \alias{update_news_release}
-\title{Updates the protocolsource repo NEWS.md file}
+\title{Updates the \code{protocolsource} repo \code{NEWS.md} file}
 \usage{
 update_news_release(protocol_code, path = ".")
 }
@@ -11,17 +11,17 @@ update_news_release(protocol_code, path = ".")
 this release}
 
 \item{path}{Default current working directory. The root folder of the
-protocolsource repo.}
+\code{protocolsource} repo.}
 }
 \value{
 invisible null
 }
 \description{
-Constructs and writes a NEWS.md file based on version numbers, protocol codes
-and protocol titles.
+Constructs and writes a \code{NEWS.md} file based on version numbers,
+protocol codes and protocol titles.
 Not intended for interactive use.
 Should be used in a GitHub Action.
-Reads the NEWS.md from the main branch and switches back to current
-protocol branch to write the updated NEWS.md
+Reads the \code{NEWS.md} from the main branch and switches back to current
+protocol branch to write the updated \code{NEWS.md}
 }
 \keyword{internal}

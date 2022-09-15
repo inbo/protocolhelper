@@ -1,4 +1,4 @@
-# Vizualisatie van de procedure
+# Visualisatie van de procedure
 
 <!--
 Stroomschema (kan optioneel zijn, maar aangeraden wanneer het kan helpen)

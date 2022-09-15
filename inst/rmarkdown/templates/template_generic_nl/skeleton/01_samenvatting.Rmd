@@ -9,5 +9,5 @@
 ## Niet binnen het toepassingsgebied
 
 <!--
-+ where to find information on what's not in scope if existing
+En waar vinden we deze informatie dan, indien ze beschikbaar is?
 -->

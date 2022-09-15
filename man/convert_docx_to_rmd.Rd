@@ -32,7 +32,7 @@ If \code{NA} (default), text is not wrapped.}
 existed.
 Defaults to \code{FALSE}.}
 
-\item{verbose}{Whether to print pandoc progress text.
+\item{verbose}{Whether to print \code{pandoc} progress text.
 Defaults to \code{FALSE}.}
 
 \item{wd}{Current working directory (used to handle relative paths).}
@@ -40,7 +40,7 @@ Defaults to \code{FALSE}.}
 \description{
 This function is derived from the
 \href{https://noamross.github.io/redoc/reference/dedoc.html}{\code{redoc::dedoc()}}
-function and uses pandoc to convert between docx and markdown.
+function and uses \code{pandoc} to convert between docx and markdown.
 Several options are preset to end-up with a markdown document that is in
 syntax as close as possible to Rmarkdown files in RStudio.
 During conversion, graphics (e.g. png, jpg) will be extracted from the docx

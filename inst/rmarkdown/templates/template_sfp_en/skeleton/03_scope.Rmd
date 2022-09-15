@@ -1,7 +1,7 @@
 # Scope
 
 <!--
-Alleen in te vullen indien van toepassing.
-Bespreek onder welke condities het protocol niet gebruikt kan worden of wanneer afwijkingen nodig zijn ten opzichte van het standaard protocol.
-Vermeld hier ook mogelijke interferenties, knelpunten, ...
+To be completed only if applicable.
+Discuss under which conditions the protocol cannot be used or when deviations from the standard protocol are necessary.
+Also mention possible interferences, bottlenecks, ...
 -->

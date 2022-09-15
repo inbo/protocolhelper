@@ -1,7 +1,7 @@
 # Required skills and training
 
 <!--
-Omschrijving van de basiskennis en vaardigheden, die de gebruiker van het protocol moet hebben om het protocol op een gepaste manier te kunnen uitvoeren.
-Eventueel kan er verwezen worden naar bepaalde opleidingen.
+Description of the basic knowledge and skills that the user of the protocol must have in order to be able to perform the protocol in an appropriate manner.
+If necessary, reference can be made to specific courses.
 -->
 

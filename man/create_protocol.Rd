@@ -130,11 +130,11 @@ folder and file names}
 \item{authors}{A character vector for authors of the form
 \code{c("lastname1, firstname1", "lastname2, firstname2")}}
 
-\item{orcids}{A character vector of orcid IDs, equal in length to authors.
-If one of the authors does not have an orcid ID, use \code{NA} to indicate this in
-the corresponding position of the character vector (or get an orcid ID).}
+\item{orcids}{A character vector of \code{orcid} IDs, equal in length to authors.
+If one of the authors does not have an \code{orcid} ID, use \code{NA} to indicate this
+in the corresponding position of the character vector (or get an \code{orcid} ID).}
 
-\item{date}{A character string of the date in ISO 8601 format (YYYY-MM-DD)}
+\item{date}{A character string of the date in ISO 8601 format (\code{YYYY-MM-DD})}
 
 \item{reviewers}{A character vector for reviewers of the form First name
 Last name}
@@ -220,7 +220,7 @@ the target folder beneath \code{source}.
 Template Rmarkdown files with the same name as Rmarkdown files that result
 from converting a docx protocol will be overwritten by the latter.
 Besides Rmarkdown files, this target folder will also contain files needed to
-render to a Bookdown gitbook such as a \verb{_bookdown.yml}.
+render to a Bookdown \code{gitbook} such as a \verb{_bookdown.yml}.
 The \code{NEWS.md} file must be used to document the changes between revisions
 of the protocol.
 Furthermore, a \code{data} and a \code{media} folder will be created as subdirectories

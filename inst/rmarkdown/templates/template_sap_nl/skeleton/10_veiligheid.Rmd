@@ -5,12 +5,12 @@ De veiligheidsfiches zijn [digitaal](https://drive.google.com/drive/folders/1WOp
 De veiligheidsvoorschriften zijn opgesteld om blootstelling aan of contact met gevaarlijke producten tot een minimum te herleiden.
 Meer info hierover is terug te vinden in de [procedure](https://drive.google.com/drive/folders/1zHNxMmNSiZPfmPUYeq-kyidKq6xiVEdj) van veiligheid.
 
-Bij het uitvoeren van de procedure zijn volgende PBM’s en CBM’s van toepassing:
+Bij het uitvoeren van de procedure zijn volgende `PBM`’s en `CBM`’s van toepassing:
 
-- PBM:
+- `PBM`:
     - Draag werkkledij: labojas - laboschoenen
-    - Draag handbescherming: nitrilrubber handschoenen of thermische handschoenen
+    - Draag handbescherming: `nitrilrubber` handschoenen of thermische handschoenen
     - Draag oogbescherming: veiligheidsbril
-    - Draag gelaatsbescherming: masker type FFP1 of FFP2 of FFP3 of halfgelaatsmasker of volgelaatsmasker
-- CBM:
+    - Draag gelaatsbescherming: masker type `FFP1` of `FFP2` of `FFP3` of halfgelaatsmasker of volgelaatsmasker
+- `CBM`:
     - Werk in een trekkast of Gebruik een puntafzuiging

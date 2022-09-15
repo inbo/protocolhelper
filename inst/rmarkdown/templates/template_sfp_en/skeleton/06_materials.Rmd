@@ -3,25 +3,25 @@
 ## Instruments
 
 <!--
-Opsomming van de apparatuur die nodig is en verwijzingen naar de sip's (Standard Instrument Procedure; <protocol-code>-YYYY.NN) indien die er zijn.
-Indien geen specifiek sip's voorhanden, illustreer de toegelaten apparatuur met foto's, geef het exacte type apparatuur mee, ...
+Listing of the equipment needed and references to the `SIP`'s (Standard Instrument Procedure; `<protocol code>-YYYY.NN`) if any.
+If no specific `SIP`'s are available, illustrate the permitted equipment with photos, state the exact type of equipment, ...
 -->
 
 ## Other materials
 
 <!--
-Opsomming van gebruikte materialen.
-Duidelijk aangeven welke materialen toelaatbaar zijn, welke volumes, afmetingen, materiaal, ... 
-vb. vermeld niet staalnamepotje, maar wel: vierkant flesje, volume 250 ml, gegradueerd, vervaardigd uit PE, met afsluitbare deksel uit PP.
+List of materials used.
+Clearly indicate which materials are permissible, which volumes, dimensions, material, ...
+e.g. do not state the sample jar, but do: square bottle, volume 250 ml, graduated, made of `PE`, with a closable lid made of `PP`.
 -->
 
 ## Reagents and solutions (if applicable)
 
 <!--
-Een opsomming van reagentia, welke zuiverheid, volume, veiligheidsvoorschriften.
-vb. Zwavelzuur (H2SO4), geconcentreerd (96%), pro analyse + veiligheidsinfo (sterk zuur, bijtend, gebruik handschoenen, bril en masker bij gebruik)
-Een opsomming van oplossingen, welke zuiverheid, volume, veiligheidsvoorschriften.
-Indien deze oplossingen zelf worden bereid, vermeld dan ook de bereidingswijze.
-vb: Zwavelzuur 1M: verdun zwavelzuur geconcentreerd 18 maal met ultrapuur water.
-Opgelet: giet altijd zwavelzuur bij water en nooit omgekeerd!
+A listing of reagents, what purity, volume, safety precautions.
+e.g. Sulfuric acid (`H2SO4`), concentrated (96%), pro analysis + safety info (strong acid, corrosive, use gloves, glasses and mask when using)
+A list of solutions, which purity, volume, safety regulations.
+If these solutions are prepared yourself, also state the method of preparation.
+For instance: Sulfuric acid `1M`: dilute sulfuric acid concentrated 18 times with `ultrapure` water.
+Attention: always add sulfuric acid to water and never vice versa!
 -->

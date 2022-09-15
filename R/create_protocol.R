@@ -30,7 +30,7 @@
 #' Template Rmarkdown files with the same name as Rmarkdown files that result
 #' from converting a docx protocol will be overwritten by the latter.
 #' Besides Rmarkdown files, this target folder will also contain files needed to
-#' render to a Bookdown gitbook such as a `_bookdown.yml`.
+#' render to a Bookdown `gitbook` such as a `_bookdown.yml`.
 #' The `NEWS.md` file must be used to document the changes between revisions
 #' of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
@@ -45,10 +45,10 @@
 #' @param subtitle A character string for an optional subtitle
 #' @param authors A character vector for authors of the form
 #' `c("lastname1, firstname1", "lastname2, firstname2")`
-#' @param orcids A character vector of orcid IDs, equal in length to authors.
-#' If one of the authors does not have an orcid ID, use `NA` to indicate this in
-#' the corresponding position of the character vector (or get an orcid ID).
-#' @param date A character string of the date in ISO 8601 format (YYYY-MM-DD)
+#' @param orcids A character vector of `orcid` IDs, equal in length to authors.
+#' If one of the authors does not have an `orcid` ID, use `NA` to indicate this
+#' in the corresponding position of the character vector (or get an `orcid` ID).
+#' @param date A character string of the date in ISO 8601 format (`YYYY-MM-DD`)
 #' @param reviewers A character vector for reviewers of the form First name
 #' Last name
 #' @param file_manager A character string for the name of the document
@@ -540,14 +540,14 @@ create_sop <- function(
 #' The search will be restricted to files of a given protocol type and given
 #' language.
 #'
-#' @param protocol_type A character string equal to sfp (default), sip, sap,
-#' sop or spp.
+#' @param protocol_type A character string equal to `sfp` (default), `sip`,
+#' `sap`, `sop` or `spp`.
 #' @param language Language of the protocol, either `"nl"` (Dutch),
 #' the default, or `"en"` (English).
 #'
 #'
 #' @return A character vector with occupied protocol numbers for a specific
-#' protoocol type
+#' protocol type
 #'
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_subset str_replace str_extract
@@ -591,8 +591,8 @@ get_protocolnumbers <- function(
 #' The search will be restricted to files of a given protocol type and given
 #' language.
 #'
-#' @param protocol_type A character string equal to sfp (default), sip, sap, sop
-#' or spp.
+#' @param protocol_type A character string equal to `sfp` (default), `sip`,
+#' `sap`, `sop` or `spp`.
 #' @param language Language of the protocol, either `"nl"` (Dutch),
 #' the default, or `"en"` (English).
 #'
@@ -638,7 +638,7 @@ get_short_titles <- function(
 #' Create protocol code from it's components
 #'
 #' A protocol code of format `s[a|f|i|o|p]p-###-[nl|en]` will be created.
-#' The number will be determined automatically based on theme (in case of sfp)
+#' The number will be determined automatically based on theme (in case of `sfp`)
 #' and a rank order of all existing protocol numbers
 #'
 #' @param protocol_type Either `sfp` (standard field protocol), `spp` (
@@ -719,20 +719,21 @@ create_protocol_code <- function(
 
 
 
-#' Create an Rmarkdown version from an existing docx protocol
+#' Create an Rmarkdown version from an existing `docx` protocol
 #'
-#' The docx file is first converted to a single Rmd file with the aid of pandoc
-#' (called from convert_docx_to_rmd).
+#' The `docx` file is first converted to a single `Rmd` file with the aid of
+#' `pandoc` (called from `convert_docx_to_rmd`).
 #' Any emf images are converted to png.
-#' Next, the file is split by chapter in multiple Rmd files.
+#' Next, the file is split by chapter in multiple `Rmd` files.
 #' All graphics files will be stored in a ./media folder.
 #' Bookdown compatible captions and cross-references for Figures and Tables are
-#' added if and only if 'Figuur' and 'Tabel' is used in the original document.
+#' added if and only if `'Figuur'` and `'Tabel'` is used in the original
+#' document.
 #'
 #' @param from_docx A character string with the path (absolute or relative) to
 #' a `.docx` file containing a pre-existing protocol.
 #' @param path_to_protocol Absolute path to the protocol folder where the
-#' protocol created from docx needs to be written to
+#' protocol created from `docx` needs to be written to
 #'
 #' @importFrom stringr str_replace str_replace_all str_detect str_remove
 #'

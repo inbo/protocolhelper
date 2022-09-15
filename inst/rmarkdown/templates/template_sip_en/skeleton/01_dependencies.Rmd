@@ -1,8 +1,8 @@
 # Dependencies
 
 <!--
-Hier niets invullen.
-Indien er dependencies zijn deze invullen in de yaml sectie van index.Rmd
+Do not enter anything here.
+If there are dependencies enter them in the yaml section of `index.Rmd`
 -->
 
 

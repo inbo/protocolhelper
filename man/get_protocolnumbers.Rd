@@ -10,15 +10,15 @@ get_protocolnumbers(
 )
 }
 \arguments{
-\item{protocol_type}{A character string equal to sfp (default), sip, sap,
-sop or spp.}
+\item{protocol_type}{A character string equal to \code{sfp} (default), \code{sip},
+\code{sap}, \code{sop} or \code{spp}.}
 
 \item{language}{Language of the protocol, either \code{"nl"} (Dutch),
 the default, or \code{"en"} (English).}
 }
 \value{
 A character vector with occupied protocol numbers for a specific
-protoocol type
+protocol type
 }
 \description{
 This function will search for protocol numbers in filenames of

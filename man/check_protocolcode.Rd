@@ -2,14 +2,14 @@
 % Please edit documentation in R/check_helpers.R
 \name{check_protocolcode}
 \alias{check_protocolcode}
-\title{Check the protocolcode format}
+\title{Check the \code{protocolcode} format}
 \usage{
 check_protocolcode(protocolcode)
 }
 \arguments{
-\item{version_number}{Character string with format YYYY.NN#'}
+\item{version_number}{Character string with format \code{YYYY.NN}}
 }
 \description{
-Check if protocolcode is of format \verb{s[f|p|i|o|a]p-###-[nl|en]}
+Check if \code{protocolcode} is of format \verb{s[f|p|i|o|a]p-###-[nl|en]}
 }
 \keyword{internal}

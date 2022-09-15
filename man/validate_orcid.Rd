@@ -14,7 +14,7 @@ Logical. TRUE if check digit is correct.
 }
 \description{
 Generates check digit as per ISO 7064 11,2.
-The last character in the ORCID iD is a checksum.
+The last character in the \verb{ORCID ID} is a checksum.
 In accordance with ISO/IEC 7064:2003, MOD 11-2,
 this checksum must be "0-9" or "X", a capital letter X which represents
 the value 10.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_protocol.R
 \name{create_from_docx}
 \alias{create_from_docx}
-\title{Create an Rmarkdown version from an existing docx protocol}
+\title{Create an Rmarkdown version from an existing \code{docx} protocol}
 \usage{
 create_from_docx(from_docx, path_to_protocol)
 }
@@ -11,15 +11,16 @@ create_from_docx(from_docx, path_to_protocol)
 a \code{.docx} file containing a pre-existing protocol.}
 
 \item{path_to_protocol}{Absolute path to the protocol folder where the
-protocol created from docx needs to be written to}
+protocol created from \code{docx} needs to be written to}
 }
 \description{
-The docx file is first converted to a single Rmd file with the aid of pandoc
-(called from convert_docx_to_rmd).
+The \code{docx} file is first converted to a single \code{Rmd} file with the aid of
+\code{pandoc} (called from \code{convert_docx_to_rmd}).
 Any emf images are converted to png.
-Next, the file is split by chapter in multiple Rmd files.
+Next, the file is split by chapter in multiple \code{Rmd} files.
 All graphics files will be stored in a ./media folder.
 Bookdown compatible captions and cross-references for Figures and Tables are
-added if and only if 'Figuur' and 'Tabel' is used in the original document.
+added if and only if \code{'Figuur'} and \code{'Tabel'} is used in the original
+document.
 }
 \keyword{internal}

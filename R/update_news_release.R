@@ -1,18 +1,18 @@
-#' @title Updates the protocolsource repo NEWS.md file
+#' @title Updates the `protocolsource` repo `NEWS.md` file
 #'
 #' @description
-#' Constructs and writes a NEWS.md file based on version numbers, protocol codes
-#' and protocol titles.
+#' Constructs and writes a `NEWS.md` file based on version numbers,
+#' protocol codes and protocol titles.
 #' Not intended for interactive use.
 #' Should be used in a GitHub Action.
-#' Reads the NEWS.md from the main branch and switches back to current
-#' protocol branch to write the updated NEWS.md
+#' Reads the `NEWS.md` from the main branch and switches back to current
+#' protocol branch to write the updated `NEWS.md`
 #'
 #'
 #' @param protocol_code protocol code of the protocol that is to be published in
 #' this release
 #' @param path Default current working directory. The root folder of the
-#' protocolsource repo.
+#' `protocolsource` repo.
 #'
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom assertthat assert_that is.string

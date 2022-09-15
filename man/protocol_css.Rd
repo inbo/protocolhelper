@@ -2,10 +2,10 @@
 % Please edit documentation in R/misc.R
 \name{protocol_css}
 \alias{protocol_css}
-\title{set path to html template to be used by gitbook}
+\title{set path to html template to be used by \code{gitbook}}
 \usage{
 protocol_css()
 }
 \description{
-set path to html template to be used by gitbook
+set path to html template to be used by \code{gitbook}
 }

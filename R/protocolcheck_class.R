@@ -1,4 +1,4 @@
-#' @title The protocolcheck R6 class
+#' @title The `protocolcheck` R6 class
 #'
 #' @description A class that collects and shows all check results.
 #'
@@ -28,13 +28,13 @@ protocolcheck <- R6Class(
       invisible(self)
     },
 
-    #' @description Add a new error to the Protocolcheck object.
+    #' @description Add a new error to the `Protocolcheck` object.
     #' @param msg Error message to be added.
     add_error = function(msg) {
       self$error <- c(self$error, msg)
     },
 
-    #' @description Give error report from Protocolcheck object.
+    #' @description Give error report from `Protocolcheck` object.
     #' @param fail Should an error be dropped if the report contains errors?
     #' @return An error report (and if desired an error is dropped).
     check = function(fail) {

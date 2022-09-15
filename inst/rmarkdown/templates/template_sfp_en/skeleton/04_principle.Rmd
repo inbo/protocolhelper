@@ -1,6 +1,6 @@
 # Principle
 
 <!--
-Korte omschrijving van de principes waarop het protocol gebaseerd is.
-Bv principe achter het nemen van mengmonsters, principe achter visueel inschatten van de bedekking van een plant, ...
+Brief description of the principles on which the protocol is based.
+For instance, principle behind taking mixed samples, principle behind visual estimation of plant cover, ...
 -->

@@ -3,7 +3,7 @@
 
 <!--
 Hier niets invullen.
-Indien er dependencies zijn deze invullen in de yaml sectie van index.Rmd
+Indien er afhankelijkheden zijn deze invullen in de yaml sectie van `index.Rmd`
 -->
 
 

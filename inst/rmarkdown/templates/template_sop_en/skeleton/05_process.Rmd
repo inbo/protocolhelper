@@ -1,7 +1,8 @@
 # Process
 
-<!--schematische voorstelling van het proces
-gebruik bijvoorbeeld ‘draw.io’ en exporteer als png
-of maak het schema met een R package zoals visNetwork
+<!--
+schematic of the process
+for example use `draw.io` and export as png
+or create the schema with an R package like `visNetwork`
 -->
 

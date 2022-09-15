@@ -18,12 +18,12 @@ get_path_to_protocol(
 \code{"water"}, \code{"air"}, \code{"soil"}, \code{"vegetation"} or \code{"species"}.
 Defaults to NULL.
 Only needed if no folder with the name of the protocol code exists and
-the request is for a sfp protocol.}
+the request is for a \code{sfp} protocol.}
 
 \item{project_name}{Character string giving the name of the project folder.
 Defaults to NULL.
 Only needed if no folder with the name of the protocol code exists and
-the request is for a spp protocol.}
+the request is for a \code{spp} protocol.}
 
 \item{short_title}{A character string of less than 20 characters to use in
 folder and filenames.
@@ -41,8 +41,9 @@ For existing protocol codes, arguments \code{theme} and \code{project_name} are
 always ignored.
 The function will return the absolute path for that protocol.
 
-For new sfp or spp protocols, also either the \code{theme} or the \code{project_name}
-argument and \code{short_title} are required apart from the \code{protocol_code}.
+For new \code{sfp} or \code{spp} protocols, also either the \code{theme} or the
+\code{project_name} argument and \code{short_title} are required apart from the
+\code{protocol_code}.
 The function will construct the absolute path where the source code for that
 new protocol will be written.
 }

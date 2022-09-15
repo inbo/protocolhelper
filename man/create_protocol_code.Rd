@@ -37,7 +37,7 @@ A character string containing the protocol_code
 }
 \description{
 A protocol code of format \verb{s[a|f|i|o|p]p-###-[nl|en]} will be created.
-The number will be determined automatically based on theme (in case of sfp)
+The number will be determined automatically based on theme (in case of \code{sfp})
 and a rank order of all existing protocol numbers
 }
 \keyword{internal}
