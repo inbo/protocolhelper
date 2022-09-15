@@ -82,8 +82,8 @@
 
 ## Bug fixes
 
-* fixed bugs in `check_frontmatter()` due to changes in the way YAML metadata are
-  stored
+* fixed bugs in `check_frontmatter()` due to changes in the way YAML metadata
+  are stored
 
 # protocolhelper 0.2.1
 
@@ -102,8 +102,8 @@
 
 ## Breaking changes
 
-* restructured yaml of `skeleton.Rmd` in templates: moved metadata under `params`
-  section to top level of yaml
+* restructured yaml of `skeleton.Rmd` in templates: moved metadata under
+  `params` section to top level of yaml
 * new YAML syntax to add dependencies to the `params` section the YAML
 
 ## New features
