@@ -26,7 +26,7 @@ check_frontmatter <- function(
     protocol_code,
     fail = !interactive()
 ) {
-  assert_that(str_detect(protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
+  check_protocolcode(protocol_code)
   assert_that(is.flag(fail), noNA(fail))
 
   x <- load_protocolcheck(x = protocol_code)

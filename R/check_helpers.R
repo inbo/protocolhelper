@@ -26,16 +26,24 @@ check_versionnumber <- function(version_number) {
 #'
 #' @param version_number Character string with format `YYYY.NN`
 #'
-#' @importFrom assertthat assert_that is.string
+#' @importFrom assertthat assert_that is.string is.flag
 #'
 #' @keywords internal
 check_protocolcode <- function(protocolcode) {
   assert_that(is.string(protocolcode))
-  right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", protocolcode)
-  assert_that(
-    right_format,
-    msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-  )
+  right_format <- grepl("^s[fpioa]p-\\d{3}-(?:nl|en)$", protocolcode)
+
+  if (!(is.flag(Sys.getenv("CI")) & isTRUE(Sys.getenv("CI")))) {
+    assert_that(
+      right_format,
+      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+    )
+  } else {
+    assert_that(
+      right_format,
+      msg = "branch name and protocol_code are different"
+    )
+  }
 }
 
 
