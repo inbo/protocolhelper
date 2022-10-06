@@ -256,12 +256,7 @@ add_subprotocols <-
   function(code_mainprotocol,
            fetch_remote = TRUE) {
 
-    assert_that(is.string(code_mainprotocol))
-    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
-    assert_that(
-      right_format,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-    )
+    check_protocolcode(code_mainprotocol)
 
     assert_that(is.flag(fetch_remote), noNA(fetch_remote))
 
