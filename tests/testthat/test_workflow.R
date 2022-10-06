@@ -68,15 +68,15 @@ test_that("complete workflow works", {
 
   update_news(
     path = file.path("source", "sfp", "4_vegetation",
-                     "sfp_401_en_vegetation_1"),
+                     "sfp_407_en_vegetation_1"),
     version_number = version_number
   )
 
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-401-en_vegetation-1")
-  specific_tag <- paste("sfp-401-en", version_number, sep = "-")
+  gert::git_commit_all(message = "sfp-407-en_vegetation-1")
+  specific_tag <- paste("sfp-407-en", version_number, sep = "-")
   generic_tag <- paste("protocols", version_number, sep = "-")
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
@@ -156,7 +156,7 @@ test_that("complete workflow works", {
   # source/sfp/1_water/sfp_102_en_second_subprotocol
   add_dependencies(
     code_mainprotocol = "sfp-102-en",
-    protocol_code = "sfp-401-en",
+    protocol_code = "sfp-407-en",
     version_number = "2021.02",
     params = NA,
     appendix = TRUE

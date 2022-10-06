@@ -174,12 +174,18 @@ This parameter should normally not be specified (i.e. NULL), unless
 \code{from_docx} is specified.
 A protocol number is a three digit string where the first digit corresponds
 with a theme and the last two digits identify a protocol within a theme for
-standard field protocols. A protocol number for a project-specific protocol
+standard field protocols. A protocol number for other protocol types
 is just a three digit string.
 If NULL (the default), a protocol number will be determined automatically
 based on pre-existing protocol numbers.
-Protocol numbers that are already in use can be retrieved with
-\code{get_protocolnumbers()}.}
+Note that for backwards compatibility with protocol numbers that were already
+in use at INBO, we made a list of reserved numbers.
+These reserved numbers will not be used when \code{protocol_number} is NULL.
+The only time you will need to explicitly pass a protocol number to the
+\code{protocol_number} argument is when you want to migrate a pre-existing INBO
+protocol to \code{protocolsource} and hence use one of the reserved numbers.
+Protocol numbers that are already in use in \code{protocolsource} can be retrieved
+with \code{get_protocolnumbers()}.}
 
 \item{template}{Which template to use?
 Default is set equal to protocol_type.

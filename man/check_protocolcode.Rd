@@ -10,6 +10,7 @@ check_protocolcode(protocolcode)
 \item{version_number}{Character string with format \code{YYYY.NN}}
 }
 \description{
-Check if \code{protocolcode} is of format \verb{s[f|p|i|o|a]p-###-[nl|en]}
+Check if \code{protocolcode} is of format \verb{s[fpioa]p-###-[nl|en]} or is on the
+list of reserved protocol codes
 }
 \keyword{internal}

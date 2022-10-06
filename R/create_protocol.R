@@ -576,7 +576,7 @@ get_protocolnumbers <- function(
   ld <- str_subset(string = ld,
                    pattern = paste0("_", language, "_"))
   ld <- str_extract(string = ld,
-                    pattern = "(?<=p_)\\d{3}")
+                    pattern = paste0("(?<=", protocol_type, "_)\\d{3}"))
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
 
@@ -625,7 +625,7 @@ get_short_titles <- function(
   ld <- str_subset(string = ld,
                    pattern = str_replace_all(protocol_type, "-", "_"))
   ld <- str_extract(string = ld,
-                    pattern = paste0("(?<=\\d{3}_", language,
+                    pattern = paste0("(?<=\\w{3,6}_", language,
                                      "_)([a-z]|_|[:digit:])*"))
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
@@ -637,9 +637,10 @@ get_short_titles <- function(
 
 #' Create protocol code from it's components
 #'
-#' A protocol code of format `s[a|f|i|o|p]p-###-[nl|en]` will be created.
+#' A protocol code of format `s[fpioa]p-###-[nl|en]` will be created.
 #' The number will be determined automatically based on theme (in case of `sfp`)
-#' and a rank order of all existing protocol numbers
+#' and a rank order of all existing and reserved protocol numbers, unless
+#' the protocol number is passed directly to the `protocol_number` argument.
 #'
 #' @param protocol_type Either `sfp` (standard field protocol), `spp` (
 #' standard project protocol), `sap` (standard analytical protocol), `sip` (
@@ -654,16 +655,23 @@ get_short_titles <- function(
 #' `from_docx` is specified.
 #' A protocol number is a three digit string where the first digit corresponds
 #' with a theme and the last two digits identify a protocol within a theme for
-#' standard field protocols. A protocol number for a project-specific protocol
+#' standard field protocols. A protocol number for other protocol types
 #' is just a three digit string.
 #' If NULL (the default), a protocol number will be determined automatically
 #' based on pre-existing protocol numbers.
-#' Protocol numbers that are already in use can be retrieved with
-#' `get_protocolnumbers()`.
+#' Note that for backwards compatibility with protocol numbers that were already
+#' in use at INBO, we made a list of reserved numbers.
+#' These reserved numbers will not be used when `protocol_number` is NULL.
+#' The only time you will need to explicitly pass a protocol number to the
+#' `protocol_number` argument is when you want to migrate a pre-existing INBO
+#' protocol to `protocolsource` and hence use one of the reserved numbers.
+#' Protocol numbers that are already in use in `protocolsource` can be retrieved
+#' with `get_protocolnumbers()`.
 #' @param language Language of the protocol, either `"nl"` (Dutch),
 #' the default, or `"en"` (English).
 #'
 #' @importFrom stringr str_subset str_extract
+#' @importFrom assertthat assert_that validate_that
 #'
 #' @return A character string containing the protocol_code
 #'
@@ -671,46 +679,86 @@ get_short_titles <- function(
 create_protocol_code <- function(
   protocol_type, theme, protocol_number, language
   ) {
-  if (protocol_type == "sfp") {
+
+  reserved_codes$bare <- as.integer(reserved_codes$protocolnumber_bare)
+  reserved_codes$theme_number <- ifelse(
+    reserved_codes$protocoltype ==  "sfp",
+    as.character(str_extract(reserved_codes$protocolnumber_bare, "^\\d")),
+    NA)
+  bare_numbers <- unique(
+    reserved_codes[, c("protocoltype", "theme_number", "bare")])
+
+  if (protocol_type == "sfp" && is.null(protocol_number)) {
     protocol_leading_number <- themes_df[themes_df$theme == theme,
                                          "theme_number"]
-    if (is.null(protocol_number)) {
-      all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
-                                         language = language)
+    sfp_reserved <- bare_numbers$bare[
+      bare_numbers$protocoltype == protocol_type &
+        bare_numbers$theme_number == protocol_leading_number] -
+      as.numeric(protocol_leading_number) * 100
+    all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
+                                       language = language)
+    theme_numbers <- str_subset(
+      all_numbers, paste0("^", protocol_leading_number))
+    in_use <- as.numeric(theme_numbers) -
+      as.numeric(protocol_leading_number) * 100
+    full_sequence <- seq(1, max(sfp_reserved, in_use, 1), 1)
+    not_reserved_or_in_use <-
+      full_sequence[!full_sequence %in% c(sfp_reserved, in_use)]
+    gapfill_number <- min(not_reserved_or_in_use)
+    next_number <- max(full_sequence) + 1
 
-      if (length(all_numbers) == 0) {
-        protocol_trailing_number <- "01"
-      } else {
-        numbers <- str_subset(all_numbers, paste0("^", protocol_leading_number))
-        protocol_trailing_number <- max(
-          as.integer(
-            str_extract(numbers, "\\d{2}$")),
-          0,
-          na.rm = TRUE
-        ) + 1
-        protocol_trailing_number <- formatC(protocol_trailing_number,
-                                            width = 2, format = "d", flag = "0")
-      }
-
-      protocol_number <- paste0(protocol_leading_number,
-                                protocol_trailing_number)
-    }
+    protocol_trailing_number <- max(
+      c(1)[length(in_use) == 0],
+      gapfill_number[length(not_reserved_or_in_use) > 0],
+      next_number[length(not_reserved_or_in_use) == 0]
+    )
+    protocol_trailing_number <- formatC(protocol_trailing_number,
+                                        width = 2, format = "d", flag = "0")
+    protocol_number <- paste0(protocol_leading_number,
+                              protocol_trailing_number)
+  }
+  if (protocol_type == "sfp" && !is.null(protocol_number)) {
+    expected_leading_number <- themes_df[themes_df$theme == theme,
+                                         "theme_number"]
+    observed_leading_number <- str_extract(protocol_number, "^\\d")
+    assert_that(expected_leading_number == observed_leading_number)
+    sfp_reserved <- as.character(bare_numbers$bare[
+      bare_numbers$protocoltype == protocol_type &
+        bare_numbers$theme_number == observed_leading_number])
+    validate_that(protocol_number %in% sfp_reserved,
+                  msg = sprintf("The protocol number %s is not on the list
+                                of reserved numbers. Are you sure you want to
+                                pass a number manually?",
+                                protocol_number))
   }
   if (protocol_type %in% c("spp", "sap", "sip", "sop")) {
+    reserved <- bare_numbers$bare[
+      bare_numbers$protocoltype == protocol_type]
     if (is.null(protocol_number)) {
       all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
                                          language = language)
-      if (length(all_numbers) == 0) {
-        protocol_number <- "001"
-      } else {
-        protocol_number <- max(
-          as.integer(all_numbers),
-          0,
-          na.rm = TRUE
-        ) + 1
-        protocol_number <- formatC(protocol_number,
-                                   width = 3, format = "d", flag = "0")
-      }
+      in_use <- as.numeric(all_numbers)
+      full_sequence <- seq(1, max(reserved, in_use, 1), 1)
+      not_reserved_or_in_use <-
+        full_sequence[!full_sequence %in% c(reserved, in_use)]
+      gapfill_number <- min(not_reserved_or_in_use)
+      next_number <- max(full_sequence) + 1
+
+      protocol_number <- max(
+        c(1)[length(in_use) == 0],
+        gapfill_number[length(not_reserved_or_in_use) > 0],
+        next_number[length(not_reserved_or_in_use) == 0]
+      )
+
+      protocol_number <- formatC(protocol_number,
+                                 width = 3, format = "d", flag = "0")
+    } else {
+      reserved <- as.character(reserved)
+      validate_that(protocol_number %in% reserved,
+                    msg = sprintf("The protocol number %s is not on the list
+                                of reserved numbers. Are you sure you want to
+                                pass a number manually?",
+                                  protocol_number))
     }
   }
   protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")

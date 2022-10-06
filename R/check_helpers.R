@@ -22,7 +22,8 @@ check_versionnumber <- function(version_number) {
 #' @title Check the `protocolcode` format
 #'
 #' @description
-#' Check if `protocolcode` is of format `s[f|p|i|o|a]p-###-[nl|en]`
+#' Check if `protocolcode` is of format `s[fpioa]p-###-[nl|en]` or is on the
+#' list of reserved protocol codes
 #'
 #' @param version_number Character string with format `YYYY.NN`
 #'
@@ -32,15 +33,16 @@ check_versionnumber <- function(version_number) {
 check_protocolcode <- function(protocolcode) {
   assert_that(is.string(protocolcode))
   right_format <- grepl("^s[fpioa]p-\\d{3}-(?:nl|en)$", protocolcode)
+  is_reserved <- any(protocolcode %in% reserved_codes$protocolcode)
 
   if (!(is.flag(Sys.getenv("CI")) && isTRUE(Sys.getenv("CI")))) {
     assert_that(
-      right_format,
+      right_format | is_reserved,
       msg = "protocol code not in s*f-###-nl or s*f-###-en format"
     )
   } else {
     assert_that(
-      right_format,
+      right_format | is_reserved,
       msg = "branch name and protocol_code are different"
     )
   }
