@@ -10,6 +10,8 @@
 * added a generic template which can be used as alternative to `sfp`, `sip`,
   `sap` and `sop` templates #78
 * changed create_protocol to handle sap, sip, sop and generic templates
+* handle reserved (in use) protocol codes from lab and field work inventory
+  lists which have not been migrated to `protocolsource`
 
 ## Minor changes
 
