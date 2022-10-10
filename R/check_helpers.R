@@ -1,9 +1,9 @@
 #' @title Check the version number format
 #'
 #' @description
-#' Check if version number is of format YYYY.NN
+#' Check if version number is of format `YYYY.NN`
 #'
-#' @param version_number Character string with format YYYY.NN#'
+#' @param version_number Character string.
 #'
 #' @importFrom assertthat assert_that is.string
 #'
@@ -19,30 +19,40 @@ check_versionnumber <- function(version_number) {
 
 
 
-#' @title Check the protocolcode format
+#' @title Check the `protocolcode` format
 #'
 #' @description
-#' Check if protocolcode is of format `s[f|p|i|o|a]p-###-[nl|en]`
+#' Check if `protocolcode` is of format `s[fpioa]p-###-[nl|en]` or is on the
+#' list of reserved protocol codes
 #'
-#' @param version_number Character string with format YYYY.NN#'
+#' @param version_number Character string with format `YYYY.NN`
 #'
-#' @importFrom assertthat assert_that is.string
+#' @importFrom assertthat assert_that is.string is.flag
 #'
 #' @keywords internal
 check_protocolcode <- function(protocolcode) {
   assert_that(is.string(protocolcode))
-  right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", protocolcode)
-  assert_that(
-    right_format,
-    msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-  )
+  right_format <- grepl("^s[fpioa]p-\\d{3}-(?:nl|en)$", protocolcode)
+  is_reserved <- any(protocolcode %in% reserved_codes$protocolcode)
+
+  if (!(is.flag(Sys.getenv("CI")) && isTRUE(Sys.getenv("CI")))) {
+    assert_that(
+      right_format | is_reserved,
+      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+    )
+  } else {
+    assert_that(
+      right_format | is_reserved,
+      msg = "branch name and protocol_code are different"
+    )
+  }
 }
 
 
 #' @title validate an ORCID string
 #'
 #' @description Generates check digit as per ISO 7064 11,2.
-#' The last character in the ORCID iD is a checksum.
+#' The last character in the `ORCID ID` is a checksum.
 #' In accordance with ISO/IEC 7064:2003, MOD 11-2,
 #' this checksum must be "0-9" or "X", a capital letter X which represents
 #' the value 10.

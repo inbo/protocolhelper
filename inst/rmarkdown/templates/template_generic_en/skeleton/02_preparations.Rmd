@@ -1,0 +1,67 @@
+# Preparations
+
+## Safety
+
+<!--
+vaccinations, protective clothing, warnings of dangerous chemicals, emergency protocols
+-->
+
+## Material
+
+<!--
+(Equipment, Labels, Data registration (GPS, sampling table, tablet, phone, ...))
+-->
+
+## Human resources
+
+<!--
+Which roles and why? Minimal number of people needed for this procedure? Skill set/training needed for this procedure?
+-->
+
+## Dependencies on other procedures
+
+<!--
+Should another procedure be known/studied prior to executing this procedure?
+The table below is automatically filled in based on information in the yaml section of the `index.Rmd` file
+-->
+
+
+```{r dependencies}
+empty_table <- tibble(
+    protocol_code = character(),
+    version_number = character(),
+    params = character(),
+    appendix = logical()
+  ) %>%
+    add_row() %>%
+    rename(
+      `Protocol code` = protocol_code,
+      `Version number` = version_number,
+      `Included as subprotocol` = appendix) %>%
+    kable()
+
+if (exists("params")) {
+  if (!is.null(params$dependencies)) {
+    transpose(params$dependencies) %>%
+    as_tibble() %>%
+    mutate(protocol_code = as.character(protocol_code),
+           version_number = as.character(version_number),
+           params = as.character(params),
+           version_number = ifelse(params == "NA",
+                           paste0("[", version_number, "](../",
+                                  version_number, "/", "index.html)"),
+                           version_number),
+           appendix = as.logical(appendix)) %>%
+    rename(
+      `Protocol code` = protocol_code,
+      `Version number` = version_number,
+      `Included as subprotocol` = appendix) %>%
+    kable()
+  } else {
+    empty_table
+  }
+} else {
+  empty_table
+}
+rm(empty_table)
+```

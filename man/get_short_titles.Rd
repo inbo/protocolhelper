@@ -10,8 +10,8 @@ get_short_titles(
 )
 }
 \arguments{
-\item{protocol_type}{A character string equal to sfp (default), sip, sap, sop
-or spp.}
+\item{protocol_type}{A character string equal to \code{sfp} (default), \code{sip},
+\code{sap}, \code{sop} or \code{spp}.}
 
 \item{language}{Language of the protocol, either \code{"nl"} (Dutch),
 the default, or \code{"en"} (English).}
@@ -22,7 +22,7 @@ protocol type.
 }
 \description{
 This function will search for short titles in filenames of
-Rmarkdown files listed underneath the src folder.
+Rmarkdown files listed underneath the source folder.
 The search will be restricted to files of a given protocol type and given
 language.
 }

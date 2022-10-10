@@ -1,9 +1,9 @@
 # Subject
 
 <!--
-Doelstelling en toepassingsgebied
-Doelstelling: omschrijving in woorden waarvoor het protocol dient.
-Voorbeelden wat er met de gegevens kan gedaan worden.
-Probeer de doelstelling zo veel mogelijk generiek te beschrijven en vermijd projectspecifieke doelstellingen.
-Toepassingsgebied: bespreek hier onder welke condities het protocol kan gebruikt worden.
+Objective and scope
+Objective: description in words what the protocol is for.
+Examples of what can be done with the data.
+Try to describe the objective as generically as possible and avoid project-specific objectives.
+Field of application: discuss here under which conditions the protocol can be used.
 -->

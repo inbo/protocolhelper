@@ -16,9 +16,9 @@ insert_protocolsection(
 }
 \arguments{
 \item{code_subprotocol}{Character string giving the protocol code from
-which a subprotocol will be made (usually a sfp-type protocol)}
+which a sub-protocol will be made (usually a \code{sfp}-type protocol)}
 
-\item{version_number}{Character string with format YYYY.NN}
+\item{version_number}{Character string with format \code{YYYY.NN}}
 
 \item{file_name}{Character string with the name of the Rmarkdown
 file (a chapter starting with a level 1 heading).}

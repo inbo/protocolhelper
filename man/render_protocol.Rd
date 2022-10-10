@@ -23,7 +23,7 @@ in order to preview updates that have been made.
 }
 \details{
 The rendered html file and associated files needed by the html file
-will be put in the directory implied by the output_dir parameter.
+will be put in the directory implied by the \code{output_dir} parameter.
 }
 \examples{
 \dontrun{

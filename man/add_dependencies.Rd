@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_dependencies.R
 \name{add_dependencies}
 \alias{add_dependencies}
-\title{Adds dependencies to the YAML of an index.Rmd file}
+\title{Adds dependencies to the YAML of an \code{index.Rmd} file}
 \usage{
 add_dependencies(
   code_mainprotocol,
@@ -14,7 +14,7 @@ add_dependencies(
 }
 \arguments{
 \item{code_mainprotocol}{Protocol code of the protocol for which dependencies
-need to be declared in the YAML of its index.Rmd file}
+need to be declared in the YAML of its \code{index.Rmd} file}
 
 \item{protocol_code}{Character vector of protocol codes that are dependencies
 to the main protocol.}
@@ -32,7 +32,7 @@ appendix). Default is \code{!is.na(params)}. When \code{params} is not \code{NA}
 will always be set to \code{TRUE} even if the user passes another value.}
 }
 \description{
-Adds dependencies to the YAML of an index.Rmd file
+Adds dependencies to the YAML of an \code{index.Rmd} file
 }
 \examples{
 \dontrun{

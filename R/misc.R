@@ -8,7 +8,7 @@
 #' The system command to be invoked, as a string.
 #' Multiple commands can be combined in this single string, e.g. with a
 #' multiline string.
-#' @param path The path from where the commandstring needs to be executed
+#' @param path The path from where the `commandstring` needs to be executed
 #' @param ... Other arguments passed to \code{\link[base]{system}} or
 #' \code{\link[base]{shell}}.
 #'
@@ -38,7 +38,7 @@ execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
 
 
 
-#' set path to html template to be used by gitbook
+#' set path to html template to be used by `gitbook`
 #' @export
 protocol_css <- function() {
   source_dir <- system.file(

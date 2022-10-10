@@ -1,11 +1,12 @@
-#' Update the .zenodo.json file
+#' Update the `.zenodo.json` file
 #'
-#' Updating is done by scanning the index.Rmd files for author metadata and
-#' adding missing author metadata to the list of creators in the .zenodo.json.
+#' Updating is done by scanning the `index.Rmd` files for author metadata and
+#' adding missing author metadata to the list of creators in the `.zenodo.json`.
 #' This internal function should only be used by one of the administrators.
 #'
-#' @param json a JSON string, url or file
-#' @param write whether to write a .zenodo.json file (TRUE) or to return a json
+#' @param json a `JSON` string, url or file
+#' @param write whether to write a `.zenodo.json` file (TRUE) or to return a
+#' `json`
 #' string
 #'
 #' @importFrom purrr map flatten map_chr
@@ -15,7 +16,8 @@
 #'
 #' @keywords internal
 #'
-#' @return a .zenodo.json file (write = TRUE) or a json string (write = FALSE)
+#' @return a `.zenodo.json` file (write = TRUE) or a `json` string
+#' (write = FALSE)
 #'
 update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
 

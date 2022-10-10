@@ -1,5 +1,5 @@
 # Extra aspects of safety compared to subprotocols
 
 <!--
-Geen herhaling van wat al in subprotocols staat
+Do not repeat what is already mentioned in subprotocols
 -->

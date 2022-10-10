@@ -7,8 +7,8 @@
 #' @return The function will return Rmarkdown
 #'
 #' @param code_subprotocol Character string giving the protocol code from
-#' which a subprotocol will be made (usually a sfp-type protocol)
-#' @param version_number Character string with format YYYY.NN
+#' which a sub-protocol will be made (usually a `sfp`-type protocol)
+#' @param version_number Character string with format `YYYY.NN`
 #' @param file_name Character string with the name of the Rmarkdown
 #' file (a chapter starting with a level 1 heading).
 #' @param section Optional character string with the name of a section within an
@@ -161,8 +161,8 @@ insert_protocolsection <-
 #' @title Internal function to get media and data files
 #'
 #' @description
-#' Extracts all paths to files in data and media from rmd_content and uses git
-#' show to copy paste the files from the subprotocol to the main protocol
+#' Extracts all paths to files in data and media from `rmd_content` and uses git
+#' show to copy paste the files from the sub-protocol to the main protocol
 #'
 #' @param rmd_content Character vector containing lines read from an Rmarkdown
 #' file

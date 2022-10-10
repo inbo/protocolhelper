@@ -2,7 +2,7 @@
 % Please edit documentation in R/protocolcheck_class.R
 \name{protocolcheck}
 \alias{protocolcheck}
-\title{The protocolcheck R6 class}
+\title{The \code{protocolcheck} R6 class}
 \description{
 A class that collects and shows all check results.
 }
@@ -50,7 +50,7 @@ A new \code{Protocolcheck} object
 \if{html}{\out{<a id="method-Protocolcheck-add_error"></a>}}
 \if{latex}{\out{\hypertarget{method-Protocolcheck-add_error}{}}}
 \subsection{Method \code{add_error()}}{
-Add a new error to the Protocolcheck object.
+Add a new error to the \code{Protocolcheck} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{protocolcheck$add_error(msg)}\if{html}{\out{</div>}}
 }
@@ -67,7 +67,7 @@ Add a new error to the Protocolcheck object.
 \if{html}{\out{<a id="method-Protocolcheck-check"></a>}}
 \if{latex}{\out{\hypertarget{method-Protocolcheck-check}{}}}
 \subsection{Method \code{check()}}{
-Give error report from Protocolcheck object.
+Give error report from \code{Protocolcheck} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{protocolcheck$check(fail)}\if{html}{\out{</div>}}
 }

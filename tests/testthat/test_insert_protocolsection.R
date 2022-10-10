@@ -65,16 +65,16 @@ test_that("Test that insert_protocolsection works", {
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
-    file = "src/thematic/1_water/sfp-101-nl_water-1/07_werkwijze.Rmd",
+    file = "source/sfp/1_water/sfp_101_nl_water_1/07_werkwijze.Rmd",
     append = TRUE)
   # add the protocolspecific parameter to index yaml
   index <- readLines(
-    "src/thematic/1_water/sfp-101-nl_water-1/index.Rmd")
+    "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd")
   index <- c(index[1:14],
              "  protocolspecific: defaultvalue",
              index[15:length(index)])
   writeLines(index,
-             con = "src/thematic/1_water/sfp-101-nl_water-1/index.Rmd")
+             con = "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd")
   version_number <- "2020.02"
   gert::git_commit_all(message = "sfp-101-nl_water-1")
   specific_tag <- paste("sfp-101-nl", version_number, sep = "-")

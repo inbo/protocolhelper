@@ -1,6 +1,6 @@
 # Reagents and solutions
 
-**Demineralized water**: electrical conductivity smaller than 2 $\mu S / cm$ at 25 °C.
+**Demineralised water**: electrical conductivity smaller than 2 $\mu S / cm$ at 25 °C.
 
 **Ultra pure water**: electrical conductivity smaller than 0,1 $\mu S / cm$, equivalent with a resistance greater than 0,01 $M\Omega \quad m$ at 25 °C.
 It is recommended to use water from a water purification system that delivers ultra pure water with a resistance greater than 0,18 $M\Omega \quad m$ (usually expressed as 18,2 $M\Omega \quad cm$).

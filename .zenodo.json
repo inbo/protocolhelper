@@ -1,6 +1,6 @@
 {
   "title": "protocolhelper: Helper Functions to Manage Protocols",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Helper functions to manage INBO protocols.",
   "creators": [
     {
@@ -41,5 +41,7 @@
     }
   ],
   "language": "eng",
-  "keywords": "R package"
+  "keywords": [
+    "R package"
+  ]
 }

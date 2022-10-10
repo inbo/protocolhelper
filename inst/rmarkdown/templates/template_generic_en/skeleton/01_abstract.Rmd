@@ -1,0 +1,13 @@
+# Abstract
+
+## Goal
+
+
+## Scope
+
+
+## Not in scope
+
+<!--
++ where to find information on what's not in scope if existing
+-->

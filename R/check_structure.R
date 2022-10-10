@@ -21,13 +21,13 @@
 #' @export
 #'
 check_structure <- function(protocol_code, fail = !interactive()) {
-  assert_that(str_detect(protocol_code, "^s[fioap]p-\\d{3}-(nl|en)$"))
+  check_protocolcode(protocol_code)
   assert_that(is.flag(fail), noNA(fail))
 
   x <- load_protocolcheck(x = protocol_code)
   template_name <-
     gsub(
-      pattern = "(s\\w{1}p)-\\d*-(\\w{2})",
+      pattern = "(s\\w{1}p)-\\w{3,5}-(\\w{2})",
       replacement = "template_\\1_\\2",
       protocol_code
     )

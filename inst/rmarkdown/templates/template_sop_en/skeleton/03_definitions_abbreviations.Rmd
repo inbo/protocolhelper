@@ -1,5 +1,5 @@
 # Definitions and abbreviations
 
 <!--
-Definities van begrippen en afkortingen die noodzakelijk zijn om dit document te begrijpen en het protocol op een gepaste manier te kunnen uitvoeren.
+Definitions of terms and abbreviations necessary to understand this document and execute the protocol appropriately.
 -->

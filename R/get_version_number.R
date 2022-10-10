@@ -10,7 +10,7 @@
 #' local git repository - informative error messages will be given.
 #'
 #' @param path Defaults to current working directory.
-#' This should correspond with the root directory of the protocolsource repo.
+#' This should correspond with the root directory of the `protocolsource` repo.
 #'
 #' @importFrom checklist clean_git
 #' @importFrom fs dir_ls is_dir

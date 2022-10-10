@@ -11,7 +11,7 @@ set_tags(protocol_code, path = ".")
 branch that contains the new or updated protocol.}
 
 \item{path}{Default is current working directory. Should correspond with
-root directory of protocolsource repo.}
+root directory of \code{protocolsource} repo.}
 }
 \value{
 invisible NULL

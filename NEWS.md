@@ -1,3 +1,24 @@
+# protocolhelper 0.4.0
+
+## breaking changes
+
+* reworked folder structure (`src` becomes `source`, `thematic` becomes `sfp`,
+  `project` becomes `spp`) #82
+
+## New features
+
+* added a generic template which can be used as alternative to `sfp`, `sip`,
+  `sap` and `sop` templates #78
+* changed create_protocol to handle sap, sip, sop and generic templates
+* handle reserved (in use) protocol codes from lab and field work inventory
+  lists which have not been migrated to `protocolsource`
+
+## Minor changes
+
+* reworked internal function `protocolhelper:::render_release` to improve
+  homepage of website #84
+* fixed numerous spelling issues
+
 # protocolhelper 0.3.2
 
 * patch to update checklist machinery
@@ -7,7 +28,7 @@
 ## Minor changes
 
 * `update_version_number` only commits a modified `Index.Rmd`
-* `get_version_number` temporarilly stashes changes so they don't get lost when
+* `get_version_number` temporarily stashes changes so they don't get lost when
   switching between branches
 
 # protocolhelper 0.3.0
@@ -25,7 +46,7 @@
 ## Minor changes
 
 * various fixes to comply with new version of `checklist` package
-* improved checks when passing authors and orcids in `create_protocol()`
+* improved checks when passing authors and `orcids` in `create_protocol()`
 * some template markdown files or chapter titles have been changed so that file
   name and chapter title are similar
 * functions `clean_git` and `new_branch` are now imported from `checklist`
@@ -38,7 +59,8 @@
 
 # protocolhelper 0.2.3
 
-* fix problem in github action workflow (install more recent version of pandoc)
+* fix problem in `github` action workflow (install more recent version of
+  `pandoc`)
 
 # protocolhelper 0.2.2
 
@@ -47,11 +69,11 @@
 * function to update a protocol (start development of a new version)
 * internal function to get protocol tags and optionally bump development version
   number (#27)
-* internal function to update .zenodo.json file (add new authors) (#25)
+* internal function to update `.zenodo.json` file (add new authors) (#25)
 
 ## Minor changes
 
-* fixed relative links in template NEWS.md html comments
+* fixed relative links in template `NEWS.md` html comments
 * removed function render_all(); it is superseded by the internal function
   protocolhelper:::render_release().
   This function is internal because it should only be used by administrators
@@ -62,8 +84,8 @@
 
 ## Bug fixes
 
-* fixed bugs in check_frontmatter() due to changes in the way YAML metadata are
-  stored
+* fixed bugs in `check_frontmatter()` due to changes in the way YAML metadata
+  are stored
 
 # protocolhelper 0.2.1
 
@@ -73,23 +95,23 @@
 
 ## Minor changes
 
-* arguments determining paths to save results of convert_docx_to_rmd() are
+* arguments determining paths to save results of `convert_docx_to_rmd()` are
   reconsidered (#52 and #53)
-* change default of argument wrap in convert_docx_to_rmd() to NA
-* .emf files will converted to .png in convert_docx_to_rmd()
+* change default of argument wrap in `convert_docx_to_rmd()` to NA
+* .emf files will converted to .png in `convert_docx_to_rmd()`
 
 # protocolhelper 0.2.0
 
 ## Breaking changes
 
-* restructured yaml of skeleton.Rmd in templates: moved metadata under params
-  section to toplevel of yaml
-* new YAML syntax to add dependencies to the params section the YAML
+* restructured yaml of `skeleton.Rmd` in templates: moved metadata under
+  `params` section to top level of yaml
+* new YAML syntax to add dependencies to the `params` section the YAML
 
 ## New features
 
-* adds orcid information (#32)
-* adds a link to dependencies table when params are missing (#46)
+* adds `orcid` information (#32)
+* adds a link to dependencies table when `params` are missing (#46)
 * adds a new function to aid adding dependencies to YAML header
 * adds a logo to the sidebar (#44)
 

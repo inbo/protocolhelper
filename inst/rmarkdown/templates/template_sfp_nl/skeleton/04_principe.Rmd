@@ -2,5 +2,5 @@
 
 <!--
 Korte omschrijving van de principes waarop het protocol gebaseerd is.
-Bv principe achter het nemen van mengmonsters, principe achter visueel inschatten van de bedekking van een plant, ...
+Bijvoorbeeld het principe achter het nemen van mengmonsters, principe achter visueel inschatten van de bedekking van een plant, ...
 -->

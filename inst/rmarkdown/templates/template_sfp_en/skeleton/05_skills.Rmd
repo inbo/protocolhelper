@@ -1,7 +1,7 @@
 # Required skills
 
 <!--
-Omschrijving van de basiskennis (bv. kennis van bepaalde soorten) en vaardigheden (bv. bepaalde apparatuur kunnen bedienen), die de gebruiker van het protocol moet hebben om het protocol op een gepaste manier te kunnen uitvoeren.
-Eventueel kan er verwezen worden naar bepaalde opleidingen.
+Description of the basic knowledge (e.g. knowledge of certain types) and skills (e.g. being able to operate certain equipment) that the user of the protocol must have in order to be able to perform the protocol in an appropriate manner.
+If necessary, reference can be made to specific courses.
 -->
 

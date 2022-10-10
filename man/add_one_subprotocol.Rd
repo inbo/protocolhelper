@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_subprotocols.R
 \name{add_one_subprotocol}
 \alias{add_one_subprotocol}
-\title{Helper function to add one subprotocol to a project-specific protocol
+\title{Helper function to add one sub-protocol to a project-specific protocol
 of which it is a dependency}
 \usage{
 add_one_subprotocol(
@@ -15,9 +15,9 @@ add_one_subprotocol(
 }
 \arguments{
 \item{code_subprotocol}{Character string giving the protocol code from
-which a subprotocol will be made (usually a sfp-type protocol)}
+which a sub-protocol will be made (usually a \code{sfp}-type protocol)}
 
-\item{version_number}{Character string with format YYYY.NN}
+\item{version_number}{Character string with format \code{YYYY.NN}}
 
 \item{params2}{A list of parameter key-value pairs.}
 
@@ -27,9 +27,9 @@ main protocol}
 \item{fetch_remote}{Whether or not to fetch the remote. Default TRUE.}
 }
 \description{
-The function renders the subprotocol to
+The function renders the sub-protocol to
 \code{\link[bookdown:html_document2]{bookdown::markdown_document2()}} and
-saves the resulting md file (and any associated media and data files) in a
+saves the resulting \code{md} file (and any associated media and data files) in a
 subfolder of the directory of the project-specific protocol.
 This function should normally not be called directly.
 Use \code{\link[=add_subprotocols]{add_subprotocols()}} instead.

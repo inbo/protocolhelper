@@ -7,9 +7,9 @@
 check_versionnumber(version_number)
 }
 \arguments{
-\item{version_number}{Character string with format YYYY.NN#'}
+\item{version_number}{Character string.}
 }
 \description{
-Check if version number is of format YYYY.NN
+Check if version number is of format \code{YYYY.NN}
 }
 \keyword{internal}

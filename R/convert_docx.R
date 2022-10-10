@@ -2,7 +2,7 @@
 #'
 #' @description This function is derived from the
 #' [`redoc::dedoc()`](https://noamross.github.io/redoc/reference/dedoc.html)
-#' function and uses pandoc to convert between docx and markdown.
+#' function and uses `pandoc` to convert between docx and markdown.
 #' Several options are preset to end-up with a markdown document that is in
 #' syntax as close as possible to Rmarkdown files in RStudio.
 #' During conversion, graphics (e.g. png, jpg) will be extracted from the docx
@@ -28,7 +28,7 @@
 #' @param overwrite Whether or not to overwrite the `to` file if it already
 #' existed.
 #' Defaults to `FALSE`.
-#' @param verbose Whether to print pandoc progress text.
+#' @param verbose Whether to print `pandoc` progress text.
 #' Defaults to `FALSE`.
 #' @param wd Current working directory (used to handle relative paths).
 #'

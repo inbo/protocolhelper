@@ -4,7 +4,7 @@
 Describe changes compared to the previous version. 
 Give the reason for the change and - when relevant - give a short description of what has changed. 
 Sort the changes by version number, most recent comes first. 
-E.g.:
+:
 
 ## [2020.02](../2020.02/index.html)
 

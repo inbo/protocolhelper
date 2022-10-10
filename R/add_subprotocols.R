@@ -1,16 +1,16 @@
-#' @title Helper function to add one subprotocol to a project-specific protocol
+#' @title Helper function to add one sub-protocol to a project-specific protocol
 #' of which it is a dependency
 #'
-#' @description The function renders the subprotocol to
+#' @description The function renders the sub-protocol to
 #' [bookdown::markdown_document2()] and
-#' saves the resulting md file (and any associated media and data files) in a
+#' saves the resulting `md` file (and any associated media and data files) in a
 #' subfolder of the directory of the project-specific protocol.
 #' This function should normally not be called directly.
 #' Use [protocolhelper::add_subprotocols()] instead.
 #'
 #' @param code_subprotocol Character string giving the protocol code from
-#' which a subprotocol will be made (usually a sfp-type protocol)
-#' @param version_number Character string with format YYYY.NN
+#' which a sub-protocol will be made (usually a `sfp`-type protocol)
+#' @param version_number Character string with format `YYYY.NN`
 #' @param params2 A list of parameter key-value pairs.
 #' @inheritParams add_subprotocols
 #'
@@ -227,7 +227,7 @@ add_one_subprotocol <-
   }
 
 
-#' @title Render all subprotocols belonging to a main protocol to single
+#' @title Render all sub-protocols belonging to a main protocol to single
 #' markdown files
 #'
 #' @description The function should be called interactively (in the console)
@@ -236,12 +236,12 @@ add_one_subprotocol <-
 #' `protocolhelper::add_dependencies()` function.
 #' For reproducibility, it is good practice to save the call in a
 #' separate R script.
-#' For each subprotocol a single markdown file and associated media and
+#' For each sub-protocol a single markdown file and associated media and
 #' data files will be written.
-#' Each subprotocol will be written to a subfolder of the main
+#' Each sub-protocol will be written to a subfolder of the main
 #' protocol.
 #' The subfolder name is the same as the version number of the
-#' subprotocol.
+#' sub-protocol.
 #'
 #' @param code_mainprotocol Character string giving the protocol code for the
 #' main protocol
@@ -256,12 +256,7 @@ add_subprotocols <-
   function(code_mainprotocol,
            fetch_remote = TRUE) {
 
-    assert_that(is.string(code_mainprotocol))
-    right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
-    assert_that(
-      right_format,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
-    )
+    check_protocolcode(code_mainprotocol)
 
     assert_that(is.flag(fetch_remote), noNA(fetch_remote))
 

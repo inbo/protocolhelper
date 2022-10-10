@@ -1,7 +1,7 @@
-#' Adds dependencies to the YAML of an index.Rmd file
+#' Adds dependencies to the YAML of an `index.Rmd` file
 #'
 #' @param code_mainprotocol Protocol code of the protocol for which dependencies
-#' need to be declared in the YAML of its index.Rmd file
+#' need to be declared in the YAML of its `index.Rmd` file
 #' @param protocol_code Character vector of protocol codes that are dependencies
 #' to the main protocol.
 #' @param version_number Character vector of version numbers corresponding with

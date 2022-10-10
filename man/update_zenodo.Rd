@@ -2,22 +2,24 @@
 % Please edit documentation in R/update_zenodo.R
 \name{update_zenodo}
 \alias{update_zenodo}
-\title{Update the .zenodo.json file}
+\title{Update the \code{.zenodo.json} file}
 \usage{
 update_zenodo(json = ".zenodo.json", write = TRUE)
 }
 \arguments{
-\item{json}{a JSON string, url or file}
+\item{json}{a \code{JSON} string, url or file}
 
-\item{write}{whether to write a .zenodo.json file (TRUE) or to return a json
+\item{write}{whether to write a \code{.zenodo.json} file (TRUE) or to return a
+\code{json}
 string}
 }
 \value{
-a .zenodo.json file (write = TRUE) or a json string (write = FALSE)
+a \code{.zenodo.json} file (write = TRUE) or a \code{json} string
+(write = FALSE)
 }
 \description{
-Updating is done by scanning the index.Rmd files for author metadata and
-adding missing author metadata to the list of creators in the .zenodo.json.
+Updating is done by scanning the \code{index.Rmd} files for author metadata and
+adding missing author metadata to the list of creators in the \code{.zenodo.json}.
 This internal function should only be used by one of the administrators.
 }
 \keyword{internal}

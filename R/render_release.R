@@ -16,7 +16,7 @@
 #'
 #' @details The links to earlier releases and older versions can be found
 #' through a subfolder structure below `publish/version_number` that mirrors the
-#' structure of `src/thematic` and `src/project`.
+#' structure of `source/`.
 #'
 #'
 #' @importFrom assertthat assert_that is.string
@@ -48,11 +48,12 @@ render_release <- function(output_root = "publish") {
   output_root <- file.path(git_root, output_root)
 
   protocol_index <- dir_ls(
-    file.path(git_root, "src"),
+    file.path(git_root, "source"),
     type = "file",
     recurse = 3,
     regexp = "index\\.Rmd"
   )
+  protocol_index <- protocol_index[!grepl("source/index\\.Rmd", protocol_index)]
   yaml <- map(protocol_index, yaml_front_matter)
   version <- map(yaml, "version_number")
   missing_version <- !map_lgl(version, is.string)
@@ -150,7 +151,11 @@ render_release <- function(output_root = "publish") {
       news <- paste(lang, news, collapse = "\n")
     }
     writeLines(
-      c("---", as.yaml(yaml[[i]]), "---", "", news),
+      c("---",
+        paste0("title: ", yaml[[i]]$title),
+        paste0("subtitle: ", yaml[[i]]$subtitle),
+        paste0("output:\n  ", as.yaml(yaml[[i]]$output)),
+        "---", "", news),
       "render_NEWS.Rmd"
     )
     target_dir <- file.path(
@@ -161,7 +166,11 @@ render_release <- function(output_root = "publish") {
     }
     render(
       "render_NEWS.Rmd", output_file = "index.html", envir = new.env(),
-      output_dir = target_dir, output_format = html_document(
+      output_dir = target_dir,
+      output_format = html_document(
+        toc = TRUE,
+        toc_depth = 2,
+        toc_float = TRUE,
         css = "css/inbo_rapport.css"
       )
     )
@@ -182,42 +191,83 @@ render_release <- function(output_root = "publish") {
     }
   )
   meta <- do.call(rbind, meta)
-  meta_order <- order(meta$theme, meta$code, -as.integer(factor(meta$version)))
+  meta$type <- regmatches(meta$code,
+                          regexpr("^s.p", meta$code))
+  meta$type <- factor(
+    meta$type,
+    levels = c("sfp", "sip", "sap", "sop", "spp"),
+    labels = c("Standard field protocols (sfp)",
+               "Standard instrument protocols (sip)",
+               "Standard analytical protocols (sap)",
+               "Standard operating procedures (sop)",
+               "Project-specific protocols (spp)")
+    )
+  meta_order <- order(meta$type, meta$theme, meta$code,
+                      -as.integer(factor(meta$version)))
   meta <- meta[meta_order, ]
   meta$Rmd <- sprintf(
     "- [%1$s](%1$s/index.html) (%2$s)", meta$version, meta$language
   )
   meta <- aggregate(
-    Rmd ~ theme + code + title + subtitle,
+    Rmd ~ type + theme + code + title + subtitle,
     data = meta, FUN = paste, collapse = "\n"
   )
   meta$Rmd <- sprintf(
-    "## %1$s [(`%2$s`)](%2$s/index.html)\n\n%3$s\n\n%4$s",
+    "### %1$s [(`%2$s`)](%2$s/index.html)\n\n%3$s\n\n%4$s",
     meta$title, meta$code, meta$subtitle, meta$Rmd
   )
-  meta <- aggregate(Rmd ~ theme, data = meta, FUN = paste, collapse = "\n\n")
-  meta$Rmd <- sprintf("# %s\n\n%s", meta$theme, meta$Rmd)
-  setwd(file.path(git_root, "src"))
-  if (!file_exists("homepage.Rmd")) {
+  meta <- aggregate(Rmd ~ type + theme, data = meta, FUN = paste,
+                    collapse = "\n\n")
+  meta$Rmd <- sprintf("## %1$s\n\n%2$s", meta$theme, meta$Rmd)
+  meta <- aggregate(Rmd ~ type, data = meta, FUN = paste,
+                    collapse = "\n\n")
+  meta$Rmd <- sprintf("# %1$s\n\n%2$s", meta$type, meta$Rmd)
+
+  setwd(file.path(git_root, "source"))
+  if (!file_exists("index.Rmd")) {
     writeLines(
       "---\ntitle: INBO protocols\ndate: '`r Sys.Date()`'\noutput: html_document
----\n\n",
-      "homepage.Rmd"
+---\n\n# Welcome!\n\nProtocols increase the quality of the fieldwork and thus
+the quality of scientific research, which must be transparent, traceable and
+applicable.
+They help make fieldwork more harmonized and more repeatable, reproducible and
+comparable.
+Standardization is also interesting for the Institute for Nature and Forest
+Research (INBO) from an efficiency point of view.\n\n
+This site serves as a repository for the most recent versions of approved
+protocols used at INBO.
+On the left you will find the navigation to the different sections.\n
+",
+      "index.Rmd"
     )
   }
-  homepage <- readLines("homepage.Rmd")
-  writeLines(c(homepage, paste(meta$Rmd, collapse = "\n\n")), "homepage.Rmd")
-  if (!dir_exists(file.path(git_root, "src", "css"))) {
+  index <- readLines("index.Rmd")
+  writeLines(c(index, paste(meta$Rmd, collapse = "\n\n")), "index.Rmd")
+  if (!dir_exists(file.path(git_root, "source", "css"))) {
     dir_copy(
       system.file("css", package = "protocolhelper"),
-      file.path(git_root, "src", "css")
+      file.path(git_root, "source", "css")
     )
   }
-  render(
-    "homepage.Rmd", output_file = "index.html", envir = new.env(),
-    output_dir = output_root, output_format = html_document(
-      css = "css/inbo_rapport.css"
+  render_book(
+    "index.Rmd",
+    output_file = "index.html",
+    envir = new.env(),
+    output_dir = output_root,
+    output_format = gitbook(
+      toc_depth = 2,
+      number_sections = FALSE,
+      split_by = "chapter",
+      template = "css/gitbook.html",
+      css = "css/inbo_rapport.css",
+      config = list(
+        toc = list(
+          before =
+            '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-en.jpg"></a></li>', # nolint
+          after = '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>' # nolint
+        )
+      )
     )
   )
-  writeLines(homepage, "homepage.Rmd")
+  writeLines(index, "index.Rmd")
 }

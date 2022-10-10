@@ -23,7 +23,7 @@ test_that("Get short title works", {
   )
 
   expect_identical(get_short_titles("sfp", "en"),
-                   "water-1")
+                   "water_1")
   expect_error(
     protocolhelper::create_protocol(
       title = "Test 1", short_title = "water 1",

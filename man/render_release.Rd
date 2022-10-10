@@ -24,7 +24,7 @@ see \code{protocolhelper::render_protocol()}.
 \details{
 The links to earlier releases and older versions can be found
 through a subfolder structure below \code{publish/version_number} that mirrors the
-structure of \code{src/thematic} and \code{src/project}.
+structure of \verb{source/}.
 }
 \examples{
 \dontrun{

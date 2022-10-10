@@ -32,10 +32,10 @@ output:
 Instructies bij opmaak van het protocol:
 
 Hieronder vind je de verschillende onderdelen van een protocol.
-In de bijhorende losse Rmd bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden.
+In de bijhorende losse `Rmd` bestanden vind je een beschrijving wat er bij elk onderdeel vermeld moet worden.
 Het is in die bestanden dat je moet editeren.
 Niet alle onderdelen zijn altijd van toepassing.
-Laat in die gevallen de titelhoofdingen staan en vermeld expliciet “niet van toepassing”.
+Laat in die gevallen de titel hoofdingen staan en vermeld expliciet "niet van toepassing".
 -->
 
 
