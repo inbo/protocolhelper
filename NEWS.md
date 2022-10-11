@@ -1,3 +1,9 @@
+# protocolhelper 0.4.1
+
+## Minor changes
+
+- added pandoc minimal system requirements to description
+
 # protocolhelper 0.4.0
 
 ## breaking changes
