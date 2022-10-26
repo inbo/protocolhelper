@@ -8,6 +8,6 @@ citEntry(
   url = "https://inbo.github.io/protocolhelper/",
   abstract = "Helper functions to manage INBO protocols.",
   textVersion = "Van Calster, Hans; Onkelinx, Thierry; Vanderhaeghe, Floris (2022) protocolhelper: Helper Functions to Manage Protocols. Version 0.4.1. https://inbo.github.io/protocolhelper/, https://github.com/inbo/protocolhelper",
-  keywords = "R package",
+  keywords = "Protocols, R package, Reproducible research, Rmarkdown templates",
 )
 # end checklist entry

@@ -31,7 +31,11 @@ required:
 - lintr
 - repository secret
 - spelling
-keywords: R package
+keywords:
+- R package
+- Reproducible research
+- Protocols
+- Rmarkdown templates
 spelling:
   default: en-GB
   ignore:
