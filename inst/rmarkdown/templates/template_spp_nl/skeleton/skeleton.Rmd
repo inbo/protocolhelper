@@ -54,6 +54,8 @@ opts_chunk$set(
 )
 library(dplyr)
 library(purrr)
+library(protocolhelper)
+path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
 ```
 
 
