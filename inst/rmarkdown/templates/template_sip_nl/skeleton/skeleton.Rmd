@@ -10,6 +10,7 @@ file_manager:
 protocol_code:
 version_number:
 language: nl
+template_name: sip
 theme:
 site: bookdown::bookdown_site
 bibliography: referenties.yaml

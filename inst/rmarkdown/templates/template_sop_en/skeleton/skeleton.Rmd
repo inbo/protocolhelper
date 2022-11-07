@@ -10,6 +10,7 @@ file_manager:
 protocol_code:
 version_number:
 language: en
+template_name: sop
 theme:
 site: bookdown::bookdown_site
 bibliography: references.yaml
