@@ -76,16 +76,16 @@ test_that("check structure works", {
   file.create(file.path(get_path_to_protocol("sfp-101-en"),
                         "references.yaml"))
   x <- readLines(file.path(get_path_to_protocol("sfp-101-en"),
-                           "index.Rmd"))
+                           "02_subject.Rmd"))
   file.remove(file.path(get_path_to_protocol("sfp-101-en"),
-                        "index.Rmd"))
+                        "02_subject.Rmd"))
   expect_error(check_structure("sfp-101-en", fail = TRUE),
                "Some problems")
   expect_output(
     check_structure("sfp-101-en", fail = FALSE),
-    "index.Rmd")
+    "02_subject.Rmd")
   writeLines(x, file.path(get_path_to_protocol("sfp-101-en"),
-                          "index.Rmd"))
+                          "02_subject.Rmd"))
 
   # add Rmd file with duplicate chapter number
   file.create(file.path(get_path_to_protocol("sfp-101-en"),
@@ -100,11 +100,12 @@ test_that("check structure works", {
 
 
   # create a protocol with generic template
+  version_number <- "2021.02"
   create_sfp(
     title = "Test 2", subtitle = "subtitle", short_title = "water 2",
     authors = "me", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
-    theme = "water", language = "en",
+    theme = "water", language = "en", version_number =  version_number,
     template = "generic"
   )
 
