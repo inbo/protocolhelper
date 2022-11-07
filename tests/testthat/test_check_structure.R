@@ -98,6 +98,26 @@ test_that("check structure works", {
   file.remove(file.path(get_path_to_protocol("sfp-101-en"),
                         "01_afhankelijkheden.Rmd"))
 
+
+  # create a protocol with generic template
+  create_sfp(
+    title = "Test 2", subtitle = "subtitle", short_title = "water 2",
+    authors = "me", orcids = "0000-0001-2345-6789",
+    reviewers = "someone else", file_manager = "who?",
+    theme = "water", language = "en",
+    template = "generic"
+  )
+
+  update_news(
+    path = file.path("source", "sfp", "1_water", "sfp_102_en_water_2"),
+    version_number = version_number
+  )
+
+  expect_output(
+    check_structure("sfp-102-en", fail = TRUE),
+    "No problems")
+
+
   # Cleanup
   unlink(test_repo, recursive = TRUE)
 
