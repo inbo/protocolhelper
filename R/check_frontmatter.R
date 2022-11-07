@@ -30,18 +30,21 @@ check_frontmatter <- function(
   assert_that(is.flag(fail), noNA(fail))
 
   x <- load_protocolcheck(x = protocol_code)
+  assert_that(file.exists(file.path(x$path, "index.Rmd")))
+  yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
+
+  assert_that(is.string(yml_protocol$template_name))
+  assert_that(is.string(yml_protocol$language))
+
   template_name <-
-    gsub(
-      pattern = "(s\\w{1}p)-\\w{3,5}-(\\w{2})",
-      replacement = "template_\\1_\\2",
-      protocol_code
-    )
+    paste("template", yml_protocol$template_name,
+          yml_protocol$language, sep = "_")
+
   path_to_template <-
     system.file(
       file.path("rmarkdown", "templates", template_name, "skeleton"),
       package = "protocolhelper")
 
-  yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
   yml_template <- yaml_front_matter(input = file.path(path_to_template,
                                                       "skeleton.Rmd"))
 
