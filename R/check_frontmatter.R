@@ -45,6 +45,8 @@ check_frontmatter <- function(
       file.path("rmarkdown", "templates", template_name, "skeleton"),
       package = "protocolhelper")
 
+  assert_that(file.exists(file.path(path_to_template,
+                                    "skeleton.Rmd")))
   yml_template <- yaml_front_matter(input = file.path(path_to_template,
                                                       "skeleton.Rmd"))
 
