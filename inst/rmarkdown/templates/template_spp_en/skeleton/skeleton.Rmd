@@ -10,6 +10,7 @@ file_manager:
 protocol_code:
 version_number:
 language: en
+template_name: spp
 project_name:
 site: bookdown::bookdown_site
 bibliography: references.yaml
@@ -54,6 +55,8 @@ opts_chunk$set(
 )
 library(dplyr)
 library(purrr)
+library(protocolhelper)
+path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
 ```
 
 # Metadata {-}

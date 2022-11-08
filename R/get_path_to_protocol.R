@@ -63,7 +63,10 @@ get_path_to_protocol <- function(protocol_code,
 
   # second case: the path does not yet exist
   if (is.null(short_title)) {
-    stop("Provide a short title")
+    stop(sprintf("Do you want to get the path?
+                 If so, check if the protocol code is correct.
+                 If you want to set a path for a new protocol,
+                 you need to provide a short title"))
   } else {
     protocol_folder_name <- paste(
       str_replace_all(protocol_code, "-", "_"), short_title, sep = "_")

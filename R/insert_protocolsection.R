@@ -2,7 +2,7 @@
 #' re-use in another protocol
 #'
 #' @description The idea is to execute this function in an R chunk with knitr
-#' option \code{results="asis"}.
+#' option `results="asis"`.
 #'
 #' @return The function will return Rmarkdown
 #'

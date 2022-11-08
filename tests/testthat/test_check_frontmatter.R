@@ -109,7 +109,7 @@ test_that("Check frontmatter works", {
     index_yml,
     title = c("bla", "bla"),
     version_number = "2020.01.dev",
-    language = "espagnol")
+    language = "en")
   index_yml <- ymlthis::yml_author(
     index_yml,
     name = "Doe, John",
