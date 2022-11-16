@@ -30,11 +30,28 @@ check_frontmatter <- function(
   assert_that(is.flag(fail), noNA(fail))
 
   x <- load_protocolcheck(x = protocol_code)
-  assert_that(file.exists(file.path(x$path, "index.Rmd")))
+
+  conditional_return_on_error(
+    condition = {
+      !file.exists(file.path(x$path, "index.Rmd"))
+      }
+    ,
+    message = paste0(file.path(x$path, "index.Rmd"),
+                     " does not exist."),
+    checkobject = x)
+
   yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
 
-  assert_that(is.string(yml_protocol$template_name))
-  assert_that(is.string(yml_protocol$language))
+  conditional_return_on_error(
+    condition = {
+      !(is.string(yml_protocol$template_name) &&
+          is.string(yml_protocol$language))
+    },
+    message = sprintf("yaml keys `template_name` and `language`
+                              should be present in the yaml section of index.Rmd
+                              and their values should be strings."),
+    checkobject = x
+  )
 
   template_name <-
     paste("template", yml_protocol$template_name,
@@ -45,8 +62,16 @@ check_frontmatter <- function(
       file.path("rmarkdown", "templates", template_name, "skeleton"),
       package = "protocolhelper")
 
-  assert_that(file.exists(file.path(path_to_template,
-                                    "skeleton.Rmd")))
+  conditional_return_on_error(
+    condition = {
+      !file.exists(file.path(path_to_template,
+                             "skeleton.Rmd"))
+    },
+    message = paste0(file.path(path_to_template,
+                               "skeleton.Rmd"),
+                     " does not exist."),
+    checkobject = x
+  )
   yml_template <- yaml_front_matter(input = file.path(path_to_template,
                                                       "skeleton.Rmd"))
 
@@ -180,33 +205,33 @@ check_frontmatter <- function(
     ]
   )
 
-  if (!any(yml_protocol$language %in% c("nl", "en"))) {
-    problems <- c(problems,
-                  "'lang' must be 'nl' or 'en'")
-  }
+  problems <- c(problems,
+                "'lang' must be 'nl' or 'en'"[
+                  !any(yml_protocol$language %in% c("nl", "en"))]
+                )
 
   # protocol type specific checks
   if (has_name(yml_protocol, "theme")) {
-    if (!any(yml_protocol$theme %in%
-             c("generic", "water", "air", "soil", "vegetation", "species"))) {
       problems <- c(
         problems,
         paste0(
           "Please check theme in yaml metadata\n",
           "It should be one of generic, water, air, soil or vegetation")
-        )
-    }
+        )[
+          !any(yml_protocol$theme %in%
+                 c("generic", "water", "air", "soil", "vegetation", "species"))
+        ]
   }
 
   if (has_name(yml_protocol, "project_name")) {
-    if (!is.string(yml_protocol$project_name)) {
       problems <- c(
         problems,
         paste0(
           "Please check project_name in yaml metadata\n",
           "It should be a character string")
-        )
-    }
+        )[
+          !is.string(yml_protocol$project_name)
+        ]
   }
 
   x$add_error(problems)

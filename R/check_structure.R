@@ -25,11 +25,28 @@ check_structure <- function(protocol_code, fail = !interactive()) {
   assert_that(is.flag(fail), noNA(fail))
 
   x <- load_protocolcheck(x = protocol_code)
-  assert_that(file.exists(file.path(x$path, "index.Rmd")))
+
+  conditional_return_on_error(
+    condition = {
+      !file.exists(file.path(x$path, "index.Rmd"))
+    }
+    ,
+    message = paste0(file.path(x$path, "index.Rmd"),
+                     " does not exist."),
+    checkobject = x)
+
   yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
 
-  assert_that(is.string(yml_protocol$template_name))
-  assert_that(is.string(yml_protocol$language))
+  conditional_return_on_error(
+    condition = {
+      !(is.string(yml_protocol$template_name) &&
+          is.string(yml_protocol$language))
+    },
+    message = sprintf("yaml keys `template_name` and `language`
+                              should be present in the yaml section of index.Rmd
+                              and their values should be strings."),
+    checkobject = x
+  )
 
   template_name <-
     paste("template", yml_protocol$template_name,
