@@ -1,9 +1,15 @@
+# protocolhelper 0.4.2
+
+## Minor changes
+
+* better error handling in `check_structure` and `check_frontmatter`
+
 # protocolhelper 0.4.1
 
 ## Minor changes
 
-* fixed a bug which occurred when `check_structure` and `check_protocol` ran on
-  protocols based on the `generic` template
+* fixed a bug which occurred when `check_structure` and `check_frontmatter` ran
+  on protocols based on the `generic` template
 * each template gains a `template_name` metadata field
 * added `pandoc` minimal system requirements to description
 * each template now has a `path_to_protocol` R object defined which resolves
