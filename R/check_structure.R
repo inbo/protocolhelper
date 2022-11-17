@@ -26,27 +26,21 @@ check_structure <- function(protocol_code, fail = !interactive()) {
 
   x <- load_protocolcheck(x = protocol_code)
 
-  conditional_return_on_error(
-    condition = {
-      !file.exists(file.path(x$path, "index.Rmd"))
-    }
-    ,
-    message = paste0(file.path(x$path, "index.Rmd"),
-                     " does not exist."),
-    checkobject = x)
+  if (!file.exists(file.path(x$path, "index.Rmd"))) {
+    x$add_error(msg = paste0(file.path(x$path, "index.Rmd"),
+                             " does not exist."))
+    return(x$check(fail = fail))
+  }
 
   yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
 
-  conditional_return_on_error(
-    condition = {
-      !(is.string(yml_protocol$template_name) &&
-          is.string(yml_protocol$language))
-    },
-    message = sprintf("yaml keys `template_name` and `language`
+  if (!(is.string(yml_protocol$template_name) &&
+        is.string(yml_protocol$language))) {
+    x$add_error(msg = sprintf("yaml keys `template_name` and `language`
                               should be present in the yaml section of index.Rmd
-                              and their values should be strings."),
-    checkobject = x
-  )
+                              and their values should be strings."))
+    return(x$check(fail = fail))
+  }
 
   template_name <-
     paste("template", yml_protocol$template_name,

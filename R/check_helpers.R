@@ -80,24 +80,3 @@ validate_orcid <- function(orcid) {
   result <- ifelse(result == 10, "X", as.character(result))
   return(check_digit == result)
 }
-
-#' @title Early return upon conditional error check
-#'
-#' @description If a condition is met, add an error message to the
-#' protocolhelper check object and return it.
-#'
-#' @param condition An R expression resulting in TRUE or FALSE.
-#' @param message A string containing the error message when condition is TRUE.
-#' @param checkobject A protocolhelper check object.
-#'
-#' @return A protocol check object
-#' @keywords internal
-conditional_return_on_error <- function(
-    condition,
-    message,
-    checkobject) {
-  if (condition) {
-    checkobject$add_error(msg = message)
-    return(checkobject)
-  }
-}
