@@ -30,11 +30,22 @@ check_frontmatter <- function(
   assert_that(is.flag(fail), noNA(fail))
 
   x <- load_protocolcheck(x = protocol_code)
-  assert_that(file.exists(file.path(x$path, "index.Rmd")))
+
+  if (!file.exists(file.path(x$path, "index.Rmd"))) {
+    x$add_error(msg = paste0(file.path(x$path, "index.Rmd"),
+                             " does not exist."))
+    return(x$check(fail = fail))
+  }
+
   yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
 
-  assert_that(is.string(yml_protocol$template_name))
-  assert_that(is.string(yml_protocol$language))
+  if (!(is.string(yml_protocol$template_name) &&
+        is.string(yml_protocol$language))) {
+    x$add_error(msg = sprintf("yaml keys `template_name` and `language`
+                              should be present in the yaml section of index.Rmd
+                              and their values should be strings."))
+    return(x$check(fail = fail))
+  }
 
   template_name <-
     paste("template", yml_protocol$template_name,
@@ -45,8 +56,14 @@ check_frontmatter <- function(
       file.path("rmarkdown", "templates", template_name, "skeleton"),
       package = "protocolhelper")
 
-  assert_that(file.exists(file.path(path_to_template,
-                                    "skeleton.Rmd")))
+  if (!file.exists(file.path(path_to_template,
+                             "skeleton.Rmd"))) {
+    x$add_error(msg = paste0(file.path(path_to_template,
+                                       "skeleton.Rmd"),
+                             " does not exist."))
+    return(x$check(fail = fail))
+  }
+
   yml_template <- yaml_front_matter(input = file.path(path_to_template,
                                                       "skeleton.Rmd"))
 
@@ -72,71 +89,17 @@ check_frontmatter <- function(
         !is.character(yml_protocol$bibliography)
       ])
 
-  if (has_name(yml_protocol, "subtitle")) {
-    problems <- c(problems,
-                    paste0(
-                      "subtitle is not a string, NULL, or an empty string, ",
-                      "please remove in the yaml header if not needed."
-                    )[!is.string(yml_protocol$subtitle) ||
-                        nchar(yml_protocol$subtitle) <= 1]
-    )
-  }
-  author_name <- map_lgl(yml_protocol$author, ~is.string(.$name))
-  author_orcid <- map_lgl(yml_protocol$author, ~is.string(.$orcid))
-  problems <-
-    c(problems,
-      sprintf(
-        "Author nr %s had an invalid name (no string)",
-        seq_along(author_name)[!author_name]
-      ))
-  problems <-
-    c(problems,
-      sprintf(
-        "Author nr %s had an invalid orcid (no string)",
-        seq_along(author_orcid)[!author_orcid]
-      ))
+  problems <- c(problems,
+                paste0(
+                  "subtitle is not a string, NULL, or an empty string, ",
+                  "please remove in the yaml header if not needed."
+                )[has_name(yml_protocol, "subtitle") &&
+                    (!is.string(yml_protocol$subtitle) ||
+                    nchar(yml_protocol$subtitle) <= 1)]
+  )
 
-  if (all(author_name)) {
-    names <- map_chr(yml_protocol$author, "name")
-    problems <- c(
-      problems,
-      "A single author should be passed as: c(\"lastname1, firstname1\")"[
-        !((is.string(names) & all(str_detect(names, ",{1}"))) |
-            is.character(names))])
-    problems <- c(
-      problems,
-      paste0("Multiple commas detected in author string.",
-             "Multiple authors should be passed as: ",
-             "c(\"lastname1, firstname1\", \"lastname2, firstname2\")")[
-               !((is.string(names) & !all(str_detect(names, ",{2,}"))) |
-                   is.character(names))])
-  }
-  if (all(author_orcid)) {
-    orcids <- map_chr(yml_protocol$author, "orcid")
-    problems <-
-      c(problems,
-        "Please provide `orcids` in the `0000-0000-0000-0000` format."[
-          !all(nchar(orcids) == 19)])
-    problems <- c(
-      problems,
-      "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")"[
-        any(str_detect(orcids, ",|;"))])
-    valid_orcids <- map_lgl(orcids, validate_orcid)
-    problems <- c(
-      problems,
-      sprintf("protocolhelper::validate_orcid() indicates %s is not valid",
-              orcids)[!valid_orcids]
-    )
-  }
-  if (all(author_name) && all(author_orcid)) {
-    problems <- c(problems,
-                  "No authors provided, please provide at least one"[
-                    length(names) == 0
-                  ])
-    problems <- c(problems,
-                  "Number of author names not equal to number of orcids"[
-                    length(names) != length(orcids)])
-  }
+  problems <- check_all_author_info(author_list = yml_protocol$author,
+                                    problems_vect = problems)
 
   if (!requireNamespace("lubridate", quietly = TRUE)) {
     stop("Package \"lubridate\" needed for checking of date. ",
@@ -180,34 +143,32 @@ check_frontmatter <- function(
     ]
   )
 
-  if (!any(yml_protocol$language %in% c("nl", "en"))) {
-    problems <- c(problems,
-                  "'lang' must be 'nl' or 'en'")
-  }
+  problems <- c(problems,
+                "'lang' must be 'nl' or 'en'"[
+                  !any(yml_protocol$language %in% c("nl", "en"))]
+                )
 
   # protocol type specific checks
-  if (has_name(yml_protocol, "theme")) {
-    if (!any(yml_protocol$theme %in%
-             c("generic", "water", "air", "soil", "vegetation", "species"))) {
-      problems <- c(
-        problems,
-        paste0(
-          "Please check theme in yaml metadata\n",
-          "It should be one of generic, water, air, soil or vegetation")
-        )
-    }
-  }
+  problems <- c(
+    problems,
+    paste0(
+      "Please check theme in yaml metadata\n",
+      "It should be one of generic, water, air, soil or vegetation")[
+        has_name(yml_protocol, "theme") &&
+          !any(yml_protocol$theme %in%
+                 c("generic", "water", "air", "soil", "vegetation", "species"))
+      ]
+  )
 
-  if (has_name(yml_protocol, "project_name")) {
-    if (!is.string(yml_protocol$project_name)) {
-      problems <- c(
-        problems,
-        paste0(
-          "Please check project_name in yaml metadata\n",
-          "It should be a character string")
-        )
-    }
-  }
+  problems <- c(
+    problems,
+    paste0(
+      "Please check project_name in yaml metadata\n",
+      "It should be a character string")[
+        has_name(yml_protocol, "project_name") &&
+          !is.string(yml_protocol$project_name)
+      ]
+  )
 
   x$add_error(problems)
 
