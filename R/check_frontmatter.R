@@ -216,11 +216,11 @@ check_frontmatter <- function(
         problems,
         paste0(
           "Please check theme in yaml metadata\n",
-          "It should be one of generic, water, air, soil or vegetation")
-        )[
-          !any(yml_protocol$theme %in%
+          "It should be one of generic, water, air, soil or vegetation")[
+            !any(yml_protocol$theme %in%
                  c("generic", "water", "air", "soil", "vegetation", "species"))
         ]
+      )
   }
 
   if (has_name(yml_protocol, "project_name")) {
@@ -228,10 +228,10 @@ check_frontmatter <- function(
         problems,
         paste0(
           "Please check project_name in yaml metadata\n",
-          "It should be a character string")
-        )[
-          !is.string(yml_protocol$project_name)
-        ]
+          "It should be a character string")[
+            !is.string(yml_protocol$project_name)
+          ]
+      )
   }
 
   x$add_error(problems)
