@@ -126,11 +126,11 @@ check_file <- function(filename, x, files_template, path_to_template) {
 
   # check if chunks in Rmd files are correct
   rmd <- readLines(file.path(x$path, filename))
-  start_chunk <- grep("^```\\{r.*}", rmd)
+  start_chunk <- grep("^```\\{.*}", rmd)
   end_chunk <- grep("^```[:space:]?$", rmd)
   x$add_error(
     msg =
-      paste(", file", filename, "has a problem with R chunks")[
+      paste(", file", filename, "has a problem with chunks")[
         !(length(start_chunk) == length(end_chunk) &&
             all(start_chunk < end_chunk))
       ]
