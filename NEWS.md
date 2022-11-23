@@ -3,6 +3,7 @@
 ## Minor changes
 
 -   all (R)md template files are rewritten in canonical (pandoc) markdown format
+-   fix check for code chunks which failed on html blocks
 
 # protocolhelper 0.4.2
 
