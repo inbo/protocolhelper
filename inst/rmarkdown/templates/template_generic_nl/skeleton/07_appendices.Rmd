@@ -1,11 +1,10 @@
-# (APPENDIX) Bijlagen {-}
+# (APPENDIX) Bijlagen {.unnumbered}
 
 # Titel eerste bijlage
 
+```{=html}
 <!--
 inclusief principes, context, extra uitleg, misschien extra foto's, ...
 -->
-
+```
 # Titel tweede bijlage
-
-

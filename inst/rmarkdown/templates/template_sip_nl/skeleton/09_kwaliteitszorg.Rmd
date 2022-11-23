@@ -2,8 +2,7 @@
 
 ## Kalibratie
 
-Alle acties betreffende kalibratie worden bijgehouden in het toestel registratieformulier:
-naam en link.
+Alle acties betreffende kalibratie worden bijgehouden in het toestel registratieformulier: naam en link.
 
 ```{r kalibratie}
 kalib <- data.frame(
@@ -16,8 +15,7 @@ kable(kalib)
 
 ## Controle
 
-Alle acties betreffende controle worden bijgehouden in het toestel registratieformulier:
-naam en link.
+Alle acties betreffende controle worden bijgehouden in het toestel registratieformulier: naam en link.
 
 ```{r controle}
 controle <- data.frame(
@@ -31,8 +29,7 @@ kable(controle)
 
 ## Onderhoud
 
-Alle acties betreffende het onderhoud worden bijgehouden in het toestel registratieformulier:
-naam en link.
+Alle acties betreffende het onderhoud worden bijgehouden in het toestel registratieformulier: naam en link.
 
 ```{r onderhoud}
 onderhoud <- data.frame(
@@ -52,16 +49,16 @@ kable(onderhoud)
 
 Reagentia en materiaal:
 
-- 
-- 
+-   
+
+-   
 
 Handeling:
 
-- 
-- 
+-   
+
+-   
 
 ## Error
 
-Alle acties betreffende `ERROR` worden bijgehouden in het toestel registratieformulier:
-naam en link.
-
+Alle acties betreffende `ERROR` worden bijgehouden in het toestel registratieformulier: naam en link.

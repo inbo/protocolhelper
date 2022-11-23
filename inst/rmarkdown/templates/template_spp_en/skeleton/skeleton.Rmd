@@ -29,6 +29,7 @@ output:
            <li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>
 ---
 
+```{=html}
 <!--
 Instructions for drawing up the protocol:
 
@@ -38,8 +39,7 @@ It is in those files that you need to edit.
 Not all parts always apply.
 In those cases, leave the title headings and explicitly state "not applicable".
 -->
-
-
+```
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(
@@ -59,10 +59,8 @@ library(protocolhelper)
 path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
 ```
 
-# Metadata {-}
+# Metadata {.unnumbered}
 
-| Reviewers | File manager | Protocol code | Version number | Language | Project |
-| --------- | ----------------- | ------------- | ------------ | ---- | ----- |
+| Reviewers                                                 | File manager                         | Protocol code                         | Version number                         | Language                         | Project                              |
+|-----------------------------------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|----------------------------------|--------------------------------------|
 | `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$project_name` |
-
-

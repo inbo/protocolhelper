@@ -13,5 +13,3 @@ Indien de kalibratie niet aan de kwaliteitscriteria voldoet, dan worden corriger
 ## Corrigerende maatregelen
 
 Specifieke corrigerende maatregelen zijn:
-
-

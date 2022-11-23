@@ -1,5 +1,6 @@
 # Vereiste competenties
 
+```{=html}
 <!--
 De toestel verantwoordelijke wordt aangesteld door de labo leiding, volgt alle opleidingen, neemt de handleiding door en schrijft de toestel procedure (SIP).
 Vereisten voor de gebruiker:
@@ -8,4 +9,4 @@ Vereisten voor de gebruiker:
 - Zelfstandig kunnen uitvoeren van een meting
 - Een onderhoud uitvoeren.
 -->
-
+```

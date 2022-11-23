@@ -7,11 +7,11 @@ It is recommended to use water from a water purification system that delivers ul
 
 ## Reagents
 
-- Name of reagents (molecular formula), purity (code)
+-   Name of reagents (molecular formula), purity (code)
 
 ## Solutions
 
 The recipe for solutions can be found in the [recipe book](https://drive.google.com/drive/folders/1MJR86HF3JywHXZI7z1tIoHSdKs7o3pta).
 The following solutions are applicable.
 
-- Name of solution, concentration (code)
+-   Name of solution, concentration (code)

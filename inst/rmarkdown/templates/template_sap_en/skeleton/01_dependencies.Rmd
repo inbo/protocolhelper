@@ -1,12 +1,11 @@
 # Dependencies
 
+```{=html}
 <!--
 Do not enter anything here.
 If there are dependencies enter them in the yaml section of `index.Rmd`
 -->
-
-
-
+```
 ```{r dependencies}
 empty_table <- tibble(
     protocol_code = character(),

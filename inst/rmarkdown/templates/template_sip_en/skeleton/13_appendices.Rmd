@@ -1,7 +1,9 @@
-# (APPENDIX) Appendix {-}
+# (APPENDIX) Appendix {.unnumbered}
 
+```{=html}
 <!--
 # Title first appendix
 
 # Title second appendix
 -->
+```

@@ -1,5 +1,7 @@
 # Visualisatie van de procedure
 
+```{=html}
 <!--
 Stroomschema (kan optioneel zijn, maar aangeraden wanneer het kan helpen)
 -->
+```

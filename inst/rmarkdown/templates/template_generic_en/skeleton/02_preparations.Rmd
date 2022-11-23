@@ -2,30 +2,33 @@
 
 ## Safety
 
+```{=html}
 <!--
 vaccinations, protective clothing, warnings of dangerous chemicals, emergency protocols
 -->
-
+```
 ## Material
 
+```{=html}
 <!--
 (Equipment, Labels, Data registration (GPS, sampling table, tablet, phone, ...))
 -->
-
+```
 ## Human resources
 
+```{=html}
 <!--
 Which roles and why? Minimal number of people needed for this procedure? Skill set/training needed for this procedure?
 -->
-
+```
 ## Dependencies on other procedures
 
+```{=html}
 <!--
 Should another procedure be known/studied prior to executing this procedure?
 The table below is automatically filled in based on information in the yaml section of the `index.Rmd` file
 -->
-
-
+```
 ```{r dependencies}
 empty_table <- tibble(
     protocol_code = character(),
