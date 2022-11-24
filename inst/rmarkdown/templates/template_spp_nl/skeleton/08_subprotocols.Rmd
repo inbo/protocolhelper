@@ -1,4 +1,4 @@
-# (PART) Subprotocols {-}
+# (PART) Subprotocols {.unnumbered}
 
 ```{r, results="asis"}
 if (exists("params")) {

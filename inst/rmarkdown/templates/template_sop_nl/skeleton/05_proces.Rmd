@@ -1,7 +1,8 @@
 # Proces
 
+```{=html}
 <!-- schematische voorstelling van het proces
 gebruik bijvoorbeeld `draw.io` en exporteer als png
 of maak het schema met een R package zoals `visNetwork`
 -->
-
+```

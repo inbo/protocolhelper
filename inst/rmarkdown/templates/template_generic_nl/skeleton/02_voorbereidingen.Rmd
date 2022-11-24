@@ -2,31 +2,34 @@
 
 ## Veiligheid
 
+```{=html}
 <!--
 vaccinaties, beschermende kledij, waarschuwingen bij gebruikte chemicaliën, wat te doen in nood, ...
 -->
-
+```
 ## Materiaal
 
+```{=html}
 <!--
 (Materiaal, labels, data registratie (`GPS`, tablet, smartphone, ...))
 -->
-
+```
 ## Personeel
 
+```{=html}
 <!--
 Welke rollen en waarom? Minimaal aantal personen nodig? Welke kennis en vaardigheden zijn nodig?
 -->
-
+```
 ## Afhankelijkheden van andere protocollen
 
+```{=html}
 <!--
 Moet een ander protocol gekend zijn voor dit protocol kan uitgevoerd worden?
 The tabel hieronder zal automatisch ingevuld worden op basis van informatie
 in de yaml sectie van het `index.Rmd` bestand
 -->
-
-
+```
 ```{r dependencies}
 empty_table <- tibble(
     protocol_code = character(),

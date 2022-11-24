@@ -7,10 +7,10 @@ More information about this can be found in the [procedure](https://drive.google
 
 When performing the procedure, the following `PPE` and `CPE` apply:
 
-- `PPE`:
-    - Wear work clothes: lab coat - lab shoes
-    - Wear hand protection: nitrile rubber gloves or thermal gloves
-    - Wear eye protection: safety glasses
-    - Wear face protection: mask type `FFP1` or `FFP2` or `FFP3` or half mask or full face mask
-- `CPE`:
-    - Work in a fume hood or Use a point extraction
+-   `PPE`:
+    -   Wear work clothes: lab coat - lab shoes
+    -   Wear hand protection: nitrile rubber gloves or thermal gloves
+    -   Wear eye protection: safety glasses
+    -   Wear face protection: mask type `FFP1` or `FFP2` or `FFP3` or half mask or full face mask
+-   `CPE`:
+    -   Work in a fume hood or Use a point extraction

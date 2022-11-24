@@ -29,6 +29,7 @@ output:
            <li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>
 ---
 
+```{=html}
 <!--
 Instructies bij opmaak van het protocol:
 
@@ -38,8 +39,7 @@ Het is in die bestanden dat je moet editeren.
 Niet alle onderdelen zijn altijd van toepassing.
 Laat in die gevallen de titel hoofdingen staan en vermeld expliciet "niet van toepassing".
 -->
-
-
+```
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(
@@ -59,10 +59,8 @@ library(protocolhelper)
 path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
 ```
 
+# Metadata {.unnumbered}
 
-
-# Metadata {-}
-
-| Reviewers | Documentbeheerder | Protocol code | Versienummer | Taal | Project |
-| --------- | ----------------- | ------------- | ------------ | ---- | ----- |
+| Reviewers                                                 | Documentbeheerder                    | Protocol code                         | Versienummer                           | Taal                             | Project                              |
+|-----------------------------------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|----------------------------------|--------------------------------------|
 | `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$project_name` |

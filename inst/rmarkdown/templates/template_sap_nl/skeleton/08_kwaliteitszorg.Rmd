@@ -18,5 +18,5 @@ Indien de meetwaarde hieraan niet voldoet, moet de controlekaart geraadpleegd wo
 
 ## Corrigerende maatregelen
 
-Indien niet aan de kwaliteitscriteria voldaan wordt, dan worden corrigerende maatregelen genomen. Specifieke corrigerende maatregelen zijn:
-
+Indien niet aan de kwaliteitscriteria voldaan wordt, dan worden corrigerende maatregelen genomen.
+Specifieke corrigerende maatregelen zijn:

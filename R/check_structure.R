@@ -126,23 +126,17 @@ check_file <- function(filename, x, files_template, path_to_template) {
 
   # check if chunks in Rmd files are correct
   rmd <- readLines(file.path(x$path, filename))
-  start_chunk <- grep("^```\\{r.*}", rmd)
+  start_chunk <- grep("^```\\{.*}", rmd)
   end_chunk <- grep("^```[:space:]?$", rmd)
   x$add_error(
     msg =
-      paste(", file", filename, "has a problem with R chunks")[
+      paste(", file", filename, "has a problem with chunks")[
         !(length(start_chunk) == length(end_chunk) &&
             all(start_chunk < end_chunk))
       ]
   )
 
-  for (i in rev(seq_along(start_chunk))) {
-    rmd <- c(
-      head(rmd, start_chunk[i] - 1),
-      "{r code chunk}",
-      tail(rmd, length(rmd) - end_chunk[i])
-    )
-  }
+  template <- remove_chunks(rmd, start_chunk, end_chunk)
 
   # check headings general
   headings <- rmd[grepl("^[[:space:]]?#", rmd)]
@@ -162,6 +156,9 @@ check_file <- function(filename, x, files_template, path_to_template) {
   # compare headings with template
   if (filename %in% files_template) {
     template <- readLines(file.path(path_to_template, filename))
+    start_chunk <- grep("^```\\{.*}", template)
+    end_chunk <- grep("^```[:space:]?$", template)
+    template <- remove_chunks(template, start_chunk, end_chunk)
     headings_template <- template[grepl("^[[:space:]]?#", template)]
     headings_template <-
       headings_template[!grepl("^### Subtit", headings_template)]
@@ -222,6 +219,17 @@ check_file <- function(filename, x, files_template, path_to_template) {
   return(x)
 }
 
+
+remove_chunks <- function(rmd, start, end) {
+  for (i in rev(seq_along(start))) {
+    rmd <- c(
+      head(rmd, start[i] - 1),
+      "{chunk}",
+      tail(rmd, length(rmd) - end[i])
+    )
+  }
+  return(rmd)
+}
 
 #' @importFrom commonmark markdown_xml
 #' @importFrom xml2 xml_attr xml_text read_xml xml_find_all xml_children

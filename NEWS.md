@@ -1,3 +1,11 @@
+# protocolhelper 0.4.3
+
+## Minor changes
+
+* all `(R)md` template files are rewritten in canonical (`pandoc`) markdown
+  format
+* fix check for code chunks which failed on html blocks
+
 # protocolhelper 0.4.2
 
 ## Minor changes
@@ -71,8 +79,8 @@
 
 ## Bug fixes
 
-* fix a problem with backslashes in path to media files after converting docx
-  to markdown
+* fix a problem with backslashes in path to media files after converting docx to
+  markdown
 
 # protocolhelper 0.2.3
 
@@ -91,13 +99,12 @@
 ## Minor changes
 
 * fixed relative links in template `NEWS.md` html comments
-* removed function render_all(); it is superseded by the internal function
-  protocolhelper:::render_release().
-  This function is internal because it should only be used by administrators
-  as part of the workflow to publish a new protocol or update an existing
+* removed function render_all(); it is superseded by the internal function 
+  protocolhelper:::render_release(). This function is internal because it should
+  only be used by administrators as part of the workflow to publish a new
+  protocol or update an existing protocol. The exported function
+  protocolhelper::render_protocol() can be used to render an individual
   protocol.
-  The exported function protocolhelper::render_protocol() can be used to render
-  an individual protocol.
 
 ## Bug fixes
 
@@ -147,8 +154,8 @@
 # protocolhelper 0.1.3
 
 * When a protocol is created from an existing docx version, template files will
-  be generated as well (and overwritten by the docx chapter if the filename
-  is the same, i.e. confirms to current template standards)
+  be generated as well (and overwritten by the docx chapter if the filename is
+  the same, i.e. confirms to current template standards)
 
 # protocolhelper 0.1.2
 

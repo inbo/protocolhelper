@@ -1,5 +1,6 @@
 # Required skills and training
 
+```{=html}
 <!--
 The appliance manager is appointed by the lab management, follows all training courses, reads the manual and writes the appliance procedure (SIP).
 User requirements:
@@ -8,4 +9,4 @@ User requirements:
 - Being able to perform a measurement independently
 - Perform a maintenance.
 -->
-
+```

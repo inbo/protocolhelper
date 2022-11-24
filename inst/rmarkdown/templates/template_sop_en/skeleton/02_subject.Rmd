@@ -1,5 +1,6 @@
 # Subject
 
+```{=html}
 <!--
 Objective and scope
 Objective: description in words what the protocol is for.
@@ -7,3 +8,4 @@ Examples of what can be done with the data.
 Try to describe the objective as generically as possible and avoid project-specific objectives.
 Field of application: discuss here under which conditions the protocol can be used.
 -->
+```

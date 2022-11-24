@@ -1,5 +1,6 @@
 # Wijzigingen t.o.v. vorige versies
 
+```{=html}
 <!--
 Omschrijf hier welke wijzigingen er gebeurd zijn ten opzichte van de vorige versie. 
 Vermeld bij elk versienummer, de reden van de wijziging en - wanneer relevant - een beknopte beschrijving van de wijziging.
@@ -14,3 +15,4 @@ Gesorteerd van recent naar oud.
 
 - Eerste versie van het protocol
 -->
+```

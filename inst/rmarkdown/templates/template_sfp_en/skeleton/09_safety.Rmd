@@ -1,5 +1,7 @@
 # Safety
 
+```{=html}
 <!--
 All points of attention related to working safely.
 -->
+```

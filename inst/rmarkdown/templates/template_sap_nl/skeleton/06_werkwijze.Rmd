@@ -2,7 +2,6 @@
 
 Stappenplan
 
-
 ## Monstervoorbehandeling
 
 Meer informatie over de voorbehandeling (drogen, verfijnen, homogeniseren en bewaren) is terug te vinden in de [procedures over monstervoorbehandeling](https://drive.google.com/drive/folders/1Gxl2OsMiRJ8JueLgzzqaKyzy40tvXB3a).
@@ -29,9 +28,8 @@ Meer informatie over de voorbehandeling (drogen, verfijnen, homogeniseren en bew
 
 ### Importeren en goedkeuren van resultaten in `LIMS`
 
-Kopieer de file met de resultaten vanuit het mapje van de batch naar de `scheduler` onder `_SCHEDULER\...`
-Nadat de resultaten ingelezen zijn, moeten ze beoordeeld en goedgekeurd worden.
-Hoe de resultaten geïmporteerd en goedgekeurd moeten worden in `LIMS` staat beschreven in de [procedure over het gebruik van `LIMS`](https://drive.google.com/drive/folders/1bt6E5PhKSZlRJIRu9xsLus3apLaNTLTX). 
+Kopieer de file met de resultaten vanuit het mapje van de batch naar de `scheduler` onder `_SCHEDULER\...` Nadat de resultaten ingelezen zijn, moeten ze beoordeeld en goedgekeurd worden.
+Hoe de resultaten geïmporteerd en goedgekeurd moeten worden in `LIMS` staat beschreven in de [procedure over het gebruik van `LIMS`](https://drive.google.com/drive/folders/1bt6E5PhKSZlRJIRu9xsLus3apLaNTLTX).
 
 ### Uitdrukking van het resultaat
 

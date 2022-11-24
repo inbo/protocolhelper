@@ -1,5 +1,6 @@
 # Overkoepelende werkwijze met verwijzing naar subprotocols
 
+```{=html}
 <!--
 Geef hier een overzicht van de stappen van het project protocol.
 De verschillende stappen moeten verduidelijkt worden met criteria en richtlijnen wanneer wat moet uitgevoerd worden.
@@ -11,3 +12,4 @@ Volg subprotocol C `<protocol-code>_YYYY.NN` waarin labo-analyse wordt uitgelegd
 
 De doelstelling is om de subprotocols te organiseren in een coherent hoofd protocol waarin ontbrekende elementen aangevuld worden die niet in de subprotocols staan, zoals wanneer een bepaald subprotocol wel of niet wordt uitgevoerd, of kleine extra stappen die geen eigen subprotocol vereisen.
 -->
+```

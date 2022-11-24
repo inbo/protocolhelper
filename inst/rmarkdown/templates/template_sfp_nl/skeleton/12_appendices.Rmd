@@ -1,7 +1,3 @@
-# (APPENDIX) Bijlagen {-}
+# (APPENDIX) Bijlagen {.unnumbered}
 
-<!--
-# Titel eerste bijlage
-
-# Titel tweede bijlage
--->
+<!--# Titel eerste bijlage-->
