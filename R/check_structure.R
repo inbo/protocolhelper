@@ -278,16 +278,14 @@ check_news_protocol <- function(x) {
       ]
 
     current_link <- headings_link[grepl(version_number, headings_link)]
+    correct_link <- paste0("../", version_number, "/index.html")
 
     problems <- c(
       problems,
       sprintf(
-        "URL for version %s of the protocol is not correct in NEWS.md",
+        "URL for version '%1$s' of the protocol should be '%2$s' in NEWS.md",
         version_number
-      )[!identical(current_link,
-                   paste0("../",
-                          version_number,
-                          "/index.html"))]
+      )[!identical(current_link, correct_link)]
     )
 
     problems <- c(
