@@ -283,7 +283,7 @@ check_news_protocol <- function(x) {
     problems <- c(
       problems,
       sprintf(
-        "URL for version '%1$s' of the protocol should be '%2$s' in NEWS.md",
+        "Problem in NEWS.md: URL for version '%1$s' should be '%2$s'",
         version_number,
         correct_link
       )[!identical(current_link, correct_link)]
