@@ -110,7 +110,7 @@ check_frontmatter <- function(
   problems <-
     c(problems,
       "'date' must be in YYYY-MM-DD format"[
-        !grepl(pattern = "`r Sys.Date()`", x = yml_protocol$date) &&
+        !grepl(pattern = "r Sys.Date()", x = yml_protocol$date) &&
           !isTRUE(
             all.equal(yml_protocol$date,
                       lubridate::format_ISO8601(as.Date(yml_protocol$date)))
