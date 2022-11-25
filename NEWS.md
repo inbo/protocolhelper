@@ -1,3 +1,10 @@
+# protocolhelper 0.4.4
+
+## Minor changes
+
+* fixes a problem with checking of dates
+* improve error message when URL in `NEWS.md` is incorrect
+
 # protocolhelper 0.4.3
 
 ## Minor changes
