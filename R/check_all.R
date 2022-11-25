@@ -22,7 +22,7 @@ check_all <- function(protocol_code, fail = !interactive()) {
                       fail = fail),
       error = function(e) e
     )
-  if (inherits(check_fm, "error") | inherits(check_str, "error")) {
+  if (inherits(check_fm, "error") || inherits(check_str, "error")) {
     stop(
       sprintf(
         "Errors in either check_frontmatter or check_structure:\n %s",
