@@ -2,7 +2,7 @@
 
 ## Minor changes
 
-* new function `check_all` which combines frontmatter and structure checks
+* new function `check_all` which combines `frontmatter` and `structure` checks
 
 # protocolhelper 0.4.4
 
