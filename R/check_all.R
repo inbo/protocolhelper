@@ -8,7 +8,7 @@
 #' @export
 #'
 check_all <- function(protocol_code, fail = !interactive()) {
-  cat("Checking protocol frontmatter...")
+  cat("Checking protocol YAML block with metadata (frontmatter) ...")
   check_fm <-
     tryCatch(
       check_frontmatter(protocol_code = protocol_code,
