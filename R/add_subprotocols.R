@@ -24,6 +24,7 @@
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom commonmark markdown_xml
 #' @importFrom xml2 xml_attr xml_text read_xml xml_find_all
+#' @importFrom ymlthis as_yml yml_replace use_index_rmd
 #'
 #'
 #' @export
@@ -220,8 +221,38 @@ add_one_subprotocol <-
     # remove interim files
     rmd_files <- list.files(path = ".", pattern = "\\.Rmd$")
     yml_files <- list.files(path = ".", pattern = "\\.yml$")
+    yml_files <- yml_files[!yml_files %in% yaml_sub$bibliography]
     file.remove(rmd_files)
     file.remove(yml_files)
+
+    setwd(old_wd)
+
+    # add reference files to bibliography key in main protocol
+    old_wd <- setwd(dir = mainprotocol_path_abs)
+    yaml_main <- yaml_front_matter("index.Rmd")
+    unlink("css", recursive = TRUE)
+    yaml_main <- as_yml(yaml_main)
+    yaml_sub <- as_yml(yaml_sub)
+    bibliographies <- unique(
+      c(
+        yaml_main$bibliography,
+        paste0(version_number, "/", yaml_sub$bibliography)
+      )
+    )
+    yaml_main <- yml_replace(yaml_main, bibliography = bibliographies)
+    # overwrite old yaml sections
+    template_rmd <- file.path(mainprotocol_path_abs, "template.rmd")
+    file.copy(from = "index.Rmd", to = template_rmd)
+    unlink("index.Rmd")
+    use_index_rmd(
+      .yml = yaml_main,
+      path = mainprotocol_path_abs,
+      template = template_rmd,
+      include_body = TRUE,
+      include_yaml = FALSE,
+      quiet = TRUE,
+      open_doc = FALSE)
+    unlink(template_rmd)
 
     setwd(old_wd)
   }
