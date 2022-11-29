@@ -154,11 +154,11 @@ add_one_subprotocol <-
     # add title and replace paths media and data
     mdcontents <- readLines(mdfile, encoding = "UTF8")
     mdcontents <- str_replace_all(mdcontents,
-                                  "\\.\\/media\\/",
-                                  paste0("./", version_number, "/media/"))
+                                  "media\\/",
+                                  paste0(version_number, "/media/"))
     mdcontents <- str_replace_all(mdcontents,
-                                  "\\.\\/data\\/",
-                                  paste0("./", version_number, "/data/"))
+                                  "data\\/",
+                                  paste0(version_number, "/data/"))
     title <- paste0("# ", yaml_sub$title, "\n")
     mdcontents <- c(title, mdcontents)
     # alternative to pandoc arg --id-prefix which doesn't work for md output
