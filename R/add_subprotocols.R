@@ -180,6 +180,7 @@ add_one_subprotocol <-
       if (autoidentifier) {
         identifier <- tolower(header_text)
         identifier <- gsub("\\s", "-", identifier)
+        identifier <- gsub("[[:punct:]]", "", identifier)
         if (special_header) {
           # remove (APPENDIX) or (PART)
           identifier <- gsub("\\(.+\\)", "", identifier)
@@ -196,6 +197,7 @@ add_one_subprotocol <-
           header_text <- sub("\\s\\{\\#.+\\}", "", header_text)
           identifier <- tolower(header_text)
           identifier <- gsub("\\s", "-", identifier)
+          identifier <- gsub("[[:punct:]]", "", identifier)
           if (special_header) {
             # remove (APPENDIX) or (PART)
             identifier <- gsub("\\(.+\\)", "", identifier)
