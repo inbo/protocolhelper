@@ -17,6 +17,7 @@
 #' @importFrom utils head tail
 #' @importFrom assertthat assert_that is.flag noNA
 #' @importFrom stringr str_detect
+#' @importFrom fs dir_ls
 #'
 #' @export
 #'
@@ -50,8 +51,10 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     system.file(
       file.path("rmarkdown", "templates", template_name, "skeleton"),
       package = "protocolhelper")
-  files_protocol <- list.files(path = x$path)
-  files_template <- list.files(path = path_to_template)
+  files_protocol <- dir_ls(x$path, recurse = TRUE, type = "file",
+                           regexp = "css", invert = TRUE)
+  files_template <- dir_ls(path_to_template, recurse = TRUE, type = "file",
+                           regexp = "css", invert = TRUE)
 
   # check if file(name)s from template are conserved
   files_template_i <-
