@@ -17,7 +17,7 @@
 #' @importFrom utils head tail
 #' @importFrom assertthat assert_that is.flag noNA
 #' @importFrom stringr str_detect
-#' @importFrom fs dir_ls
+#' @importFrom fs dir_ls path_rel
 #'
 #' @export
 #'
