@@ -33,6 +33,7 @@ Imports:
     rmarkdown,
     rprojroot,
     stringr,
+    xfun,
     xml2,
     yaml,
     ymlthis
