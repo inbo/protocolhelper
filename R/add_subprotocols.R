@@ -108,6 +108,7 @@ add_one_subprotocol <-
         path_rel(start = find_root(is_git_root))
       git_commands <- pmap(list(git_filepaths, dest_paths, tag), create_command)
       map(git_commands, execshell, intern = FALSE)
+      map(dest_paths[grepl("Rmd$", dest_paths)], fence_all_chunks)
     } else {
       stop("no protocol files found")
     }
