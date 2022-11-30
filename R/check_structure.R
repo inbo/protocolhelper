@@ -53,8 +53,10 @@ check_structure <- function(protocol_code, fail = !interactive()) {
       package = "protocolhelper")
   files_protocol <- dir_ls(x$path, recurse = TRUE, type = "file",
                            regexp = "css", invert = TRUE)
+  files_protocol <- path_rel(files_protocol, x$path)
   files_template <- dir_ls(path_to_template, recurse = TRUE, type = "file",
                            regexp = "css", invert = TRUE)
+  files_template <- path_rel(files_template, path_to_template)
 
   # check if file(name)s from template are conserved
   files_template_i <-
