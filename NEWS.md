@@ -1,3 +1,9 @@
+# protocolhelper 0.4.6
+
+## Bug fixes
+
+* fixes a problem in `check_structure` when a subprotocol is present
+
 # protocolhelper 0.4.5
 
 ## Minor changes
