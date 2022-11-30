@@ -4,7 +4,7 @@
 \alias{update_zenodo}
 \title{Update the \code{.zenodo.json} file}
 \usage{
-update_zenodo(json = ".zenodo.json", write = TRUE)
+update_zenodo(json = ".zenodo.json", write = TRUE, path = ".")
 }
 \arguments{
 \item{json}{a \code{JSON} string, url or file}
@@ -12,6 +12,9 @@ update_zenodo(json = ".zenodo.json", write = TRUE)
 \item{write}{whether to write a \code{.zenodo.json} file (TRUE) or to return a
 \code{json}
 string}
+
+\item{path}{Default current working directory. The root folder of the
+\code{protocolsource} repo.}
 }
 \value{
 a \code{.zenodo.json} file (write = TRUE) or a \code{json} string

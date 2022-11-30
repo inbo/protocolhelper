@@ -8,21 +8,27 @@
 #' @param write whether to write a `.zenodo.json` file (TRUE) or to return a
 #' `json`
 #' string
+#' @param path Default current working directory. The root folder of the
+#' `protocolsource` repo.
 #'
 #' @importFrom purrr map flatten map_chr
 #' @importFrom jsonlite fromJSON write_json toJSON
-#' @importFrom fs dir_ls
+#' @importFrom fs dir_ls is_dir
 #' @importFrom rmarkdown yaml_front_matter
+#' @importFrom gert git_branch git_branch_list git_branch_checkout
+#' @importFrom assertthat assert_that is.flag is.string noNA
 #'
 #' @keywords internal
 #'
 #' @return a `.zenodo.json` file (write = TRUE) or a `json` string
 #' (write = FALSE)
 #'
-update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
+update_zenodo <- function(json = ".zenodo.json", write = TRUE, path = ".") {
+  assert_that(is_dir(path))
+  assert_that(is.flag(write), noNA(write))
 
   # list all index.Rmd files
-  indexpaths <- fs::dir_ls(path = ".", recurse = TRUE, regexp = "index\\.Rmd")
+  indexpaths <- fs::dir_ls(path = path, recurse = TRUE, regexp = "index\\.Rmd")
 
   # read YAML front matter
   yamllists <- purrr::map(indexpaths, rmarkdown::yaml_front_matter)
@@ -30,8 +36,20 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
   # extract author metadata
   authormeta <- purrr::map(yamllists, "author")
 
-  # read .zenodo.json file
+  # read .zenodo.json file from main branch
+  current_branch <- git_branch(repo = path)
+  branch_info <- git_branch_list(repo = path)
+  main_branch <- ifelse(any(branch_info$name == "origin/main"),
+                        "main", ifelse(any(branch_info$name == "origin/master"),
+                                       "master", "unknown"))
+  assert_that(main_branch %in% c("main", "master"),
+              msg = "no branch `origin/main` or `origin/master` found.")
+  git_branch_checkout(branch = main_branch)
+
   zenodo <- jsonlite::fromJSON(json, simplifyVector = FALSE)
+
+  # switch back to current branch
+  git_branch_checkout(current_branch)
 
   # extract creators
   creators <- zenodo$creators
@@ -66,6 +84,4 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE) {
                      pretty = TRUE,
                      auto_unbox = TRUE)
   }
-
-
 }

@@ -1,3 +1,17 @@
+# protocolhelper 0.4.5
+
+## Minor changes
+
+* new function `check_all` which combines `frontmatter` and `structure` checks
+
+## Bug fixes
+
+* fixes a problem in ´add_one_subprotocol()´ so the correct path to media and
+  data is used
+* fixes a problem with bibliography field when a subprotocol is added
+* fixes a problem with figure and table cross-references in case of a
+  subprotocol
+
 # protocolhelper 0.4.4
 
 ## Minor changes

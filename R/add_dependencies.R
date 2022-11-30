@@ -59,7 +59,7 @@ add_dependencies <- function(code_mainprotocol,
       params = params,
       appendix = appendix)
 
-  dependencies_list <- purrr::transpose(dependencies_list)
+  dependencies_list <- transpose(dependencies_list)
 
 
   if (is.null(index_yml$params)) {
