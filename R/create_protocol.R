@@ -83,6 +83,7 @@
 #' @importFrom bookdown render_book
 #' @importFrom yaml read_yaml
 #' @importFrom ymlthis
+#' as_yml
 #' use_index_rmd
 #' use_yml_file
 #' yml_author
@@ -91,6 +92,7 @@
 #' yml_discard
 #' yml_empty
 #' yml_replace
+#' yml_toplevel
 #' @importFrom fs path_rel dir_create dir_ls
 #'
 #'
@@ -274,10 +276,10 @@ create_protocol <- function(
                pattern = "^\\d{2}.+Rmd$"))
 
   # change values in parent rmarkdown
-  index_yml <- rmarkdown::yaml_front_matter(parent_rmd)
+  index_yml <- yaml_front_matter(parent_rmd)
   unlink("css", recursive = TRUE)
-  index_yml <- ymlthis::as_yml(index_yml)
-  index_yml <- ymlthis::yml_replace(
+  index_yml <- as_yml(index_yml)
+  index_yml <- yml_replace(
     index_yml,
     title = title,
     subtitle = subtitle,
@@ -288,23 +290,29 @@ create_protocol <- function(
     language = language
     )
   if (is.null(subtitle)) {
-    index_yml <- ymlthis::yml_discard(index_yml, "subtitle")
+    index_yml <- yml_discard(index_yml, "subtitle")
   }
-  index_yml <- ymlthis::yml_author(
+  index_yml <- yml_author(
     index_yml,
     name = authors,
     orcid = orcids)
-  index_yml <- ymlthis::yml_date(
+  index_yml <- yml_date(
     index_yml,
     date = date)
   if (protocol_type == "sfp") {
-    index_yml <- ymlthis::yml_replace(index_yml,
-                                     theme = theme)
+    index_yml <- yml_replace(index_yml,
+                             theme = theme)
   }
   if (protocol_type == "spp") {
-    index_yml <- ymlthis::yml_replace(index_yml,
-                                     project_name = project_name)
+    index_yml <- yml_replace(index_yml,
+                             project_name = project_name)
   }
+  # set url and github_repo
+  index_yml <- yml_toplevel(
+    index_yml,
+    url = "https://inbo.github.io/protocols/",
+    github_repo = "inbo/protocolsource"
+  )
 
   # overwrite old yaml sections
 
