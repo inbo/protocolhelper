@@ -83,11 +83,14 @@
 #' @importFrom bookdown render_book
 #' @importFrom yaml read_yaml
 #' @importFrom ymlthis
-#' yml_author
-#' yml_replace
-#' yml_date
-#' use_yml_file
 #' use_index_rmd
+#' use_yml_file
+#' yml_author
+#' yml_bookdown_opts
+#' yml_date
+#' yml_discard
+#' yml_empty
+#' yml_replace
 #' @importFrom fs path_rel dir_create dir_ls
 #'
 #'
@@ -270,7 +273,7 @@ create_protocol <- function(
     list.files(path = path_to_protocol,
                pattern = "^\\d{2}.+Rmd$"))
 
-  # change values in parent rmarkdown and _bookdown.yml
+  # change values in parent rmarkdown
   index_yml <- rmarkdown::yaml_front_matter(parent_rmd)
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
@@ -303,12 +306,6 @@ create_protocol <- function(
                                      project_name = project_name)
   }
 
-  bookdown_yml <- yaml::read_yaml(file.path(path_to_protocol, "_bookdown.yml"))
-  bookdown_yml <- ymlthis::as_yml(bookdown_yml)
-  bookdown_yml <- ymlthis::yml_replace(bookdown_yml,
-                                        book_filename = book_filename,
-                                        output_dir = output_dir_rel,
-                                        rmd_files = rmd_files)
   # overwrite old yaml sections
 
   template_rmd <- file.path(path_to_protocol, "template.rmd")
@@ -324,7 +321,50 @@ create_protocol <- function(
     open_doc = FALSE)
   unlink(template_rmd)
 
-  unlink(file.path(path_to_protocol, "_bookdown.yml"))
+  # write _bookdown.yml
+  if (language == "en") {
+    labels <- list(
+      fig = 'Figure ', # nolint start
+      tab = 'Table ',
+      eq = 'Equation ',
+      thm = 'Theorem ',
+      lem = 'Lemma ',
+      def = 'Definition ',
+      cor = 'Corrolary ',
+      prp = 'Proposition ',
+      ex = 'Example ',
+      proof = 'Proof. ',
+      remark = 'Remark. ')
+  }
+  if (language == "nl") {
+    labels <- list(
+      fig = 'Figuur ',
+      tab = 'Tabel ',
+      eq = 'Vergelijking ',
+      thm = 'Theorema ',
+      lem = 'Lemma ',
+      def = 'Definitie ',
+      cor = 'Bijgevolg ',
+      prp = 'Propositie ',
+      ex = 'Voorbeeld ',
+      proof = 'Bewijs. ',
+      remark = 'Opmerking. ') # nolint end
+  }
+  bookdown_yml <- yml_empty()
+  bookdown_yml <- yml_bookdown_opts(
+    bookdown_yml,
+    book_filename = book_filename,
+    edit = paste0("https://github.com/inbo/protocolsource/edit/main/source/",
+                  gsub(".+source\\/", "", path_to_protocol),
+                  "/%s"),
+    output_dir = output_dir_rel,
+    rmd_files = rmd_files,
+    delete_merged_file = TRUE,
+    language = list(
+      label = labels
+    )
+  )
+
   ymlthis::use_yml_file(
     .yml = bookdown_yml,
     path = file.path(path_to_protocol, "_bookdown.yml"),
