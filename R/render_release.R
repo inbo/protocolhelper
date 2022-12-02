@@ -242,7 +242,17 @@ On the left you will find the navigation to the different sections.\n
     )
   }
   index <- readLines("index.Rmd")
-  writeLines(c(index, paste(meta$Rmd, collapse = "\n\n")), "index.Rmd")
+  repo_news <- readLines("../NEWS.md")
+  writeLines(
+    c(index,
+      paste(meta$Rmd, collapse = "\n\n"),
+      "",
+      "# NEWS",
+      "",
+      repo_news
+      ),
+    "index.Rmd"
+  )
   if (!dir_exists(file.path(git_root, "source", "css"))) {
     dir_copy(
       system.file("css", package = "protocolhelper"),
