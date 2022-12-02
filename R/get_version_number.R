@@ -43,7 +43,8 @@ get_version_number <- function(path = ".") {
   git_branch_checkout(branch = main_branch)
 
   # list all index.Rmd files
-  indexpaths <- dir_ls(path = path, recurse = TRUE, regexp = "index\\.Rmd")
+  indexpaths <- dir_ls(path = path, recurse = TRUE,
+                       regexp = "source/.*/index\\.Rmd")
 
   # read YAML front matter
   yamllists <- map(indexpaths, yaml_front_matter)
