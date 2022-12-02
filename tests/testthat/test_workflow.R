@@ -15,27 +15,45 @@ test_that("complete workflow works", {
       file.path(path, "NEWS.md")
     )
   }
+  origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
+  on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
+  repo <- gert::git_clone(url = origin_repo,
+                          path = tempfile("protocol_local"), verbose = FALSE)
+  on.exit(unlink(repo, recursive = TRUE), add = TRUE)
+  old_wd <- setwd(repo)
+  on.exit(setwd(old_wd), add = TRUE)
 
-  old_wd <- getwd()
-  on.exit(setwd(old_wd))
-  test_repo <- tempfile("test_protocol")
-  dir.create(test_repo)
-  setwd(test_repo)
-  repo <- gert::git_init()
-  gert::git_config_set(name = "user.name", value = "someone")
-  gert::git_config_set(name = "user.email", value = "someone@example.org")
-
-  # create empty NEWS.md repo file
+  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
+  gert::git_config_set(name = "user.email", value = "someone@example.org",
+                       repo = repo)
   file.create("NEWS.md")
+  file.create(".gitignore")
+  writeLines(c("docs/", "publish/"), con = ".gitignore")
+  gert::git_add("NEWS.md")
+  gert::git_commit_all(message = "add empty NEWS repo file")
+
+
+
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+
+  branch_info <- gert::git_branch_list(repo = repo)
+  main_branch <- ifelse(any(branch_info$name == "origin/main"),
+                        "main", ifelse(any(branch_info$name == "origin/master"),
+                                       "master", "unknown"))
 
   # create a protocol to be used as subprotocol
-  version_number <- "2021.01"
+  checklist::new_branch("sfp-101-en", repo = repo)
+  version_number <- get_version_number()
   create_sfp(
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "lastname, firstname", orcids = "0000-0001-2345-6789",
+    authors = "Van Calster, Hans", orcids = "0000-0001-8595-8426",
     reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, theme = "water", language = "en",
-    template = "generic"
+    version_number = version_number, theme = "water", language = "en"
   )
 
   update_news(
@@ -43,7 +61,7 @@ test_that("complete workflow works", {
     version_number = version_number
   )
 
-
+  protocolhelper:::update_news_release("sfp-101-en")
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -52,40 +70,84 @@ test_that("complete workflow works", {
   generic_tag <- paste("protocols", version_number, sep = "-")
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+
+
+
+  # merge into main
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_branch_checkout(main_branch)
+  gert::git_merge(ref = refspec, repo = repo)
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+  gert::git_branch_delete("sfp-101-en", repo = origin_repo)
+  gert::git_branch_delete("sfp-101-en", repo = repo)
 
   protocolhelper:::render_release()
 
+
   # create a protocol which will also be used as subprotocol
-  version_number <- "2021.02"
+  checklist::new_branch("sfp-407-en", repo = repo)
+  version_number_2 <- get_version_number(path = repo)
   create_sfp(
     title = "subsubprotocoltest", subtitle = "subtitle",
     short_title = "vegetation 1",
     authors = c("Someone, Else", "Another, One"),
     orcids = c("0000-0001-2345-6789", "0000-0001-2345-6789"),
     reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, theme = "vegetation", language = "en"
+    version_number = version_number_2, theme = "vegetation", language = "en"
   )
 
   update_news(
     path = file.path("source", "sfp", "4_vegetation",
                      "sfp_407_en_vegetation_1"),
-    version_number = version_number
+    version_number = version_number_2
   )
 
+  protocolhelper:::update_news_release("sfp-407-en")
 
-  # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-407-en_vegetation-1")
-  specific_tag <- paste("sfp-407-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
+  specific_tag <- paste("sfp-407-en", version_number_2, sep = "-")
+  generic_tag <- paste("protocols", version_number_2, sep = "-")
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
 
+  # merge into main
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_branch_checkout(main_branch)
+  gert::git_merge(ref = refspec, repo = repo)
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+  gert::git_branch_delete("sfp-407-en", repo = origin_repo)
+  gert::git_branch_delete("sfp-407-en", repo = repo)
 
   protocolhelper:::render_release()
 
   # create a second protocol to be used as subprotocol
-  version_number <- "2021.03"
+  checklist::new_branch("sfp-102-en", repo = repo)
+  version_number_3 <- get_version_number(path = repo)
   create_sfp(title = "Second subprotocol",
              subtitle = "subtitle",
              short_title = "second subprotocol",
@@ -93,7 +155,7 @@ test_that("complete workflow works", {
              orcids = "0000-0001-2345-6789",
              reviewers = "someone else",
              file_manager = "who?",
-             version_number = version_number,
+             version_number = version_number_3,
              theme = "water",
              language = "en"
              )
@@ -157,41 +219,62 @@ test_that("complete workflow works", {
   add_dependencies(
     code_mainprotocol = "sfp-102-en",
     protocol_code = "sfp-407-en",
-    version_number = "2021.02",
+    version_number = version_number_2,
     params = NA,
     appendix = TRUE
   )
 
   add_subprotocols(
-    fetch_remote = FALSE,
+    fetch_remote = TRUE,
     code_mainprotocol = "sfp-102-en")
 
   update_news(
     path = file.path("source", "sfp", "1_water",
                      "sfp_102_en_second_subprotocol"),
-    version_number = version_number
+    version_number = version_number_3
   )
 
+  protocolhelper:::update_news_release("sfp-102-en")
 
-  # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-102-en_second-subprotocol")
-  specific_tag <- paste("sfp-102-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
+  gert::git_commit_all(message = "sfp-102-en_second_subprotocol")
+  specific_tag <- paste("sfp-102-en", version_number_3, sep = "-")
+  generic_tag <- paste("protocols", version_number_3, sep = "-")
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+
+  # merge into main
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_branch_checkout(main_branch)
+  gert::git_merge(ref = refspec, repo = repo)
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+  gert::git_branch_delete("sfp-102-en", repo = origin_repo)
+  gert::git_branch_delete("sfp-102-en", repo = repo)
 
   protocolhelper:::render_release()
 
 
   # create a project protocol
-  version_number <- "2021.04"
+  checklist::new_branch("spp-001-en", repo = repo)
+  version_number_4 <- get_version_number(path = repo)
   create_spp(
     title = "project protocol", subtitle = "subtitle",
     orcids = "0000-0001-2345-6789",
     short_title = "mne protocol",
     authors = "John, Doe", reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, project_name = "mne", language = "en"
+    version_number = version_number_4, project_name = "mne", language = "en"
   )
 
   # add subprotocols to
@@ -199,42 +282,63 @@ test_that("complete workflow works", {
   add_dependencies(
     code_mainprotocol = "spp-001-en",
     protocol_code = c("sfp-101-en", "sfp-102-en"),
-    version_number = c("2021.01", "2021.03"),
+    version_number = c(version_number, version_number_3),
     params = list(NA, list(protocolspecific = "newvalue")),
     appendix = c(TRUE, TRUE)
   )
 
   add_subprotocols(
-    fetch_remote = FALSE,
+    fetch_remote = TRUE,
     code_mainprotocol = "spp-001-en")
 
   update_news(
     path = file.path("source", "spp", "mne",
                      "spp_001_en_mne_protocol"),
-    version_number = version_number
+    version_number = version_number_4
   )
 
+  protocolhelper:::update_news_release("spp-001-en")
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "spp-001-en_mne-protocol")
-  specific_tag <- paste("spp-001-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
+  specific_tag <- paste("spp-001-en", version_number_4, sep = "-")
+  generic_tag <- paste("protocols", version_number_4, sep = "-")
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
 
+  # merge into main
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_branch_checkout(main_branch)
+  gert::git_merge(ref = refspec, repo = repo)
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+  gert::git_branch_delete("spp-001-en", repo = origin_repo)
+  gert::git_branch_delete("spp-001-en", repo = repo)
 
-  # render release which will output to publish folder
   protocolhelper:::render_release()
 
+
   # update first protocol
-  version_number <- "2021.05"
+  checklist::new_branch("sfp-101-en", repo = repo)
+  version_number_5 <- get_version_number()
   index_file <- readLines(
     file.path("source", "sfp", "1_water", "sfp_101_en_water_1", "index.Rmd")
   )
   index_file <- gsub(
     "version_number: '[0-9]{4}.[0-9]{2}'",
-    paste0("version_number: '", version_number, "'"),
+    paste0("version_number: '", version_number_5, "'"),
     index_file
   )
   writeLines(
@@ -243,21 +347,40 @@ test_that("complete workflow works", {
   )
   update_news(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    version_number = version_number
+    version_number = version_number_5
   )
 
+  protocolhelper:::update_news_release("sfp-101-en")
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-101-en_water")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
+  specific_tag <- paste("sfp-101-en", version_number_5, sep = "-")
+  generic_tag <- paste("protocols", version_number_5, sep = "-")
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+
+  # merge into main
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_branch_checkout(main_branch)
+  gert::git_merge(ref = refspec, repo = repo)
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+  gert::git_push(remote = "origin",
+                 refspec =  refspec,
+                 set_upstream = TRUE,
+                 repo = repo)
+  gert::git_branch_delete("sfp-101-en", repo = origin_repo)
+  gert::git_branch_delete("sfp-101-en", repo = repo)
 
   protocolhelper:::render_release()
-
-
 
   # Cleanup
   unlink(repo, recursive = TRUE)
