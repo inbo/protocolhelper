@@ -1,3 +1,9 @@
+# protocolhelper 0.4.7
+
+## Minor changes
+
+* removed `_bookdown.yml` template files which are now created programmatically
+
 # protocolhelper 0.4.6
 
 ## Bug fixes
