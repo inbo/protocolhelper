@@ -3,6 +3,13 @@
 ## Minor changes
 
 * removed `_bookdown.yml` template files which are now created programmatically
+* website contains a NEWS page
+* each protocol now has a home button to return to protocols website homepage
+
+## Bug fixes
+
+* fixes a problem that caused references to appear twice in bibliography in case
+  of subprotocols
 
 # protocolhelper 0.4.6
 
