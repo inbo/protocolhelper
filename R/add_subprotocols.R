@@ -129,7 +129,8 @@ add_one_subprotocol <-
                     keep_md = TRUE,
                     pandoc_args = c(
                       "--markdown-headings=atx",
-                      "--shift-heading-level-by=1"
+                      "--shift-heading-level-by=1",
+                      "--metadata=suppress-bibliography[:TRUE]"
                     )
                   ),
                   output_file = mdfile,
@@ -144,7 +145,8 @@ add_one_subprotocol <-
                     keep_md = TRUE,
                     pandoc_args = c(
                       "--markdown-headings=atx",
-                      "--shift-heading-level-by=1"
+                      "--shift-heading-level-by=1",
+                      "--metadata=suppress-bibliography[:TRUE]"
                     )
                   ),
                   output_file = mdfile,
