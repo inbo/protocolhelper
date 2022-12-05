@@ -53,7 +53,8 @@ update_news_release <- function(protocol_code, path = ".") {
   today <- Sys.Date()
   news <- c(
     paste0(
-      "### Version ", yaml$version_number, " (added: ", today, ")\n\n",
+      "### Version [", yaml$version_number, "](", yaml$version_number,
+      "/index.html) (added: ", today, ")\n\n",
       "- Protocol code: ", yaml$protocol_code, "\n",
       "- Title: ", yaml$title, "\n"),
     news_contents)
