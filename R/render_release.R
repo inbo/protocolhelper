@@ -213,7 +213,7 @@ render_release <- function(output_root = "publish") {
     data = meta, FUN = paste, collapse = "\n"
   )
   meta$Rmd <- sprintf(
-    "### %1$s [(`%2$s`)](%2$s/index.html)\n\n%3$s\n\n%4$s",
+    "### %1$s [(%2$s)](%2$s/index.html)\n\n%3$s\n\n%4$s",
     meta$title, meta$code, meta$subtitle, meta$Rmd
   )
   meta <- aggregate(Rmd ~ type + theme, data = meta, FUN = paste,
