@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-* fixed bug in passing metadata to pandoc
+* fixed bug in passing metadata to `pandoc`
 
 # protocolhelper 0.4.7
 
