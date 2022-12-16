@@ -1,0 +1,156 @@
+---
+title: INBO protocols
+date: '`r Sys.Date()`'
+---
+
+# Welkom! / Welcome!
+
+Voor Nederlands [klik hier](#welkom).
+
+For English [click here](#welcome).
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="33%", fig.align = "right"}
+knitr::include_graphics(
+  c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png"))
+```
+
+
+# Nederlandstalige richtlijnen
+
+### Welkom!
+
+Protocollen verhogen de kwaliteit van het veldwerk en daarmee de kwaliteit van het wetenschappelijk onderzoek, dat transparant, traceerbaar en toepasbaar moet zijn.
+Ze dragen ertoe bij dat veldwerk beter geharmoniseerd is en beter herhaalbaar, reproduceerbaar en vergelijkbaar wordt. Ook vanuit efficiëntie oogpunt is een standaardisatie interessant voor het Instituut voor Natuur- en Bosonderzoek (INBO).
+
+Deze site doet dienst als een repository voor de meest recente versies van goedgekeurde veldprotocollen die op het INBO gebruikt worden.
+Aan de linkerkant vind je de navigatie naar de verschillende rubrieken.
+In de NEWS sectie vind je welke (versies van) protocollen wanneer werden toegevoegd.
+
+Deze website bevat de gepubliceerde protocollen.
+Het beheer, onderhoud, goedkeuring en revisie van de bronbestanden die aan de basis liggen van deze gepubliceerde protocollen gebeurt in de [inbo/protocolsource](https://github.com/inbo/protocolsource) GitHub repository.
+
+### Vijf soorten protocollen
+
+We onderscheiden vijf soorten standaardprotocollen.
+Het standaard veldprotocol (`sfp`) wordt gebruikt om de stappen uit te leggen die een veldwerker in het veld nodig heeft om een specifieke veldactiviteit uit te voeren.
+Het tweede type is het standaard instrumentprotocol (`sip`) dat het gebruik en het onderhoud van toestellen uitlegt.
+Het derde type zijn de standaard analytische protocollen (`sap`) die in het laboratorium of in het veld worden gebruikt om een bepaalde laboratorium- of veldanalytische procedure uit te leggen waarbij fysische of chemische metingen worden verricht.
+Het vierde type staat voor standaard operationele procedures (`sop`) en is voor alles wat niet in een van de vorige types past.
+
+Het vijfde type is een categorie die gereserveerd is voor projectspecifieke protocollen (`spp`).
+Dit laatste type laat snelle ontwikkeling en gebruik van protocollen binnen een projectcontext toe.
+In het kader van een project kan het soms nodig zijn een protocol van het type `sfp` opnieuw te gebruiken, maar met iets andere instellingen die specifiek zijn voor het project.
+Dit kan worden gedaan door een gepubliceerd `sfp` protocol op te nemen als een `spp` subprotocol waarin de afwijkingen van de standaardinstellingen worden gegeven.
+
+
+### Protocolidentificatie
+
+
+De eerder uiteengezette typologie van protocollen wordt verder uitgewerkt in een zogenaamde protocolcode.
+Een **protocolcode** bestaat uit een voorvoegsel dat verwijst naar het *protocoltype* (drie tekens), een *protocolnummer* (drie cijfers) en een *taalcode* (twee tekens), alle gescheiden door een koppelteken.
+
+| type         | thema      | thema nummer | protocol-code |
+|:-------------|:-----------|:-------------|:--------------|
+| veld         | generiek   | 0            | sfp-0##-nl    |
+| veld         | water      | 1            | sfp-1##-nl    |
+| veld         | lucht      | 2            | sfp-2##-nl    |
+| veld         | bodem      | 3            | sfp-3##-nl    |
+| veld         | vegetatie  | 4            | sfp-4##-nl    |
+| veld         | soorten    | 5            | sfp-5##-nl    |
+| Instrument   |            |              | sip-###-nl    |
+| operationeel |            |              | sop-###-nl    |
+| Analyse      |            |              | sap-###-nl    |
+| Project      |            |              | spp-###-nl    |
+
+De drie cijfers van de protocolcode worden het *protocolnummer* genoemd.
+Bij themaprotocollen komt het eerste cijfer van het protocolnummer overeen met het themanummer.
+De `##` geven een oplopend nummer aan.
+Zo zal het eerste veldprotocol voor "thema water" de protocolcode `sfp-101-en` hebben.
+Het `s*p-###` deel van de protocolcode kan worden beschouwd als een code die één op één overeenkomt met de titel van het protocol (wanneer de taal buiten beschouwing wordt gelaten).
+
+De laatste twee karakters identificeren de taal waarin het protocol is geschreven.
+Dit kan het Nederlands (`nl`) of het Engels (`en`) zijn.
+
+Elk protocol heeft dus een unieke protocolcode, maar er kunnen meerdere versies van een protocol zijn.
+Om onderscheid te maken tussen verschillende versies van een protocol, hebben we een versienummer nodig.
+Het **versienummer** dat we gebruiken is van de vorm `YYYY.NN`.
+`YYYY` geeft het jaar aan waarin het protocol is uitgebracht.
+Het `NN` is een getal dat de volgorde van uitgave binnen dat jaar aangeeft (beginnend met 01).
+Het versienummer identificeert dus op unieke wijze een specifieke versie van een protocol, zelfs zonder dat naar de protocolcode hoeft te worden verwezen.
+Hier is een fictief voorbeeld:
+
+- versie `2022.01` (identificeert een eerste versie van `sfp-401-en`)
+- versie `2022.02` (identificeert een eerste versie van `sfp-001-en`)
+- versie `2022.03` (identificeert een tweede versie van `sfp-401-en`)
+
+Op de NEWS-pagina staan de versienummers en wordt aangegeven bij welke protocollen ze horen.
+De website heeft ook een overzichtspagina voor elk protocol (zoals geïdentificeerd door de protocol-code) waar alle versies van dat protocol staan.
+
+
+# English guidelines
+
+### Welcome!
+
+Protocols increase the quality of the fieldwork and thus the quality of scientific research, which must be transparent, traceable and applicable.
+They help make fieldwork more harmonized and more repeatable, reproducible and comparable.
+Standardization is also interesting for the Institute for Nature and Forest
+Research (INBO) from an efficiency point of view.
+This site serves as a repository for the most recent versions of approved
+protocols used at INBO.
+On the left you will find the navigation to the different sections.
+
+### Five types of protocols
+
+We distinguish five types of standard protocols.
+The first type is the standard field protocol (`sfp`) which is used to explain the steps that are needed in the field by a field worker to execute a specific field activity.
+The second type is the standard instrument protocol (`sip`) which explains the use and maintenance of instruments.
+The third type are the standard analytical protocols (`sap`) which are used in the laboratory or the field to explain a particular lab or field-analytical procedure involving physical or chemical measurements.
+The fourth type stands for standard operating procedures (`sop`) and is for everything that does not fit in one of the previous types.
+
+The fifth type is a category reserved for project-specific protocols (`spp`).
+The latter is more of a convenience to aid quick development and employment of protocols within a project context.
+Within the scope of a project, it might sometimes be necessary to re-use a `sfp` type protocol but with slightly different settings which are specific to the project.
+This can be done by including a published `sfp` protocol as an `spp` subprotocol where the deviations from the default settings are given.
+
+
+### Protocol identification
+
+The previously explained typology of protocols is further detailed in a so-called protocol-code.
+A **protocol-code** consists of a prefix referring to the *protocol-type* (three characters), a *protocol-number* (three digits) and a *language tag* (two characters), all separated by a hyphen.
+
+| type       | theme      | theme_number | protocol-code |
+|:-----------|:-----------|:-------------|:--------------|
+| field      | generic    | 0            | sfp-0##-en    |
+| field      | water      | 1            | sfp-1##-en    |
+| field      | air        | 2            | sfp-2##-en    |
+| field      | soil       | 3            | sfp-3##-en    |
+| field      | vegetation | 4            | sfp-4##-en    |
+| field      | species    | 5            | sfp-5##-en    |
+| instrument |            |              | sip-###-en    |
+| operating  |            |              | sop-###-en    |
+| analysis   |            |              | sap-###-en    |
+| project    |            |              | spp-###-en    |
+
+The three digits of the protocol-code will be referred to as the *protocol-number*.
+In case of thematic protocols, the first digit of the protocol-number corresponds with the theme-number.
+The `##` indicates an incremental number.
+For instance, the first field protocol for "theme water" will have protocol code `sfp-101-en`.
+The `s*p-###` part of the protocol code can be thought of as a code that corresponds one-to-one with the title of the protocol (when ignoring language).
+
+The final two characters identify the language the protocol is written in.
+This can be either Dutch (`nl`) or English (`en`).
+
+Each protocol thus has a unique protocol-code, but there can be multiple versions of a protocol.
+To discriminate between different versions of protocol, we need a version number.
+The **version number** that we use is of the form `YYYY.NN`.
+`YYYY` indicates the year in which the protocol was released.
+The `NN` is a number that indicates the order of release within that year (starting with 01).
+The version number will therefore uniquely identify a specific version of a protocol even without the need to refer to the protocol-code.
+Here's a fictive example:
+
+- version `2022.01` (identifies a first version of `sfp-401-en`)
+- version `2022.02` (identifies a first version of `sfp-001-en`)
+- version `2022.03` (identifies a second version of `sfp-401-en`)
+
+The NEWS page lists the version numbers and identifies which protocols they belong to.
+The website also has an overview page for each protocol (as identified by protocol-code) where all versions of that protocol are listed.
