@@ -50,10 +50,9 @@ render_release <- function(output_root = "publish") {
   protocol_index <- dir_ls(
     file.path(git_root, "source"),
     type = "file",
-    recurse = 3,
-    regexp = "index\\.Rmd"
-  )
-  protocol_index <- protocol_index[!grepl("source/index\\.Rmd", protocol_index)]
+    recurse = TRUE,
+    regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd")
+
   yaml <- map(protocol_index, yaml_front_matter)
   version <- map(yaml, "version_number")
   missing_version <- !map_lgl(version, is.string)
@@ -223,28 +222,17 @@ render_release <- function(output_root = "publish") {
                     collapse = "\n\n")
   meta$Rmd <- sprintf("# %1$s\n\n%2$s", meta$type, meta$Rmd)
 
-  setwd(file.path(git_root, "source"))
-  if (!file_exists("index.Rmd")) {
-    writeLines(
-      "---\ntitle: INBO protocols\ndate: '`r Sys.Date()`'\noutput: html_document
----\n\n# Welcome!\n\nProtocols increase the quality of the fieldwork and thus
-the quality of scientific research, which must be transparent, traceable and
-applicable.
-They help make fieldwork more harmonized and more repeatable, reproducible and
-comparable.
-Standardization is also interesting for the Institute for Nature and Forest
-Research (INBO) from an efficiency point of view.\n\n
-This site serves as a repository for the most recent versions of approved
-protocols used at INBO.
-On the left you will find the navigation to the different sections.\n
-",
-      "index.Rmd"
-    )
+  if (!dir_exists(file.path(git_root, "source", "homepage"))) {
+    dir_copy(
+      system.file("rmarkdown/homepage", package = "protocolhelper"),
+      file.path(git_root, "source", "homepage"))
   }
+  setwd(file.path(git_root, "source", "homepage"))
   index <- readLines("index.Rmd")
-  repo_news <- readLines("../NEWS.md")
+  repo_news <- readLines("../../NEWS.md")
   writeLines(
     c(index,
+      "",
       paste(meta$Rmd, collapse = "\n\n"),
       "",
       "# NEWS",
@@ -253,10 +241,10 @@ On the left you will find the navigation to the different sections.\n
       ),
     "index.Rmd"
   )
-  if (!dir_exists(file.path(git_root, "source", "css"))) {
+  if (!dir_exists(file.path(git_root, "source", "homepage", "css"))) {
     dir_copy(
       system.file("css", package = "protocolhelper"),
-      file.path(git_root, "source", "css")
+      file.path(git_root, "source", "homepage", "css")
     )
   }
   render_book(
