@@ -48,5 +48,5 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 SystemRequirements: Pandoc (>= 2.0.0)
