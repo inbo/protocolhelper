@@ -20,7 +20,7 @@
 #'
 #'
 #' @importFrom assertthat assert_that is.string
-#' @importFrom bookdown gitbook render_book
+#' @importFrom bookdown gitbook render_book pdf_book
 #' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete file_exists
 #' @importFrom purrr map map_chr map_lgl
 #' @importFrom rmarkdown html_document pandoc_variable_arg render
@@ -88,6 +88,39 @@ render_release <- function(output_root = "publish") {
       )
     }
     setwd(dirname(protocol_index[i]))
+    pdf_name <- paste0(yaml[[i]][["protocol_code"]], "_",
+                       yaml[[i]][["version_number"]], ".pdf")
+    render_book(
+      input = ".",
+      output_format = pdf_book(
+        pandoc_args = c(
+          as.vector(
+            sapply(
+              yaml[[i]][["reviewers"]],
+              pandoc_variable_arg,
+              name = "reviewer"
+            )
+          ),
+          pandoc_variable_arg(
+            "file_manager", yaml[[i]][["file_manager"]]
+          ),
+          pandoc_variable_arg(
+            "protocol_code", yaml[[i]][["protocol_code"]]
+          ),
+          pandoc_variable_arg(
+            "version_number", yaml[[i]][["version_number"]]
+          ),
+          pandoc_variable_arg(
+            "thema",
+            c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
+          ),
+          pandoc_variable_arg("lang", yaml[[i]][["language"]])
+        )
+      ),
+      output_file = pdf_name,
+      output_dir = target_dir,
+      envir = new.env()
+    )
     render_book(
       input = ".",
       output_format = gitbook(
@@ -119,6 +152,7 @@ render_release <- function(output_root = "publish") {
         template = "css/gitbook.html",
         css = "css/inbo_rapport.css",
         config = list(
+          download = list(pdf_name),
           toc = list(
             before =
               ifelse(yaml[[i]][["language"]] == "en",
