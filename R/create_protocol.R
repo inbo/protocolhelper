@@ -914,7 +914,7 @@ write_bookdown_yml <- function(
 #' @param language language of the protocol
 #' @param path_to_protocol path to the protocol
 #'
-#' @importFrom ymlthis use_output_yml yml_empty yml_output yml_code
+#' @importFrom ymlthis use_output_yml yml_empty yml_output
 #' @importFrom bookdown gitbook pdf_book
 #' @importFrom xfun read_utf8 write_utf8
 #'
