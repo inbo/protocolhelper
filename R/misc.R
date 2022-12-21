@@ -50,3 +50,16 @@ protocol_css <- function() {
   }
   return(file.path("css", "gitbook.html"))
 }
+
+#' set path to tex template to be used by `pdf_book`
+#' @keywords internal
+protocol_tex <- function() {
+  source_dir <- system.file(
+    "pandoc",
+    package = "protocolhelper"
+  )
+  if (!interactive()) {
+    file.copy(source_dir, getwd(), recursive = TRUE, overwrite = TRUE)
+  }
+  return(file.path("pandoc", "inbo_protocol.tex"))
+}
