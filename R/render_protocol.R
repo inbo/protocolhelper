@@ -38,16 +38,32 @@ render_protocol <- function(protocol_code = NULL,
       file.path(path_to_protocol, "css")
     )
   }
+  # copy pandoc
+  if (!dir_exists(file.path(path_to_protocol, "pandoc"))) {
+    dir_copy(
+      system.file("pandoc", package = "protocolhelper"),
+      file.path(path_to_protocol, "pandoc")
+    )
+  }
 
-  # render html
   old_wd <- getwd()
   setwd(dir = path_to_protocol)
   suppressWarnings(
+    # render pdf
+    render_book(input = "index.Rmd",
+                output_dir = output_dir,
+                output_format = "bookdown::pdf_book",
+                envir = new.env(),
+                ...)
+    )
+  suppressWarnings(
+    # render html
     render_book(input = "index.Rmd",
               output_dir = output_dir,
               output_file = "index.html",
               envir = new.env(),
-              ...))
+              ...)
+  )
   setwd(old_wd)
 
 }
