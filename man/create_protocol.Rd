@@ -226,7 +226,7 @@ the target folder beneath \code{source}.
 Template Rmarkdown files with the same name as Rmarkdown files that result
 from converting a docx protocol will be overwritten by the latter.
 Besides Rmarkdown files, this target folder will also contain files needed to
-render to a Bookdown \code{gitbook} such as a \verb{_bookdown.yml}.
+render to a Bookdown \code{gitbook} such as a \verb{_bookdown.yml} and \verb{_output.yml}.
 The \code{NEWS.md} file must be used to document the changes between revisions
 of the protocol.
 Furthermore, a \code{data} and a \code{media} folder will be created as subdirectories
