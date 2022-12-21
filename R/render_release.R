@@ -106,7 +106,7 @@ render_release <- function(output_root = "publish") {
     render_book(
       input = ".",
       output_format = pdf_book(
-        #template = "pandoc/inbo_protocol.tex",
+        #template = "pandoc/inbo_protocol.tex", # nolint
         pandoc_args = c(
           as.vector(
             sapply(

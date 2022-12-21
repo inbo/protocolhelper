@@ -51,7 +51,7 @@ protocol_css <- function() {
   return(file.path("css", "gitbook.html"))
 }
 
-#' set path to tex template to be used by `pdf_book`
+#' set path to `tex` template to be used by `pdf_book`
 #' @keywords internal
 protocol_tex <- function() {
   source_dir <- system.file(

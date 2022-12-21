@@ -932,7 +932,7 @@ write_output_yml <- function(language, path_to_protocol) {
         css = "css/inbo_rapport.css",
         config = list(
           toc = list(
-            before = list(
+            before = list( # nolint start
               '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>',
               '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
             ),
@@ -965,7 +965,7 @@ write_output_yml <- function(language, path_to_protocol) {
             ),
             after = list(
               '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>'
-            )
+            ) # nolint end
           )
         )
       ),

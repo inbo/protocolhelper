@@ -2,11 +2,11 @@
 % Please edit documentation in R/misc.R
 \name{protocol_tex}
 \alias{protocol_tex}
-\title{set path to tex template to be used by \code{pdf_book}}
+\title{set path to \code{tex} template to be used by \code{pdf_book}}
 \usage{
 protocol_tex()
 }
 \description{
-set path to tex template to be used by \code{pdf_book}
+set path to \code{tex} template to be used by \code{pdf_book}
 }
 \keyword{internal}
