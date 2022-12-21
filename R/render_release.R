@@ -28,7 +28,7 @@
 #' @importFrom stats aggregate
 #' @importFrom stringr str_replace_all
 #' @importFrom utils tail
-#' @importFrom yaml as.yaml
+#' @importFrom yaml as.yaml read_yaml
 #'
 #' @keywords internal
 #'
@@ -52,8 +52,14 @@ render_release <- function(output_root = "publish") {
     type = "file",
     recurse = TRUE,
     regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd")
+  output_yml_files <- dir_ls(
+    file.path(git_root, "source"),
+    type = "file",
+    recurse = TRUE,
+    regexp = "source\\/s[fpioa]p\\/.+\\/_output\\.yml")
 
   yaml <- map(protocol_index, yaml_front_matter)
+  output_yaml <- map(output_yml_files, read_yaml)
   version <- map(yaml, "version_number")
   missing_version <- !map_lgl(version, is.string)
   if (any(missing_version)) {
@@ -72,6 +78,7 @@ render_release <- function(output_root = "publish") {
   }
   protocol_index <- protocol_index[order(version)]
   yaml <- yaml[order(version)]
+  output_yaml <- output_yaml[order(version)]
   version <- sort(version)
   for (i in seq_along(protocol_index)) {
     target_dir <- file.path(output_root, version[i])
@@ -87,12 +94,19 @@ render_release <- function(output_root = "publish") {
         file.path(dirname(protocol_index[i]), "css")
       )
     }
+    if (!dir_exists(file.path(dirname(protocol_index[i]), "pandoc"))) {
+      dir_copy(
+        system.file("pandoc", package = "protocolhelper"),
+        file.path(dirname(protocol_index[i]), "pandoc")
+      )
+    }
     setwd(dirname(protocol_index[i]))
     pdf_name <- paste0(yaml[[i]][["protocol_code"]], "_",
                        yaml[[i]][["version_number"]], ".pdf")
     render_book(
       input = ".",
       output_format = pdf_book(
+        #template = "pandoc/inbo_protocol.tex",
         pandoc_args = c(
           as.vector(
             sapply(
@@ -114,7 +128,8 @@ render_release <- function(output_root = "publish") {
             "thema",
             c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
           ),
-          pandoc_variable_arg("lang", yaml[[i]][["language"]])
+          pandoc_variable_arg("lang", yaml[[i]][["language"]]),
+          pandoc_variable_arg("documentclass", "report")
         )
       ),
       output_file = pdf_name,
@@ -124,8 +139,8 @@ render_release <- function(output_root = "publish") {
     render_book(
       input = ".",
       output_format = gitbook(
-        split_by = yaml[[i]][["output"]][["bookdown::gitbook"]][["split_by"]],
-        split_bib = yaml[[i]][["output"]][["bookdown::gitbook"]][["split_bib"]],
+        split_by = output_yaml[[i]][["bookdown::gitbook"]][["split_by"]],
+        split_bib = output_yaml[[i]][["bookdown::gitbook"]][["split_bib"]],
         pandoc_args = c(
           as.vector(
             sapply(
