@@ -928,7 +928,7 @@ write_output_yml <- function(language, path_to_protocol) {
       bookdown::gitbook(
         split_by = "none",
         split_bib = FALSE,
-        template = "!expr protocolhelper::protocol_css()",
+        template = "!expr protocolhelper:::protocol_css()",
         css = "css/inbo_rapport.css",
         config = list(
           toc = list(
@@ -944,7 +944,6 @@ write_output_yml <- function(language, path_to_protocol) {
       ),
       bookdown::pdf_book(
         keep_tex = FALSE,
-        template = "!expr protocolhelper:::protocol_tex()",
         pandoc_args = c(pandoc_variable_arg("documentclass", "report"))
       )
     )
@@ -955,7 +954,7 @@ write_output_yml <- function(language, path_to_protocol) {
       bookdown::gitbook(
         split_by = "none",
         split_bib = FALSE,
-        template = "!expr protocolhelper::protocol_css()",
+        template = "!expr protocolhelper:::protocol_css()",
         css = "css/inbo_rapport.css",
         config = list(
           toc = list(
@@ -971,9 +970,7 @@ write_output_yml <- function(language, path_to_protocol) {
       ),
       bookdown::pdf_book(
         keep_tex = FALSE,
-        includes = list(
-          in_header = "!expr protocolhelper:::protocol_tex()"
-        )
+        pandoc_args = c(pandoc_variable_arg("documentclass", "report"))
       )
     )
   }

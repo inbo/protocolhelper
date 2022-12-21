@@ -39,7 +39,7 @@ execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
 
 
 #' set path to html template to be used by `gitbook`
-#' @export
+#' @keywords internal
 protocol_css <- function() {
   source_dir <- system.file(
     "css",
