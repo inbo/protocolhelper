@@ -9,9 +9,14 @@ Voor Nederlands [klik hier](#welkom).
 
 For English [click here](#welcome).
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, out.width="33%", fig.align = "right"}
-knitr::include_graphics(
-  c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png"))
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(htmlwidgets)
+library(slickR)
+slickR(obj = c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png",
+               "voorbeeld4.jpg", "voorbeeld5.png", "voorbeeld6.jpg"),
+       width = "95%") + 
+  settings(dots = TRUE, adaptiveHeight = TRUE,
+           autoplay = TRUE)
 ```
 
 
