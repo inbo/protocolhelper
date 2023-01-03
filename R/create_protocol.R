@@ -944,7 +944,8 @@ write_output_yml <- function(language, path_to_protocol) {
       ),
       bookdown::pdf_book(
         keep_tex = FALSE,
-        pandoc_args = c(pandoc_variable_arg("documentclass", "report"))
+        pandoc_args = c("--top-level-division=chapter"),
+        template = "!expr protocolhelper:::protocol_tex()"
       )
     )
   }
@@ -970,7 +971,8 @@ write_output_yml <- function(language, path_to_protocol) {
       ),
       bookdown::pdf_book(
         keep_tex = FALSE,
-        pandoc_args = c(pandoc_variable_arg("documentclass", "report"))
+        pandoc_args = c("--top-level-division=chapter"),
+        template = "!expr protocolhelper:::protocol_tex()"
       )
     )
   }

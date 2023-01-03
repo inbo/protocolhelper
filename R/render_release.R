@@ -106,8 +106,9 @@ render_release <- function(output_root = "publish") {
     render_book(
       input = ".",
       output_format = pdf_book(
-        #template = "pandoc/inbo_protocol.tex", # nolint
+        template = "pandoc/inbo_protocol.tex", # nolint
         pandoc_args = c(
+          "--top-level-division=chapter",
           as.vector(
             sapply(
               yaml[[i]][["reviewers"]],
@@ -128,8 +129,7 @@ render_release <- function(output_root = "publish") {
             "thema",
             c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
           ),
-          pandoc_variable_arg("lang", yaml[[i]][["language"]]),
-          pandoc_variable_arg("documentclass", "report")
+          pandoc_variable_arg("lang", yaml[[i]][["language"]])
         )
       ),
       output_file = pdf_name,
