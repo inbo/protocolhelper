@@ -9,3 +9,4 @@ protocol_css()
 \description{
 set path to html template to be used by \code{gitbook}
 }
+\keyword{internal}

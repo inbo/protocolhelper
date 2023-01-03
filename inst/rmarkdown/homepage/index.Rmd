@@ -14,7 +14,7 @@ library(htmlwidgets)
 library(slickR)
 slickR(obj = c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png",
                "voorbeeld4.jpg", "voorbeeld5.png", "voorbeeld6.jpg"),
-       width = "95%") + 
+       width = "95%") +
   settings(dots = TRUE, adaptiveHeight = TRUE,
            autoplay = TRUE)
 ```
