@@ -49,14 +49,22 @@ update_news_release <- function(protocol_code, path = ".") {
   # read YAML front matter
   yaml <- yaml_front_matter(file.path(path_protocol, "index.Rmd"))
 
+  # check if new protocol or update
+  update <- any(grepl(yaml$protocol_code, news_contents, fixed = TRUE))
+
   # contents of NEWS.md file
   today <- Sys.Date()
   news <- c(
     paste0(
-      "### Version [", yaml$version_number, "](", yaml$version_number,
-      "/index.html) (added: ", today, ")\n\n",
-      "- Protocol code: ", yaml$protocol_code, "\n",
-      "- Title: ", yaml$title, "\n"),
+      "### ", "Update of protocol: "[update],
+      "First version of protocol: "[!update],
+      yaml$protocol_code, "\n\n",
+      "- Title: ", yaml$title, "\n",
+      "- Published on: ", today, "\n",
+      "- Version number: ", yaml$version_number, "\n",
+      "- Link to this version: [", yaml$protocol_code, " version ",
+      yaml$version_number, "](", yaml$version_number, "/index.html)\n"
+      ),
     news_contents)
 
   writeLines(news,
