@@ -21,7 +21,9 @@
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown gitbook render_book pdf_book
+#' @importFrom dplyr group_by
 #' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete file_exists
+#' @importFrom gt gt as_raw_html
 #' @importFrom purrr map map_chr map_lgl
 #' @importFrom rmarkdown html_document pandoc_variable_arg render
 #' @importFrom rprojroot find_root
@@ -186,47 +188,6 @@ render_release <- function(output_root = "publish") {
       output_dir = target_dir,
       envir = new.env()
     ) |> suppressWarnings()
-    yaml[[i]][["output"]] <- list(`rmarkdown::html_document` = "default")
-    protocol_code <- map_chr(yaml, "protocol_code")
-    relevant <- protocol_code == protocol_code[[i]]
-    news <- map_chr(
-      dirname(names(protocol_code[relevant])),
-      ~paste(tail(readLines(file.path(.x, "NEWS.md")), -1), collapse = "\n")
-    )
-    if (length(news) > 1) {
-      lang <- map_chr(yaml[relevant], "language")
-      lang <- factor(
-        lang,
-        c("nl", "en"),
-        c("\n# Nederlandse versie\n", "\n# English version \n")
-      )
-      news <- paste(lang, news, collapse = "\n")
-    }
-    writeLines(
-      c("---",
-        paste0("title: ", yaml[[i]]$title),
-        paste0("subtitle: ", yaml[[i]]$subtitle),
-        paste0("output:\n  ", as.yaml(yaml[[i]]$output)),
-        "---", "", news),
-      "render_NEWS.Rmd"
-    )
-    target_dir <- file.path(
-      output_root, yaml[[i]][["protocol_code"]]
-    )
-    if (dir_exists(target_dir)) {
-      dir_delete(target_dir)
-    }
-    render(
-      "render_NEWS.Rmd", output_file = "index.html", envir = new.env(),
-      output_dir = target_dir,
-      output_format = html_document(
-        toc = TRUE,
-        toc_depth = 2,
-        toc_float = TRUE,
-        css = "css/inbo_rapport.css"
-      )
-    )
-    file_delete("render_NEWS.Rmd")
   }
   protocols <- dir_ls(
     output_root, recurse = TRUE, type = "file",
@@ -257,23 +218,21 @@ render_release <- function(output_root = "publish") {
   meta_order <- order(meta$type, meta$theme, meta$code,
                       -as.integer(factor(meta$version)))
   meta <- meta[meta_order, ]
-  meta$Rmd <- sprintf(
-    "- [%1$s](%1$s/index.html) (%2$s)", meta$version, meta$language
+  meta$version <- sprintf(
+    "[%1$s](%1$s/index.html)", meta$version
   )
-  meta <- aggregate(
-    Rmd ~ type + theme + code + title + subtitle,
-    data = meta, FUN = paste, collapse = "\n"
-  )
-  meta$Rmd <- sprintf(
-    "### %1$s [(%2$s)](%2$s/index.html)\n\n%3$s\n\n%4$s",
-    meta$title, meta$code, meta$subtitle, meta$Rmd
-  )
-  meta <- aggregate(Rmd ~ type + theme, data = meta, FUN = paste,
-                    collapse = "\n\n")
-  meta$Rmd <- sprintf("## %1$s\n\n%2$s", meta$theme, meta$Rmd)
-  meta <- aggregate(Rmd ~ type, data = meta, FUN = paste,
-                    collapse = "\n\n")
-  meta$Rmd <- sprintf("# %1$s\n\n%2$s", meta$type, meta$Rmd)
+  rownames(meta) <- NULL
+  meta <- meta[, c("type", "version", "code", "title", "theme")]
+
+  meta <- split(meta, ~type)
+  meta <- map(meta, function(x) x[, !(names(x) %in% "type")])
+
+  table_lines <- map(meta, ~. |> group_by(theme) |> gt() |> as_raw_html())
+  rmd <- character(0)
+  for (i in seq_along(table_lines)) {
+    rmd <- c(rmd, paste0("# ", names(table_lines)[i]), table_lines[[i]])
+  }
+
 
   if (!dir_exists(file.path(git_root, "source", "homepage"))) {
     dir_copy(
@@ -286,7 +245,7 @@ render_release <- function(output_root = "publish") {
   writeLines(
     c(index,
       "",
-      paste(meta$Rmd, collapse = "\n\n"),
+      rmd,
       "",
       "# NEWS",
       "",

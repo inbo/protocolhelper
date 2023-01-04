@@ -24,8 +24,10 @@ Imports:
     bookdown,
     checklist (>= 0.2.4),
     commonmark,
+    dplyr,
     fs,
     gert,
+    gt,
     jsonlite,
     knitr,
     purrr,
@@ -39,7 +41,6 @@ Imports:
     yaml,
     ymlthis
 Suggests: 
-    dplyr,
     lubridate,
     magick,
     png,
