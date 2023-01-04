@@ -38,6 +38,8 @@ render_protocol <- function(protocol_code = NULL,
       file.path(path_to_protocol, "css")
     )
   }
+  on.exit(unlink(file.path(path_to_protocol, "css"),
+                 recursive = TRUE), add = TRUE)
   # copy pandoc
   if (!dir_exists(file.path(path_to_protocol, "pandoc"))) {
     dir_copy(
@@ -45,9 +47,10 @@ render_protocol <- function(protocol_code = NULL,
       file.path(path_to_protocol, "pandoc")
     )
   }
-
-  old_wd <- getwd()
-  setwd(dir = path_to_protocol)
+  on.exit(unlink(file.path(path_to_protocol, "pandoc"),
+                 recursive = TRUE), add = TRUE)
+  old_wd <- setwd(dir = path_to_protocol)
+  on.exit(setwd(old_wd), add = TRUE)
   suppressWarnings(
     # render pdf
     render_book(input = "index.Rmd",
@@ -64,6 +67,4 @@ render_protocol <- function(protocol_code = NULL,
               envir = new.env(),
               ...)
   )
-  setwd(old_wd)
-
 }

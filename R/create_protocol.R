@@ -81,7 +81,6 @@
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
 #' @importFrom rmarkdown draft yaml_front_matter
 #' @importFrom bookdown render_book
-#' @importFrom yaml read_yaml
 #' @importFrom ymlthis
 #' as_yml
 #' use_index_rmd

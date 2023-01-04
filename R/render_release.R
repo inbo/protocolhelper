@@ -59,7 +59,7 @@ render_release <- function(output_root = "publish") {
     regexp = "source\\/s[fpioa]p\\/.+\\/_output\\.yml")
 
   yaml <- map(protocol_index, yaml_front_matter)
-  output_yaml <- map(output_yml_files, read_yaml)
+  output_yaml <- map(output_yml_files, read_yaml, eval.expr = TRUE)
   version <- map(yaml, "version_number")
   missing_version <- !map_lgl(version, is.string)
   if (any(missing_version)) {
@@ -94,12 +94,16 @@ render_release <- function(output_root = "publish") {
         file.path(dirname(protocol_index[i]), "css")
       )
     }
+    on.exit(unlink(file.path(dirname(protocol_index[i]), "css"),
+                   recursive = TRUE), add = TRUE)
     if (!dir_exists(file.path(dirname(protocol_index[i]), "pandoc"))) {
       dir_copy(
         system.file("pandoc", package = "protocolhelper"),
         file.path(dirname(protocol_index[i]), "pandoc")
       )
     }
+    on.exit(unlink(file.path(dirname(protocol_index[i]), "pandoc"),
+                   recursive = TRUE), add = TRUE)
     setwd(dirname(protocol_index[i]))
     pdf_name <- paste0(yaml[[i]][["protocol_code"]], "_",
                        yaml[[i]][["version_number"]], ".pdf")
@@ -135,7 +139,7 @@ render_release <- function(output_root = "publish") {
       output_file = pdf_name,
       output_dir = target_dir,
       envir = new.env()
-    )
+    ) |> suppressWarnings()
     render_book(
       input = ".",
       output_format = gitbook(
@@ -181,7 +185,7 @@ render_release <- function(output_root = "publish") {
       output_file = "index.html",
       output_dir = target_dir,
       envir = new.env()
-    )
+    ) |> suppressWarnings()
     yaml[[i]][["output"]] <- list(`rmarkdown::html_document` = "default")
     protocol_code <- map_chr(yaml, "protocol_code")
     relevant <- protocol_code == protocol_code[[i]]
@@ -296,6 +300,8 @@ render_release <- function(output_root = "publish") {
       file.path(git_root, "source", "homepage", "css")
     )
   }
+  on.exit(unlink(file.path(git_root, "source", "homepage", "css"),
+                 recursive = TRUE), add = TRUE)
   render_book(
     "index.Rmd",
     output_file = "index.html",
