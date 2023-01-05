@@ -5,7 +5,7 @@
 #' @param protocol_code Character vector giving the protocol code(s)
 #' @param auto_identifier Logical.
 #' If `TRUE` returns labels following
-#' [`Pandoc's` auto-identifier](https://pandoc.org/MANUAL.html#extension-auto_identifiers)
+#' [`Pandoc's` auto-identifier](https://pandoc.org/MANUAL.html#extension-auto_identifiers) # nolint
 #' rules.
 #'
 #' @return A factor with 5 levels corresponding to `sfp`, `sip`, `sap`, `sop`
