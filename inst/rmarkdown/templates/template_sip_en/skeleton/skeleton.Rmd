@@ -45,10 +45,14 @@ library(dplyr)
 library(purrr)
 library(protocolhelper)
 path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
+type <- get_protocol_type(rmarkdown::metadata$protocol_code,
+                          auto_identifier = TRUE)
 ```
 
 # Metadata {.unnumbered}
 
 | Reviewers                                                 | File manager                         | Protocol code                         | Version number                         | Language                         | Theme                         |
-|-----------------------------------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|----------------------------------|-------------------------------|
+|------------|------------|------------|------------|------------|------------|
 | `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$theme` |
+
+Check the [table listing all versions](../`r type`.html) to see if a more recent version is available.

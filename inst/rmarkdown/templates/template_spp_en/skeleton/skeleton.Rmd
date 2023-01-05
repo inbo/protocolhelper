@@ -45,6 +45,8 @@ library(dplyr)
 library(purrr)
 library(protocolhelper)
 path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
+type <- get_protocol_type(rmarkdown::metadata$protocol_code,
+                          auto_identifier = TRUE)
 ```
 
 # Metadata {.unnumbered}

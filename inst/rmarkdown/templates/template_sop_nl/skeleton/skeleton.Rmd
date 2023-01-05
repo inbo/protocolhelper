@@ -45,6 +45,8 @@ library(dplyr)
 library(purrr)
 library(protocolhelper)
 path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
+type <- get_protocol_type(rmarkdown::metadata$protocol_code,
+                          auto_identifier = TRUE)
 ```
 
 # Metadata {.unnumbered}
@@ -52,3 +54,5 @@ path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
 | Reviewers                                                 | Documentbeheerder                    | Protocol code                         | Versienummer                           | Taal                             | Thema                         |
 |-----------------------------------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|----------------------------------|-------------------------------|
 | `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$theme` |
+
+Controleer in [deze tabel](../`r type`.html) of een meer recente versie beschikbaar is.
