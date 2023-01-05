@@ -24,10 +24,11 @@ slickR(obj = c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png",
 
 ### Welkom!
 
-Protocollen verhogen de kwaliteit van het veldwerk en daarmee de kwaliteit van het wetenschappelijk onderzoek, dat transparant, traceerbaar en toepasbaar moet zijn.
+Protocollen verhogen de kwaliteit van veldwerk en labowerk en daarmee de kwaliteit van het wetenschappelijk onderzoek, dat transparant, traceerbaar en toepasbaar moet zijn.
 Ze dragen ertoe bij dat veldwerk beter geharmoniseerd is en beter herhaalbaar, reproduceerbaar en vergelijkbaar wordt. Ook vanuit efficiëntie oogpunt is een standaardisatie interessant voor het Instituut voor Natuur- en Bosonderzoek (INBO).
 
-Deze site doet dienst als een repository voor de meest recente versies van goedgekeurde veldprotocollen die op het INBO gebruikt worden.
+Deze site doet dienst als een repository voor de meest recente versies van goedgekeurde, publiek raadpleegbare protocollen die op het INBO gebruikt worden.
+Elk protocol kan ofwel online via deze website geraadpleegd worden (html versie) of er kan een PDF versie gedownload worden.
 Aan de linkerkant vind je de navigatie naar de verschillende rubrieken.
 In de NEWS sectie vind je welke (versies van) protocollen wanneer werden toegevoegd.
 
@@ -96,13 +97,18 @@ De website heeft ook een overzichtspagina voor elk protocol (zoals geïdentifice
 
 ### Welcome!
 
-Protocols increase the quality of the fieldwork and thus the quality of scientific research, which must be transparent, traceable and applicable.
-They help make fieldwork more harmonized and more repeatable, reproducible and comparable.
+Protocols increase the quality of fieldwork and labwork and thus the quality of scientific research, which must be transparent, traceable and applicable.
+They help make field- and labwork more harmonized and more repeatable, reproducible and comparable.
 Standardization is also interesting for the Institute for Nature and Forest
 Research (INBO) from an efficiency point of view.
-This site serves as a repository for the most recent versions of approved
-protocols used at INBO.
-On the left you will find the navigation to the different sections.
+
+This site serves as a repository for the latest versions of approved, publicly available protocols used at the INBO.
+Each protocol can either be accessed online through this website (html version) or a PDF version can be downloaded.
+On the left side you will find the navigation to the different sections.
+In the NEWS section you can find which (versions of) protocols were added when.
+
+This website contains the published protocols.
+The management, maintenance, approval and revision of the source files underlying these published protocols is done in the [inbo/protocolsource](https://github.com/inbo/protocolsource) GitHub repository.
 
 ### Five types of protocols
 
