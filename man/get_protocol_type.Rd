@@ -11,12 +11,12 @@ get_protocol_type(protocol_code, auto_identifier = FALSE)
 
 \item{auto_identifier}{Logical.
 If \code{TRUE} returns labels following
-\href{https://pandoc.org/MANUAL.html#extension-auto_identifiers}{Pandoc's auto-identifier}
+\href{https://pandoc.org/MANUAL.html#extension-auto_identifiers}{\verb{Pandoc's} auto-identifier}
 rules.}
 }
 \value{
-A factor with 5 levels corresponding to "sfp", "sip", "sap", "sop"
-and "spp". The labels depend on \code{auto_identifier} setting.
+A factor with 5 levels corresponding to \code{sfp}, \code{sip}, \code{sap}, \code{sop}
+and \code{spp}. The labels depend on \code{auto_identifier} setting.
 }
 \description{
 The protocol type corresponds to the first 3 letters of the protocol code

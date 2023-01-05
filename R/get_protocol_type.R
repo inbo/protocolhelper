@@ -5,11 +5,11 @@
 #' @param protocol_code Character vector giving the protocol code(s)
 #' @param auto_identifier Logical.
 #' If `TRUE` returns labels following
-#' [Pandoc's auto-identifier](https://pandoc.org/MANUAL.html#extension-auto_identifiers)
+#' [`Pandoc's` auto-identifier](https://pandoc.org/MANUAL.html#extension-auto_identifiers)
 #' rules.
 #'
-#' @return A factor with 5 levels corresponding to "sfp", "sip", "sap", "sop"
-#' and "spp". The labels depend on `auto_identifier` setting.
+#' @return A factor with 5 levels corresponding to `sfp`, `sip`, `sap`, `sop`
+#' and `spp`. The labels depend on `auto_identifier` setting.
 #' @export
 #'
 get_protocol_type <- function(protocol_code, auto_identifier = FALSE) {
