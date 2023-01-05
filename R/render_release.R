@@ -21,9 +21,8 @@
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown gitbook render_book pdf_book
-#' @importFrom dplyr group_by
 #' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete file_exists
-#' @importFrom gt gt as_raw_html
+#' @importFrom gt gt as_raw_html opt_stylize
 #' @importFrom purrr map map_chr map_lgl
 #' @importFrom rmarkdown html_document pandoc_variable_arg render
 #' @importFrom rprojroot find_root
@@ -204,17 +203,7 @@ render_release <- function(output_root = "publish") {
     }
   )
   meta <- do.call(rbind, meta)
-  meta$type <- regmatches(meta$code,
-                          regexpr("^s.p", meta$code))
-  meta$type <- factor(
-    meta$type,
-    levels = c("sfp", "sip", "sap", "sop", "spp"),
-    labels = c("Standard field protocols (sfp)",
-               "Standard instrument protocols (sip)",
-               "Standard analytical protocols (sap)",
-               "Standard operating procedures (sop)",
-               "Project-specific protocols (spp)")
-    )
+  meta$type <- get_protocol_type(meta$code)
   meta_order <- order(meta$type, meta$theme, meta$code,
                       -as.integer(factor(meta$version)))
   meta <- meta[meta_order, ]
@@ -227,7 +216,11 @@ render_release <- function(output_root = "publish") {
   meta <- split(meta, ~type)
   meta <- map(meta, function(x) x[, !(names(x) %in% "type")])
 
-  table_lines <- map(meta, ~. |> group_by(theme) |> gt() |> as_raw_html())
+  table_lines <- map(meta, ~. |>
+                       gt(groupname_col = "theme",
+                          rowname_col = "version") |>
+                       opt_stylize(style = 6, color = "pink") |>
+                       as_raw_html())
   rmd <- character(0)
   for (i in seq_along(table_lines)) {
     rmd <- c(rmd, paste0("# ", names(table_lines)[i]), table_lines[[i]])
