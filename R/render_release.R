@@ -27,7 +27,7 @@
 #' @importFrom rprojroot find_root
 #' @importFrom stats aggregate
 #' @importFrom stringr str_replace_all
-#' @importFrom utils tail
+#' @importFrom utils tail write.csv
 #' @importFrom yaml as.yaml read_yaml
 #'
 #' @keywords internal
