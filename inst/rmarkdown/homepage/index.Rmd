@@ -9,9 +9,21 @@ Voor Nederlands [klik hier](#welkom).
 
 For English [click here](#welcome).
 
-```{r echo=FALSE, warning=FALSE, message=FALSE}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  eval = TRUE,
+  warning = FALSE,
+  error = TRUE,
+  message = FALSE
+)
 library(htmlwidgets)
 library(slickR)
+library(reactable)
+```
+
+
+```{r}
 slickR(obj = c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png",
                "voorbeeld4.jpg", "voorbeeld5.png", "voorbeeld6.jpg"),
        width = "95%") +
@@ -165,3 +177,187 @@ Here's a fictive example:
 
 The NEWS page lists the version numbers and identifies which protocols they belong to.
 The website also has an overview page for each protocol (as identified by protocol-code) where all versions of that protocol are listed.
+
+# Standard field protocols (sfp)
+
+```{r}
+inbo_hoofd <- rgb(192, 67, 132, maxColorValue = 255)
+inbo_achtergrond <- rgb(243, 243, 243, maxColorValue = 255)
+
+table_theme <- reactableTheme(
+    borderColor = inbo_hoofd)
+
+row_style <- JS("
+  function(rowInfo, state) {
+  if (rowInfo.level > 0) {
+  if (rowInfo.values['striping']) {
+      return { background: 'rgba(192, 67, 132, 0.1)' }
+    }
+  }
+  }
+")
+```
+
+
+```{r sfp}
+sfp <- read.csv("sfp.csv")
+reactable(sfp,
+          columns = list(
+            version = colDef(
+              html = TRUE,
+              filterable = TRUE,
+              rowHeader = TRUE,
+              cell = function(value, index) {
+                sprintf('<a href="%s" target="_blank">%s</a>',
+                        sfp$address[index], value)
+              }
+            ),
+            code = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE),
+            address = colDef(show = FALSE),
+            striping = colDef(show = FALSE)
+            ),
+          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+          sortable = FALSE,
+          defaultPageSize = 10,
+          groupBy = "theme",
+          paginateSubRows = TRUE,
+          defaultExpanded = TRUE,
+          theme = table_theme,
+          rowStyle = row_style,
+          borderless = TRUE
+          )
+```
+
+
+# Standard instrument protocols (sip)
+
+```{r sip}
+sip <- read.csv("sip.csv")
+
+reactable(sip,
+          columns = list(
+            version = colDef(
+              html = TRUE,
+              filterable = TRUE,
+              rowHeader = TRUE,
+              cell = function(value, index) {
+                sprintf('<a href="%s" target="_blank">%s</a>',
+                        sip$address[index], value)
+              }
+            ),
+            code = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE),
+            address = colDef(show = FALSE),
+            theme = colDef(show = FALSE),
+            striping = colDef(show = FALSE)
+            ),
+          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+          sortable = FALSE,
+          defaultPageSize = 10,
+          paginateSubRows = TRUE,
+          defaultExpanded = TRUE,
+          theme = table_theme,
+          rowStyle = row_style,
+          borderless = TRUE
+          )
+```
+
+# Standard analytical protocols (sap)
+
+```{r sap}
+sap <- read.csv("sap.csv")
+
+reactable(sap,
+          columns = list(
+            version = colDef(
+              html = TRUE,
+              filterable = TRUE,
+              rowHeader = TRUE,
+              cell = function(value, index) {
+                sprintf('<a href="%s" target="_blank">%s</a>',
+                        sap$address[index], value)
+              }
+            ),
+            code = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE),
+            address = colDef(show = FALSE),
+            theme = colDef(show = FALSE),
+            striping = colDef(show = FALSE)
+            ),
+          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+          sortable = FALSE,
+          defaultPageSize = 10,
+          paginateSubRows = TRUE,
+          defaultExpanded = TRUE,
+          theme = table_theme,
+          rowStyle = row_style,
+          borderless = TRUE
+)
+```
+
+# Standard operating procedures (sop)
+
+```{r sop}
+sop <- read.csv("sop.csv")
+reactable(sop,
+          columns = list(
+            version = colDef(
+              html = TRUE,
+              filterable = TRUE,
+              rowHeader = TRUE,
+              cell = function(value, index) {
+                sprintf('<a href="%s" target="_blank">%s</a>',
+                        sop$address[index], value)
+              }
+            ),
+            code = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE),
+            address = colDef(show = FALSE),
+            theme = colDef(show = FALSE),
+            striping = colDef(show = FALSE)
+            ),
+          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+          sortable = FALSE,
+          defaultPageSize = 10,
+          paginateSubRows = TRUE,
+          defaultExpanded = TRUE,
+          theme = table_theme,
+          rowStyle = row_style,
+          borderless = TRUE
+)
+```
+
+# Project-specific protocols (spp)
+
+```{r spp}
+spp <- read.csv("spp.csv")
+
+reactable(spp,
+          columns = list(
+            version = colDef(
+              html = TRUE,
+              filterable = TRUE,
+              rowHeader = TRUE,
+              cell = function(value, index) {
+                sprintf('<a href="%s" target="_blank">%s</a>',
+                        spp$address[index], value)
+              }
+            ),
+            code = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE),
+            address = colDef(show = FALSE),
+            striping = colDef(show = FALSE),
+            theme = colDef(name = "project")
+            ),
+          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+          sortable = FALSE,
+          groupBy = "theme",
+          defaultPageSize = 10,
+          paginateSubRows = TRUE,
+          defaultExpanded = TRUE,
+          theme = table_theme,
+          rowStyle = row_style,
+          borderless = TRUE
+)
+```

@@ -204,28 +204,22 @@ render_release <- function(output_root = "publish") {
   )
   meta <- do.call(rbind, meta)
   meta$type <- get_protocol_type(meta$code)
+  type_abbr <- c("sfp", "sip", "sap", "sop", "spp")
   meta_order <- order(meta$type, meta$theme, meta$code,
                       -as.integer(factor(meta$version)))
   meta <- meta[meta_order, ]
-  meta$version <- sprintf(
-    "[%1$s](%1$s/index.html)", meta$version
-  )
   rownames(meta) <- NULL
   meta <- meta[, c("type", "version", "code", "title", "theme")]
+  meta$address <- paste0(meta$version, "/index.html")
 
   meta <- split(meta, ~type)
   meta <- map(meta, function(x) x[, !(names(x) %in% "type")])
-
-  table_lines <- map(meta, ~. |>
-                       gt(groupname_col = "theme",
-                          rowname_col = "version") |>
-                       opt_stylize(style = 6, color = "pink") |>
-                       as_raw_html())
-  rmd <- character(0)
-  for (i in seq_along(table_lines)) {
-    rmd <- c(rmd, paste0("# ", names(table_lines)[i]), table_lines[[i]])
-  }
-
+  meta <- map(meta, function(x) {
+    x$striping <- factor(x$code)
+    levels(x$striping) <- rep_len(c(1, 0), length(levels(x$striping)))
+    x$striping <- as.logical(as.numeric(as.character(x$striping)))
+    return(x)
+  })
 
   if (!dir_exists(file.path(git_root, "source", "homepage"))) {
     dir_copy(
@@ -233,12 +227,15 @@ render_release <- function(output_root = "publish") {
       file.path(git_root, "source", "homepage"))
   }
   setwd(file.path(git_root, "source", "homepage"))
+  for (i in seq_along(meta)) {
+    write.csv(x = meta[[i]],
+              file = paste0(type_abbr[i], ".csv"),
+              row.names = FALSE)
+  }
   index <- readLines("index.Rmd")
   repo_news <- readLines("../../NEWS.md")
   writeLines(
     c(index,
-      "",
-      rmd,
       "",
       "# NEWS",
       "",
@@ -252,7 +249,7 @@ render_release <- function(output_root = "publish") {
       file.path(git_root, "source", "homepage", "css")
     )
   }
-  on.exit(unlink(file.path(git_root, "source", "homepage", "css"),
+  on.exit(unlink(file.path(git_root, "source", "homepage"),
                  recursive = TRUE), add = TRUE)
   render_book(
     "index.Rmd",
@@ -274,5 +271,4 @@ render_release <- function(output_root = "publish") {
       )
     )
   )
-  writeLines(index, "index.Rmd")
 }
