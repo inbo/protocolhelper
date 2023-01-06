@@ -22,7 +22,6 @@
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown gitbook render_book pdf_book
 #' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete file_exists
-#' @importFrom gt gt as_raw_html opt_stylize
 #' @importFrom purrr map map_chr map_lgl
 #' @importFrom rmarkdown html_document pandoc_variable_arg render
 #' @importFrom rprojroot find_root

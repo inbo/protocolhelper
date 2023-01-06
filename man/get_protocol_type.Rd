@@ -13,8 +13,7 @@ get_protocol_type(protocol_code, labels = TRUE, auto_identifier = FALSE)
 three letter abbreviation.}
 
 \item{auto_identifier}{Logical.
-If \code{TRUE} returns labels following
-\href{https://pandoc.org/MANUAL.html#extension-auto_identifiers}{\verb{Pandoc's} auto-identifier} # nolint
+If \code{TRUE} returns labels following \href{https://pandoc.org/MANUAL.html#extension-auto_identifiers}{\verb{Pandoc's} auto-identifier}
 rules.}
 }
 \value{

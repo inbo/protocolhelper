@@ -4,8 +4,8 @@
 #'
 #' @param protocol_code Character vector giving the protocol code(s)
 #' @param auto_identifier Logical.
-#' If `TRUE` returns labels following
-#' [`Pandoc's` auto-identifier](https://pandoc.org/MANUAL.html#extension-auto_identifiers) # nolint
+#' If `TRUE` returns labels following [`Pandoc's`
+#' auto-identifier](https://pandoc.org/MANUAL.html#extension-auto_identifiers)
 #' rules.
 #' @param labels Logical. If `TRUE` return full labels, else return just the
 #' three letter abbreviation.
