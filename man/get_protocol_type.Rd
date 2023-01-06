@@ -4,14 +4,17 @@
 \alias{get_protocol_type}
 \title{Get protocol type from protocol code}
 \usage{
-get_protocol_type(protocol_code, auto_identifier = FALSE)
+get_protocol_type(protocol_code, labels = TRUE, auto_identifier = FALSE)
 }
 \arguments{
 \item{protocol_code}{Character vector giving the protocol code(s)}
 
+\item{labels}{Logical. If \code{TRUE} return full labels, else return just the
+three letter abbreviation.}
+
 \item{auto_identifier}{Logical.
 If \code{TRUE} returns labels following
-\href{https://pandoc.org/MANUAL.html#extension-auto_identifiers}{\verb{Pandoc's} auto-identifier}
+\href{https://pandoc.org/MANUAL.html#extension-auto_identifiers}{\verb{Pandoc's} auto-identifier} # nolint
 rules.}
 }
 \value{

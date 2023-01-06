@@ -7,14 +7,25 @@
 #' If `TRUE` returns labels following
 #' [`Pandoc's` auto-identifier](https://pandoc.org/MANUAL.html#extension-auto_identifiers) # nolint
 #' rules.
+#' @param labels Logical. If `TRUE` return full labels, else return just the
+#' three letter abbreviation.
 #'
 #' @return A factor with 5 levels corresponding to `sfp`, `sip`, `sap`, `sop`
 #' and `spp`. The labels depend on `auto_identifier` setting.
 #' @export
 #'
-get_protocol_type <- function(protocol_code, auto_identifier = FALSE) {
+get_protocol_type <- function(protocol_code,
+                              labels = TRUE,
+                              auto_identifier = FALSE) {
   type <- regmatches(protocol_code,
                      regexpr("^s.p", protocol_code))
+  if (!labels) {
+    return(factor(
+      type,
+      levels = c("sfp", "sip", "sap", "sop", "spp"),
+      labels = c("sfp", "sip", "sap", "sop", "spp"))
+    )
+  }
   if (!auto_identifier) {
     type <- factor(
       type,
