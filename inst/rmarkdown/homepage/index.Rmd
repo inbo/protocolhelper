@@ -53,7 +53,7 @@ We onderscheiden vijf soorten standaardprotocollen.
 Het **standaard veldprotocol** (`sfp`) wordt gebruikt om de stappen uit te leggen die een veldwerker in het veld nodig heeft om een specifieke veldactiviteit uit te voeren.
 Het tweede type is het **standaard instrumentprotocol** (`sip`) dat het gebruik en het onderhoud van toestellen uitlegt.
 Het derde type is het **standaard analytisch protocol** (`sap`) dat in het laboratorium of in het veld wordt gebruikt om een bepaalde laboratorium- of veldanalytische procedure uit te leggen waarbij fysische of chemische metingen worden verricht.
-Het vierde type staat voor standaard operationele procedures (`sop`) en is voor alles wat niet in een van de vorige types past.
+Het vierde type staat voor **standaard operationele procedure** (`sop`) en is voor alles wat niet in een van de vorige types past.
 
 Het vijfde type is een categorie die gereserveerd is voor projectspecifieke protocollen (`spp`).
 Dit laatste type laat een snelle ontwikkeling en gebruik van protocollen binnen een projectcontext toe.
