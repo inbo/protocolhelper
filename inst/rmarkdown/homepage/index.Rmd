@@ -47,9 +47,9 @@ In de NEWS sectie vind je welke (versies van) protocollen wanneer werden toegevo
 Deze website bevat de gepubliceerde protocollen.
 Het beheer, onderhoud, goedkeuring en revisie van de bronbestanden die aan de basis liggen van deze gepubliceerde protocollen gebeurt in de [inbo/protocolsource](https://github.com/inbo/protocolsource) GitHub repository.
 
-### Vijf soorten protocollen
+### Vijf types protocollen
 
-We onderscheiden vijf soorten standaardprotocollen.
+We onderscheiden vijf types standaardprotocollen.
 Het **standaard veldprotocol** (`sfp`) wordt gebruikt om de stappen uit te leggen die een veldwerker in het veld nodig heeft om een specifieke veldactiviteit uit te voeren.
 Het tweede type is het **standaard instrumentprotocol** (`sip`) dat het gebruik en het onderhoud van toestellen uitlegt.
 Het derde type is het **standaard analytisch protocol** (`sap`) dat in het laboratorium of in het veld wordt gebruikt om een bepaalde laboratorium- of veldanalytische procedure uit te leggen waarbij fysische of chemische metingen worden verricht.
@@ -65,7 +65,7 @@ Dit kan worden gedaan door een gepubliceerd `sfp` protocol op te nemen als een `
 
 
 De eerder uiteengezette typologie van protocollen wordt verder uitgewerkt in een zogenaamde protocolcode.
-Een **protocolcode** bestaat uit een voorvoegsel dat verwijst naar het *protocoltype* (drie tekens), een *protocolnummer* (drie cijfers) en een *taalcode* (twee tekens), alle gescheiden door een koppelteken.
+Een **protocolcode** bestaat uit een voorvoegsel dat verwijst naar het *protocoltype* (drie letters, zie hierboven), een *protocolnummer* (drie cijfers) en een *taalcode* (twee letters), alle gescheiden door een koppelteken.
 
 | type         | thema      | thema nummer | protocol-code |
 |:-------------|:-----------|:-------------|:--------------|
@@ -80,7 +80,7 @@ Een **protocolcode** bestaat uit een voorvoegsel dat verwijst naar het *protocol
 | Analyse      |            |              | sap-###-nl    |
 | Project      |            |              | spp-###-nl    |
 
-De drie cijfers van de protocolcode worden het *protocolnummer* genoemd.
+Binnen de veldprotocollen onderscheiden we vijf thema's die aangeven waar het veldprotocol voornamelijk betrekking op heeft.
 Bij themaprotocollen komt het eerste cijfer van het protocolnummer overeen met het themanummer.
 De `##` geven een oplopend nummer aan.
 Zo zal het eerste veldprotocol voor "thema water" de protocolcode `sfp-101-en` hebben.
@@ -88,6 +88,7 @@ Het `s*p-###` deel van de protocolcode kan worden beschouwd als een code die é�
 
 De laatste twee karakters identificeren de taal waarin het protocol is geschreven.
 Dit kan het Nederlands (`nl`) of het Engels (`en`) zijn.
+Als eenzelfde protocol in 2 talen toegevoegd wordt, zullen dus enkel de laatste twee letters van de protocolcode verschillen.
 
 Elk protocol heeft dus een unieke protocolcode, maar er kunnen meerdere versies van een protocol zijn.
 Om onderscheid te maken tussen verschillende versies van een protocol, hebben we een versienummer nodig.
@@ -101,8 +102,9 @@ Hier is een fictief voorbeeld:
 - versie `2022.02` (identificeert een eerste versie van `sfp-001-en`)
 - versie `2022.03` (identificeert een tweede versie van `sfp-401-en`)
 
-Op de NEWS-pagina staan de versienummers (met de recentste protocollen bovenaan) en wordt aangegeven bij welke protocollen ze horen.
-De website heeft ook een overzichtspagina voor elk protocol (zoals geïdentificeerd door de protocolcode) waar alle versies van dat protocol staan.
+Op de [NEWS](news.html)-pagina staan de versienummers (met de recentste protocollen bovenaan) en wordt aangegeven bij welke protocollen ze horen.
+De website heeft ook overzichtstabellen per protocoltype met alle alle versies van protocollen die tot dat protocoltype behoren.
+Deze tabellen kan je filteren op protocolcode, zodat je gemakkelijk een overzicht krijgt van alle versies van een protocol.
 
 
 # English guidelines
@@ -154,7 +156,7 @@ A **protocol-code** consists of a prefix referring to the *protocol-type* (three
 | analysis   |            |              | sap-###-en    |
 | project    |            |              | spp-###-en    |
 
-The three digits of the protocol-code will be referred to as the *protocol-number*.
+Field protocols are further subdivided into 5 themes, which indicates broadly which environmental or biological aspect is targeted by the protocol.
 In case of thematic protocols, the first digit of the protocol-number corresponds with the theme-number.
 The `##` indicates an incremental number.
 For instance, the first field protocol for "theme water" will have protocol code `sfp-101-en`.
@@ -162,6 +164,7 @@ The `s*p-###` part of the protocol code can be thought of as a code that corresp
 
 The final two characters identify the language the protocol is written in.
 This can be either Dutch (`nl`) or English (`en`).
+A same protocol but written in a different language, will have the same protocol code safe for the final two characters.
 
 Each protocol thus has a unique protocol-code, but there can be multiple versions of a protocol.
 To discriminate between different versions of protocol, we need a version number.
@@ -175,8 +178,10 @@ Here's a fictive example:
 - version `2022.02` (identifies a first version of `sfp-001-en`)
 - version `2022.03` (identifies a second version of `sfp-401-en`)
 
-The NEWS page lists the version numbers (in descending chronological order) and identifies which protocols they belong to.
-The website also has an overview page for each protocol (as identified by protocol-code) where all versions of that protocol are listed.
+The [NEWS](news.html) page lists the version numbers (in descending chronological order) and identifies which protocols they belong to.
+The website also has an overview table per protocol type, which lists all versions of protocols that belong to that type.
+These tables can be filtered by protocol code.
+This can be used to easily get an overview of all versions of a protocol.
 
 # Standard field protocols (sfp)
 
