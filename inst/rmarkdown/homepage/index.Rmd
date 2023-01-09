@@ -166,7 +166,7 @@ This can be either Dutch (`nl`) or English (`en`).
 Each protocol thus has a unique protocol-code, but there can be multiple versions of a protocol.
 To discriminate between different versions of protocol, we need a version number.
 The **version number** that we use is of the form `YYYY.NN`.
-`YYYY` indicates the year in which the protocol was released.
+`YYYY` indicates the year in which the version of the protocol was released.
 The `NN` is a number that indicates the order of release within that year (starting with 01).
 The version number will therefore uniquely identify a specific version of a specific protocol, which can be refered to without the need to refer to the protocol-code.
 Here's a fictive example:
