@@ -60,5 +60,5 @@ rmarkdown::metadata %>%
 ```
 
 ```{r results="asis"}
-sprintf("Check the [table listing all versions](../%s.html){target=\"_blank\"} to see if a more recent version is available.", type) |> cat()
+sprintf("Check the [table listing all versions](../%s.html){target=\"_blank\"} to see if a more recent version is available.", type) |> cat() # nolint
 ```
