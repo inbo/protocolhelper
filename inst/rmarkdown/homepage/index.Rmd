@@ -101,7 +101,7 @@ Hier is een fictief voorbeeld:
 - versie `2022.02` (identificeert een eerste versie van `sfp-001-en`)
 - versie `2022.03` (identificeert een tweede versie van `sfp-401-en`)
 
-Op de NEWS-pagina staan de versienummers en wordt aangegeven bij welke protocollen ze horen.
+Op de NEWS-pagina staan de versienummers (met de recentste protocollen bovenaan) en wordt aangegeven bij welke protocollen ze horen.
 De website heeft ook een overzichtspagina voor elk protocol (zoals geïdentificeerd door de protocol-code) waar alle versies van dat protocol staan.
 
 
