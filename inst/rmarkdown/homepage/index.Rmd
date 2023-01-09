@@ -92,7 +92,7 @@ Dit kan het Nederlands (`nl`) of het Engels (`en`) zijn.
 Elk protocol heeft dus een unieke protocolcode, maar er kunnen meerdere versies van een protocol zijn.
 Om onderscheid te maken tussen verschillende versies van een protocol, hebben we een versienummer nodig.
 Het **versienummer** dat we gebruiken is van de vorm `YYYY.NN`.
-`YYYY` geeft het jaar aan waarin het protocol is uitgebracht.
+`YYYY` geeft het jaar aan waarin de versie van het protocol is uitgebracht.
 Het `NN` is een getal dat de volgorde van uitgave binnen dat jaar aangeeft (beginnend met 01).
 Het versienummer identificeert dus op unieke wijze een specifieke versie van een protocol, zelfs zonder dat naar de protocolcode hoeft te worden verwezen.
 Hier is een fictief voorbeeld:
