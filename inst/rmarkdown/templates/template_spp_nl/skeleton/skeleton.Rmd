@@ -51,6 +51,18 @@ type <- get_protocol_type(rmarkdown::metadata$protocol_code,
 
 # Metadata {.unnumbered}
 
-| Reviewers                                                 | Documentbeheerder                    | Protocol code                         | Versienummer                           | Taal                             | Project                              |
-|-----------------------------------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|----------------------------------|--------------------------------------|
-| `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$project_name` |
+```{r metadata-table}
+rmarkdown::metadata %>%
+  as_tibble() %>%
+  select(reviewers,
+         documentbeheerder = file_manager,
+         protocolcode = protocol_code,
+         versienummer = version_number,
+         taal = language,
+         projectnaam = project_name) %>%
+  kable()
+```
+
+```{r results="asis"}
+sprintf("Controleer [deze tabel](../%s.html){target=\"_blank\"} om te zien of een meer recente versie beschikbaar is.", type) |> cat()
+```

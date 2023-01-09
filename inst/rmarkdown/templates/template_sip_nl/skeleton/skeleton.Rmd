@@ -11,7 +11,6 @@ protocol_code:
 version_number:
 language: nl
 template_name: sip
-theme:
 site: bookdown::bookdown_site
 bibliography: referenties.yaml
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl
@@ -51,8 +50,17 @@ type <- get_protocol_type(rmarkdown::metadata$protocol_code,
 
 # Metadata {.unnumbered}
 
-| Reviewers                                                 | Documentbeheerder                    | Protocol code                         | Versienummer                           | Taal                             | Thema                         |
-|-----------------------------------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|----------------------------------|-------------------------------|
-| `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$theme` |
+```{r metadata-table}
+rmarkdown::metadata %>%
+  as_tibble() %>%
+  select(reviewers,
+         documentbeheerder = file_manager,
+         protocolcode = protocol_code,
+         versienummer = version_number,
+         taal = language) %>%
+  kable()
+```
 
-Controleer in [deze tabel](../`r type`.html) of een meer recente versie beschikbaar is.
+```{r results="asis"}
+sprintf("Controleer [deze tabel](../%s.html){target=\"_blank\"} om te zien of een meer recente versie beschikbaar is.", type) |> cat()
+```
