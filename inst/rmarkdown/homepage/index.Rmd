@@ -103,7 +103,7 @@ Hier is een fictief voorbeeld:
 - versie `2022.03` (identificeert een tweede versie van `sfp-401-en`)
 
 Op de [NEWS](news.html)-pagina staan de versienummers (met de recentste protocollen bovenaan) en wordt aangegeven bij welke protocollen ze horen.
-De website heeft ook overzichtstabellen per protocoltype met alle alle versies van protocollen die tot dat protocoltype behoren.
+De website heeft ook overzichtstabellen per protocoltype met alle versies van protocollen die tot dat protocoltype behoren.
 Deze tabellen kan je filteren op protocolcode, zodat je gemakkelijk een overzicht krijgt van alle versies van een protocol.
 
 
