@@ -128,7 +128,7 @@ We distinguish five types of standard protocols.
 The first type is the **standard field protocol** (`sfp`) which is used to explain the steps that are needed in the field by a field worker to execute a specific field activity.
 The second type is the **standard instrument protocol** (`sip`) which explains the use and maintenance of instruments.
 The third type is the **standard analytical protocol** (`sap`) which is used in the laboratory or the field to explain a particular lab or field-analytical procedure involving physical or chemical measurements.
-The fourth type stands for standard operating procedures (`sop`) and is for everything that does not fit in one of the previous types.
+The fourth type stands for **standard operating procedure** (`sop`) and is for everything that does not fit in one of the previous types.
 
 The fifth type is a category reserved for project-specific protocols (`spp`).
 The latter is more of a convenience to aid quick development and employment of protocols within a project context.
