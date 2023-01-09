@@ -168,7 +168,7 @@ To discriminate between different versions of protocol, we need a version number
 The **version number** that we use is of the form `YYYY.NN`.
 `YYYY` indicates the year in which the protocol was released.
 The `NN` is a number that indicates the order of release within that year (starting with 01).
-The version number will therefore uniquely identify a specific version of a protocol even without the need to refer to the protocol-code.
+The version number will therefore uniquely identify a specific version of a specific protocol, which can be refered to without the need to refer to the protocol-code.
 Here's a fictive example:
 
 - version `2022.01` (identifies a first version of `sfp-401-en`)
