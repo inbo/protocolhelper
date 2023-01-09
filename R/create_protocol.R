@@ -298,9 +298,13 @@ create_protocol <- function(
   index_yml <- yml_date(
     index_yml,
     date = date)
-  if (protocol_type == "sfp") {
+  if (protocol_type == "sfp" && template == protocol_type) {
     index_yml <- yml_replace(index_yml,
                              theme = theme)
+  }
+  if (protocol_type == "sfp" && template == "generic") {
+    index_yml <- yml_toplevel(index_yml,
+                              theme = theme)
   }
   if (protocol_type == "spp") {
     index_yml <- yml_replace(index_yml,
