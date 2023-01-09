@@ -55,7 +55,7 @@ Het tweede type is het **standaard instrumentprotocol** (`sip`) dat het gebruik 
 Het derde type is het **standaard analytisch protocol** (`sap`) dat in het laboratorium of in het veld wordt gebruikt om een bepaalde laboratorium- of veldanalytische procedure uit te leggen waarbij fysische of chemische metingen worden verricht.
 Het vierde type staat voor **standaard operationele procedure** (`sop`) en is voor alles wat niet in een van de vorige types past.
 
-Het vijfde type is een categorie die gereserveerd is voor projectspecifieke protocollen (`spp`).
+Het vijfde type is een categorie die gereserveerd is voor **projectspecifieke protocollen** (`spp`).
 Dit laatste type laat een snelle ontwikkeling en gebruik van protocollen binnen een projectcontext toe.
 In het kader van een project kan het soms nodig zijn om een protocol van het type `sfp` opnieuw te gebruiken, maar met iets andere instellingen die specifiek zijn voor het project.
 Dit kan worden gedaan door een gepubliceerd `sfp` protocol op te nemen als een `spp` subprotocol waarin de afwijkingen van de standaardinstellingen worden gegeven.
