@@ -175,7 +175,7 @@ Here's a fictive example:
 - version `2022.02` (identifies a first version of `sfp-001-en`)
 - version `2022.03` (identifies a second version of `sfp-401-en`)
 
-The NEWS page lists the version numbers and identifies which protocols they belong to.
+The NEWS page lists the version numbers (in descending chronological order) and identifies which protocols they belong to.
 The website also has an overview page for each protocol (as identified by protocol-code) where all versions of that protocol are listed.
 
 # Standard field protocols (sfp)
