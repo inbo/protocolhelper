@@ -55,3 +55,8 @@ In case the header or footer did contain important metadata, it will need to
 be recovered manually.
 Usually header information will go inside a yaml section of an Rmarkdown.
 }
+\seealso{
+Other convert: 
+\code{\link{add_captions}()}
+}
+\concept{convert}

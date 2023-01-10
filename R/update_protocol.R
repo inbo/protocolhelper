@@ -12,6 +12,7 @@
 #'
 #' @return NULL invisibly
 #' @export
+#' @family creation
 #'
 update_protocol <- function(protocol_code) {
   # check if protocol_code exists

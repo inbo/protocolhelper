@@ -52,3 +52,12 @@ new protocol will be written.
 get_path_to_protocol(protocol_code = "sfp-401-nl")
 }
 }
+\seealso{
+Other utility: 
+\code{\link{get_protocol_type}()},
+\code{\link{get_protocolnumbers}()},
+\code{\link{get_short_titles}()},
+\code{\link{get_version_number}()},
+\code{\link{increment_version_number}()}
+}
+\concept{utility}

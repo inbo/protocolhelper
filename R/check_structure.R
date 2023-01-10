@@ -20,6 +20,7 @@
 #' @importFrom fs dir_ls path_rel
 #'
 #' @export
+#' @family check
 #'
 check_structure <- function(protocol_code, fail = !interactive()) {
   check_protocolcode(protocol_code)

@@ -36,6 +36,7 @@
 #' @importFrom stringr str_subset
 #'
 #' @export
+#' @family utility
 #' @examples
 #' \dontrun{
 #' get_path_to_protocol(protocol_code = "sfp-401-nl")

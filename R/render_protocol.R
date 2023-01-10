@@ -16,6 +16,7 @@
 #' @importFrom fs path dir_exists dir_copy
 #'
 #' @export
+#' @family render
 #'
 #'
 #' @examples

@@ -28,6 +28,7 @@
 #'
 #'
 #' @export
+#' @family creation
 #'
 #' @examples
 #' \dontrun{
@@ -288,6 +289,7 @@ add_one_subprotocol <-
 #' @importFrom purrr map map_lgl
 #'
 #' @export
+#' @family creation
 add_subprotocols <-
   function(code_mainprotocol,
            fetch_remote = TRUE) {

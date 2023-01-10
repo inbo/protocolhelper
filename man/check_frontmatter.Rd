@@ -24,3 +24,12 @@ This function is intended for checking if a protocol is ready to be rendered
 and published (for instance, it will fail if version number is
 \code{YYYY.NN.dev}).
 }
+\seealso{
+Other check: 
+\code{\link{check_all_author_info}()},
+\code{\link{check_all}()},
+\code{\link{check_structure}()},
+\code{\link{protocolcheck}},
+\code{\link{validate_orcid}()}
+}
+\concept{check}

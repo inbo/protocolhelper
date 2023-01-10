@@ -247,3 +247,13 @@ protocolhelper::create_protocol(
   theme = "water", language = "en")
 }
 }
+\seealso{
+Other creation: 
+\code{\link{add_dependencies}()},
+\code{\link{add_one_subprotocol}()},
+\code{\link{add_subprotocols}()},
+\code{\link{insert_protocolsection}()},
+\code{\link{update_protocol}()},
+\code{\link{update_version_number}()}
+}
+\concept{creation}

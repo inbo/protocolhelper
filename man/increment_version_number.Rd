@@ -16,3 +16,12 @@ A string containing the next (incremented) version number
 Given a set of published protocol version numbers, calculate the next version
 number
 }
+\seealso{
+Other utility: 
+\code{\link{get_path_to_protocol}()},
+\code{\link{get_protocol_type}()},
+\code{\link{get_protocolnumbers}()},
+\code{\link{get_short_titles}()},
+\code{\link{get_version_number}()}
+}
+\concept{utility}

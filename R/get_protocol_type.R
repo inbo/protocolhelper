@@ -13,6 +13,7 @@
 #' @return A factor with 5 levels corresponding to `sfp`, `sip`, `sap`, `sop`
 #' and `spp`. The labels depend on `auto_identifier` setting.
 #' @export
+#' @family utility
 #'
 get_protocol_type <- function(protocol_code,
                               labels = TRUE,

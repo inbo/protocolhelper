@@ -4,13 +4,7 @@
 \alias{write_bookdown_yml}
 \title{Writes a \verb{_bookdown.yml} file}
 \usage{
-write_bookdown_yml(
-  language,
-  book_filename,
-  path_to_protocol,
-  output_dir_rel,
-  rmd_files
-)
+write_bookdown_yml(language, book_filename, path_to_protocol, output_dir_rel)
 }
 \arguments{
 \item{language}{the language of the book}
@@ -20,8 +14,6 @@ write_bookdown_yml(
 \item{path_to_protocol}{the path to the protocol}
 
 \item{output_dir_rel}{relative output directory}
-
-\item{rmd_files}{character vector of R Markdown filenames}
 }
 \description{
 Creates contents from its arguments and writes to file \verb{_bookdown.yml}

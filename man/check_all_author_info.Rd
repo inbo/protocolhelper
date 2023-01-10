@@ -18,3 +18,12 @@ identified for author names and \code{orcid} ids.
 \description{
 Checks the format of author names and \code{orcid} ids.
 }
+\seealso{
+Other check: 
+\code{\link{check_all}()},
+\code{\link{check_frontmatter}()},
+\code{\link{check_structure}()},
+\code{\link{protocolcheck}},
+\code{\link{validate_orcid}()}
+}
+\concept{check}

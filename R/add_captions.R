@@ -40,6 +40,7 @@
 #' @importFrom assertthat is.string
 #'
 #' @export
+#' @family convert
 #'
 add_captions <- function(
   from,

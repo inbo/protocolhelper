@@ -6,6 +6,15 @@
 \description{
 A class that collects and shows all check results.
 }
+\seealso{
+Other check: 
+\code{\link{check_all_author_info}()},
+\code{\link{check_all}()},
+\code{\link{check_frontmatter}()},
+\code{\link{check_structure}()},
+\code{\link{validate_orcid}()}
+}
+\concept{check}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

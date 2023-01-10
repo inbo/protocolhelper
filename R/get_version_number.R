@@ -22,6 +22,7 @@
 #'
 #' @return A string containing the next (incremented) version number
 #' @export
+#' @family utility
 get_version_number <- function(path = ".") {
   assert_that(is_dir(path))
   if (interactive()) {
@@ -72,6 +73,9 @@ get_version_number <- function(path = ".") {
 #' @param versions a character vector with previously published version numbers
 #'
 #' @return A string containing the next (incremented) version number
+#' @export
+#' @family utility
+#'
 #'
 #' @importFrom assertthat assert_that
 #' @importFrom stringr str_detect

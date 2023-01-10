@@ -39,3 +39,13 @@ Use \code{\link[=add_subprotocols]{add_subprotocols()}} instead.
   add_subprotocols(code_mainprotocol = 'spp-999-en')
 }
 }
+\seealso{
+Other creation: 
+\code{\link{add_dependencies}()},
+\code{\link{add_subprotocols}()},
+\code{\link{create_protocol}()},
+\code{\link{insert_protocolsection}()},
+\code{\link{update_protocol}()},
+\code{\link{update_version_number}()}
+}
+\concept{creation}

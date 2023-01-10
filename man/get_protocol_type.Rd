@@ -23,3 +23,12 @@ and \code{spp}. The labels depend on \code{auto_identifier} setting.
 \description{
 The protocol type corresponds to the first 3 letters of the protocol code
 }
+\seealso{
+Other utility: 
+\code{\link{get_path_to_protocol}()},
+\code{\link{get_protocolnumbers}()},
+\code{\link{get_short_titles}()},
+\code{\link{get_version_number}()},
+\code{\link{increment_version_number}()}
+}
+\concept{utility}

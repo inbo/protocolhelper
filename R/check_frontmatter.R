@@ -20,7 +20,7 @@
 #' @importFrom purrr map_lgl map_chr
 #'
 #' @export
-#'
+#' @family check
 #'
 check_frontmatter <- function(
     protocol_code,
