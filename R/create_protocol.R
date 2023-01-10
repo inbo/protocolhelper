@@ -79,23 +79,13 @@
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all str_detect
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
-#' @importFrom rmarkdown draft yaml_front_matter
+#' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
-#' @importFrom ymlthis
-#' as_yml
-#' use_index_rmd
-#' use_yml_file
-#' yml_author
-#' yml_bookdown_opts
-#' yml_date
-#' yml_discard
-#' yml_empty
-#' yml_replace
-#' yml_toplevel
 #' @importFrom fs path_rel dir_create dir_ls
 #'
 #'
 #' @export
+#' @family creation
 #' @examples
 #' \dontrun{
 #' protocolhelper::create_protocol(
@@ -106,7 +96,6 @@
 #'   reviewers = "me", file_manager = "who?",
 #'   theme = "water", language = "en")
 #' }
-
 create_protocol <- function(
   protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
   title,
@@ -260,84 +249,37 @@ create_protocol <- function(
   # create from empty template
   # move all files from the template folder
   parent_rmd <- file.path(path_to_protocol, "index.Rmd")
-  template <- paste("template", template, language, sep = "_")
+  template_folder <- paste("template", template, language, sep = "_")
   draft(file = parent_rmd,
-        template = template,
+        template = template_folder,
         package = "protocolhelper",
         edit = FALSE)
 
-  # create a character vector with the names of all rmd_files
-  # in correct order for compilation
-  rmd_files <- c(
-    "index.Rmd",
-    "NEWS.md",
-    list.files(path = path_to_protocol,
-               pattern = "^\\d{2}.+Rmd$"))
-
-  # change values in parent rmarkdown
-  index_yml <- yaml_front_matter(parent_rmd)
-  unlink("css", recursive = TRUE)
-  index_yml <- as_yml(index_yml)
-  index_yml <- yml_replace(
-    index_yml,
+  # (over)write yaml front matter
+  write_yaml_front_matter(
+    parent_rmd = parent_rmd,
+    path_to_protocol = path_to_protocol,
     title = title,
     subtitle = subtitle,
+    date = date,
     reviewers = reviewers,
     file_manager = file_manager,
     version_number = version_number,
     protocol_code = protocol_code,
-    language = language
-    )
-  if (is.null(subtitle)) {
-    index_yml <- yml_discard(index_yml, "subtitle")
-  }
-  index_yml <- yml_author(
-    index_yml,
-    name = authors,
-    orcid = orcids)
-  index_yml <- yml_date(
-    index_yml,
-    date = date)
-  if (protocol_type == "sfp" && template == protocol_type) {
-    index_yml <- yml_replace(index_yml,
-                             theme = theme)
-  }
-  if (protocol_type == "sfp" && template == "generic") {
-    index_yml <- yml_toplevel(index_yml,
-                              theme = theme)
-  }
-  if (protocol_type == "spp") {
-    index_yml <- yml_replace(index_yml,
-                             project_name = project_name)
-  }
-  # set url and github_repo
-  index_yml <- yml_toplevel(
-    index_yml,
-    url = "https://inbo.github.io/protocols/",
-    github_repo = "inbo/protocolsource"
+    language = language,
+    authors = authors,
+    orcids = orcids,
+    protocol_type = protocol_type,
+    template = template,
+    theme = theme,
+    project_name = project_name
   )
-
-  # overwrite old yaml sections
-
-  template_rmd <- file.path(path_to_protocol, "template.rmd")
-  file.copy(from = parent_rmd, to = template_rmd)
-  unlink(parent_rmd)
-  ymlthis::use_index_rmd(
-    .yml = index_yml,
-    path = path_to_protocol,
-    template = template_rmd,
-    include_body = TRUE,
-    include_yaml = FALSE,
-    quiet = TRUE,
-    open_doc = FALSE)
-  unlink(template_rmd)
 
   # write _bookdown.yml
   write_bookdown_yml(language = language,
                      book_filename = book_filename,
                      path_to_protocol = path_to_protocol,
-                     output_dir_rel = output_dir_rel,
-                     rmd_files = rmd_files)
+                     output_dir_rel = output_dir_rel)
   # write _output.yml
   write_output_yml(language = language, path_to_protocol = path_to_protocol)
 
@@ -563,6 +505,7 @@ create_sop <- function(
 #' @importFrom stringr str_subset str_replace str_extract
 #'
 #' @export
+#' @family utility
 #'
 #' @examples
 #' \dontrun{
@@ -614,6 +557,7 @@ get_protocolnumbers <- function(
 #' @importFrom stringr str_subset str_extract str_replace
 #'
 #' @export
+#' @family utility
 #'
 #' @examples
 #' \dontrun{
@@ -849,7 +793,6 @@ create_from_docx <- function(
 #' @param book_filename the filename of the book
 #' @param path_to_protocol the path to the protocol
 #' @param output_dir_rel relative output directory
-#' @param rmd_files character vector of R Markdown filenames
 #'
 #' @importFrom ymlthis use_yml_file yml_empty yml_bookdown_opts
 #'
@@ -858,8 +801,16 @@ write_bookdown_yml <- function(
     language,
     book_filename,
     path_to_protocol,
-    output_dir_rel,
-    rmd_files) {
+    output_dir_rel) {
+  # create a character vector with the names of all rmd_files
+  # in correct order for compilation
+  rmd_files <- c(
+    "index.Rmd",
+    "NEWS.md",
+    list.files(path = path_to_protocol,
+               pattern = "^\\d{2}.+Rmd$"))
+
+
   if (language == "en") {
     labels <- list(
       fig = 'Figure ', # nolint start
@@ -988,4 +939,98 @@ write_output_yml <- function(language, path_to_protocol) {
   x <- read_utf8(file.path(path_to_protocol, "_output.yml"))
   x <- gsub(pattern = "'", "", x)
   write_utf8(x, file.path(path_to_protocol, "_output.yml"))
+}
+
+
+#' Fills in values from key-value pairs in `yaml` front matter
+#'
+#' Overwrites the `index.Rmd` file
+#'
+#' @param parent_rmd original `index.Rmd` file
+#' @param path_to_protocol path to the protocol
+#' @param protocol_code the protocol code
+#' @param protocol_type the protocol type
+#' @inheritParams create_protocol
+#'
+#' @importFrom ymlthis yml_replace yml_discard as_yml yml_author yml_date
+#' yml_toplevel use_index_rmd
+#' @importFrom rmarkdown yaml_front_matter
+#'
+#' @keywords internal
+#'
+write_yaml_front_matter <- function(
+    parent_rmd,
+    path_to_protocol,
+    title,
+    subtitle,
+    date,
+    reviewers,
+    file_manager,
+    version_number,
+    protocol_code,
+    language,
+    authors,
+    orcids,
+    protocol_type,
+    template,
+    theme,
+    project_name
+) {
+  # change values in parent rmarkdown
+  index_yml <- yaml_front_matter(parent_rmd)
+  unlink("css", recursive = TRUE)
+  index_yml <- as_yml(index_yml)
+  index_yml <- yml_replace(
+    index_yml,
+    title = title,
+    subtitle = subtitle,
+    reviewers = reviewers,
+    file_manager = file_manager,
+    version_number = version_number,
+    protocol_code = protocol_code,
+    language = language
+  )
+  if (is.null(subtitle)) {
+    index_yml <- yml_discard(index_yml, "subtitle")
+  }
+  index_yml <- yml_author(
+    index_yml,
+    name = authors,
+    orcid = orcids)
+  index_yml <- yml_date(
+    index_yml,
+    date = date)
+  if (protocol_type == "sfp" && template == protocol_type) {
+    index_yml <- yml_replace(index_yml,
+                             theme = theme)
+  }
+  if (protocol_type == "sfp" && template == "generic") {
+    index_yml <- yml_toplevel(index_yml,
+                              theme = theme)
+  }
+  if (protocol_type == "spp") {
+    index_yml <- yml_replace(index_yml,
+                             project_name = project_name)
+  }
+  # set url and github_repo
+  index_yml <- yml_toplevel(
+    index_yml,
+    url = "https://inbo.github.io/protocols/",
+    github_repo = "inbo/protocolsource"
+  )
+
+  # overwrite old yaml sections
+
+  template_rmd <- file.path(path_to_protocol, "template.rmd")
+  file.copy(from = parent_rmd, to = template_rmd)
+  unlink(parent_rmd)
+  ymlthis::use_index_rmd(
+    .yml = index_yml,
+    path = path_to_protocol,
+    template = template_rmd,
+    include_body = TRUE,
+    include_yaml = FALSE,
+    quiet = TRUE,
+    open_doc = FALSE)
+  unlink(template_rmd)
 }
