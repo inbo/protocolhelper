@@ -11,23 +11,9 @@ protocol_code:
 version_number:
 language: en
 template_name: sip
-theme:
 site: bookdown::bookdown_site
 bibliography: references.yaml
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl
-output: 
-  bookdown::gitbook:
-    split_by: none
-    split_bib: FALSE
-    template: !expr protocolhelper::protocol_css()
-    css: css/inbo_rapport.css
-    config:
-       toc:
-         before: |
-           <li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-en.jpg"></a></li>
-           <li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>
-         after: |
-           <li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>
 ---
 
 ```{=html}
@@ -58,10 +44,19 @@ library(dplyr)
 library(purrr)
 library(protocolhelper)
 path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
+type <- get_protocol_type(rmarkdown::metadata$protocol_code,
+                          auto_identifier = TRUE)
 ```
 
 # Metadata {.unnumbered}
 
-| Reviewers                                                 | File manager                         | Protocol code                         | Version number                         | Language                         | Theme                         |
-|-----------------------------------------------------------|--------------------------------------|---------------------------------------|----------------------------------------|----------------------------------|-------------------------------|
-| `r paste(rmarkdown::metadata$reviewers, collapse = ", ")` | `r rmarkdown::metadata$file_manager` | `r rmarkdown::metadata$protocol_code` | `r rmarkdown::metadata$version_number` | `r rmarkdown::metadata$language` | `r rmarkdown::metadata$theme` |
+```{r metadata-table}
+rmarkdown::metadata %>%
+  as_tibble() %>%
+  select(reviewers, file_manager, protocol_code, version_number, language) %>%
+  kable()
+```
+
+```{r results="asis"}
+sprintf("Check the [table listing all versions](../%s.html){target=\"_blank\"} to see if a more recent version is available.", type) |> cat() # nolint
+```

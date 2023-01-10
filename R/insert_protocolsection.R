@@ -33,6 +33,7 @@
 #' @importFrom rmarkdown yaml_front_matter
 #'
 #' @export
+#' @family creation
 #'
 #'
 #' @examples

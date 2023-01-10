@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.4.7
+Version: 0.4.8
 Authors@R: c(
     person("Hans", "Van Calster", , "hans.vancalster@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8595-8426")),
@@ -30,8 +30,10 @@ Imports:
     knitr,
     purrr,
     R6,
+    reactable,
     rmarkdown,
     rprojroot,
+    slickR,
     stringr,
     xfun,
     xml2,
@@ -48,5 +50,5 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 SystemRequirements: Pandoc (>= 2.0.0)

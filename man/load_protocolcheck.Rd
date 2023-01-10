@@ -16,3 +16,4 @@ A \code{Protocolcheck} object.
 Make a \verb{Protocolcheck object} for the protocol that has to be
 checked if the argument is a protocol code.
 }
+\keyword{internal}

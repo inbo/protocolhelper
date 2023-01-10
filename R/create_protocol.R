@@ -30,7 +30,7 @@
 #' Template Rmarkdown files with the same name as Rmarkdown files that result
 #' from converting a docx protocol will be overwritten by the latter.
 #' Besides Rmarkdown files, this target folder will also contain files needed to
-#' render to a Bookdown `gitbook` such as a `_bookdown.yml`.
+#' render to a Bookdown `gitbook` such as a `_bookdown.yml` and `_output.yml`.
 #' The `NEWS.md` file must be used to document the changes between revisions
 #' of the protocol.
 #' Furthermore, a `data` and a `media` folder will be created as subdirectories
@@ -79,24 +79,13 @@
 #' @importFrom rprojroot find_root is_git_root
 #' @importFrom stringr str_replace_all str_detect
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
-#' @importFrom rmarkdown draft yaml_front_matter
+#' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
-#' @importFrom yaml read_yaml
-#' @importFrom ymlthis
-#' as_yml
-#' use_index_rmd
-#' use_yml_file
-#' yml_author
-#' yml_bookdown_opts
-#' yml_date
-#' yml_discard
-#' yml_empty
-#' yml_replace
-#' yml_toplevel
 #' @importFrom fs path_rel dir_create dir_ls
 #'
 #'
 #' @export
+#' @family creation
 #' @examples
 #' \dontrun{
 #' protocolhelper::create_protocol(
@@ -107,7 +96,6 @@
 #'   reviewers = "me", file_manager = "who?",
 #'   theme = "water", language = "en")
 #' }
-
 create_protocol <- function(
   protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
   title,
@@ -261,123 +249,39 @@ create_protocol <- function(
   # create from empty template
   # move all files from the template folder
   parent_rmd <- file.path(path_to_protocol, "index.Rmd")
-  template <- paste("template", template, language, sep = "_")
+  template_folder <- paste("template", template, language, sep = "_")
   draft(file = parent_rmd,
-        template = template,
+        template = template_folder,
         package = "protocolhelper",
         edit = FALSE)
 
-  # create a character vector with the names of all rmd_files
-  # in correct order for compilation
-  rmd_files <- c(
-    "index.Rmd",
-    "NEWS.md",
-    list.files(path = path_to_protocol,
-               pattern = "^\\d{2}.+Rmd$"))
-
-  # change values in parent rmarkdown
-  index_yml <- yaml_front_matter(parent_rmd)
-  unlink("css", recursive = TRUE)
-  index_yml <- as_yml(index_yml)
-  index_yml <- yml_replace(
-    index_yml,
+  # (over)write yaml front matter
+  write_yaml_front_matter(
+    parent_rmd = parent_rmd,
+    path_to_protocol = path_to_protocol,
     title = title,
     subtitle = subtitle,
+    date = date,
     reviewers = reviewers,
     file_manager = file_manager,
     version_number = version_number,
     protocol_code = protocol_code,
-    language = language
-    )
-  if (is.null(subtitle)) {
-    index_yml <- yml_discard(index_yml, "subtitle")
-  }
-  index_yml <- yml_author(
-    index_yml,
-    name = authors,
-    orcid = orcids)
-  index_yml <- yml_date(
-    index_yml,
-    date = date)
-  if (protocol_type == "sfp") {
-    index_yml <- yml_replace(index_yml,
-                             theme = theme)
-  }
-  if (protocol_type == "spp") {
-    index_yml <- yml_replace(index_yml,
-                             project_name = project_name)
-  }
-  # set url and github_repo
-  index_yml <- yml_toplevel(
-    index_yml,
-    url = "https://inbo.github.io/protocols/",
-    github_repo = "inbo/protocolsource"
+    language = language,
+    authors = authors,
+    orcids = orcids,
+    protocol_type = protocol_type,
+    template = template,
+    theme = theme,
+    project_name = project_name
   )
-
-  # overwrite old yaml sections
-
-  template_rmd <- file.path(path_to_protocol, "template.rmd")
-  file.copy(from = parent_rmd, to = template_rmd)
-  unlink(parent_rmd)
-  ymlthis::use_index_rmd(
-    .yml = index_yml,
-    path = path_to_protocol,
-    template = template_rmd,
-    include_body = TRUE,
-    include_yaml = FALSE,
-    quiet = TRUE,
-    open_doc = FALSE)
-  unlink(template_rmd)
 
   # write _bookdown.yml
-  if (language == "en") {
-    labels <- list(
-      fig = 'Figure ', # nolint start
-      tab = 'Table ',
-      eq = 'Equation ',
-      thm = 'Theorem ',
-      lem = 'Lemma ',
-      def = 'Definition ',
-      cor = 'Corrolary ',
-      prp = 'Proposition ',
-      ex = 'Example ',
-      proof = 'Proof. ',
-      remark = 'Remark. ')
-  }
-  if (language == "nl") {
-    labels <- list(
-      fig = 'Figuur ',
-      tab = 'Tabel ',
-      eq = 'Vergelijking ',
-      thm = 'Theorema ',
-      lem = 'Lemma ',
-      def = 'Definitie ',
-      cor = 'Bijgevolg ',
-      prp = 'Propositie ',
-      ex = 'Voorbeeld ',
-      proof = 'Bewijs. ',
-      remark = 'Opmerking. ') # nolint end
-  }
-  bookdown_yml <- yml_empty()
-  bookdown_yml <- yml_bookdown_opts(
-    bookdown_yml,
-    book_filename = book_filename,
-    edit = paste0("https://github.com/inbo/protocolsource/edit/main/source/",
-                  gsub(".+source\\/", "", path_to_protocol),
-                  "/%s"),
-    output_dir = output_dir_rel,
-    rmd_files = rmd_files,
-    delete_merged_file = TRUE,
-    language = list(
-      label = labels
-    )
-  )
-
-  ymlthis::use_yml_file(
-    .yml = bookdown_yml,
-    path = file.path(path_to_protocol, "_bookdown.yml"),
-    quiet = TRUE)
-
+  write_bookdown_yml(language = language,
+                     book_filename = book_filename,
+                     path_to_protocol = path_to_protocol,
+                     output_dir_rel = output_dir_rel)
+  # write _output.yml
+  write_output_yml(language = language, path_to_protocol = path_to_protocol)
 
   if (!is.null(from_docx)) {
     assert_that(file.exists(from_docx))
@@ -601,6 +505,7 @@ create_sop <- function(
 #' @importFrom stringr str_subset str_replace str_extract
 #'
 #' @export
+#' @family utility
 #'
 #' @examples
 #' \dontrun{
@@ -652,6 +557,7 @@ get_protocolnumbers <- function(
 #' @importFrom stringr str_subset str_extract str_replace
 #'
 #' @export
+#' @family utility
 #'
 #' @examples
 #' \dontrun{
@@ -876,4 +782,255 @@ create_from_docx <- function(
   # delete the complete Rmd (output of convert_docx_rmd)
   file.remove(file.path(path_to_protocol, temp_filename))
   file.remove(file.path(path_to_protocol, temp2_filename))
+}
+
+
+#' Writes a `_bookdown.yml` file
+#'
+#' Creates contents from its arguments and writes to file `_bookdown.yml`
+#'
+#' @param language the language of the book
+#' @param book_filename the filename of the book
+#' @param path_to_protocol the path to the protocol
+#' @param output_dir_rel relative output directory
+#'
+#' @importFrom ymlthis use_yml_file yml_empty yml_bookdown_opts
+#'
+#' @keywords internal
+write_bookdown_yml <- function(
+    language,
+    book_filename,
+    path_to_protocol,
+    output_dir_rel) {
+  # create a character vector with the names of all rmd_files
+  # in correct order for compilation
+  rmd_files <- c(
+    "index.Rmd",
+    "NEWS.md",
+    list.files(path = path_to_protocol,
+               pattern = "^\\d{2}.+Rmd$"))
+
+
+  if (language == "en") {
+    labels <- list(
+      fig = 'Figure ', # nolint start
+      tab = 'Table ',
+      eq = 'Equation ',
+      thm = 'Theorem ',
+      lem = 'Lemma ',
+      def = 'Definition ',
+      cor = 'Corrolary ',
+      prp = 'Proposition ',
+      ex = 'Example ',
+      proof = 'Proof. ',
+      remark = 'Remark. ')
+  }
+  if (language == "nl") {
+    labels <- list(
+      fig = 'Figuur ',
+      tab = 'Tabel ',
+      eq = 'Vergelijking ',
+      thm = 'Theorema ',
+      lem = 'Lemma ',
+      def = 'Definitie ',
+      cor = 'Bijgevolg ',
+      prp = 'Propositie ',
+      ex = 'Voorbeeld ',
+      proof = 'Bewijs. ',
+      remark = 'Opmerking. ') # nolint end
+  }
+  bookdown_yml <- yml_empty()
+  bookdown_yml <- yml_bookdown_opts(
+    bookdown_yml,
+    book_filename = book_filename,
+    edit = paste0("https://github.com/inbo/protocolsource/edit/main/source/",
+                  gsub(".+source\\/", "", path_to_protocol),
+                  "/%s"),
+    output_dir = output_dir_rel,
+    rmd_files = rmd_files,
+    delete_merged_file = TRUE,
+    language = list(
+      label = labels
+    )
+  )
+
+  use_yml_file(
+    .yml = bookdown_yml,
+    path = file.path(path_to_protocol, "_bookdown.yml"),
+    quiet = TRUE)
+}
+
+
+#' Writes `_output.yml` file
+#'
+#' Creates and writes a `_output.yml` file
+#'
+#' @param language language of the protocol
+#' @param path_to_protocol path to the protocol
+#'
+#' @importFrom ymlthis use_output_yml yml_empty yml_output
+#' @importFrom bookdown gitbook pdf_book
+#' @importFrom xfun read_utf8 write_utf8
+#'
+#' @keywords internal
+#'
+write_output_yml <- function(language, path_to_protocol) {
+  output_yml <- yml_empty()
+  if (language == "en") {
+    output_yml <- yml_output(
+      output_yml,
+      bookdown::gitbook(
+        split_by = "none",
+        split_bib = FALSE,
+        template = "!expr protocolhelper:::protocol_css()",
+        css = "css/inbo_rapport.css",
+        config = list(
+          toc = list(
+            before = list( # nolint start
+              '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>',
+              '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
+            ),
+            after = list(
+              '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>'
+            )
+          )
+        )
+      ),
+      bookdown::pdf_book(
+        keep_tex = FALSE,
+        pandoc_args = c("--top-level-division=chapter"),
+        template = "!expr protocolhelper:::protocol_tex()"
+      )
+    )
+  }
+  if (language == "nl") {
+    output_yml <- yml_output(
+      output_yml,
+      bookdown::gitbook(
+        split_by = "none",
+        split_bib = FALSE,
+        template = "!expr protocolhelper:::protocol_css()",
+        css = "css/inbo_rapport.css",
+        config = list(
+          toc = list(
+            before = list(
+              '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>',
+              '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
+            ),
+            after = list(
+              '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>'
+            ) # nolint end
+          )
+        )
+      ),
+      bookdown::pdf_book(
+        keep_tex = FALSE,
+        pandoc_args = c("--top-level-division=chapter"),
+        template = "!expr protocolhelper:::protocol_tex()"
+      )
+    )
+  }
+
+  use_output_yml(
+    .yml = output_yml,
+    path = path_to_protocol,
+    quiet = TRUE)
+  # remove single quotes
+  x <- read_utf8(file.path(path_to_protocol, "_output.yml"))
+  x <- gsub(pattern = "'", "", x)
+  write_utf8(x, file.path(path_to_protocol, "_output.yml"))
+}
+
+
+#' Fills in values from key-value pairs in `yaml` front matter
+#'
+#' Overwrites the `index.Rmd` file
+#'
+#' @param parent_rmd original `index.Rmd` file
+#' @param path_to_protocol path to the protocol
+#' @param protocol_code the protocol code
+#' @param protocol_type the protocol type
+#' @inheritParams create_protocol
+#'
+#' @importFrom ymlthis yml_replace yml_discard as_yml yml_author yml_date
+#' yml_toplevel use_index_rmd
+#' @importFrom rmarkdown yaml_front_matter
+#'
+#' @keywords internal
+#'
+write_yaml_front_matter <- function(
+    parent_rmd,
+    path_to_protocol,
+    title,
+    subtitle,
+    date,
+    reviewers,
+    file_manager,
+    version_number,
+    protocol_code,
+    language,
+    authors,
+    orcids,
+    protocol_type,
+    template,
+    theme,
+    project_name
+) {
+  # change values in parent rmarkdown
+  index_yml <- yaml_front_matter(parent_rmd)
+  unlink("css", recursive = TRUE)
+  index_yml <- as_yml(index_yml)
+  index_yml <- yml_replace(
+    index_yml,
+    title = title,
+    subtitle = subtitle,
+    reviewers = reviewers,
+    file_manager = file_manager,
+    version_number = version_number,
+    protocol_code = protocol_code,
+    language = language
+  )
+  if (is.null(subtitle)) {
+    index_yml <- yml_discard(index_yml, "subtitle")
+  }
+  index_yml <- yml_author(
+    index_yml,
+    name = authors,
+    orcid = orcids)
+  index_yml <- yml_date(
+    index_yml,
+    date = date)
+  if (protocol_type == "sfp" && template == protocol_type) {
+    index_yml <- yml_replace(index_yml,
+                             theme = theme)
+  }
+  if (protocol_type == "sfp" && template == "generic") {
+    index_yml <- yml_toplevel(index_yml,
+                              theme = theme)
+  }
+  if (protocol_type == "spp") {
+    index_yml <- yml_replace(index_yml,
+                             project_name = project_name)
+  }
+  # set url and github_repo
+  index_yml <- yml_toplevel(
+    index_yml,
+    url = "https://inbo.github.io/protocols/",
+    github_repo = "inbo/protocolsource"
+  )
+
+  # overwrite old yaml sections
+
+  template_rmd <- file.path(path_to_protocol, "template.rmd")
+  file.copy(from = parent_rmd, to = template_rmd)
+  unlink(parent_rmd)
+  ymlthis::use_index_rmd(
+    .yml = index_yml,
+    path = path_to_protocol,
+    template = template_rmd,
+    include_body = TRUE,
+    include_yaml = FALSE,
+    quiet = TRUE,
+    open_doc = FALSE)
+  unlink(template_rmd)
 }

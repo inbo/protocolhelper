@@ -57,3 +57,8 @@ written in exactly the same way
 }
 Please check carefully for mistakes after using this function
 }
+\seealso{
+Other convert: 
+\code{\link{convert_docx_to_rmd}()}
+}
+\concept{convert}

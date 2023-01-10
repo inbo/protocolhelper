@@ -20,3 +20,25 @@ authors:
   Research Institute for Nature and Forest:
     href: "https://www.vlaanderen.be/inbo/en-gb"
     html: "<img src='https://inbo.github.io/checklist/reference/figures/logo-en.png' height=24>"
+
+reference:
+  - title: "Protocol creation and updating"
+    desc: "Functions for starting work on a new protocol or update a protocol"
+    contents:
+      - has_concept("creation")
+  - title: "docx convertion"
+    desc: "Functions to convert docx to markdown"
+    contents:
+      - has_concept("convert")
+  - title: "Protocol checking"
+    desc: "Functions to check if protocols comply with standards"
+    contents:
+      - has_concept("check")
+  - title: "Utility functions"
+    desc: "Functions that can be useful when working with protocols"
+    contents:
+      - has_concept("utility")
+  - title: "Protocol preview"
+    desc: "Function to render a protocol"
+    contents:
+      - has_concept("render")

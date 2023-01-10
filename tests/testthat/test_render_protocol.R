@@ -18,7 +18,7 @@ test_that("render_protocol works as expected", {
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
     authors = "me", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
-    version_number = version_number, theme = "water", lang = "en"
+    version_number = version_number, theme = "water", language = "en"
   )
 
   render_protocol(protocol_code = "sfp-101-en")

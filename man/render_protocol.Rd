@@ -30,3 +30,4 @@ will be put in the directory implied by the \code{output_dir} parameter.
 render_protocol(protocol_code = "sfp_401-nl")
 }
 }
+\concept{render}

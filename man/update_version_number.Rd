@@ -24,3 +24,13 @@ TRUE if version number in yaml is updated. FALSE otherwise.
 Makes use of \code{get_version_number} to get a new version number
 and changes this accordingly in the YAML section of \code{index.Rmd} file.
 }
+\seealso{
+Other creation: 
+\code{\link{add_dependencies}()},
+\code{\link{add_one_subprotocol}()},
+\code{\link{add_subprotocols}()},
+\code{\link{create_protocol}()},
+\code{\link{insert_protocolsection}()},
+\code{\link{update_protocol}()}
+}
+\concept{creation}

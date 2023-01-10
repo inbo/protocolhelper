@@ -23,3 +23,12 @@ present and in the right order,...
 This function is intended for checking if a protocol is ready to be rendered
 and published.
 }
+\seealso{
+Other check: 
+\code{\link{check_all_author_info}()},
+\code{\link{check_all}()},
+\code{\link{check_frontmatter}()},
+\code{\link{protocolcheck}},
+\code{\link{validate_orcid}()}
+}
+\concept{check}

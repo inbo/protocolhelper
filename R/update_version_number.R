@@ -19,6 +19,7 @@
 #'
 #' @return TRUE if version number in yaml is updated. FALSE otherwise.
 #' @export
+#' @family creation
 #'
 update_version_number <- function(
     protocol_code,

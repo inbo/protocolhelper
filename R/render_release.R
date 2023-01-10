@@ -20,15 +20,15 @@
 #'
 #'
 #' @importFrom assertthat assert_that is.string
-#' @importFrom bookdown gitbook render_book
+#' @importFrom bookdown gitbook render_book pdf_book
 #' @importFrom fs dir_copy dir_delete dir_exists dir_ls file_delete file_exists
 #' @importFrom purrr map map_chr map_lgl
 #' @importFrom rmarkdown html_document pandoc_variable_arg render
 #' @importFrom rprojroot find_root
 #' @importFrom stats aggregate
 #' @importFrom stringr str_replace_all
-#' @importFrom utils tail
-#' @importFrom yaml as.yaml
+#' @importFrom utils tail write.csv
+#' @importFrom yaml as.yaml read_yaml
 #'
 #' @keywords internal
 #'
@@ -50,11 +50,16 @@ render_release <- function(output_root = "publish") {
   protocol_index <- dir_ls(
     file.path(git_root, "source"),
     type = "file",
-    recurse = 3,
-    regexp = "index\\.Rmd"
-  )
-  protocol_index <- protocol_index[!grepl("source/index\\.Rmd", protocol_index)]
+    recurse = TRUE,
+    regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd")
+  output_yml_files <- dir_ls(
+    file.path(git_root, "source"),
+    type = "file",
+    recurse = TRUE,
+    regexp = "source\\/s[fpioa]p\\/.+\\/_output\\.yml")
+
   yaml <- map(protocol_index, yaml_front_matter)
+  output_yaml <- map(output_yml_files, read_yaml, eval.expr = TRUE)
   version <- map(yaml, "version_number")
   missing_version <- !map_lgl(version, is.string)
   if (any(missing_version)) {
@@ -73,6 +78,7 @@ render_release <- function(output_root = "publish") {
   }
   protocol_index <- protocol_index[order(version)]
   yaml <- yaml[order(version)]
+  output_yaml <- output_yaml[order(version)]
   version <- sort(version)
   for (i in seq_along(protocol_index)) {
     target_dir <- file.path(output_root, version[i])
@@ -88,12 +94,57 @@ render_release <- function(output_root = "publish") {
         file.path(dirname(protocol_index[i]), "css")
       )
     }
+    on.exit(unlink(file.path(dirname(protocol_index[i]), "css"),
+                   recursive = TRUE), add = TRUE)
+    if (!dir_exists(file.path(dirname(protocol_index[i]), "pandoc"))) {
+      dir_copy(
+        system.file("pandoc", package = "protocolhelper"),
+        file.path(dirname(protocol_index[i]), "pandoc")
+      )
+    }
+    on.exit(unlink(file.path(dirname(protocol_index[i]), "pandoc"),
+                   recursive = TRUE), add = TRUE)
     setwd(dirname(protocol_index[i]))
+    pdf_name <- paste0(yaml[[i]][["protocol_code"]], "_",
+                       yaml[[i]][["version_number"]], ".pdf")
+    render_book(
+      input = ".",
+      output_format = pdf_book(
+        template = "pandoc/inbo_protocol.tex", # nolint
+        pandoc_args = c(
+          "--top-level-division=chapter",
+          as.vector(
+            sapply(
+              yaml[[i]][["reviewers"]],
+              pandoc_variable_arg,
+              name = "reviewer"
+            )
+          ),
+          pandoc_variable_arg(
+            "file_manager", yaml[[i]][["file_manager"]]
+          ),
+          pandoc_variable_arg(
+            "protocol_code", yaml[[i]][["protocol_code"]]
+          ),
+          pandoc_variable_arg(
+            "version_number", yaml[[i]][["version_number"]]
+          ),
+          pandoc_variable_arg(
+            "thema",
+            c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
+          ),
+          pandoc_variable_arg("lang", yaml[[i]][["language"]])
+        )
+      ),
+      output_file = pdf_name,
+      output_dir = target_dir,
+      envir = new.env()
+    ) |> suppressWarnings()
     render_book(
       input = ".",
       output_format = gitbook(
-        split_by = yaml[[i]][["output"]][["bookdown::gitbook"]][["split_by"]],
-        split_bib = yaml[[i]][["output"]][["bookdown::gitbook"]][["split_bib"]],
+        split_by = output_yaml[[i]][["bookdown::gitbook"]][["split_by"]],
+        split_bib = output_yaml[[i]][["bookdown::gitbook"]][["split_bib"]],
         pandoc_args = c(
           as.vector(
             sapply(
@@ -120,6 +171,7 @@ render_release <- function(output_root = "publish") {
         template = "css/gitbook.html",
         css = "css/inbo_rapport.css",
         config = list(
+          download = list(pdf_name),
           toc = list(
             before =
               ifelse(yaml[[i]][["language"]] == "en",
@@ -133,48 +185,7 @@ render_release <- function(output_root = "publish") {
       output_file = "index.html",
       output_dir = target_dir,
       envir = new.env()
-    )
-    yaml[[i]][["output"]] <- list(`rmarkdown::html_document` = "default")
-    protocol_code <- map_chr(yaml, "protocol_code")
-    relevant <- protocol_code == protocol_code[[i]]
-    news <- map_chr(
-      dirname(names(protocol_code[relevant])),
-      ~paste(tail(readLines(file.path(.x, "NEWS.md")), -1), collapse = "\n")
-    )
-    if (length(news) > 1) {
-      lang <- map_chr(yaml[relevant], "language")
-      lang <- factor(
-        lang,
-        c("nl", "en"),
-        c("\n# Nederlandse versie\n", "\n# English version \n")
-      )
-      news <- paste(lang, news, collapse = "\n")
-    }
-    writeLines(
-      c("---",
-        paste0("title: ", yaml[[i]]$title),
-        paste0("subtitle: ", yaml[[i]]$subtitle),
-        paste0("output:\n  ", as.yaml(yaml[[i]]$output)),
-        "---", "", news),
-      "render_NEWS.Rmd"
-    )
-    target_dir <- file.path(
-      output_root, yaml[[i]][["protocol_code"]]
-    )
-    if (dir_exists(target_dir)) {
-      dir_delete(target_dir)
-    }
-    render(
-      "render_NEWS.Rmd", output_file = "index.html", envir = new.env(),
-      output_dir = target_dir,
-      output_format = html_document(
-        toc = TRUE,
-        toc_depth = 2,
-        toc_float = TRUE,
-        css = "css/inbo_rapport.css"
-      )
-    )
-    file_delete("render_NEWS.Rmd")
+    ) |> suppressWarnings()
   }
   protocols <- dir_ls(
     output_root, recurse = TRUE, type = "file",
@@ -191,61 +202,39 @@ render_release <- function(output_root = "publish") {
     }
   )
   meta <- do.call(rbind, meta)
-  meta$type <- regmatches(meta$code,
-                          regexpr("^s.p", meta$code))
-  meta$type <- factor(
-    meta$type,
-    levels = c("sfp", "sip", "sap", "sop", "spp"),
-    labels = c("Standard field protocols (sfp)",
-               "Standard instrument protocols (sip)",
-               "Standard analytical protocols (sap)",
-               "Standard operating procedures (sop)",
-               "Project-specific protocols (spp)")
-    )
+  meta$type <- get_protocol_type(meta$code)
+  type_abbr <- c("sfp", "sip", "sap", "sop", "spp")
   meta_order <- order(meta$type, meta$theme, meta$code,
                       -as.integer(factor(meta$version)))
   meta <- meta[meta_order, ]
-  meta$Rmd <- sprintf(
-    "- [%1$s](%1$s/index.html) (%2$s)", meta$version, meta$language
-  )
-  meta <- aggregate(
-    Rmd ~ type + theme + code + title + subtitle,
-    data = meta, FUN = paste, collapse = "\n"
-  )
-  meta$Rmd <- sprintf(
-    "### %1$s [(%2$s)](%2$s/index.html)\n\n%3$s\n\n%4$s",
-    meta$title, meta$code, meta$subtitle, meta$Rmd
-  )
-  meta <- aggregate(Rmd ~ type + theme, data = meta, FUN = paste,
-                    collapse = "\n\n")
-  meta$Rmd <- sprintf("## %1$s\n\n%2$s", meta$theme, meta$Rmd)
-  meta <- aggregate(Rmd ~ type, data = meta, FUN = paste,
-                    collapse = "\n\n")
-  meta$Rmd <- sprintf("# %1$s\n\n%2$s", meta$type, meta$Rmd)
+  rownames(meta) <- NULL
+  meta <- meta[, c("type", "version", "code", "title", "theme")]
+  meta$address <- paste0(meta$version, "/index.html")
 
-  setwd(file.path(git_root, "source"))
-  if (!file_exists("index.Rmd")) {
-    writeLines(
-      "---\ntitle: INBO protocols\ndate: '`r Sys.Date()`'\noutput: html_document
----\n\n# Welcome!\n\nProtocols increase the quality of the fieldwork and thus
-the quality of scientific research, which must be transparent, traceable and
-applicable.
-They help make fieldwork more harmonized and more repeatable, reproducible and
-comparable.
-Standardization is also interesting for the Institute for Nature and Forest
-Research (INBO) from an efficiency point of view.\n\n
-This site serves as a repository for the most recent versions of approved
-protocols used at INBO.
-On the left you will find the navigation to the different sections.\n
-",
-      "index.Rmd"
-    )
+  meta <- split(meta, ~type)
+  meta <- map(meta, function(x) x[, !(names(x) %in% "type")])
+  meta <- map(meta, function(x) {
+    x$striping <- factor(x$code)
+    levels(x$striping) <- rep_len(c(1, 0), length(levels(x$striping)))
+    x$striping <- as.logical(as.numeric(as.character(x$striping)))
+    return(x)
+  })
+
+  if (!dir_exists(file.path(git_root, "source", "homepage"))) {
+    dir_copy(
+      system.file("rmarkdown/homepage", package = "protocolhelper"),
+      file.path(git_root, "source", "homepage"))
+  }
+  setwd(file.path(git_root, "source", "homepage"))
+  for (i in seq_along(meta)) {
+    write.csv(x = meta[[i]],
+              file = paste0(type_abbr[i], ".csv"),
+              row.names = FALSE)
   }
   index <- readLines("index.Rmd")
-  repo_news <- readLines("../NEWS.md")
+  repo_news <- readLines("../../NEWS.md")
   writeLines(
     c(index,
-      paste(meta$Rmd, collapse = "\n\n"),
       "",
       "# NEWS",
       "",
@@ -253,12 +242,14 @@ On the left you will find the navigation to the different sections.\n
       ),
     "index.Rmd"
   )
-  if (!dir_exists(file.path(git_root, "source", "css"))) {
+  if (!dir_exists(file.path(git_root, "source", "homepage", "css"))) {
     dir_copy(
       system.file("css", package = "protocolhelper"),
-      file.path(git_root, "source", "css")
+      file.path(git_root, "source", "homepage", "css")
     )
   }
+  on.exit(unlink(file.path(git_root, "source", "homepage"),
+                 recursive = TRUE), add = TRUE)
   render_book(
     "index.Rmd",
     output_file = "index.html",
@@ -279,5 +270,4 @@ On the left you will find the navigation to the different sections.\n
       )
     )
   )
-  writeLines(index, "index.Rmd")
 }

@@ -37,6 +37,7 @@
 #' @importFrom assertthat assert_that
 #' @importFrom fs path_rel
 #' @export
+#' @family convert
 convert_docx_to_rmd <- function(
   from,
   to = sub("docx$", "Rmd", from),

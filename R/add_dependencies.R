@@ -19,6 +19,7 @@
 #' @importFrom purrr transpose
 #'
 #' @export
+#' @family creation
 #'
 #' @examples
 #' \dontrun{

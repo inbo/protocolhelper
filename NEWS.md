@@ -1,3 +1,13 @@
+# protocolhelper 0.4.8
+
+## Minor changes
+
+* various improvements to website homepage, including Dutch and English version
+
+## Bug fixes
+
+* fixed bug in passing metadata to `pandoc`
+
 # protocolhelper 0.4.7
 
 ## Minor changes

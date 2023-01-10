@@ -3,6 +3,7 @@
 #' @description A class that collects and shows all check results.
 #'
 #' @export
+#' @family check
 #' @importFrom R6 R6Class
 #'
 protocolcheck <- R6Class(

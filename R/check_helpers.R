@@ -61,6 +61,7 @@ check_protocolcode <- function(protocolcode) {
 #'
 #' @return Logical. TRUE if check digit is correct.
 #' @export
+#' @family check
 #'
 #' @examples
 #' validate_orcid("0000-0002-6378-6229")
@@ -93,6 +94,7 @@ validate_orcid <- function(orcid) {
 #' @return a character vector of previously encountered problems and problems
 #' identified for author names and `orcid` ids.
 #' @export
+#' @family check
 check_all_author_info <- function(
     author_list,
     problems_vect

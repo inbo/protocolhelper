@@ -39,7 +39,7 @@ execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
 
 
 #' set path to html template to be used by `gitbook`
-#' @export
+#' @keywords internal
 protocol_css <- function() {
   source_dir <- system.file(
     "css",
@@ -49,4 +49,17 @@ protocol_css <- function() {
     file.copy(source_dir, getwd(), recursive = TRUE, overwrite = TRUE)
   }
   return(file.path("css", "gitbook.html"))
+}
+
+#' set path to `tex` template to be used by `pdf_book`
+#' @keywords internal
+protocol_tex <- function() {
+  source_dir <- system.file(
+    "pandoc",
+    package = "protocolhelper"
+  )
+  if (!interactive()) {
+    file.copy(source_dir, getwd(), recursive = TRUE, overwrite = TRUE)
+  }
+  return(file.path("pandoc", "inbo_protocol.tex"))
 }

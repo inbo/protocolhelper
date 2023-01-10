@@ -28,6 +28,7 @@
 #'
 #'
 #' @export
+#' @family creation
 #'
 #' @examples
 #' \dontrun{
@@ -130,7 +131,7 @@ add_one_subprotocol <-
                     pandoc_args = c(
                       "--markdown-headings=atx",
                       "--shift-heading-level-by=1",
-                      "--metadata=suppress-bibliography[:TRUE]"
+                      "--metadata=suppress-bibliography=TRUE"
                     )
                   ),
                   output_file = mdfile,
@@ -146,7 +147,7 @@ add_one_subprotocol <-
                     pandoc_args = c(
                       "--markdown-headings=atx",
                       "--shift-heading-level-by=1",
-                      "--metadata=suppress-bibliography[:TRUE]"
+                      "--metadata=suppress-bibliography=TRUE"
                     )
                   ),
                   output_file = mdfile,
@@ -288,6 +289,7 @@ add_one_subprotocol <-
 #' @importFrom purrr map map_lgl
 #'
 #' @export
+#' @family creation
 add_subprotocols <-
   function(code_mainprotocol,
            fetch_remote = TRUE) {

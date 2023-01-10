@@ -6,6 +6,7 @@
 #'
 #' @return A report of all failed checks.
 #' @export
+#' @family check
 #'
 check_all <- function(protocol_code, fail = !interactive()) {
   cat("Checking protocol YAML block with metadata (frontmatter) ...")
