@@ -43,17 +43,21 @@ opts_chunk$set(
 library(dplyr)
 library(purrr)
 library(protocolhelper)
-path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
-type <- get_protocol_type(rmarkdown::metadata$protocol_code,
-                          auto_identifier = TRUE)
+metadata <- rmarkdown::metadata
+path_to_protocol <- get_path_to_protocol(metadata$protocol_code)
+type <- get_protocol_type(metadata$protocol_code)
 ```
 
 # Metadata {.unnumbered}
 
 ```{r metadata-table}
-rmarkdown::metadata %>%
-  as_tibble() %>%
-  select(reviewers, file_manager, protocol_code, version_number, language) %>%
+tibble(
+  reviewers = metadata[["reviewers"]] |> paste(collapse = ", "),
+  `file manager` = metadata[["file_manager"]],
+  protocolcode = metadata[["protocol_code"]],
+  `version number` = metadata[["version_number"]],
+  language = metadata[["language"]]
+) %>%
   kable()
 ```
 

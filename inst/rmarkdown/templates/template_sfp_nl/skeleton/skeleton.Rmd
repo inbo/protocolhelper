@@ -44,22 +44,22 @@ opts_chunk$set(
 library(dplyr)
 library(purrr)
 library(protocolhelper)
-path_to_protocol <- get_path_to_protocol(rmarkdown::metadata$protocol_code)
-type <- get_protocol_type(rmarkdown::metadata$protocol_code,
-                          auto_identifier = TRUE)
+metadata <- rmarkdown::metadata
+path_to_protocol <- get_path_to_protocol(metadata$protocol_code)
+type <- get_protocol_type(metadata$protocol_code)
 ```
 
 # Metadata {.unnumbered}
 
 ```{r metadata-table}
-rmarkdown::metadata %>%
-  as_tibble() %>%
-  select(reviewers,
-         documentbeheerder = file_manager,
-         protocolcode = protocol_code,
-         versienummer = version_number,
-         taal = language,
-         thema = theme) %>%
+tibble(
+  reviewers = metadata[["reviewers"]] |> paste(collapse = ", "),
+  documentbeheerder = metadata[["file_manager"]],
+  protocolcode = metadata[["protocol_code"]],
+  versienummer = metadata[["version_number"]],
+  taal = metadata[["language"]],
+  thema = metadata[["theme"]]
+) %>%
   kable()
 ```
 
