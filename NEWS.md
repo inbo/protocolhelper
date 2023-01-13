@@ -1,3 +1,9 @@
+# protocolhelper 0.4.9
+
+## Bug fixes
+
+* fixed a bug in protocol code check in `check_frontmatter()`
+
 # protocolhelper 0.4.8
 
 ## Minor changes

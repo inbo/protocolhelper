@@ -123,11 +123,14 @@ check_frontmatter <- function(
       "'reviewers' must be a character vector"[
         !is.character(yml_protocol$reviewers)])
 
+  right_format <- grepl("^s[fpioa]p-\\d{3}-(?:nl|en)$",
+                        yml_protocol$protocol_code)
+  is_reserved <- any(
+    yml_protocol$protocol_code %in% reserved_codes$protocolcode)
   problems <-
     c(problems,
       "protocol code has wrong format"[
-        !str_detect(yml_protocol$protocol_code,
-                    "^s[fioap]p-\\d{3}-(nl|en)$")
+        !(right_format | is_reserved)
       ])
 
   problems <- c(
