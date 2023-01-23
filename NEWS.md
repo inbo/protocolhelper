@@ -2,6 +2,12 @@
 
 ## Minor changes
 
+* removed unneeded docker file
+
+# protocolhelper 0.4.10
+
+## Minor changes
+
 * improved code to generate metadata in templates
 
 # protocolhelper 0.4.9
