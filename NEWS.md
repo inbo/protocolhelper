@@ -3,6 +3,7 @@
 ## Minor changes
 
 * removed unneeded docker file
+* improved layout of website overview tables
 
 # protocolhelper 0.4.10
 
