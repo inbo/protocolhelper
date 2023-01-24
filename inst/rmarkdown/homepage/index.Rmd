@@ -212,15 +212,17 @@ reactable(sfp,
               html = TRUE,
               filterable = TRUE,
               rowHeader = TRUE,
+              align = "left",
               cell = function(value, index) {
                 sprintf('<a href="%s" target="_blank">%s</a>',
                         sfp$address[index], value)
               }
             ),
             code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE, minWidth = 400),
             address = colDef(show = FALSE),
-            striping = colDef(show = FALSE)
+            striping = colDef(show = FALSE),
+            theme = colDef(minWidth = 150)
             ),
           defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
           sortable = FALSE,
@@ -246,13 +248,14 @@ reactable(sip,
               html = TRUE,
               filterable = TRUE,
               rowHeader = TRUE,
+              align = "left",
               cell = function(value, index) {
                 sprintf('<a href="%s" target="_blank">%s</a>',
                         sip$address[index], value)
               }
             ),
             code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE, minWidth = 400),
             address = colDef(show = FALSE),
             theme = colDef(show = FALSE),
             striping = colDef(show = FALSE)
@@ -279,13 +282,14 @@ reactable(sap,
               html = TRUE,
               filterable = TRUE,
               rowHeader = TRUE,
+              align = "left",
               cell = function(value, index) {
                 sprintf('<a href="%s" target="_blank">%s</a>',
                         sap$address[index], value)
               }
             ),
             code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE, minWidth = 400),
             address = colDef(show = FALSE),
             theme = colDef(show = FALSE),
             striping = colDef(show = FALSE)
@@ -311,13 +315,14 @@ reactable(sop,
               html = TRUE,
               filterable = TRUE,
               rowHeader = TRUE,
+              align = "left",
               cell = function(value, index) {
                 sprintf('<a href="%s" target="_blank">%s</a>',
                         sop$address[index], value)
               }
             ),
             code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE, minWidth = 400),
             address = colDef(show = FALSE),
             theme = colDef(show = FALSE),
             striping = colDef(show = FALSE)
@@ -344,13 +349,14 @@ reactable(spp,
               html = TRUE,
               filterable = TRUE,
               rowHeader = TRUE,
+              align = "left",
               cell = function(value, index) {
                 sprintf('<a href="%s" target="_blank">%s</a>',
                         spp$address[index], value)
               }
             ),
             code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE),
+            title = colDef(filterable = TRUE, minWidth = 400),
             address = colDef(show = FALSE),
             striping = colDef(show = FALSE),
             theme = colDef(name = "project")
