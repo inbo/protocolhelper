@@ -128,7 +128,7 @@ reserved_codes <- bind_rows(reserved_codes, bare_codes) %>%
                   into = c("protocoltype", "protocolnumber", "language"),
                   sep = "-",
                   remove = FALSE) %>%
-  filter(protocolnumber != "xxx") %>%
+  filter(grepl(pattern = "\\d{3}.{0,3}", x = .$protocolnumber)) %>%
   mutate(protocolnumber_bare = stringr::str_sub(protocolnumber, 1, 3))
 
 
