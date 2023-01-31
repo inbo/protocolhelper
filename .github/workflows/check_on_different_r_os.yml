@@ -70,6 +70,11 @@ jobs:
           sudo apt-get install -y libcurl4-openssl-dev
           sudo apt-get install -y libharfbuzz-dev libfribidi-dev
 
+      - name: Install system dependencies
+        if: runner.os == 'macos-latest'
+        run: |
+          brew install fribidi
+
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE,
