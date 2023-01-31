@@ -1,3 +1,9 @@
+# protocolhelper 0.4.12
+
+## Minor changes
+
+* switched theme number of air and soil protocols
+
 # protocolhelper 0.4.11
 
 ## Minor changes
