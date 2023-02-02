@@ -2,7 +2,6 @@ test_that("complete workflow works", {
   if (!requireNamespace("gert", quietly = TRUE)) {
     stop("please install 'gert' package for these tests to work")
   }
-
   update_news <- function(path, version_number) {
     news <- readLines(file.path(path, "NEWS.md"))
     writeLines(
@@ -15,6 +14,47 @@ test_that("complete workflow works", {
       file.path(path, "NEWS.md")
     )
   }
+  jsontxt <- '{
+    "title": "",
+    "description": "",
+    "license": "cc-by",
+    "upload_type": "other",
+    "access_right": "open",
+    "creators": [
+        {
+            "name": "Van Calster, Hans",
+            "affiliation": "Research Institute for Nature and Forest",
+            "orcid": "0000-0001-8595-8426"
+        },
+        {
+            "name": "De Bie, Els",
+            "affiliation": "Research Institute for Nature and Forest",
+            "orcid": "0000-0001-7679-743X"
+        },
+        {
+            "name": "Onkelinx, Thierry",
+            "affiliation": "Research Institute for Nature and Forest",
+            "orcid": "0000-0001-8804-4216"
+        },
+        {
+            "name": "Vanderhaeghe, Floris",
+            "affiliation": "Research Institute for Nature and Forest",
+            "orcid": "0000-0002-6378-6229"
+        }
+    ],
+    "keywords": [
+        "open protocol",
+        "open science",
+        "research institute",
+        "nature",
+        "forest",
+        "environment",
+        "markdown",
+        "Flanders",
+        "Belgium"
+        ]
+}'
+
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
   on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
   repo <- gert::git_clone(url = origin_repo,
@@ -27,6 +67,9 @@ test_that("complete workflow works", {
   gert::git_config_set(name = "user.email", value = "someone@example.org",
                        repo = repo)
   file.create("NEWS.md")
+  file.create(".zenodo.json")
+  writeLines(jsontxt, con = ".zenodo.json")
+
   file.create(".gitignore")
   writeLines(c("docs/", "publish/"), con = ".gitignore")
   gert::git_add("NEWS.md")
