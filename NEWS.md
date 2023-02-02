@@ -1,3 +1,9 @@
+# protocolhelper 0.4.13
+
+## Minor changes
+
+* internal function `render_release()` now also writes a `.zenodo.json` file
+
 # protocolhelper 0.4.12
 
 ## Minor changes
