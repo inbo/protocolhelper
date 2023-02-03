@@ -9,15 +9,12 @@
 #'  This function is for internal use only.
 #'  If you are looking for a function to preview your protocol,
 #'  see `protocolhelper::render_protocol()`.
-#'
+#' The website also contains a welcoming page, a news page and separate
+#' pages per protocol-type with overview tables of all versions of published
+#' protocols.
 #'
 #' @param output_root A character string giving the root folder without version
 #' number. Default is "publish".
-#'
-#' @details The links to earlier releases and older versions can be found
-#' through a subfolder structure below `publish/version_number` that mirrors the
-#' structure of `source/`.
-#'
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown gitbook render_book pdf_book
@@ -46,6 +43,13 @@ render_release <- function(output_root = "publish") {
 
   git_root <- find_root(is_git_root)
   output_root <- file.path(git_root, output_root)
+
+  # write zenodo metadata file
+  fs::dir_create(output_root)
+  adapt_zenodo(json = ".zenodo.json",
+               write = TRUE,
+               path_from = git_root,
+               path_to = output_root)
 
   protocol_index <- dir_ls(
     file.path(git_root, "source"),
@@ -270,4 +274,37 @@ render_release <- function(output_root = "publish") {
       )
     )
   )
+}
+
+
+#' Adapt the `.zenodo.json` file from `protocolsource` to `protocols` repository
+#'
+#' @param json a `JSON` string, url or file
+#' @param write whether to write a `.zenodo.json` file (TRUE) or to return a
+#' `json` string
+#' @param path_from Default current working directory. The root folder of the
+#' `protocolsource` repo.
+#' @param path_to Path to where the file should be written.
+#'
+#' @keywords internal
+adapt_zenodo <- function(json = ".zenodo.json", write = TRUE, path_from = ".",
+                         path_to) {
+  # read `.zenodo.json` from protocolsource
+  zenodo <- jsonlite::fromJSON(file.path(path_from, json),
+                               simplifyVector = FALSE)
+  # adapt it
+  zenodo$title <- "Protocols website of the Research Institute for Nature and Forest (INBO)" # nolint
+  zenodo$description <- "This archive contains the rendered html and pdf files of protocols used at the Research Institute for Nature and Forest (INBO), Brussels, Belgium (<a href=\"https://www.inbo.be/en\">www.inbo.be</a>). The website with the compiled protocols (including older versions) is at <a href=\"https://protocols.inbo.be\">https://protocols.inbo.be</a>."# nolint
+
+  if (write) {
+    # write it to publish folder
+    jsonlite::write_json(x = zenodo,
+                         file.path(path_to, ".zenodo.json"),
+                         pretty = TRUE,
+                         auto_unbox = TRUE)
+  } else {
+    jsonlite::toJSON(x = zenodo,
+                     pretty = TRUE,
+                     auto_unbox = TRUE)
+  }
 }

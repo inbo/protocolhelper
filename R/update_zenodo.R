@@ -51,29 +51,30 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE, path = ".") {
   # switch back to current branch
   git_branch_checkout(current_branch)
 
-  # extract creators
-  creators <- zenodo$creators
+  # extract contributors
+  contributors <- zenodo$contributors
 
-  # check for authors not in creators based on orcid
+  # check for authors not in contributors based on orcid
   orcids <- purrr::flatten(authormeta)
   orcids <- purrr::map_chr(orcids, "orcid")
-  creatororcids <- purrr::map_chr(creators, "orcid")
+  contributororcids <- purrr::map_chr(contributors, "orcid")
   to_add <- which(!orcids %in%
-                    creatororcids
+                    contributororcids
                   )
 
-  # add missing author metadata to creators
+  # add missing author metadata to contributors
   authors_to_add <- purrr::flatten(unname(authormeta))[to_add]
   for (i in seq_along(authors_to_add)) {
     authors_to_add[[i]] <- append(
       authors_to_add[[i]],
-      list(affiliation = "Research Institute for Nature and Forest"),
+      list(affiliation = "Research Institute for Nature and Forest",
+           type = "Researcher"),
       after = 1)
       }
-  creators <- append(creators, authors_to_add, length(creators) - 2)
+  contributors <- append(contributors, authors_to_add)
 
   # write updated .zenodo.json file
-  zenodo$creators <- creators
+  zenodo$contributors <- contributors
   if (write) {
     jsonlite::write_json(x = zenodo,
                          ".zenodo.json",
