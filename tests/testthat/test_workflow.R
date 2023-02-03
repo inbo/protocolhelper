@@ -105,6 +105,7 @@ test_that("complete workflow works", {
   )
 
   protocolhelper:::update_news_release("sfp-101-en")
+  protocolhelper:::update_zenodo()
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -158,6 +159,7 @@ test_that("complete workflow works", {
   )
 
   protocolhelper:::update_news_release("sfp-407-en")
+  protocolhelper:::update_zenodo()
 
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-407-en_vegetation-1")
@@ -278,6 +280,7 @@ test_that("complete workflow works", {
   )
 
   protocolhelper:::update_news_release("sfp-102-en")
+  protocolhelper:::update_zenodo()
 
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-102-en_second_subprotocol")
@@ -341,6 +344,7 @@ test_that("complete workflow works", {
   )
 
   protocolhelper:::update_news_release("spp-001-en")
+  protocolhelper:::update_zenodo()
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
@@ -394,6 +398,7 @@ test_that("complete workflow works", {
   )
 
   protocolhelper:::update_news_release("sfp-101-en")
+  protocolhelper:::update_zenodo()
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
