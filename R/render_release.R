@@ -9,15 +9,12 @@
 #'  This function is for internal use only.
 #'  If you are looking for a function to preview your protocol,
 #'  see `protocolhelper::render_protocol()`.
-#'
-#'
-#' @param output_root A character string giving the root folder without version
-#' number. Default is "publish".
-#'
-#' @details The website also contains a welcoming page, a news page and separate
+#' The website also contains a welcoming page, a news page and separate
 #' pages per protocol-type with overview tables of all versions of published
 #' protocols.
 #'
+#' @param output_root A character string giving the root folder without version
+#' number. Default is "publish".
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown gitbook render_book pdf_book

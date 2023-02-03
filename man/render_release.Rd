@@ -20,8 +20,6 @@ folder (see also \code{details}).
 This function is for internal use only.
 If you are looking for a function to preview your protocol,
 see \code{protocolhelper::render_protocol()}.
-}
-\details{
 The website also contains a welcoming page, a news page and separate
 pages per protocol-type with overview tables of all versions of published
 protocols.
