@@ -75,8 +75,6 @@ test_that("complete workflow works", {
   gert::git_add("NEWS.md")
   gert::git_commit_all(message = "add empty NEWS repo file")
 
-
-
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_push(remote = "origin",
