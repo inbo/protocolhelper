@@ -311,7 +311,7 @@ create_protocol <- function(
 
 create_sfp <- function(
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -348,7 +348,7 @@ create_sfp <- function(
 #' @export
 create_spp <- function(
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -384,7 +384,7 @@ create_spp <- function(
 #' @export
 create_sap <- function(
     title,
-    subtitle,
+    subtitle = NULL,
     short_title,
     authors,
     orcids,
@@ -419,7 +419,7 @@ create_sap <- function(
 #' @export
 create_sip <- function(
     title,
-    subtitle,
+    subtitle = NULL,
     short_title,
     authors,
     orcids,
@@ -454,7 +454,7 @@ create_sip <- function(
 #' @export
 create_sop <- function(
     title,
-    subtitle,
+    subtitle = NULL,
     short_title,
     authors,
     orcids,
