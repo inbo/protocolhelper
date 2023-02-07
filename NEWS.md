@@ -1,3 +1,9 @@
+# protocolhelper 0.5.0
+
+## Enhancements
+
+* better handle pre-existing protocol numbers
+
 # protocolhelper 0.4.13
 
 ## Minor changes
