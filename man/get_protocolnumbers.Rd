@@ -33,6 +33,7 @@ get_protocolnumbers()
 }
 \seealso{
 Other utility: 
+\code{\link{add_label}()},
 \code{\link{get_path_to_protocol}()},
 \code{\link{get_protocol_type}()},
 \code{\link{get_short_titles}()},

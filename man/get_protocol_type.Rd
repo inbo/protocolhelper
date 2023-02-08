@@ -25,6 +25,7 @@ The protocol type corresponds to the first 3 letters of the protocol code
 }
 \seealso{
 Other utility: 
+\code{\link{add_label}()},
 \code{\link{get_path_to_protocol}()},
 \code{\link{get_protocolnumbers}()},
 \code{\link{get_short_titles}()},

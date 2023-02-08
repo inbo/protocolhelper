@@ -54,6 +54,7 @@ get_path_to_protocol(protocol_code = "sfp-401-nl")
 }
 \seealso{
 Other utility: 
+\code{\link{add_label}()},
 \code{\link{get_protocol_type}()},
 \code{\link{get_protocolnumbers}()},
 \code{\link{get_short_titles}()},
