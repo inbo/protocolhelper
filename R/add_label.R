@@ -17,7 +17,7 @@
 add_label <- function(caption = "", tag = "tab") {
   chunk_label <- knitr::opts_current$get("label")
   pretag <- if (knitr::is_latex_output()) {
-    paste0("\\label{", tag, ":",chunk_label , "}")
+    paste0("\\label{", tag, ":", chunk_label, "}")
   } else {
     paste0("(\\#", tag, ":", chunk_label, ")")
   }
