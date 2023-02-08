@@ -10,6 +10,7 @@ file_manager:
 protocol_code:
 version_number:
 language: nl
+lang: nl
 template_name: sip
 site: bookdown::bookdown_site
 bibliography: referenties.yaml
@@ -43,6 +44,8 @@ opts_chunk$set(
 library(dplyr)
 library(purrr)
 library(protocolhelper)
+library(pander)
+panderOptions("table.alignment.default", "left")
 metadata <- rmarkdown::metadata
 path_to_protocol <- get_path_to_protocol(metadata$protocol_code)
 type <- get_protocol_type(metadata$protocol_code, auto_identifier = TRUE)
@@ -57,7 +60,7 @@ tibble(
   protocolcode = metadata[["protocol_code"]],
   versienummer = metadata[["version_number"]],
   taal = metadata[["language"]]) %>%
-  kable()
+  pander::pander(split.tables = Inf)
 ```
 
 ```{r results="asis"}

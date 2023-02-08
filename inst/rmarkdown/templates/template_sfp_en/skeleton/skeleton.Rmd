@@ -44,6 +44,8 @@ opts_chunk$set(
 library(dplyr)
 library(purrr)
 library(protocolhelper)
+library(pander)
+panderOptions("table.alignment.default", "left")
 metadata <- rmarkdown::metadata
 path_to_protocol <- get_path_to_protocol(metadata$protocol_code)
 type <- get_protocol_type(metadata$protocol_code, auto_identifier = TRUE)
@@ -60,7 +62,7 @@ tibble(
   language = metadata[["language"]],
   theme = metadata[["theme"]]
 ) %>%
-  kable()
+  pander::pander(split.tables = Inf)
 ```
 
 ```{r results="asis"}
