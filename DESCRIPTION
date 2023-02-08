@@ -43,6 +43,7 @@ Suggests:
     dplyr,
     lubridate,
     magick,
+    pander,
     png,
     testthat (>= 2.1.0)
 Additional_repositories: https://inbo.r-universe.dev
