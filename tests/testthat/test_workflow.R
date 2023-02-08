@@ -93,7 +93,8 @@ test_that("complete workflow works", {
   create_sfp(
     title = "Test 1", subtitle = "subtitle", short_title = "water 1",
     authors = "Van Calster, Hans", orcids = "0000-0001-8595-8426",
-    reviewers = "someone else", file_manager = "who?",
+    reviewers = "someone else, Jon Beton, Jef Plastiek, Suzy Wafel",
+    file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
   )
 

@@ -1,3 +1,13 @@
+# protocolhelper 0.5.0
+
+## New features
+
+* new function `add_label` for use with caption argument of `pander` tables
+
+## Enhancements
+
+* better handle pre-existing protocol numbers
+
 # protocolhelper 0.4.13
 
 ## Minor changes

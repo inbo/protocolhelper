@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.4.13
+Version: 0.5.0
 Authors@R: c(
     person("Hans", "Van Calster", , "hans.vancalster@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8595-8426")),
@@ -43,6 +43,7 @@ Suggests:
     dplyr,
     lubridate,
     magick,
+    pander,
     png,
     testthat (>= 2.1.0)
 Additional_repositories: https://inbo.r-universe.dev

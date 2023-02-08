@@ -32,7 +32,7 @@ create_protocol(
 
 create_sfp(
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -50,7 +50,7 @@ create_sfp(
 
 create_spp(
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -68,7 +68,7 @@ create_spp(
 
 create_sap(
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -85,7 +85,7 @@ create_sap(
 
 create_sip(
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,
@@ -102,7 +102,7 @@ create_sip(
 
 create_sop(
   title,
-  subtitle,
+  subtitle = NULL,
   short_title,
   authors,
   orcids,

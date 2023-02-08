@@ -18,7 +18,7 @@ empty_table <- tibble(
       `Protocol code` = protocol_code,
       `Version number` = version_number,
       `Included as subprotocol` = appendix) %>%
-    kable()
+    pander(split.tables = Inf)
 
 if (exists("params")) {
   if (!is.null(params$dependencies)) {
@@ -36,7 +36,7 @@ if (exists("params")) {
       `Protocol code` = protocol_code,
       `Version number` = version_number,
       `Included as subprotocol` = appendix) %>%
-    kable()
+    pander(split.tables = Inf)
   } else {
     empty_table
   }

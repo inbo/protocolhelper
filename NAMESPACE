@@ -2,6 +2,7 @@
 
 export(add_captions)
 export(add_dependencies)
+export(add_label)
 export(add_one_subprotocol)
 export(add_subprotocols)
 export(check_all)
