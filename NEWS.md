@@ -1,3 +1,10 @@
+# protocolhelper 0.5.1
+
+## Enhancements
+
+* removed html comments from templates beneath part headers, which causes layout
+  issues when rendering
+
 # protocolhelper 0.5.0
 
 ## New features
