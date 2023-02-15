@@ -1,8 +1,9 @@
 #' @title Updates the version number in the YAML section of a protocol
-#' `index.Rmd` file
+#' `index.Rmd` file and in protocol `NEWS.md`
 #'
 #' @description Makes use of `get_version_number` to get a new version number
-#' and changes this accordingly in the YAML section of `index.Rmd` file.
+#' and changes this accordingly in the YAML section of `index.Rmd` file and
+#' in `NEWS.md`.
 #'
 #' @param protocol_code The protocol_code corresponding with the name of the
 #' branch that contains the new or updated protocol.
@@ -16,6 +17,8 @@
 #' @importFrom assertthat assert_that
 #' @importFrom ymlthis use_index_rmd as_yml
 #' @importFrom gert git_status git_add git_commit
+#' @importFrom stringr str_replace_all
+#' @importFrom xfun read_utf8 write_utf8
 #'
 #' @return TRUE if version number in yaml is updated. FALSE otherwise.
 #' @export
@@ -58,14 +61,22 @@ update_version_number <- function(
       open_doc = FALSE)
     unlink(copy_rmd)
 
+    # update in NEWS.md
+    news <- read_utf8(file.path(path_to_protocol, "NEWS.md"))
+    news <- str_replace_all(
+      string = news,
+      pattern = sprintf("\\[%s\\]\\(\\.\\.\\/%s\\/", old_version),
+      replacement = sprintf("[%s](../%s/", new_version))
+    write_utf8(news, file.path(path_to_protocol, "NEWS.md"))
+
     message_text <- paste0("Bumped ", old_version, " to ", new_version,
-                     " in index.Rmd")
+                           " in index.Rmd and NEWS.md")
     message(message_text)
 
     if (commit) {
       unstaged <- git_status(staged = FALSE, repo = path)
       changes <- unstaged$file[unstaged$status == "modified"]
-      changes <- grep(pattern = "index", x = changes, value = TRUE)
+      changes <- grep(pattern = "index|NEWS", x = changes, value = TRUE)
       if (length(changes)) {
         git_add(changes, repo = path)
       }
