@@ -51,22 +51,22 @@ test_that("Test if check all works", {
                  set_upstream = TRUE,
                  repo = repo)
 
-  #one function fails
-  expect_error(check_all("sfp-101-en", fail = TRUE))
+  #no function fails
+  expect_no_error(check_all("sfp-101-en", fail = TRUE))
 
-  update_news <- function(path, version_number) {
+  make_news_error <- function(path, version_number) {
     news <- readLines(file.path(path, "NEWS.md"))
     writeLines(
       c(
         head(news, 2),
-        sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
+        sprintf("\n## [%1$s](../%1$s/index.html)\n", "1900.01"),
         rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
         tail(news, -2)
       ),
       file.path(path, "NEWS.md")
     )
   }
-  update_news(
+  make_news_error(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
     version_number = version_number
   )
@@ -77,8 +77,8 @@ test_that("Test if check all works", {
                  repo = repo)
 
 
-  #none fails
-  expect_no_error(check_all("sfp-101-en", fail = TRUE))
+  #fails
+  expect_error(check_all("sfp-101-en", fail = TRUE))
 
   #both functions fail
   expect_error(check_all("sfp-111-nl"))

@@ -283,6 +283,19 @@ create_protocol <- function(
   # write _output.yml
   write_output_yml(language = language, path_to_protocol = path_to_protocol)
 
+  # start new header in NEWS
+  news <- xfun::read_utf8(file.path(path_to_protocol, "NEWS.md"))
+  news <- append(x = news,
+                 values = c(
+                   sprintf("## [%1$s](../%1$s/index.html)", version_number),
+                   "",
+                   "-   ...",
+                   ""
+                 ),
+                 after = 2)
+  xfun::write_utf8(news, file.path(path_to_protocol, "NEWS.md"))
+
+
   if (!is.null(from_docx)) {
     assert_that(file.exists(from_docx))
     create_from_docx(from_docx = from_docx,

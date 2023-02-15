@@ -29,27 +29,25 @@ update_protocol <- function(protocol_code) {
   new_branch(branch = protocol_code,
              repo = project_root)
 
-  #increment version number
-  path_to_protocol <- get_path_to_protocol(
-    protocol_code = protocol_code)
+  # update version number in yaml frontmatter
+  update_version_number(protocol_code = protocol_code,
+                        commit = FALSE,
+                        update_news = FALSE,
+                        path = project_root)
+  # start new header in NEWS
+  path_to_protocol <- get_path_to_protocol(protocol_code)
   yml <- yaml_front_matter(file.path(path_to_protocol, "index.Rmd"))
-  assert_that(has_name(yml, "version_number"))
-  yml$version_number <- get_version_number()
-  yml <- as_yml(yml)
-  # overwrite old yaml sections
-  parent_rmd <- file.path(path_to_protocol, "index.Rmd")
-  template_rmd <- file.path(path_to_protocol, "template.rmd")
-  file.copy(from = parent_rmd, to = template_rmd)
-  unlink(parent_rmd)
-  use_index_rmd(
-    .yml = yml,
-    path = path_to_protocol,
-    template = template_rmd,
-    include_body = TRUE,
-    include_yaml = FALSE,
-    quiet = TRUE,
-    open_doc = FALSE)
-  unlink(template_rmd)
+  version_number <- yml$version_number
+  news <- xfun::read_utf8(file.path(path_to_protocol, "NEWS.md"))
+  news <- append(x = news,
+                 values = c(
+                   sprintf("## [%1$s](../%1$s/index.html)", version_number),
+                   "",
+                   "-   ...",
+                   ""
+                   ),
+                 after = 2)
+  xfun::write_utf8(news, file.path(path_to_protocol, "NEWS.md"))
 
   return(invisible(NULL))
 }
