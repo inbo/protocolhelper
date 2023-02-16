@@ -1,5 +1,3 @@
-# (PART) Subprotocols {.unnumbered}
-
 ```{r, results="asis"}
 if (exists("params")) {
   if (!is.null(params$dependencies)) {
@@ -14,7 +12,8 @@ if (exists("params")) {
 
     if (length(child_docs) > 0) {
       res <- map(child_docs, knit_child, quiet = TRUE)
-      cat(unlist(res), sep = "\n")
+      cat(
+        c("# (PART) Subprotocols {.unnumbered}", "", unlist(res)), sep = "\n")
     }
   }
 }
