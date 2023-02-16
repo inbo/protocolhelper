@@ -1,16 +1,16 @@
-#' @title Function to render a protocol to html.
+#' @title Function to render a protocol to html and pdf.
 #'
 #' @description This function is a simple wrapper around
-#' `bookdown::render_book()` and can be used to render a protocol to html
-#' in order to preview updates that have been made.
+#' `bookdown::render_book()` and can be used to render a protocol to html and
+#' pdf in order to preview updates that have been made.
 #'
 #'
 #' @inheritParams get_path_to_protocol
 #' @inheritParams bookdown::render_book
 #' @param ... additional parameters passed on to `bookdown::render_book()`
 #'
-#' @details The rendered html file and associated files needed by the html file
-#' will be put in the directory implied by the `output_dir` parameter.
+#' @details The rendered html and pdf file and associated files needed by the
+#' html file will be put in the directory implied by the `output_dir` parameter.
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom fs path dir_exists dir_copy
