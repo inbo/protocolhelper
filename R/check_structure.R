@@ -168,10 +168,13 @@ check_file <- function(filename, x, files_template, path_to_template) {
     headings_template <- template[grepl("^[[:space:]]?#", template)]
     headings_template <-
       headings_template[!grepl("^### Subtit", headings_template)]
+    # strip stuff behind title between {} before comparing
+    headings_template_rm <- gsub("\\s{.+}$", "", headings_template, perl = TRUE)
+    headings_rm <- gsub("\\s{.+}$", "", headings, perl = TRUE)
     x$add_error(
       msg = sprintf(
         "Heading(s) %s lack(s) in file %s",
-        headings_template[!headings_template %in% headings],
+        headings_template_rm[!headings_template_rm %in% headings_rm],
         filename
       )
     )
