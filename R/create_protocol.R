@@ -856,9 +856,6 @@ write_bookdown_yml <- function(
   bookdown_yml <- yml_bookdown_opts(
     bookdown_yml,
     book_filename = book_filename,
-    edit = paste0("https://github.com/inbo/protocolsource/edit/main/source/",
-                  gsub(".+source\\/", "", path_to_protocol),
-                  "/%s"),
     output_dir = output_dir_rel,
     rmd_files = rmd_files,
     delete_merged_file = TRUE,
