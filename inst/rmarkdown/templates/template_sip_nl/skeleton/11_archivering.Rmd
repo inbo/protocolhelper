@@ -1,9 +1,0 @@
-# Archivering
-
-```{=html}
-<!--
-Alle documenten betreffende het toestel worden digitaal bewaard op `google drive`:
-`ANALYTISCH LABO\Beheer\4.Toestellen` onder de map van het toestel.
-LINK INVOEGEN
--->
-```

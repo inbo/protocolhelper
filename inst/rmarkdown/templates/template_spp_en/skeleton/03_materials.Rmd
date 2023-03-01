@@ -1,8 +1,0 @@
-# Extra required materials compared to subprotocols
-
-```{=html}
-<!--
-When applicable.
-No repetition of what is already mentioned in subprotocols.
--->
-```

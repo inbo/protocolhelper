@@ -1,3 +1,0 @@
-# Rapportage en archivering
-
-De resultaten van de kalibratie, de stalen en het referentiemateriaal worden ingegeven in `LIMS`, in de batch van de methode.
