@@ -3,9 +3,14 @@
 \name{update_version_number}
 \alias{update_version_number}
 \title{Updates the version number in the YAML section of a protocol
-\code{index.Rmd} file}
+\code{index.Rmd} file and optionally in protocol \code{NEWS.md}}
 \usage{
-update_version_number(protocol_code, commit = TRUE, path = ".")
+update_version_number(
+  protocol_code,
+  commit = TRUE,
+  update_news = TRUE,
+  path = "."
+)
 }
 \arguments{
 \item{protocol_code}{The protocol_code corresponding with the name of the
@@ -13,6 +18,9 @@ branch that contains the new or updated protocol.}
 
 \item{commit}{Logical. Default TRUE. Whether or not to add and commit the
 changes to the protocol branch}
+
+\item{update_news}{Logical. Default TRUE. Whether or not to find and replace
+old version number by new version number in the \code{NEWS.md} heading 2.}
 
 \item{path}{Default is current working directory. Should correspond with
 root directory of \code{protocolsource} repo.}
@@ -22,7 +30,8 @@ TRUE if version number in yaml is updated. FALSE otherwise.
 }
 \description{
 Makes use of \code{get_version_number} to get a new version number
-and changes this accordingly in the YAML section of \code{index.Rmd} file.
+and changes this accordingly in the YAML section of \code{index.Rmd} file and
+optionally in \code{NEWS.md}.
 }
 \seealso{
 Other creation: 

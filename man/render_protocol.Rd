@@ -2,7 +2,7 @@
 % Please edit documentation in R/render_protocol.R
 \name{render_protocol}
 \alias{render_protocol}
-\title{Function to render a protocol to html.}
+\title{Function to render a protocol to html and pdf.}
 \usage{
 render_protocol(protocol_code = NULL, output_dir = NULL, ...)
 }
@@ -18,12 +18,12 @@ used (possibly not specified, either, in which case a directory name
 }
 \description{
 This function is a simple wrapper around
-\code{bookdown::render_book()} and can be used to render a protocol to html
-in order to preview updates that have been made.
+\code{bookdown::render_book()} and can be used to render a protocol to html and
+pdf in order to preview updates that have been made.
 }
 \details{
-The rendered html file and associated files needed by the html file
-will be put in the directory implied by the \code{output_dir} parameter.
+The rendered html and pdf file and associated files needed by the
+html file will be put in the directory implied by the \code{output_dir} parameter.
 }
 \examples{
 \dontrun{

@@ -12,18 +12,6 @@ test_that("check structure works", {
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
-  update_news <- function(path, version_number) {
-    news <- readLines(file.path(path, "NEWS.md"))
-    writeLines(
-      c(
-        head(news, 2),
-        sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
-        rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
-        tail(news, -2)
-      ),
-      file.path(path, "NEWS.md")
-    )
-  }
 
   # create a protocol
   version_number <- "2021.01"
@@ -32,11 +20,6 @@ test_that("check structure works", {
     authors = "me", orcids = "0000-0001-2345-6789",
     reviewers = "someone else", file_manager = "who?",
     version_number = version_number, theme = "water", language = "en"
-  )
-
-  update_news(
-    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    version_number = version_number
   )
 
   expect_output(
@@ -107,11 +90,6 @@ test_that("check structure works", {
     reviewers = "someone else", file_manager = "who?",
     theme = "water", language = "en", version_number =  version_number,
     template = "generic"
-  )
-
-  update_news(
-    path = file.path("source", "sfp", "1_water", "sfp_102_en_water_2"),
-    version_number = version_number
   )
 
   expect_output(
