@@ -165,8 +165,13 @@ create_protocol <- function(
     assert_that(
       is.string(protocol_number),
       !(protocol_number %in% get_protocolnumbers(protocol_type = protocol_type,
-                                                 language = language))
+                                                 language = language)),
+      msg = sprintf(
+        "The protocolnumber %s is already in use
+        for protocol type %s and language %s.",
+        protocol_number, protocol_type, language
       )
+    )
   }
   assert_that(is.flag(render), noNA(render))
 
