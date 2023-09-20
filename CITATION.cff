@@ -1,32 +1,35 @@
 cff-version: 1.2.0
-message: If you use this software, please cite it as below.
-authors:
-- family-names: Van Calster
-  given-names: Hans
-  orcid: https://orcid.org/0000-0001-8595-8426
-- family-names: Onkelinx
-  given-names: Thierry
-  orcid: https://orcid.org/0000-0001-8804-4216
-- family-names: Vanderhaeghe
-  given-names: Floris
-  orcid: https://orcid.org/0000-0002-6378-6229
-contact:
-- email: hans.vancalster@inbo.be
-  family-names: Van Calster
-  given-names: Hans
-- email: info@inbo.be
-  name: Research Institute for Nature and Forest
+message: If you use this software, please cite it using these metadata.
 title: 'protocolhelper: Helper Functions to Manage Protocols'
-version: 0.5.1
-abstract: Helper functions to manage INBO protocols.
-license: GPL-3.0
-type: software
-repository-code: https://github.com/inbo/protocolhelper
-identifiers:
-- type: url
-  value: https://inbo.github.io/protocolhelper/
+authors:
+- given-names: Hans
+  family-names: Van Calster
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0001-8595-8426
+- given-names: Thierry
+  family-names: Onkelinx
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0001-8804-4216
+- given-names: Floris
+  family-names: Vanderhaeghe
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0002-6378-6229
 keywords:
-- Protocols
+- protocols
 - R package
 - Reproducible research
 - Rmarkdown templates
+contact:
+- given-names: Hans
+  family-names: Van Calster
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0001-8595-8426
+doi: ~
+license: GPL-3.0
+repository-code: https://github.com/inbo/protocolhelper/
+type: software
+abstract: Helper functions to manage INBO protocols.
+identifiers:
+- type: url
+  value: https://inbo.github.io/protocolhelper/
+version: 0.6.0

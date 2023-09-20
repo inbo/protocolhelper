@@ -2,11 +2,10 @@
 
 ## New features
 
-
-
 ## Enhancements
 
 * internal reserved codes list has been augmented with codes from genetics lab
+* improved error and other messages for `create_protocol()`
 
 # protocolhelper 0.5.1
 
