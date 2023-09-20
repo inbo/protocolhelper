@@ -47,6 +47,8 @@ Suggests:
     png,
     testthat (>= 2.1.0)
 Additional_repositories: https://inbo.r-universe.dev
+Config/checklist/keywords: protocolsource; protocols; protocol development
+Config/checklist/communities: inbo
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
