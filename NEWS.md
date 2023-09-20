@@ -1,3 +1,9 @@
+# protocolhelper 0.6.0
+
+## New features
+
+## Enhancements
+
 # protocolhelper 0.5.1
 
 ## Enhancements
