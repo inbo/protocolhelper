@@ -321,6 +321,10 @@ create_protocol <- function(
       those listed in the rmd_files field in the _bookdown.yml file.")
     )
   }
+  message(
+    sprintf("Your protocol has been created in folder %s",
+            path_to_protocol)
+  )
 }
 
 
