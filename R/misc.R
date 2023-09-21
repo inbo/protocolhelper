@@ -14,7 +14,7 @@
 #'
 #' @inheritParams base::system
 #'
-#' @keywords internal
+#' @noRd
 #'
 execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
   old_wd <- setwd(path)
@@ -39,7 +39,7 @@ execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
 
 
 #' set path to html template to be used by `gitbook`
-#' @keywords internal
+#' @noRd
 protocol_css <- function() {
   source_dir <- system.file(
     "css",
@@ -52,7 +52,7 @@ protocol_css <- function() {
 }
 
 #' set path to `tex` template to be used by `pdf_book`
-#' @keywords internal
+#' @noRd
 protocol_tex <- function() {
   source_dir <- system.file(
     "pandoc",

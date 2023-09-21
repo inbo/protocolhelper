@@ -651,6 +651,7 @@ get_short_titles <- function(
 #'
 #' @return A character string containing the protocol_code
 #'
+#' @export
 #' @keywords internal
 create_protocol_code <- function(
   protocol_type, theme, protocol_number, language
@@ -760,7 +761,7 @@ create_protocol_code <- function(
 #' protocol created from `docx` needs to be written to
 #'
 #' @importFrom stringr str_replace str_replace_all str_detect str_remove
-#'
+#' @export
 #' @keywords internal
 create_from_docx <- function(
   from_docx,
@@ -818,7 +819,7 @@ create_from_docx <- function(
 #'
 #' @importFrom ymlthis use_yml_file yml_empty yml_bookdown_opts
 #'
-#' @keywords internal
+#' @noRd
 write_bookdown_yml <- function(
     language,
     book_filename,
@@ -891,7 +892,7 @@ write_bookdown_yml <- function(
 #' @importFrom bookdown gitbook pdf_book
 #' @importFrom xfun read_utf8 write_utf8
 #'
-#' @keywords internal
+#' @noRd
 #'
 write_output_yml <- function(language, path_to_protocol) {
   output_yml <- yml_empty()
@@ -975,7 +976,7 @@ write_output_yml <- function(language, path_to_protocol) {
 #' yml_toplevel use_index_rmd
 #' @importFrom rmarkdown yaml_front_matter
 #'
-#' @keywords internal
+#' @noRd
 #'
 write_yaml_front_matter <- function(
     parent_rmd,
