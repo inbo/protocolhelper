@@ -73,6 +73,7 @@
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
 #' @importFrom fs path_rel dir_create dir_ls
+#' @importFrom INBOmd add_author
 #'
 #'
 #' @export
@@ -239,6 +240,11 @@ create_protocol <- function(
                      output_dir_rel = output_dir_rel)
   # write _output.yml
   write_output_yml(language = language, path_to_protocol = path_to_protocol)
+
+  # add authors
+  if (interactive()) {
+    add_author(path_to_protocol)
+  }
 
   # start new header in NEWS
   news <- xfun::read_utf8(file.path(path_to_protocol, "NEWS.md"))
