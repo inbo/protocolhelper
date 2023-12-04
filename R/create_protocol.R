@@ -43,16 +43,7 @@
 #' @inheritParams create_protocol_code
 #' @param title A character string giving the main title of the protocol
 #' @param subtitle A character string for an optional subtitle
-#' @param authors A character vector for authors of the form
-#' `c("lastname1, firstname1", "lastname2, firstname2")`
-#' @param orcids A character vector of `orcid` IDs, equal in length to authors.
-#' If one of the authors does not have an `orcid` ID, use `NA` to indicate this
-#' in the corresponding position of the character vector (or get an `orcid` ID).
 #' @param date A character string of the date in ISO 8601 format (`YYYY-MM-DD`)
-#' @param reviewers A character vector for reviewers of the form First name
-#' Last name
-#' @param file_manager A character string for the name of the document
-#' maintainer of the form First name Last name
 #' @param version_number A version number of the form `YYYY.##`.
 #' The default is a function which will determine this number automatically.
 #' It should normally not be changed.
@@ -91,20 +82,13 @@
 #' protocolhelper::create_protocol(
 #'   protocol_type = "sfp",
 #'   title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-#'   authors = c("Someone, Else", "Another, One"),
-#'   orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
-#'   reviewers = "me", file_manager = "who?",
 #'   theme = "water", language = "en")
 #' }
 create_protocol <- function(
   protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
   title,
   short_title,
-  authors,
-  orcids,
   date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   theme = NULL,
   project_name = NULL,
@@ -124,34 +108,6 @@ create_protocol <- function(
   }
   assert_that(is.string(short_title), nchar(short_title) <= 20)
   assert_that(is.date(as.Date(date)))
-  assert_that(is.character(authors))
-  assert_that(is.character(orcids))
-  assert_that(
-    !all(str_detect(authors, ";")),
-    msg = paste0("Multiple authors should be passed as: ",
-                 "c(\"lastname1, firstname1\", \"lastname2, firstname2\")"))
-  assert_that(
-    (is.string(authors) & all(str_detect(authors, ",{1}"))) |
-      is.character(authors),
-    msg = "A single author should be passed as: c(\"lastname1, firstname1\")")
-  assert_that(
-    (is.string(authors) & !all(str_detect(authors, ",{2,}"))) |
-      is.character(authors),
-    msg = paste0("Multiple commas detected in author string.",
-                 "Multiple authors should be passed as: ",
-                 "c(\"lastname1, firstname1\", \"lastname2, firstname2\")"))
-  assert_that(
-    !all(str_detect(orcids, ",|;")),
-    msg = "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")")
-  assert_that(length(authors) == length(orcids))
-  assert_that(
-    all(!is.na(orcids)),
-    msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
-  assert_that(
-    all(nchar(orcids) == 19),
-    msg = "Please provide `orcids` in the `0000-0000-0000-0000` format.")
-  assert_that(is.character(reviewers))
-  assert_that(is.string(file_manager))
   check_versionnumber(version_number)
   if (protocol_type == "sfp") {
     assert_that(is.string(theme),
@@ -267,13 +223,9 @@ create_protocol <- function(
     title = title,
     subtitle = subtitle,
     date = date,
-    reviewers = reviewers,
-    file_manager = file_manager,
     version_number = version_number,
     protocol_code = protocol_code,
     language = language,
-    authors = authors,
-    orcids = orcids,
     protocol_type = protocol_type,
     template = template,
     theme = theme,
@@ -335,11 +287,7 @@ create_sfp <- function(
   title,
   subtitle = NULL,
   short_title,
-  authors,
-  orcids,
   date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
@@ -352,11 +300,7 @@ create_sfp <- function(
                   title = title,
                   subtitle = subtitle,
                   short_title = short_title,
-                  authors = authors,
-                  orcids = orcids,
                   date = date,
-                  reviewers = reviewers,
-                  file_manager = file_manager,
                   version_number = version_number,
                   theme = theme,
                   language = language,
@@ -372,11 +316,7 @@ create_spp <- function(
   title,
   subtitle = NULL,
   short_title,
-  authors,
-  orcids,
   date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   project_name,
   language = c("nl", "en"),
@@ -388,11 +328,7 @@ create_spp <- function(
                   title = title,
                   subtitle = subtitle,
                   short_title = short_title,
-                  authors = authors,
-                  orcids = orcids,
                   date = date,
-                  reviewers = reviewers,
-                  file_manager = file_manager,
                   version_number = version_number,
                   project_name = project_name,
                   language = language,
@@ -408,8 +344,6 @@ create_sap <- function(
     title,
     subtitle = NULL,
     short_title,
-    authors,
-    orcids,
     date = Sys.Date(),
     reviewers,
     file_manager,
@@ -424,11 +358,7 @@ create_sap <- function(
                   title = title,
                   subtitle = subtitle,
                   short_title = short_title,
-                  authors = authors,
-                  orcids = orcids,
                   date = date,
-                  reviewers = reviewers,
-                  file_manager = file_manager,
                   version_number = version_number,
                   language = language,
                   from_docx = from_docx,
@@ -443,11 +373,7 @@ create_sip <- function(
     title,
     subtitle = NULL,
     short_title,
-    authors,
-    orcids,
     date = Sys.Date(),
-    reviewers,
-    file_manager,
     version_number = get_version_number(),
     language = c("nl", "en"),
     from_docx = NULL,
@@ -459,11 +385,7 @@ create_sip <- function(
                   title = title,
                   subtitle = subtitle,
                   short_title = short_title,
-                  authors = authors,
-                  orcids = orcids,
                   date = date,
-                  reviewers = reviewers,
-                  file_manager = file_manager,
                   version_number = version_number,
                   language = language,
                   from_docx = from_docx,
@@ -478,11 +400,7 @@ create_sop <- function(
     title,
     subtitle = NULL,
     short_title,
-    authors,
-    orcids,
     date = Sys.Date(),
-    reviewers,
-    file_manager,
     version_number = get_version_number(),
     language = c("nl", "en"),
     from_docx = NULL,
@@ -494,11 +412,7 @@ create_sop <- function(
                   title = title,
                   subtitle = subtitle,
                   short_title = short_title,
-                  authors = authors,
-                  orcids = orcids,
                   date = date,
-                  reviewers = reviewers,
-                  file_manager = file_manager,
                   version_number = version_number,
                   language = language,
                   from_docx = from_docx,
@@ -984,13 +898,9 @@ write_yaml_front_matter <- function(
     title,
     subtitle,
     date,
-    reviewers,
-    file_manager,
     version_number,
     protocol_code,
     language,
-    authors,
-    orcids,
     protocol_type,
     template,
     theme,
@@ -1004,8 +914,6 @@ write_yaml_front_matter <- function(
     index_yml,
     title = title,
     subtitle = subtitle,
-    reviewers = reviewers,
-    file_manager = file_manager,
     version_number = version_number,
     protocol_code = protocol_code,
     language = language
@@ -1013,10 +921,6 @@ write_yaml_front_matter <- function(
   if (is.null(subtitle)) {
     index_yml <- yml_discard(index_yml, "subtitle")
   }
-  index_yml <- yml_author(
-    index_yml,
-    name = authors,
-    orcid = orcids)
   index_yml <- yml_date(
     index_yml,
     date = date)
