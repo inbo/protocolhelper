@@ -10,7 +10,7 @@ kalib <- data.frame(
   Criterium = "",
   Termijn = "")
 
-kable(kalib)
+pander::pander(kalib, split.tables = Inf)
 ```
 
 ## Controle
@@ -24,7 +24,7 @@ controle <- data.frame(
   Criterium = "",
   Termijn = "")
 
-kable(controle)
+pander::pander(controle, split.tables = Inf)
 ```
 
 ## Onderhoud
@@ -38,7 +38,7 @@ onderhoud <- data.frame(
   Criterium = "",
   Termijn = "")
 
-kable(onderhoud)
+pander::pander(onderhoud, split.tables = Inf)
 ```
 
 ### Extern onderhoud
