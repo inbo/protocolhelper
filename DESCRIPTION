@@ -23,6 +23,7 @@ Imports:
     assertthat,
     bookdown,
     checklist (>= 0.2.4),
+    cli,
     commonmark,
     fs,
     gert,

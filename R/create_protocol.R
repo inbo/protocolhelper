@@ -4,6 +4,10 @@
 #' @description This function will create a new folder based on values that are
 #' passed on via the parameters and creates a R-markdown (bookdown) skeleton
 #' based on a template file to start working on a new protocol.
+#' The function is interactive and will ask for the title, optional subtitle,
+#' the authors, reviewers and file manager.
+#' These metadata (YAML section of index.Rmd file) will then be filled in
+#' automatically.
 #' Optionally, the rmarkdown chapters are rendered to an html file which will
 #' be saved in a matching subfolder of the `docs` folder.
 #'
@@ -41,9 +45,6 @@
 #' protocol.
 #'
 #' @inheritParams create_protocol_code
-#' @param title A character string giving the main title of the protocol
-#' @param subtitle A character string for an optional subtitle
-#' @param date A character string of the date in ISO 8601 format (`YYYY-MM-DD`)
 #' @param version_number A version number of the form `YYYY.##`.
 #' The default is a function which will determine this number automatically.
 #' It should normally not be changed.
@@ -73,8 +74,10 @@
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
 #' @importFrom fs path_rel dir_create dir_ls
-#' @importFrom INBOmd add_author
-#'
+#' @importFrom checklist use_author
+#' @importFrom usethis ui_yeah
+#' @importFrom cli cli_alert_success cli_alert cli_alert_info cli_alert_danger
+#' cli_fmt
 #'
 #' @export
 #' @family creation
@@ -82,19 +85,16 @@
 #' \dontrun{
 #' protocolhelper::create_protocol(
 #'   protocol_type = "sfp",
-#'   title = "Test 1", subtitle = "subtitle", short_title = "water 1",
+#'   short_title = "water 1",
 #'   theme = "water", language = "en")
 #' }
 create_protocol <- function(
   protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
-  title,
   short_title,
-  date = Sys.Date(),
   version_number = get_version_number(),
   theme = NULL,
   project_name = NULL,
   language = c("nl", "en"),
-  subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
   template = protocol_type,
@@ -103,16 +103,12 @@ create_protocol <- function(
   # check parameters
   protocol_type <- match.arg(protocol_type)
   assert_that(template %in% c("sfp", "spp", "sap", "sop", "sip", "generic"))
-  assert_that(is.string(title))
-  if (!is.null(subtitle)) {
-    assert_that(is.string(subtitle), nchar(subtitle) > 1)
-  }
   assert_that(is.string(short_title), nchar(short_title) <= 20)
-  assert_that(is.date(as.Date(date)))
   check_versionnumber(version_number)
   if (protocol_type == "sfp") {
-    assert_that(is.string(theme),
-                theme %in% themes_df$theme)
+    assert_that(
+      is.string(theme),
+      theme %in% themes_df$theme)
   }
   if (protocol_type == "spp") {
     assert_that(is.string(project_name))
@@ -121,13 +117,13 @@ create_protocol <- function(
   if (!is.null(protocol_number)) {
     assert_that(
       is.string(protocol_number),
-      !(protocol_number %in% get_protocolnumbers(protocol_type = protocol_type,
-                                                 language = language)),
-      msg = sprintf(
-        "The protocolnumber %s is already in use
-        for protocol type %s and language %s.",
-        protocol_number, protocol_type, language
-      )
+      !(protocol_number %in% get_protocolnumbers(
+        protocol_type = protocol_type,
+        language = language)),
+      msg = cli_fmt(cli_alert_danger(
+        "The protocolnumber {protocol_number} is already in use
+        for protocol type {protocol_type} and language {language}."
+      ))
     )
   }
   assert_that(is.flag(render), noNA(render))
@@ -143,10 +139,12 @@ create_protocol <- function(
 
   short_title <- tolower(short_title)
   short_title <- str_replace_all(short_title, " ", "_")
-  short_titles <- get_short_titles(protocol_type = protocol_type,
-                                   language = language)
-  assert_that(!(short_title %in% short_titles),
-              msg = "The given short title already exists.
+  short_titles <- get_short_titles(
+    protocol_type = protocol_type,
+    language = language)
+  assert_that(
+    !(short_title %in% short_titles),
+    msg = "The given short title already exists.
               Give a short title that is not in use.
               Use get_short_titles() to get an overview of short titles
               that are in use.")
@@ -161,10 +159,11 @@ create_protocol <- function(
   # other machines: it should be relative to path_to_protocol
 
   # directory setup
-  path_to_protocol <- get_path_to_protocol(protocol_code,
-                                           theme = theme,
-                                           project_name = project_name,
-                                           short_title = short_title)
+  path_to_protocol <- get_path_to_protocol(
+    protocol_code,
+    theme = theme,
+    project_name = project_name,
+    short_title = short_title)
   output_dir <- gsub("source", "docs", path_to_protocol)
 
   # next make it relative to path_to_protocol
@@ -182,9 +181,10 @@ create_protocol <- function(
         ),
         character(0)
       )),
-      msg = sprintf(paste0("The protocol repository already has ",
-                        "a non-empty folder %s!"), path_to_protocol)
-      )
+      msg = cli_fmt(cli_alert_danger(
+        "The protocol repository already has a non-empty folder
+        {.path {path_to_protocol}}!")
+      ))
   assert_that(!(dir.exists(output_dir) &&
       !identical(
         unname(
@@ -196,14 +196,18 @@ create_protocol <- function(
         ),
         character(0)
       )),
-      msg = sprintf(paste0("The protocol repository already has ",
-                        "a non-empty folder %s!"), output_dir)
-      )
+      msg = cli_fmt(cli_alert_danger(
+        "The protocol repository already has a non-empty folder
+        {.path {output_dir}}!")
+      ))
   # create new directories
-  dir_create(file.path(path_to_protocol),
-             recurse = TRUE)
-  dir_create(file.path(output_dir),
-             recurse = TRUE)
+  cli_alert_info("Creating folder structure")
+  dir_create(
+    file.path(path_to_protocol),
+    recurse = TRUE)
+  dir_create(
+    file.path(output_dir),
+    recurse = TRUE)
   # create subfolders data and media
   dir_create(file.path(path_to_protocol, "data"))
   dir_create(file.path(path_to_protocol, "media"))
@@ -212,57 +216,127 @@ create_protocol <- function(
   # move all files from the template folder
   parent_rmd <- file.path(path_to_protocol, "index.Rmd")
   template_folder <- paste("template", template, language, sep = "_")
-  draft(file = parent_rmd,
-        template = template_folder,
-        package = "protocolhelper",
-        edit = FALSE)
-
-  # (over)write yaml front matter
-  write_yaml_front_matter(
-    parent_rmd = parent_rmd,
-    path_to_protocol = path_to_protocol,
-    title = title,
-    subtitle = subtitle,
-    date = date,
-    version_number = version_number,
-    protocol_code = protocol_code,
-    language = language,
-    protocol_type = protocol_type,
-    template = template,
-    theme = theme,
-    project_name = project_name
-  )
+  cli_alert_info("Writing template files")
+  draft(
+    file = parent_rmd,
+    template = template_folder,
+    package = "protocolhelper",
+    edit = FALSE)
 
   # write _bookdown.yml
-  write_bookdown_yml(language = language,
-                     book_filename = book_filename,
-                     path_to_protocol = path_to_protocol,
-                     output_dir_rel = output_dir_rel)
+  cli_alert_info("Writing _bookdown.yml")
+  write_bookdown_yml(
+    language = language,
+    book_filename = book_filename,
+    path_to_protocol = path_to_protocol,
+    output_dir_rel = output_dir_rel)
   # write _output.yml
+  cli_alert_info("Writing _output.yml")
   write_output_yml(language = language, path_to_protocol = path_to_protocol)
 
-  # add authors
-  if (interactive()) {
-    add_author(path_to_protocol)
+  # build new yaml
+  readline(prompt = cli_fmt(cli_alert("Enter the title: "))) |>
+    gsub(pattern = "[\"|']", replacement = "") |>
+    sprintf(fmt = "title: \"%s\"") -> yaml
+  readline(
+    prompt = cli_fmt(
+      cli_alert(
+        "Enter the optional subtitle (leave empty to omit): "
+      )
+    )
+  ) |>
+    gsub(pattern = "[\"|']", replacement = "") -> subtitle
+  yaml <- c(yaml, paste("subtitle:", subtitle)[subtitle != ""])
+  cli_alert("Please select the corresponding author")
+  authors <- use_author()
+  c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
+  while (
+    isTRUE(
+      ui_yeah(
+        cli_fmt(
+          cli_alert(
+            "Add another author?"
+            )
+          ),
+        yes = "Yes",
+        no = "No",
+        shuffle = FALSE
+      )
+    )
+  ) {
+    author <- use_author()
+    authors[, c("given", "family", "email")] |>
+      rbind(author[, c("given", "family", "email")]) |>
+      anyDuplicated() -> duplo
+    if (duplo > 0) {
+      cli_alert_danger(
+        "{author$given} {author$family} is already listed as author"
+      )
+      next
+    }
+    c(yaml, author2yaml(author, corresponding = FALSE)) -> yaml
+    authors <- rbind(authors, author)
   }
+  cli_alert("Please select the reviewer")
+  duplo <- 1
+  while (duplo > 0) {
+    reviewer <- use_reviewer()
+    authors[, c("given", "family", "email")] |>
+      rbind(reviewer[, c("given", "family", "email")]) |>
+      anyDuplicated() -> duplo
+    if (duplo > 0) {
+      cli_alert_danger(
+        "{reviewer$given} {reviewer$family} is already listed as author"
+      )
+    }
+  }
+  cli_alert("Please select the file manager")
+  file_manager <- use_file_manager()
+
+  c(
+    yaml,
+    "reviewer:", author2yaml(reviewer, corresponding = FALSE),
+    "file_manager:", author2yaml(file_manager, corresponding = FALSE),
+    paste("language:", language),
+    paste("date:", Sys.Date()),
+    paste("protocol_code:", protocol_code),
+    paste0("version_number: \"", version_number, "\""),
+    paste("template_name:", template),
+    "site: bookdown::bookdown_site",
+    "bibliography: references.yaml"[language == "en"],
+    "bibliography: referenties.yaml"[language == "nl"],
+    "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl"
+  ) -> yaml
+
+  # read index template
+  path(path_to_protocol, "index.Rmd") |>
+    readLines() -> index
+  # remove existing yaml
+  index <- tail(index, -grep("---", index)[2])
+  # add new yaml
+  index <- c("---", yaml, "---", index)
+  writeLines(index, path(path_to_protocol, "index.Rmd"))
+
 
   # start new header in NEWS
   news <- xfun::read_utf8(file.path(path_to_protocol, "NEWS.md"))
-  news <- append(x = news,
-                 values = c(
-                   sprintf("## [%1$s](../%1$s/index.html)", version_number),
-                   "",
-                   "-   ...",
-                   ""
-                 ),
-                 after = 2)
+  news <- append(
+    x = news,
+    values = c(
+      sprintf("## [%1$s](../%1$s/index.html)", version_number),
+      "",
+      "-   ...",
+      ""
+    ),
+    after = 2)
   xfun::write_utf8(news, file.path(path_to_protocol, "NEWS.md"))
 
 
   if (!is.null(from_docx)) {
     assert_that(file.exists(from_docx))
-    create_from_docx(from_docx = from_docx,
-                     path_to_protocol = path_to_protocol)
+    create_from_docx(
+      from_docx = from_docx,
+      path_to_protocol = path_to_protocol)
   }
 
   # render html
@@ -279,9 +353,8 @@ create_protocol <- function(
       those listed in the rmd_files field in the _bookdown.yml file.")
     )
   }
-  message(
-    sprintf("Your protocol has been created in folder %s",
-            path_to_protocol)
+  cli_alert_success(
+    "Your protocol has been created in folder {.path {path_to_protocol}}."
   )
 }
 
@@ -302,18 +375,16 @@ create_sfp <- function(
   template = c("sfp", "generic"),
   render = FALSE) {
   template <- match.arg(template)
-  create_protocol(protocol_type = "sfp",
-                  title = title,
-                  subtitle = subtitle,
-                  short_title = short_title,
-                  date = date,
-                  version_number = version_number,
-                  theme = theme,
-                  language = language,
-                  from_docx = from_docx,
-                  protocol_number = protocol_number,
-                  template = template,
-                  render = render)
+  create_protocol(
+    protocol_type = "sfp",
+    short_title = short_title,
+    version_number = version_number,
+    theme = theme,
+    language = language,
+    from_docx = from_docx,
+    protocol_number = protocol_number,
+    template = template,
+    render = render)
 }
 
 #' @rdname create_protocol
@@ -330,18 +401,16 @@ create_spp <- function(
   protocol_number = NULL,
   template = c("spp"),
   render = FALSE) {
-  create_protocol(protocol_type = "spp",
-                  title = title,
-                  subtitle = subtitle,
-                  short_title = short_title,
-                  date = date,
-                  version_number = version_number,
-                  project_name = project_name,
-                  language = language,
-                  from_docx = from_docx,
-                  protocol_number = protocol_number,
-                  template = template,
-                  render = render)
+  create_protocol(
+    protocol_type = "spp",
+    short_title = short_title,
+    version_number = version_number,
+    project_name = project_name,
+    language = language,
+    from_docx = from_docx,
+    protocol_number = protocol_number,
+    template = template,
+    render = render)
 }
 
 #' @rdname create_protocol
@@ -360,17 +429,15 @@ create_sap <- function(
     template = c("sap", "generic"),
     render = FALSE) {
   template <- match.arg(template)
-  create_protocol(protocol_type = "sap",
-                  title = title,
-                  subtitle = subtitle,
-                  short_title = short_title,
-                  date = date,
-                  version_number = version_number,
-                  language = language,
-                  from_docx = from_docx,
-                  protocol_number = protocol_number,
-                  template = template,
-                  render = render)
+  create_protocol(
+    protocol_type = "sap",
+    short_title = short_title,
+    version_number = version_number,
+    language = language,
+    from_docx = from_docx,
+    protocol_number = protocol_number,
+    template = template,
+    render = render)
 }
 
 #' @rdname create_protocol
@@ -387,17 +454,15 @@ create_sip <- function(
     template = c("sip", "generic"),
     render = FALSE) {
   template <- match.arg(template)
-  create_protocol(protocol_type = "sip",
-                  title = title,
-                  subtitle = subtitle,
-                  short_title = short_title,
-                  date = date,
-                  version_number = version_number,
-                  language = language,
-                  from_docx = from_docx,
-                  protocol_number = protocol_number,
-                  template = template,
-                  render = render)
+  create_protocol(
+    protocol_type = "sip",
+    short_title = short_title,
+    version_number = version_number,
+    language = language,
+    from_docx = from_docx,
+    protocol_number = protocol_number,
+    template = template,
+    render = render)
 }
 
 #' @rdname create_protocol
@@ -414,17 +479,15 @@ create_sop <- function(
     template = c("sop", "generic"),
     render = FALSE) {
   template <- match.arg(template)
-  create_protocol(protocol_type = "sop",
-                  title = title,
-                  subtitle = subtitle,
-                  short_title = short_title,
-                  date = date,
-                  version_number = version_number,
-                  language = language,
-                  from_docx = from_docx,
-                  protocol_number = protocol_number,
-                  template = template,
-                  render = render)
+  create_protocol(
+    protocol_type = "sop",
+    short_title = short_title,
+    version_number = version_number,
+    language = language,
+    from_docx = from_docx,
+    protocol_number = protocol_number,
+    template = template,
+    render = render)
 }
 
 #' @title Function to list all occupied protocol numbers
@@ -462,16 +525,20 @@ get_protocolnumbers <- function(
 
   project_root <- find_root(is_git_root)
   path_to_source <- file.path(project_root, "source")
-  ld <- list.dirs(path = path_to_source,
-                   recursive = TRUE,
-                   full.names = FALSE
+  ld <- list.dirs(
+    path = path_to_source,
+    recursive = TRUE,
+    full.names = FALSE
   )
-  ld <- str_subset(string = ld,
-                   pattern = protocol_type)
-  ld <- str_subset(string = ld,
-                   pattern = paste0("_", language, "_"))
-  ld <- str_extract(string = ld,
-                    pattern = paste0("(?<=", protocol_type, "_)\\d{3}"))
+  ld <- str_subset(
+    string = ld,
+    pattern = protocol_type)
+  ld <- str_subset(
+    string = ld,
+    pattern = paste0("_", language, "_"))
+  ld <- str_extract(
+    string = ld,
+    pattern = paste0("(?<=", protocol_type, "_)\\d{3}"))
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
 
@@ -514,15 +581,19 @@ get_short_titles <- function(
 
   project_root <- find_root(is_git_root)
   path_to_source <- file.path(project_root, "source")
-  ld <- list.dirs(path = path_to_source,
-                   recursive = TRUE,
-                   full.names = FALSE
+  ld <- list.dirs(
+    path = path_to_source,
+    recursive = TRUE,
+    full.names = FALSE
   )
-  ld <- str_subset(string = ld,
-                   pattern = str_replace_all(protocol_type, "-", "_"))
-  ld <- str_extract(string = ld,
-                    pattern = paste0("(?<=\\w{3,6}_", language,
-                                     "_)([a-z]|_|[:digit:])*"))
+  ld <- str_subset(
+    string = ld,
+    pattern = str_replace_all(protocol_type, "-", "_"))
+  ld <- str_extract(
+    string = ld,
+    pattern = paste0(
+      "(?<=\\w{3,6}_", language,
+      "_)([a-z]|_|[:digit:])*"))
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
 
@@ -586,14 +657,16 @@ create_protocol_code <- function(
     reserved_codes[, c("protocoltype", "theme_number", "bare")])
 
   if (protocol_type == "sfp" && is.null(protocol_number)) {
-    protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                         "theme_number"]
+    protocol_leading_number <-
+      themes_df[themes_df$theme == theme,
+                "theme_number"]
     sfp_reserved <- bare_numbers$bare[
       bare_numbers$protocoltype == protocol_type &
         bare_numbers$theme_number == protocol_leading_number] -
       as.numeric(protocol_leading_number) * 100
-    all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
-                                       language = language)
+    all_numbers <- get_protocolnumbers(
+      protocol_type = protocol_type,
+      language = language)
     theme_numbers <- str_subset(
       all_numbers, paste0("^", protocol_leading_number))
     in_use <- as.numeric(theme_numbers) -
@@ -609,31 +682,36 @@ create_protocol_code <- function(
       gapfill_number[length(not_reserved_or_in_use) > 0],
       next_number[length(not_reserved_or_in_use) == 0]
     )
-    protocol_trailing_number <- formatC(protocol_trailing_number,
-                                        width = 2, format = "d", flag = "0")
-    protocol_number <- paste0(protocol_leading_number,
-                              protocol_trailing_number)
+    protocol_trailing_number <- formatC(
+      protocol_trailing_number,
+      width = 2, format = "d", flag = "0")
+    protocol_number <- paste0(
+      protocol_leading_number,
+      protocol_trailing_number)
   }
   if (protocol_type == "sfp" && !is.null(protocol_number)) {
-    expected_leading_number <- themes_df[themes_df$theme == theme,
-                                         "theme_number"]
+    expected_leading_number <-
+      themes_df[themes_df$theme == theme,
+                "theme_number"]
     observed_leading_number <- str_extract(protocol_number, "^\\d")
     assert_that(expected_leading_number == observed_leading_number)
     sfp_reserved <- as.character(bare_numbers$bare[
       bare_numbers$protocoltype == protocol_type &
         bare_numbers$theme_number == observed_leading_number])
-    validate_that(protocol_number %in% sfp_reserved,
-                  msg = sprintf("The protocol number %s is not on the list
-                                of reserved numbers. Are you sure you want to
-                                pass a number manually?",
-                                protocol_number))
+    validate_that(
+      protocol_number %in% sfp_reserved,
+      msg = cli_alert_danger(
+        "The protocol number {protocol_number} is not on the list of
+        reserved numbers.
+        Are you sure you want to pass a number manually?") |> cli_fmt())
   }
   if (protocol_type %in% c("spp", "sap", "sip", "sop")) {
     reserved <- bare_numbers$bare[
       bare_numbers$protocoltype == protocol_type]
     if (is.null(protocol_number)) {
-      all_numbers <- get_protocolnumbers(protocol_type = protocol_type,
-                                         language = language)
+      all_numbers <- get_protocolnumbers(
+        protocol_type = protocol_type,
+        language = language)
       in_use <- as.numeric(all_numbers)
       full_sequence <- seq(1, max(reserved, in_use, 1), 1)
       not_reserved_or_in_use <-
@@ -647,15 +725,18 @@ create_protocol_code <- function(
         next_number[length(not_reserved_or_in_use) == 0]
       )
 
-      protocol_number <- formatC(protocol_number,
-                                 width = 3, format = "d", flag = "0")
+      protocol_number <- formatC(
+        protocol_number,
+        width = 3, format = "d", flag = "0")
     } else {
       reserved <- as.character(reserved)
-      validate_that(protocol_number %in% reserved,
-                    msg = sprintf("The protocol number %s is not on the list
-                                of reserved numbers. Are you sure you want to
-                                pass a number manually?",
-                                  protocol_number))
+      validate_that(
+        protocol_number %in% reserved,
+        msg = cli_alert_danger(
+          "The protocol number {protocol_number} is not on the list
+          of reserved numbers. Are you sure you want to pass a number manually?"
+          ) |> cli_fmt()
+        )
     }
   }
   protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
@@ -696,21 +777,27 @@ create_from_docx <- function(
     verbose = FALSE)
   # add captions
   temp2_filename <- "temp2.Rmd"
-  add_captions(from = file.path(path_to_protocol, temp_filename),
-               to = file.path(path_to_protocol, temp2_filename)
-               )
+  add_captions(
+    from = file.path(path_to_protocol, temp_filename),
+    to = file.path(path_to_protocol, temp2_filename)
+  )
   # move relevant sections
-  contents <- readLines(con = file.path(path_to_protocol,
-                                        temp2_filename))
+  contents <- readLines(
+    con = file.path(
+      path_to_protocol,
+      temp2_filename))
   # replace absolute path to media folder by relative path
   contents <- str_replace_all(contents, path_to_protocol, ".")
   is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
-  title_numbers <- formatC(x = cumsum(is_title),
-                           width = 2, format = "d", flag = "0")
-  filenames <- str_remove(string = tolower(contents[is_title]),
-                          pattern = "^(#{1}\\s{1})")
-  filenames <- str_remove(string = filenames,
-                          pattern = "\\s$")
+  title_numbers <- formatC(
+    x = cumsum(is_title),
+    width = 2, format = "d", flag = "0")
+  filenames <- str_remove(
+    string = tolower(contents[is_title]),
+    pattern = "^(#{1}\\s{1})")
+  filenames <- str_remove(
+    string = filenames,
+    pattern = "\\s$")
   filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")
   filenames <- paste0(unique(title_numbers), "_", filenames, ".Rmd")
   # create new chapters
@@ -719,8 +806,9 @@ create_from_docx <- function(
   for (chapter in unique(cumsum(is_title))) {
     chapter_file <- file.path(path_to_protocol, filenames[chapter])
     chapter_contents <- contents[chapter == cumsum(is_title)]
-    writeLines(text = chapter_contents,
-               con = chapter_file)
+    writeLines(
+      text = chapter_contents,
+      con = chapter_file)
   }
   # delete the complete Rmd (output of convert_docx_rmd)
   file.remove(file.path(path_to_protocol, temp_filename))
@@ -931,16 +1019,19 @@ write_yaml_front_matter <- function(
     index_yml,
     date = date)
   if (protocol_type == "sfp" && template == protocol_type) {
-    index_yml <- yml_replace(index_yml,
-                             theme = theme)
+    index_yml <- yml_replace(
+      index_yml,
+      theme = theme)
   }
   if (protocol_type == "sfp" && template == "generic") {
-    index_yml <- yml_toplevel(index_yml,
-                              theme = theme)
+    index_yml <- yml_toplevel(
+      index_yml,
+      theme = theme)
   }
   if (protocol_type == "spp") {
-    index_yml <- yml_replace(index_yml,
-                             project_name = project_name)
+    index_yml <- yml_replace(
+      index_yml,
+      project_name = project_name)
   }
   # set url and github_repo
   index_yml <- yml_toplevel(
@@ -964,3 +1055,33 @@ write_yaml_front_matter <- function(
     open_doc = FALSE)
   unlink(template_rmd)
 }
+
+#' @importFrom assertthat assert_that
+author2yaml <- function(author, corresponding = FALSE) {
+  assert_that(is.flag(corresponding), noNA(corresponding))
+  c(
+    "  - name:", sprintf("      given: \"%s\"", author$given),
+    sprintf("      family: \"%s\"", author$family)
+  ) -> yaml
+  if (!is.na(author$email) && author$email != "") {
+    yaml <- c(yaml, sprintf("    email: \"%s\"", author$email))
+  }
+  if (!is.na(author$orcid) && author$orcid != "") {
+    yaml <- c(yaml, sprintf("    orcid: \"%s\"", author$orcid))
+  }
+  if (!is.na(author$affiliation) && author$affiliation != "") {
+    yaml <- c(yaml, sprintf("    affiliation: \"%s\"", author$affiliation))
+  }
+  if (!corresponding) {
+    return(paste(yaml, collapse = "\n"))
+  }
+  assert_that(
+    noNA(author$email), author$email != "",
+    msg = "please provide an email for the corresponding author"
+  )
+  paste(c(yaml, "    corresponding: true"), collapse = "\n")
+}
+
+use_reviewer <- function() use_author()
+use_file_manager <- function() use_author()
+
