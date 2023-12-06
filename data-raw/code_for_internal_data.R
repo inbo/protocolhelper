@@ -9,8 +9,7 @@ library(googlesheets4)
 library(dplyr)
 gs4_auth(
   email = "*@inbo.be",
-  scopes = "https://www.googleapis.com/auth/spreadsheets.readonly",
-  use_oob = TRUE)
+  scopes = "https://www.googleapis.com/auth/spreadsheets.readonly")
 
 inventaris_labo <- "1ClXTqk8bDtWz1wAvWeb5HLCU2UHLx0H50ohi5f8zboM"
 
@@ -205,4 +204,13 @@ reserved_codes <- reserved_codes %>%
             inventory = paste(inventory, collapse = " | "),
             .groups = "drop")
 
-usethis::use_data(themes_df, reserved_codes, internal = TRUE, overwrite = TRUE)
+inbo_affiliation <- c(
+  en = "Research Institute for Nature and Forest (INBO)",
+  nl = "Instituut voor Natuur- en Bosonderzoek (INBO)",
+  fr = "Institut de Recherche sur la Nature et les For\u00eats (INBO)",
+  de = "Institut f\u00fcr Natur- und Waldforschung (INBO)"
+)
+
+usethis::use_data(
+  themes_df, reserved_codes, inbo_affiliation,
+  internal = TRUE, overwrite = TRUE)
