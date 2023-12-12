@@ -7,7 +7,7 @@
 #'
 #' @importFrom assertthat assert_that is.string
 #'
-#' @keywords internal
+#' @noRd
 check_versionnumber <- function(version_number) {
   assert_that(is.string(version_number))
   right_format <- grepl("^\\d{4}\\.\\d{2}$", version_number)
@@ -29,7 +29,7 @@ check_versionnumber <- function(version_number) {
 #'
 #' @importFrom assertthat assert_that is.string is.flag
 #'
-#' @keywords internal
+#' @noRd
 check_protocolcode <- function(protocolcode) {
   assert_that(is.string(protocolcode))
   right_format <- grepl("^s[fpioa]p-\\d{3}-(?:nl|en)$", protocolcode)

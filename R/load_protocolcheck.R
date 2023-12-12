@@ -8,7 +8,7 @@
 #' @return A `Protocolcheck` object.
 #'
 #' @importFrom assertthat assert_that is.string
-#' @keywords internal
+#' @noRd
 #'
 load_protocolcheck <- function(x) {
   if (!inherits(x, "Protocolcheck")) {

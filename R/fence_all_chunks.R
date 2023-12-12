@@ -22,7 +22,7 @@
 #' @importFrom stringr str_extract
 #' @importFrom purrr prepend
 #'
-#' @keywords internal
+#' @noRd
 fence_all_chunks <- function(input) {
   #adapted from bookdown::fence_theorems()
   text <- read_utf8(input)

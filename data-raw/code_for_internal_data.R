@@ -38,11 +38,32 @@ sip2 <- googlesheets4::read_sheet(
   sheet = "SIP") %>%
   janitor::clean_names()
 
+# genetisch labo
+inventaris_gendiv <- "1ItMaxUZDgJJqf8kf1Y_SgNgxahbxxXqWcKLAKshoatw"
+sap_gendiv <- googlesheets4::read_sheet(
+  ss = inventaris_gendiv,
+  sheet = "SAP") %>%
+  janitor::clean_names()
+sip_gendiv <- googlesheets4::read_sheet(
+  ss = inventaris_gendiv,
+  sheet = "SIP") %>%
+  janitor::clean_names()
+sop_gendiv <- googlesheets4::read_sheet(
+  ss = inventaris_gendiv,
+  sheet = "SOP") %>%
+  janitor::clean_names()
+
+
+
+
+#####################################################
+# harmoniseren
 sip_cleaned <- sip %>%
-  mutate(description = sprintf("Toestel: %s; Type model: %s; Producent: %s",
-                               toestel, type_model, producent),
+  filter(!is.na(sip)) %>%
+  mutate(description = sprintf("Apparaat: %s; Type model: %s; Producent: %s",
+                               apparaat, type_model, producent),
          inventory = "lab") %>%
-  select(protocolcode = sip_code,
+  select(protocolcode = sip,
          description,
          inventory) %>%
   mutate(protocolcode = paste0(tolower(protocolcode), "-nl")) %>%
@@ -99,13 +120,58 @@ sap_cleaned <- sap %>%
 all(grepl("s[fioap]p-\\w{3,6}-nl",
           x = sap_cleaned$protocolcode))
 
+sap_gendiv_cleaned <- sap_gendiv %>%
+  filter(!is.na(sap_code)) %>%
+  mutate(description = sprintf("Methode: %s; Techniek: %s",
+                               methode, techniek)) %>%
+  select(protocolcode = sap_code,
+         description) %>%
+  mutate(protocolcode = paste0(tolower(protocolcode), "-nl"),
+         protocolcode = gsub("\\/", "", protocolcode),
+         inventory = "gendiv") %>%
+  distinct()
+
+all(grepl("s[fioap]p-\\w{3,6}-nl",
+          x = sap_gendiv_cleaned$protocolcode))
+
+sip_gendiv_cleaned <- sip_gendiv %>%
+  filter(!is.na(sip_code)) %>%
+  mutate(description = sprintf("Toestel: %s; Type model: %s; Producent: %s",
+                               toestel, type_model, producent)) %>%
+  select(protocolcode = sip_code,
+         description) %>%
+  mutate(protocolcode = paste0(tolower(protocolcode), "-nl"),
+         protocolcode = gsub("\\/", "", protocolcode),
+         inventory = "gendiv") %>%
+  distinct()
+
+all(grepl("s[fioap]p-\\w{3,6}-nl",
+          x = sip_gendiv_cleaned$protocolcode))
+
+sop_gendiv_cleaned <- sop_gendiv %>%
+  filter(!is.na(sop_code)) %>%
+  mutate(description = sprintf("Procedure: %s",
+                               procedure)) %>%
+  select(protocolcode = sop_code,
+         description) %>%
+  mutate(protocolcode = paste0(tolower(protocolcode), "-nl"),
+         protocolcode = gsub("\\/", "", protocolcode),
+         inventory = "gendiv") %>%
+  distinct()
+
+all(grepl("s[fioap]p-\\w{3,6}-nl",
+          x = sop_gendiv_cleaned$protocolcode))
+
 
 reserved_codes <- bind_rows(
   sap_cleaned,
+  sap_gendiv_cleaned,
   sfp_cleaned,
   sip_cleaned,
   sip2_cleaned,
-  sop_cleaned
+  sip_gendiv_cleaned,
+  sop_cleaned,
+  sop_gendiv_cleaned
 )
 
 # also add bare number versions in case of 123a type numbers
@@ -131,6 +197,12 @@ reserved_codes <- bind_rows(reserved_codes, bare_codes) %>%
   filter(grepl(pattern = "\\d{3}.{0,3}", x = .$protocolnumber)) %>%
   mutate(protocolnumber_bare = stringr::str_sub(protocolnumber, 1, 3))
 
-
+# some protocolcodes are listed more than once
+reserved_codes <- reserved_codes %>%
+  group_by(protocolcode, protocoltype, protocolnumber, language,
+           protocolnumber_bare) %>%
+  summarise(description = paste(description, collapse = " | "),
+            inventory = paste(inventory, collapse = " | "),
+            .groups = "drop")
 
 usethis::use_data(themes_df, reserved_codes, internal = TRUE, overwrite = TRUE)

@@ -63,7 +63,7 @@ tibble(
   taal = metadata[["language"]],
   projectnaam = metadata[["project_name"]]
 ) %>%
-  kable()
+  pander::pander(split.tables = Inf)
 ```
 
 ```{r results="asis"}

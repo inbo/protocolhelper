@@ -18,7 +18,7 @@
 #' @importFrom gert git_branch git_branch_list git_branch_checkout
 #' @importFrom assertthat assert_that is.flag is.string noNA
 #'
-#' @keywords internal
+#' @noRd
 #'
 #' @return a `.zenodo.json` file (write = TRUE) or a `json` string
 #' (write = FALSE)

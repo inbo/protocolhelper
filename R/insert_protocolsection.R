@@ -179,7 +179,7 @@ insert_protocolsection <-
 #' @importFrom fs path_rel
 #' @importFrom purrr map pmap
 #'
-#' @keywords internal
+#' @noRd
 get_data_media <- function(rmd_content, code_subprotocol, tag) {
   # dealing with external figures and tabular data
   # extract all paths to data or media
@@ -223,7 +223,7 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
 #' @param rmd_content Character vector (each element is a line read from an
 #' Rmarkdown file)
 #'
-#' @keywords internal
+#' @noRd
 mark_chunks <- function(rmd_content) {
   # handling the section arguments
   # avoid looking in chunks which can have lines starting with '#'
