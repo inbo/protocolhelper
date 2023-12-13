@@ -27,7 +27,6 @@ Imports:
     commonmark,
     fs,
     gert,
-    INBOmd,
     jsonlite,
     knitr,
     purrr,
