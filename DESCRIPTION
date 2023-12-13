@@ -36,6 +36,7 @@ Imports:
     rprojroot,
     slickR,
     stringr,
+    usethis,
     xfun,
     xml2,
     yaml,
