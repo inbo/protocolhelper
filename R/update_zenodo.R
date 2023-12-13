@@ -67,8 +67,7 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE, path = ".") {
   for (i in seq_along(authors_to_add)) {
     authors_to_add[[i]] <- append(
       authors_to_add[[i]],
-      list(affiliation = "Research Institute for Nature and Forest",
-           type = "Researcher"),
+      list(type = "Researcher"),
       after = 1)
       }
   contributors <- append(contributors, authors_to_add)
