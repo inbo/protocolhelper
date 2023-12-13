@@ -6,7 +6,7 @@
 #' based on a template file to start working on a new protocol.
 #' The function is interactive and will ask for the title, optional subtitle,
 #' the authors, reviewers and file manager.
-#' These metadata (YAML section of index.Rmd file) will then be filled in
+#' These metadata (YAML section of `index.Rmd` file) will then be filled in
 #' automatically.
 #' Optionally, the rmarkdown chapters are rendered to an html file which will
 #' be saved in a matching subfolder of the `docs` folder.
@@ -305,7 +305,7 @@ create_protocol <- function(
     "site: bookdown::bookdown_site",
     "bibliography: references.yaml"[language == "en"],
     "bibliography: referenties.yaml"[language == "nl"],
-    "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl"
+    "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" #nolint
   ) -> yaml
 
   # read index template
@@ -363,10 +363,7 @@ create_protocol <- function(
 #' @export
 
 create_sfp <- function(
-  title,
-  subtitle = NULL,
   short_title,
-  date = Sys.Date(),
   version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
@@ -390,10 +387,7 @@ create_sfp <- function(
 #' @rdname create_protocol
 #' @export
 create_spp <- function(
-  title,
-  subtitle = NULL,
   short_title,
-  date = Sys.Date(),
   version_number = get_version_number(),
   project_name,
   language = c("nl", "en"),
@@ -416,12 +410,7 @@ create_spp <- function(
 #' @rdname create_protocol
 #' @export
 create_sap <- function(
-    title,
-    subtitle = NULL,
     short_title,
-    date = Sys.Date(),
-    reviewers,
-    file_manager,
     version_number = get_version_number(),
     language = c("nl", "en"),
     from_docx = NULL,
@@ -443,10 +432,7 @@ create_sap <- function(
 #' @rdname create_protocol
 #' @export
 create_sip <- function(
-    title,
-    subtitle = NULL,
     short_title,
-    date = Sys.Date(),
     version_number = get_version_number(),
     language = c("nl", "en"),
     from_docx = NULL,
@@ -468,10 +454,7 @@ create_sip <- function(
 #' @rdname create_protocol
 #' @export
 create_sop <- function(
-    title,
-    subtitle = NULL,
     short_title,
-    date = Sys.Date(),
     version_number = get_version_number(),
     language = c("nl", "en"),
     from_docx = NULL,
@@ -1084,4 +1067,3 @@ author2yaml <- function(author, corresponding = FALSE) {
 
 use_reviewer <- function() use_author()
 use_file_manager <- function() use_author()
-
