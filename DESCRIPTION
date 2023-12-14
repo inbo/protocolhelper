@@ -31,10 +31,8 @@ Imports:
     knitr,
     purrr,
     R6,
-    reactable,
     rmarkdown,
     rprojroot,
-    slickR,
     stringr,
     usethis,
     xfun,
@@ -47,6 +45,8 @@ Suggests:
     magick,
     pander,
     png,
+    reactable,
+    slickR,
     testthat (>= 2.1.0)
 Additional_repositories: https://inbo.r-universe.dev
 Config/checklist/communities: inbo

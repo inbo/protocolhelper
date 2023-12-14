@@ -37,6 +37,10 @@
 
 render_release <- function(output_root = "publish") {
   assert_that(is.string(output_root))
+  assert_that(
+    requireNamespace("reactable", quietly = TRUE),
+    requireNamespace("slickR", quietly = TRUE)
+  )
 
   old_wd <- getwd()
   on.exit(setwd(old_wd), add = TRUE)
