@@ -28,12 +28,12 @@ test_that("add author works", {
     affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
 
-
   local_mocked_bindings(
     ui_yeah = function(...) FALSE,
     use_author = function(...) author_df,
     use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df
+    use_file_manager = function(...) file_manager_df,
+    readline = function(...) "Een titel"
   )
 
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)

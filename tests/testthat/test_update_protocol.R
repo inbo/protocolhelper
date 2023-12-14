@@ -1,21 +1,55 @@
 test_that("Update of a protocol works", {
+  author_df <- data.frame(
+    stringsAsFactors = FALSE,
+    given = c("Hans"),
+    family = c("Van Calster"),
+    email = c("hans.vancalster@inbo.be"),
+    orcid = c("0000-0001-8595-8426"),
+    affiliation = c("Research Institute for Nature and Forest (INBO)")
+  )
+  reviewer_df <- data.frame(
+    stringsAsFactors = FALSE,
+    given = c("Els"),
+    family = c("Lommelen"),
+    email = c("els.lommelen@inbo.be"),
+    orcid = c("0000-0002-3481-5684"),
+    affiliation = c("Research Institute for Nature and Forest (INBO)")
+  )
+  file_manager_df <- data.frame(
+    stringsAsFactors = FALSE,
+    given = c("Pieter"),
+    family = c("Verschelde"),
+    email = c("pieter.verschelde@inbo.be"),
+    orcid = c("0000-0002-9199-421X"),
+    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
+  )
+
+
+  local_mocked_bindings(
+    ui_yeah = function(...) FALSE,
+    use_author = function(...) author_df,
+    use_reviewer = function(...) reviewer_df,
+    use_file_manager = function(...) file_manager_df,
+    readline = function(...) "Een titel"
+  )
+
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
   on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
-  repo <- gert::git_clone(url = origin_repo,
-                          path = tempfile("protocol_local"), verbose = FALSE)
+  repo <- gert::git_clone(
+    url = origin_repo,
+    path = tempfile("protocol_local"), verbose = FALSE)
   on.exit(unlink(repo, recursive = TRUE), add = TRUE)
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(name = "user.email", value = "someone@example.org",
-                       repo = repo)
+  gert::git_config_set(
+    name = "user.email", value = "someone@example.org",
+    repo = repo)
   # create a protocol
   old_wd <- setwd(repo)
   on.exit(setwd(old_wd), add = TRUE)
   version_number <- "2021.01"
   create_sfp(
-    title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "John, Doe", orcids = "0000-0001-2345-6789",
-    reviewers = "someone else", file_manager = "who?",
+    short_title = "water 1",
     version_number = version_number, theme = "water", language = "en"
   )
 
