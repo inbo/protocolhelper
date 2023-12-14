@@ -117,12 +117,8 @@ render_release <- function(output_root = "publish") {
         template = "pandoc/inbo_protocol.tex", # nolint
         pandoc_args = c(
           "--top-level-division=chapter",
-          as.vector(
-            sapply(
-              yaml[[i]][["reviewers"]],
-              pandoc_variable_arg,
-              name = "reviewer"
-            )
+          pandoc_variable_arg(
+            "reviewers", yaml[[i]][["reviewers"]]
           ),
           pandoc_variable_arg(
             "file_manager", yaml[[i]][["file_manager"]]
@@ -150,12 +146,8 @@ render_release <- function(output_root = "publish") {
         split_by = output_yaml[[i]][["bookdown::gitbook"]][["split_by"]],
         split_bib = output_yaml[[i]][["bookdown::gitbook"]][["split_bib"]],
         pandoc_args = c(
-          as.vector(
-            sapply(
-              yaml[[i]][["reviewers"]],
-              pandoc_variable_arg,
-              name = "reviewer"
-            )
+          pandoc_variable_arg(
+            "reviewers", yaml[[i]][["reviewers"]]
           ),
           pandoc_variable_arg(
             "file_manager", yaml[[i]][["file_manager"]]
