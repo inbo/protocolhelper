@@ -73,8 +73,8 @@
 #' @importFrom assertthat assert_that is.string is.date is.flag noNA
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
-#' @importFrom fs path_rel dir_create dir_ls
-#' @importFrom checklist use_author
+#' @importFrom fs path_rel dir_create dir_ls file_copy
+#' @importFrom checklist use_author citation_meta
 #' @importFrom usethis ui_yeah
 #' @importFrom cli cli_alert_success cli_alert cli_alert_info cli_alert_danger
 #' cli_fmt
@@ -234,6 +234,14 @@ create_protocol <- function(
   cli_alert_info("Writing _output.yml")
   write_output_yml(language = language, path_to_protocol = path_to_protocol)
 
+  # add LICENSE file
+  cli_alert_info("Writing CC-BY license file")
+  system.file(
+    file.path("rmarkdown", "templates", "cc_by_4_0.md"),
+    package = "protocolhelper") |>
+    file_copy(file.path(path_to_protocol, "LICENSE.md"))
+
+
   # build new yaml
   readline(prompt = cli_fmt(cli_alert("Enter the title: "))) |>
     gsub(pattern = "[\"|']", replacement = "") |>
@@ -317,6 +325,16 @@ create_protocol <- function(
   cli_alert("Please select the file manager")
   file_manager <- use_file_manager()
 
+  readline(prompt = cli_fmt(
+    cli_alert("Enter one or more keywords separated by `;`"))) |>
+    gsub(pattern = "[\"|']", replacement = "") |>
+    strsplit(";") |>
+    unlist() |>
+    gsub(pattern = "^\\s+", replacement = "") |>
+    gsub(pattern = "\\s+$", replacement = "") |>
+    paste(collapse = "; ") |>
+    sprintf(fmt = "keywords: \"%s\"") -> keywords
+
   c(
     yaml,
     "file_manager:", author2yaml(file_manager, corresponding = FALSE),
@@ -327,9 +345,12 @@ create_protocol <- function(
     paste("template_name:", template),
     paste("theme:", theme)[!is.null(theme)],
     paste("project_name:", project_name)[!is.null(project_name)],
+    keywords,
+    "community: \"inbo\"",
     "site: bookdown::bookdown_site",
     "bibliography: references.yaml"[language == "en"],
     "bibliography: referenties.yaml"[language == "nl"],
+    "link-citations: TRUE",
     "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" #nolint
   ) -> yaml
 
@@ -342,6 +363,8 @@ create_protocol <- function(
   index <- c("---", yaml, "---", index)
   writeLines(index, path(path_to_protocol, "index.Rmd"))
 
+  # create citation file
+  cit_meta <- citation_meta$new(path_to_protocol)
 
   # start new header in NEWS
   news <- xfun::read_utf8(file.path(path_to_protocol, "NEWS.md"))

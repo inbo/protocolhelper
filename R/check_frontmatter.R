@@ -18,6 +18,7 @@
 #' @importFrom assertthat assert_that is.string has_name is.flag noNA
 #' @importFrom stringr str_detect
 #' @importFrom purrr map_lgl map_chr
+#' @importFrom checklist citation_meta
 #'
 #' @export
 #' @family check
@@ -36,6 +37,11 @@ check_frontmatter <- function(
                              " does not exist."))
     return(x$check(fail = fail))
   }
+
+  cit_meta <- citation_meta$new(x$path)
+  #x$add_warnings(cit_meta$get_warnings, "CITATION")
+  x$add_error(cit_meta$get_errors)
+  #x$add_notes(cit_meta$get_notes, item = "CITATION")
 
   yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
 
@@ -64,8 +70,10 @@ check_frontmatter <- function(
     return(x$check(fail = fail))
   }
 
-  yml_template <- yaml_front_matter(input = file.path(path_to_template,
-                                                      "skeleton.Rmd"))
+  yml_template <- yaml_front_matter(
+    input = file.path(
+      path_to_template,
+      "skeleton.Rmd"))
 
   # check if all yaml keys are present
   yml_missing <- yml_template[!names(yml_template) %in% names(yml_protocol)]
