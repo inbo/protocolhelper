@@ -25,7 +25,7 @@ and published.
 }
 \seealso{
 Other check: 
-\code{\link{check_all_author_info}()},
+\code{\link{check_all_person_info}()},
 \code{\link{check_all}()},
 \code{\link{check_frontmatter}()},
 \code{\link{protocolcheck}},

@@ -140,7 +140,7 @@ This function will create a new folder based on values that are
 passed on via the parameters and creates a R-markdown (bookdown) skeleton
 based on a template file to start working on a new protocol.
 The function is interactive and will ask for the title, optional subtitle,
-the authors, reviewers and file manager.
+the authors, reviewers, file manager and keywords.
 These metadata (YAML section of \code{index.Rmd} file) will then be filled in
 automatically.
 Optionally, the rmarkdown chapters are rendered to an html file which will
