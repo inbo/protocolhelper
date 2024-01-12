@@ -38,11 +38,6 @@ check_frontmatter <- function(
     return(x$check(fail = fail))
   }
 
-  cit_meta <- citation_meta$new(x$path)
-  #x$add_warnings(cit_meta$get_warnings, "CITATION")
-  x$add_error(cit_meta$get_errors)
-  #x$add_notes(cit_meta$get_notes, item = "CITATION")
-
   yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
 
   if (!(is.string(yml_protocol$template_name) &&
@@ -84,8 +79,7 @@ check_frontmatter <- function(
   )
 
   # checks common to all protocol types
-  yml_string <- list("title" = yml_protocol$title,
-                  "file_manager" = yml_protocol$file_manager)
+  yml_string <- list("title" = yml_protocol$title)
   problems <- c(problems,
                 sprintf(
                   "'%s' must be a string",
@@ -106,8 +100,21 @@ check_frontmatter <- function(
                     nchar(yml_protocol$subtitle) <= 1)]
   )
 
-  problems <- check_all_author_info(author_list = yml_protocol$author,
-                                    problems_vect = problems)
+  # check persons
+  cit_meta <- citation_meta$new(x$path)
+  problems <- c(problems, cit_meta$get_errors)
+
+  problems <- check_all_person_info(
+    person_list = yml_protocol$author,
+    problems_vect = problems)
+
+  problems <- check_all_person_info(
+    person_list = yml_protocol$reviewer,
+    problems_vect = problems)
+
+  problems <- check_all_person_info(
+    person_list = yml_protocol$file_manager,
+    problems_vect = problems)
 
   if (!requireNamespace("lubridate", quietly = TRUE)) {
     stop("Package \"lubridate\" needed for checking of date. ",
@@ -125,11 +132,6 @@ check_frontmatter <- function(
           )
       ])
 
-
-  problems <-
-    c(problems,
-      "'reviewers' must be a character vector"[
-        !is.character(yml_protocol$reviewers)])
 
   right_format <- grepl("^s[fpioa]p-\\d{3}-(?:nl|en)$",
                         yml_protocol$protocol_code)
