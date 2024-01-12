@@ -12,18 +12,11 @@ protocol and optionally render to html}
 \usage{
 create_protocol(
   protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
-  title,
   short_title,
-  authors,
-  orcids,
-  date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   theme = NULL,
   project_name = NULL,
   language = c("nl", "en"),
-  subtitle = NULL,
   from_docx = NULL,
   protocol_number = NULL,
   template = protocol_type,
@@ -31,14 +24,7 @@ create_protocol(
 )
 
 create_sfp(
-  title,
-  subtitle = NULL,
   short_title,
-  authors,
-  orcids,
-  date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   theme = c("generic", "water", "air", "soil", "vegetation", "species"),
   language = c("nl", "en"),
@@ -49,14 +35,7 @@ create_sfp(
 )
 
 create_spp(
-  title,
-  subtitle = NULL,
   short_title,
-  authors,
-  orcids,
-  date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   project_name,
   language = c("nl", "en"),
@@ -67,14 +46,7 @@ create_spp(
 )
 
 create_sap(
-  title,
-  subtitle = NULL,
   short_title,
-  authors,
-  orcids,
-  date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -84,14 +56,7 @@ create_sap(
 )
 
 create_sip(
-  title,
-  subtitle = NULL,
   short_title,
-  authors,
-  orcids,
-  date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -101,14 +66,7 @@ create_sip(
 )
 
 create_sop(
-  title,
-  subtitle = NULL,
   short_title,
-  authors,
-  orcids,
-  date = Sys.Date(),
-  reviewers,
-  file_manager,
   version_number = get_version_number(),
   language = c("nl", "en"),
   from_docx = NULL,
@@ -122,25 +80,8 @@ create_sop(
 standard project protocol), \code{sap} (standard analytical protocol), \code{sip} (
 standard instrument protocol), \code{sop} (standard operating protocol)}
 
-\item{title}{A character string giving the main title of the protocol}
-
 \item{short_title}{A character string of less than 20 characters to use in
 folder and file names}
-
-\item{authors}{A character vector for authors of the form
-\code{c("lastname1, firstname1", "lastname2, firstname2")}}
-
-\item{orcids}{A character vector of \code{orcid} IDs, equal in length to authors.
-If one of the authors does not have an \code{orcid} ID, use \code{NA} to indicate this
-in the corresponding position of the character vector (or get an \code{orcid} ID).}
-
-\item{date}{A character string of the date in ISO 8601 format (\code{YYYY-MM-DD})}
-
-\item{reviewers}{A character vector for reviewers of the form First name
-Last name}
-
-\item{file_manager}{A character string for the name of the document
-maintainer of the form First name Last name}
 
 \item{version_number}{A version number of the form \code{YYYY.##}.
 The default is a function which will determine this number automatically.
@@ -160,8 +101,6 @@ Ignored if protocol_type is other than \code{"spp"}.}
 
 \item{language}{Language of the protocol, either \code{"nl"} (Dutch),
 the default, or \code{"en"} (English).}
-
-\item{subtitle}{A character string for an optional subtitle}
 
 \item{from_docx}{A character string with the path (absolute or relative) to
 a \code{.docx} file containing a pre-existing protocol.
@@ -200,6 +139,10 @@ Defaults to FALSE.}
 This function will create a new folder based on values that are
 passed on via the parameters and creates a R-markdown (bookdown) skeleton
 based on a template file to start working on a new protocol.
+The function is interactive and will ask for the title, optional subtitle,
+the authors, reviewers, file manager and keywords.
+These metadata (YAML section of \code{index.Rmd} file) will then be filled in
+automatically.
 Optionally, the rmarkdown chapters are rendered to an html file which will
 be saved in a matching subfolder of the \code{docs} folder.
 }
@@ -240,10 +183,7 @@ protocol.
 \dontrun{
 protocolhelper::create_protocol(
   protocol_type = "sfp",
-  title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-  authors = c("Someone, Else", "Another, One"),
-  orcids = c("0000-0001-2345-6789", "0000-0002-2345-6789"),
-  reviewers = "me", file_manager = "who?",
+  short_title = "water 1",
   theme = "water", language = "en")
 }
 }

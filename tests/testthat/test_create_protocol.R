@@ -1,4 +1,8 @@
-test_that("Update of a protocol works", {
+test_that("add author works", {
+  if (!requireNamespace("gert", quietly = TRUE)) {
+    stop("please install 'gert' package for these tests to work")
+  }
+
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),
@@ -24,7 +28,6 @@ test_that("Update of a protocol works", {
     affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
 
-
   local_mocked_bindings(
     ui_yeah = function(...) FALSE,
     use_author = function(...) author_df,
@@ -39,51 +42,37 @@ test_that("Update of a protocol works", {
     url = origin_repo,
     path = tempfile("protocol_local"), verbose = FALSE)
   on.exit(unlink(repo, recursive = TRUE), add = TRUE)
+  old_wd <- setwd(repo)
+  on.exit(setwd(old_wd), add = TRUE)
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
   gert::git_config_set(
     name = "user.email", value = "someone@example.org",
     repo = repo)
-  # create a protocol
-  old_wd <- setwd(repo)
-  on.exit(setwd(old_wd), add = TRUE)
-  version_number <- "2021.01"
-  create_sfp(
-    short_title = "water 1",
-    version_number = version_number, theme = "water", language = "en"
-  )
-
-  # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
+  file.create("NEWS.md")
+  gert::git_add("NEWS.md")
+  gert::git_commit_all(message = "add empty NEWS repo file")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-           refspec =  refspec,
-           set_upstream = TRUE,
-           repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec =  refspec,
+    set_upstream = TRUE,
+    repo = repo)
 
-  # prepare to start an update of the protocol
-  update_protocol("sfp-101-en")
-  gert::git_commit_all(message = "update version number sfp-101-en_water-1")
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
-
-
-  expect_identical(
-    gert::git_branch(repo = repo),
-    "sfp-101-en"
-  )
-  expect_identical(
-    yaml_front_matter(
-      file.path(get_path_to_protocol("sfp-101-en"),
-                "index.Rmd"))$version,
-    paste0(format(Sys.Date(), "%Y"), ".01")
-  )
+  branch_info <- gert::git_branch_list(repo = repo)
+  main_branch <- ifelse(
+    any(branch_info$name == "origin/main"),
+    "main", ifelse(
+      any(branch_info$name == "origin/master"),
+      "master", "unknown"))
+  # create a protocol
+  version_number <- get_version_number()
+  create_sfp(
+    short_title = "water 1",
+    template = "generic",
+    version_number = version_number,
+    theme = "water",
+    language = "en"
+  ) |> expect_no_error()
 })

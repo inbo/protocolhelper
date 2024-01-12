@@ -18,6 +18,7 @@
 #' @importFrom assertthat assert_that is.string has_name is.flag noNA
 #' @importFrom stringr str_detect
 #' @importFrom purrr map_lgl map_chr
+#' @importFrom checklist citation_meta
 #'
 #' @export
 #' @family check
@@ -64,8 +65,10 @@ check_frontmatter <- function(
     return(x$check(fail = fail))
   }
 
-  yml_template <- yaml_front_matter(input = file.path(path_to_template,
-                                                      "skeleton.Rmd"))
+  yml_template <- yaml_front_matter(
+    input = file.path(
+      path_to_template,
+      "skeleton.Rmd"))
 
   # check if all yaml keys are present
   yml_missing <- yml_template[!names(yml_template) %in% names(yml_protocol)]
@@ -76,8 +79,7 @@ check_frontmatter <- function(
   )
 
   # checks common to all protocol types
-  yml_string <- list("title" = yml_protocol$title,
-                  "file_manager" = yml_protocol$file_manager)
+  yml_string <- list("title" = yml_protocol$title)
   problems <- c(problems,
                 sprintf(
                   "'%s' must be a string",
@@ -98,8 +100,21 @@ check_frontmatter <- function(
                     nchar(yml_protocol$subtitle) <= 1)]
   )
 
-  problems <- check_all_author_info(author_list = yml_protocol$author,
-                                    problems_vect = problems)
+  # check persons
+  cit_meta <- citation_meta$new(x$path)
+  problems <- c(problems, cit_meta$get_errors)
+
+  problems <- check_all_person_info(
+    person_list = yml_protocol$author,
+    problems_vect = problems)
+
+  problems <- check_all_person_info(
+    person_list = yml_protocol$reviewer,
+    problems_vect = problems)
+
+  problems <- check_all_person_info(
+    person_list = yml_protocol$file_manager,
+    problems_vect = problems)
 
   if (!requireNamespace("lubridate", quietly = TRUE)) {
     stop("Package \"lubridate\" needed for checking of date. ",
@@ -117,11 +132,6 @@ check_frontmatter <- function(
           )
       ])
 
-
-  problems <-
-    c(problems,
-      "'reviewers' must be a character vector"[
-        !is.character(yml_protocol$reviewers)])
 
   right_format <- grepl("^s[fpioa]p-\\d{3}-(?:nl|en)$",
                         yml_protocol$protocol_code)

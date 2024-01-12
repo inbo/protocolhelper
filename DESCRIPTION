@@ -23,6 +23,7 @@ Imports:
     assertthat,
     bookdown,
     checklist (>= 0.2.4),
+    cli,
     commonmark,
     fs,
     gert,
@@ -30,11 +31,10 @@ Imports:
     knitr,
     purrr,
     R6,
-    reactable,
     rmarkdown,
     rprojroot,
-    slickR,
     stringr,
+    usethis,
     xfun,
     xml2,
     yaml,
@@ -45,6 +45,8 @@ Suggests:
     magick,
     pander,
     png,
+    reactable,
+    slickR,
     testthat (>= 2.1.0)
 Additional_repositories: https://inbo.r-universe.dev
 Config/checklist/communities: inbo

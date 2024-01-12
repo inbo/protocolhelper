@@ -84,76 +84,55 @@ validate_orcid <- function(orcid) {
 
 
 
-#' Helper function to check if author information is correct
+#' Helper function to check if person information is correct
 #'
-#' Checks the format of author names and `orcid` ids.
+#' Checks the format of person names and `orcid` ids.
 #'
-#' @param author_list the yaml front matter part containing author info
+#' @param person_list the yaml front matter part containing person info
 #' @param problems_vect character vector of previously encountered problems
 #'
 #' @return a character vector of previously encountered problems and problems
-#' identified for author names and `orcid` ids.
+#' identified for person names and `orcid` ids.
 #' @export
 #' @family check
-check_all_author_info <- function(
-    author_list,
+check_all_person_info <- function(
+    person_list,
     problems_vect
     ) {
-  author_name <- map_lgl(author_list, ~is.string(.$name))
-  author_orcid <- map_lgl(author_list, ~is.string(.$orcid))
+  person_given <- map_lgl(person_list, ~is.string(.$name$given))
+  person_family <- map_lgl(person_list, ~is.string(.$name$family))
+  person_orcid <- map_lgl(person_list, ~is.string(.$orcid))
   problems <-
     c(problems_vect,
       sprintf(
-        "Author nr %s had an invalid name (no string)",
-        seq_along(author_name)[!author_name]
+        "Person nr %s had an invalid given name (no string)",
+        seq_along(person_given)[!person_given]
+      ))
+  problems <-
+    c(problems_vect,
+      sprintf(
+        "Person nr %s had an invalid family name (no string)",
+        seq_along(person_family)[!person_family]
       ))
   problems <-
     c(problems,
       sprintf(
-        "Author nr %s had an invalid orcid (no string)",
-        seq_along(author_orcid)[!author_orcid]
+        "Person nr %s had an invalid orcid (no string)",
+        seq_along(person_orcid)[!person_orcid]
       ))
 
-  if (all(author_name)) {
-    names <- map_chr(author_list, "name")
-    problems <- c(
-      problems,
-      "A single author should be passed as: c(\"lastname1, firstname1\")"[
-        !((is.string(names) & all(str_detect(names, ",{1}"))) |
-            is.character(names))])
-    problems <- c(
-      problems,
-      paste0("Multiple commas detected in author string.",
-             "Multiple authors should be passed as: ",
-             "c(\"lastname1, firstname1\", \"lastname2, firstname2\")")[
-               !((is.string(names) & !all(str_detect(names, ",{2,}"))) |
-                   is.character(names))])
-  }
-  if (all(author_orcid)) {
-    orcids <- map_chr(author_list, "orcid")
+  if (all(person_orcid)) {
+    orcids <- map_chr(person_list, "orcid")
     problems <-
       c(problems,
         "Please provide `orcids` in the `0000-0000-0000-0000` format."[
           !all(nchar(orcids) == 19)])
-    problems <- c(
-      problems,
-      "Multiple orcids should be passed as c(\"orcid1\", \"orcid2\")"[
-        any(str_detect(orcids, ",|;"))])
     valid_orcids <- map_lgl(orcids, validate_orcid)
     problems <- c(
       problems,
       sprintf("protocolhelper::validate_orcid() indicates %s is not valid",
               orcids)[!valid_orcids]
     )
-  }
-  if (all(author_name) && all(author_orcid)) {
-    problems <- c(problems,
-                  "No authors provided, please provide at least one"[
-                    length(names) == 0
-                  ])
-    problems <- c(problems,
-                  "Number of author names not equal to number of orcids"[
-                    length(names) != length(orcids)])
   }
 
   return(problems)
