@@ -5,7 +5,7 @@
 #' passed on via the parameters and creates a R-markdown (bookdown) skeleton
 #' based on a template file to start working on a new protocol.
 #' The function is interactive and will ask for the title, optional subtitle,
-#' the authors, reviewers and file manager.
+#' the authors, reviewers, file manager and keywords.
 #' These metadata (YAML section of `index.Rmd` file) will then be filled in
 #' automatically.
 #' Optionally, the rmarkdown chapters are rendered to an html file which will
@@ -236,11 +236,9 @@ create_protocol <- function(
 
   # add LICENSE file
   cli_alert_info("Writing CC-BY license file")
-  system.file(
-    file.path("rmarkdown", "templates", "cc_by_4_0.md"),
-    package = "protocolhelper") |>
+  path("generic_template", "cc_by_4_0.md") |>
+    system.file(package = "checklist") |>
     file_copy(file.path(path_to_protocol, "LICENSE.md"))
-
 
   # build new yaml
   readline(prompt = cli_fmt(cli_alert("Enter the title: "))) |>
@@ -254,7 +252,7 @@ create_protocol <- function(
     )
   ) |>
     gsub(pattern = "[\"|']", replacement = "") -> subtitle
-  yaml <- c(yaml, paste("subtitle:", subtitle)[subtitle != ""])
+  yaml <- c(yaml, sprintf(fmt = "subtitle: \"%s\"", subtitle)[subtitle != ""])
   cli_alert("Please select the corresponding author")
   authors <- use_author()
   c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
@@ -295,7 +293,7 @@ create_protocol <- function(
       "{reviewer$given} {reviewer$family} is already listed as author"
     )
   }
-  c(yaml, "reviewers:", author2yaml(reviewer, corresponding = FALSE)) -> yaml
+  c(yaml, "reviewer:", author2yaml(reviewer, corresponding = FALSE)) -> yaml
   while (
     isTRUE(
       ui_yeah(
@@ -339,7 +337,7 @@ create_protocol <- function(
     yaml,
     "file_manager:", author2yaml(file_manager, corresponding = FALSE),
     paste("language:", language),
-    paste("date:", Sys.Date()),
+    paste("date:", "\"`r Sys.Date()`\""),
     paste("protocol_code:", protocol_code),
     paste0("version_number: \"", version_number, "\""),
     paste("template_name:", template),
@@ -363,8 +361,9 @@ create_protocol <- function(
   index <- c("---", yaml, "---", index)
   writeLines(index, path(path_to_protocol, "index.Rmd"))
 
-  # create citation file
-  cit_meta <- citation_meta$new(path_to_protocol)
+  # create zenodo json file
+  cli_alert_info("Writing .zenodo.json file")
+  citation_meta$new(path_to_protocol)
 
   # start new header in NEWS
   news <- xfun::read_utf8(file.path(path_to_protocol, "NEWS.md"))
