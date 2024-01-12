@@ -5,7 +5,7 @@ author:
   - name:
     orcid:
 date:
-reviewers:
+reviewer:
 file_manager:
 protocol_code:
 version_number:
@@ -54,7 +54,7 @@ type <- get_protocol_type(metadata$protocol_code, auto_identifier = TRUE)
 
 ```{r metadata-table}
 tibble(
-  reviewers = metadata[["reviewers"]] |> paste(collapse = ", "),
+  reviewers = metadata[["reviewer"]] |> paste(collapse = ", "),
   `file manager` = metadata[["file_manager"]],
   protocolcode = metadata[["protocol_code"]],
   `version number` = metadata[["version_number"]],

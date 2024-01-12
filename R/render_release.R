@@ -122,7 +122,7 @@ render_release <- function(output_root = "publish") {
         pandoc_args = c(
           "--top-level-division=chapter",
           pandoc_variable_arg(
-            "reviewers", yaml[[i]][["reviewers"]]
+            "reviewer", yaml[[i]][["reviewer"]]
           ),
           pandoc_variable_arg(
             "file_manager", yaml[[i]][["file_manager"]]
@@ -151,7 +151,7 @@ render_release <- function(output_root = "publish") {
         split_bib = output_yaml[[i]][["bookdown::gitbook"]][["split_bib"]],
         pandoc_args = c(
           pandoc_variable_arg(
-            "reviewers", yaml[[i]][["reviewers"]]
+            "reviewer", yaml[[i]][["reviewer"]]
           ),
           pandoc_variable_arg(
             "file_manager", yaml[[i]][["file_manager"]]
