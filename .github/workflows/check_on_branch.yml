@@ -17,4 +17,26 @@ jobs:
     permissions:
       contents: read
     steps:
+      - uses: r-lib/actions/setup-pandoc@v2
+        with:
+          pandoc-version: '3.1.11'
+
       - uses: inbo/actions/check_pkg@main
+
+      - name: Print log files
+        if: failure()
+        run: |
+          for file in $(find . -name "*.log"); do
+            echo "File: $file"
+            cat "$file"
+            echo "----------------------"
+          done
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: r-package-build-artifacts
+          path: |
+            **/*.log
+            **/*.tex
+            ./**/_book
