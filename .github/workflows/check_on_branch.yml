@@ -32,11 +32,23 @@ jobs:
             echo "----------------------"
           done
 
-      - uses: actions/upload-artifact@v3
+      - name: Display R CMD check log
+        if: failure()
+        run: |
+          LOG_FILE=$(find /tmp -name "00check.log" | grep "protocolhelper.Rcheck")
+          if [ -f "$LOG_FILE" ]; then
+            echo "Contents of $LOG_FILE:"
+            cat "$LOG_FILE"
+          else
+            echo "Could not find 00check.log file"
+          fi
+
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: r-package-build-artifacts
           path: |
+            /tmp/**/protocolhelper.Rcheck/00check.log
             **/*.log
             **/*.tex
             ./**/_book
