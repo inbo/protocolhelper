@@ -1,6 +1,8 @@
 # protocolhelper 0.6.0
 
-## New features
+## Bug fixes
+
+* Updates were needed to LaTeX template to comply with pandoc 3.1.8+ (issue #122)
 
 ## Enhancements
 
