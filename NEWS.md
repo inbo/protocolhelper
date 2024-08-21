@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-* Updates were needed to LaTeX template to comply with pandoc 3.1.8+ (issue #122)
+* Updates were needed to `LaTeX` template to comply with `pandoc`  3.1.8+
+  (issue #122)
 
 ## Enhancements
 
