@@ -45,7 +45,8 @@ Suggests:
     magick,
     pander,
     png,
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    tinytex
 Additional_repositories: https://inbo.r-universe.dev
 Config/checklist/communities: inbo
 Config/checklist/keywords: protocols; R package; Reproducible research;
