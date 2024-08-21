@@ -17,4 +17,8 @@ jobs:
     permissions:
       contents: read
     steps:
+      - uses: r-lib/actions/setup-pandoc@v2
+        with:
+          pandoc-version: '3.1.11'
+
       - uses: inbo/actions/check_pkg@main
