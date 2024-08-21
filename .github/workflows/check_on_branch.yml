@@ -29,5 +29,4 @@ jobs:
         with:
           name: r-package-build-artifacts
           path: |
-            ${{ runner.temp }}/**/*.log
-            ${{ runner.temp }}/**/*.tex
+            /github/workspace/
