@@ -22,11 +22,3 @@ jobs:
           pandoc-version: '3.1.11'
 
       - uses: inbo/actions/check_pkg@main
-
-      - name: upload logs on fail
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: r-package-build-artifacts
-          path: |
-            /github/workspace/
