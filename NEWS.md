@@ -1,3 +1,15 @@
+# protocolhelper 0.6.0
+
+## Bug fixes
+
+* Updates were needed to `LaTeX` template to comply with `pandoc`  3.1.8+
+  (issue #122)
+
+## Enhancements
+
+* internal reserved codes list has been augmented with codes from genetics lab
+* improved error and other messages for `create_protocol()`
+
 # protocolhelper 0.5.1
 
 ## Enhancements

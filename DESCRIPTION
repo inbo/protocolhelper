@@ -1,16 +1,16 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.5.1
+Version: 0.6.0
 Authors@R: c(
     person("Hans", "Van Calster", , "hans.vancalster@inbo.be", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-8595-8426")),
+           comment = c(ORCID = "0000-0001-8595-8426", affiliation = "Research Institute for Nature and Forest (INBO)")),
     person("Thierry", "Onkelinx", , "thierry.onkelinx@inbo.be", role = "aut",
-           comment = c(ORCID = "0000-0001-8804-4216")),
+           comment = c(ORCID = "0000-0001-8804-4216", affiliation = "Research Institute for Nature and Forest (INBO)")),
     person("Floris", "Vanderhaeghe", , "floris.vanderhaeghe@inbo.be", role = "aut",
-           comment = c(ORCID = "0000-0002-6378-6229")),
+           comment = c(ORCID = "0000-0002-6378-6229", affiliation = "Research Institute for Nature and Forest (INBO)")),
     person("Els", "Lommelen", , "els.lommelen@inbo.be", role = "ctb",
-           comment = c(ORCID = "0000-0002-3481-5684")),
-    person("Research Institute for Nature and Forest", , , "info@inbo.be", role = c("cph", "fnd"))
+           comment = c(ORCID = "0000-0002-3481-5684", affiliation = "Research Institute for Nature and Forest (INBO)")),
+    person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = c("cph", "fnd"))
   )
 Description: Helper functions to manage INBO protocols.
 License: GPL-3
@@ -45,11 +45,15 @@ Suggests:
     magick,
     pander,
     png,
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    tinytex
 Additional_repositories: https://inbo.r-universe.dev
+Config/checklist/communities: inbo
+Config/checklist/keywords: protocols; R package; Reproducible research;
+    Rmarkdown templates
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 SystemRequirements: Pandoc (>= 2.0.0)

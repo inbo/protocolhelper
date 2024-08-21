@@ -205,7 +205,7 @@ row_style <- JS("
 
 
 ```{r sfp}
-sfp <- read.csv("sfp.csv")
+sfp <- read.csv("sfp.csv", colClasses = c(version = "character"))
 reactable(sfp,
           columns = list(
             version = colDef(
@@ -240,7 +240,7 @@ reactable(sfp,
 # Standard instrument protocols (sip)
 
 ```{r sip}
-sip <- read.csv("sip.csv")
+sip <- read.csv("sip.csv", colClasses = c(version = "character"))
 
 reactable(sip,
           columns = list(
@@ -274,7 +274,7 @@ reactable(sip,
 # Standard analytical protocols (sap)
 
 ```{r sap}
-sap <- read.csv("sap.csv")
+sap <- read.csv("sap.csv", colClasses = c(version = "character"))
 
 reactable(sap,
           columns = list(
@@ -308,7 +308,7 @@ reactable(sap,
 # Standard operating procedures (sop)
 
 ```{r sop}
-sop <- read.csv("sop.csv")
+sop <- read.csv("sop.csv", colClasses = c(version = "character"))
 reactable(sop,
           columns = list(
             version = colDef(
@@ -341,7 +341,7 @@ reactable(sop,
 # Project-specific protocols (spp)
 
 ```{r spp}
-spp <- read.csv("spp.csv")
+spp <- read.csv("spp.csv", colClasses = c(version = "character"))
 
 reactable(spp,
           columns = list(

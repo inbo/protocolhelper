@@ -17,7 +17,6 @@
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom fs is_dir
 #' @importFrom assertthat assert_that
-#' @importFrom ymlthis use_index_rmd as_yml
 #' @importFrom gert git_status git_add git_commit
 #' @importFrom stringr str_replace_all
 #' @importFrom xfun read_utf8 write_utf8
@@ -48,22 +47,10 @@ update_version_number <- function(
     message("The version number is up to date")
     return(FALSE)
   } else {
-    yml$version_number <- new_version
-
-    # overwrite old yaml sections
-    index_rmd <- file.path(path_to_protocol, "index.Rmd")
-    copy_rmd <-  file.path(path_to_protocol, "copy.Rmd")
-    file.copy(from = index_rmd, to = copy_rmd)
-    unlink(index_rmd)
-    use_index_rmd(
-      .yml = as_yml(yml),
-      path = path_to_protocol,
-      template = copy_rmd,
-      include_body = TRUE,
-      include_yaml = FALSE,
-      quiet = TRUE,
-      open_doc = FALSE)
-    unlink(copy_rmd)
+    index <- read_utf8(file.path(path_to_protocol, "index.Rmd"))
+    index[grepl("version_number:", index)] <- paste0(
+      "version_number: '", new_version, "'")
+    write_utf8(index, file.path(path_to_protocol, "index.Rmd"))
 
     message_text <- paste0("Bumped ", old_version, " to ", new_version,
                            " in index.Rmd")

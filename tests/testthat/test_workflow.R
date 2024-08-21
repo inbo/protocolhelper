@@ -1,7 +1,5 @@
 test_that("complete workflow works", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
+
   update_news <- function(path, version_number) {
     news <- readLines(file.path(path, "NEWS.md"))
     writeLines(

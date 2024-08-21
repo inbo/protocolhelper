@@ -10,7 +10,7 @@ calib <- data.frame(
   Criterium = "",
   Term = "")
 
-kable(calib)
+pander::pander(calib, split.tables = Inf)
 ```
 
 ## Control
@@ -24,7 +24,7 @@ control <- data.frame(
   Criterium = "",
   Term = "")
 
-kable(control)
+pander::pander(control, split.tables = Inf)
 ```
 
 ## Maintenance
@@ -38,7 +38,7 @@ maintenance <- data.frame(
   Criterium = "",
   Term = "")
 
-kable(maintenance)
+pander::pander(maintenance, split.tables = Inf)
 ```
 
 ### External maintenance

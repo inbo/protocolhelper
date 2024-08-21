@@ -27,7 +27,7 @@
 #' @importFrom utils tail write.csv
 #' @importFrom yaml as.yaml read_yaml
 #'
-#' @keywords internal
+#' @noRd
 #'
 #'
 #' @examples
@@ -286,7 +286,7 @@ render_release <- function(output_root = "publish") {
 #' `protocolsource` repo.
 #' @param path_to Path to where the file should be written.
 #'
-#' @keywords internal
+#' @noRd
 adapt_zenodo <- function(json = ".zenodo.json", write = TRUE, path_from = ".",
                          path_to) {
   # read `.zenodo.json` from protocolsource
