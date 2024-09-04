@@ -120,6 +120,7 @@ spelling:
     - inst/rmarkdown/templates/template_spp_nl/skeleton/05_kwaliteitszorg.Rmd
     - inst/rmarkdown/templates/template_spp_nl/skeleton/06_veiligheid.Rmd
     - inst/rmarkdown/templates/template_spp_nl/skeleton/07_referenties.Rmd
-    - inst/rmarkdown/templates/template_spp_nl/skeleton/08_subprotocols.Rmd
+    - inst/rmarkdown/templates/template_spp_nl/skeleton/08_appendices.Rmd
+    - inst/rmarkdown/templates/template_spp_nl/skeleton/09_subprotocols.Rmd
     - inst/rmarkdown/templates/template_spp_nl/skeleton/NEWS.md
     - inst/rmarkdown/templates/template_spp_nl/skeleton/skeleton.Rmd
