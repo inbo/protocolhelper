@@ -1,5 +1,1 @@
 # (APPENDIX) Bijlagen {.unnumbered}
-
-# Titel eerste bijlage
-
-<!--inclusief principes, context, extra uitleg, misschien extra foto's, ...-->

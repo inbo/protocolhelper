@@ -1,5 +1,10 @@
 # protocolhelper 0.6.1
 
+## Bug fixes
+
+* Overwriting placeholder headers resulted in false alarm from `check_structure`
+  (issue #124)
+
 # protocolhelper 0.6.0
 
 ## Bug fixes

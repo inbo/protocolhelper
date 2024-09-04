@@ -1,5 +1,1 @@
 # (APPENDIX) Appendix {.unnumbered}
-
-# Title first appendix
-
-<!--including principles, context, more explanation, perhaps extra photos, ...-->
