@@ -8,9 +8,6 @@ Detailed description of all steps that must be followed to execute the protocol.
 Use subtitles to describe each step.
 -->
 ```
-### Subtitle 1
-
-### Subtitle 2
 
 ## Registration and storage of results
 
