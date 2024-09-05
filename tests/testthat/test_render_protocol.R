@@ -36,7 +36,6 @@ test_that("render_protocol works as expected", {
     readline = function(...) "Een titel"
   )
 
-
   old_wd <- getwd()
   on.exit(setwd(old_wd))
   test_repo <- tempfile("test_protocol")

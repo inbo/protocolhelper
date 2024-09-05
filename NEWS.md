@@ -1,6 +1,20 @@
+# protocolhelper 0.6.1
+
+## Bug fixes
+
+* Overwriting placeholder headers resulted in false alarm from `check_structure`
+  (issue #124)
+
+## Enhancements
+
+* Added appendix chapters to `spp` templates (issue #121)
+
 # protocolhelper 0.6.0
 
-## New features
+## Bug fixes
+
+* Updates were needed to `LaTeX` template to comply with `pandoc`  3.1.8+
+  (issue #122)
 
 ## Enhancements
 

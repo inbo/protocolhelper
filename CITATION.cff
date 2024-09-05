@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it using these metadata.
-title: 'protocolhelper: Helper Functions to Manage Protocols'
+title: "protocolhelper: Helper Functions to Manage Protocols"
 authors:
 - given-names: Hans
   family-names: Van Calster
@@ -28,8 +28,8 @@ doi: ~
 license: GPL-3.0
 repository-code: https://github.com/inbo/protocolhelper/
 type: software
-abstract: Helper functions to manage INBO protocols.
+abstract: "Helper functions to manage INBO protocols."
 identifiers:
 - type: url
   value: https://inbo.github.io/protocolhelper/
-version: 0.6.0
+version: 0.6.1

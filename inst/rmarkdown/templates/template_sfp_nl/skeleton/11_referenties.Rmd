@@ -1,10 +1,6 @@
 # Referenties {.unnumbered}
 
 ::: {#refs}
+\item
 :::
 
-```{=html}
-<!--
-Eventueel opsplitsen in sleutelreferentie en overige referenties.
--->
-```

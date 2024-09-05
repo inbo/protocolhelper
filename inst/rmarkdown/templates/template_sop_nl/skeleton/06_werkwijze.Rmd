@@ -7,6 +7,3 @@ Deze stappen staan schematisch weergegeven in het processchema.
 Subtitels gebruiken om elke stap te omschrijven.
 -->
 ```
-## Subtitel 1
-
-## Subtitel 2

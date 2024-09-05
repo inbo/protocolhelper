@@ -8,9 +8,6 @@ Gedetailleerde omschrijving van alle stappen die doorlopen moeten worden om het 
 Subtitels gebruiken om elke stap te omschrijven.
 -->
 ```
-### Subtitel 1
-
-### Subtitel 2
 
 ## Registratie en bewaring van resultaten
 
