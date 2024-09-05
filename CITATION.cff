@@ -32,4 +32,4 @@ abstract: "Helper functions to manage INBO protocols."
 identifiers:
 - type: url
   value: https://inbo.github.io/protocolhelper/
-version: 0.6.1
+version: 0.7.0

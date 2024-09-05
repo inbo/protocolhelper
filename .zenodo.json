@@ -1,6 +1,6 @@
 {
   "title": "protocolhelper: Helper Functions to Manage Protocols",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "license": "GPL-3.0",
   "upload_type": "software",
   "description": "<p>Helper functions to manage INBO protocols.<\/p>",
