@@ -74,8 +74,7 @@
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
 #' @importFrom fs path_rel dir_create dir_ls file_copy
-#' @importFrom checklist use_author citation_meta
-#' @importFrom usethis ui_yeah
+#' @importFrom checklist use_author citation_meta ask_yes_no
 #' @importFrom cli cli_alert_success cli_alert cli_alert_info cli_alert_danger
 #' cli_fmt
 #'
@@ -258,15 +257,12 @@ create_protocol <- function(
   c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
   while (
     isTRUE(
-      ui_yeah(
+      ask_yes_no(
         cli_fmt(
           cli_alert(
             "Add another author?"
             )
-          ),
-        yes = "Yes",
-        no = "No",
-        shuffle = FALSE
+          )
       )
     )
   ) {
@@ -296,15 +292,12 @@ create_protocol <- function(
   c(yaml, "reviewer:", author2yaml(reviewer, corresponding = FALSE)) -> yaml
   while (
     isTRUE(
-      ui_yeah(
+      ask_yes_no(
         cli_fmt(
           cli_alert(
             "Add another reviewer?"
           )
-        ),
-        yes = "Yes",
-        no = "No",
-        shuffle = FALSE
+        )
       )
     )
   ) {

@@ -147,6 +147,7 @@ get_short_titles <- function(
 #'
 #' @importFrom stringr str_subset str_extract
 #' @importFrom assertthat assert_that validate_that
+#' @importFrom cli cli_fmt cli_alert_danger
 #'
 #' @return A character string containing the protocol_code
 #'

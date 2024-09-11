@@ -34,7 +34,6 @@ Imports:
     rmarkdown,
     rprojroot,
     stringr,
-    usethis,
     xfun,
     xml2,
     yaml,
