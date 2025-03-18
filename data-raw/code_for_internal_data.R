@@ -204,12 +204,8 @@ reserved_codes <- reserved_codes %>%
             inventory = paste(inventory, collapse = " | "),
             .groups = "drop")
 
-inbo_affiliation <- c(
-  en = "Research Institute for Nature and Forest (INBO)",
-  nl = "Instituut voor Natuur- en Bosonderzoek (INBO)",
-  fr = "Institut de Recherche sur la Nature et les For\u00eats (INBO)",
-  de = "Institut f\u00fcr Natur- und Waldforschung (INBO)"
-)
+org <- checklist::organisation$new()
+inbo_affiliation <- org$get_organisation[["inbo.be"]][["affiliation"]]
 
 usethis::use_data(
   themes_df, reserved_codes, inbo_affiliation,
