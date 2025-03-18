@@ -54,15 +54,24 @@ type <- get_protocol_type(metadata$protocol_code, auto_identifier = TRUE)
 # Metadata {.unnumbered}
 
 ```{r metadata-table}
+revs <- map_chr(
+  metadata[["reviewer"]],
+  \(x) x$name |> paste(collapse = " ")
+)
+fms <-  map_chr(
+  metadata[["file_manager"]],
+  \(x) x$name |> paste(collapse = " ")
+)
 tibble(
-  reviewers = metadata[["reviewer"]] |> paste(collapse = ", "),
-  `file manager` = metadata[["file_manager"]],
+  reviewers = revs,
+  `file manager` = fms,
   protocolcode = metadata[["protocol_code"]],
   `version number` = metadata[["version_number"]],
   language = metadata[["language"]],
   theme = metadata[["theme"]]
 ) %>%
   pander::pander(split.tables = Inf)
+rm(revs, fms)
 ```
 
 ```{r results="asis"}
