@@ -413,60 +413,39 @@ write_bookdown_yml <- function(
 #'
 write_output_yml <- function(language, path_to_protocol) {
   output_yml <- yml_empty()
-  if (language == "en") {
-    output_yml <- yml_output(
-      output_yml,
-      bookdown::gitbook(
-        split_by = "none",
-        split_bib = FALSE,
-        template = "!expr protocolhelper:::protocol_css()",
-        css = "css/inbo_rapport.css",
-        config = list(
-          toc = list(
-            before = list( # nolint start
-              '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>',
-              '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
-            ),
-            after = list(
-              '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>'
-            )
+  before <- list(
+    en = list( # nolint start
+      '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>',
+      '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
+    ),
+    nl = list(
+      '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>',
+      '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
+    ) # nolint end
+  )[[language]]
+
+  output_yml <- yml_output(
+    output_yml,
+    bookdown::gitbook(
+      split_by = "none",
+      split_bib = FALSE,
+      template = "!expr protocolhelper:::protocol_css()",
+      css = "css/inbo_rapport.css",
+      config = list(
+        toc = list(
+          before = before,
+          after = list(
+            '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>' # nolint
           )
         )
-      ),
-      bookdown::pdf_book(
-        keep_tex = FALSE,
-        pandoc_args = c("--top-level-division=chapter"),
-        template = "!expr protocolhelper:::protocol_tex()"
       )
+    ),
+    bookdown::pdf_book(
+      keep_tex = FALSE,
+      pandoc_args = c("--top-level-division=chapter"),
+      template = "!expr protocolhelper:::protocol_tex()"
     )
-  }
-  if (language == "nl") {
-    output_yml <- yml_output(
-      output_yml,
-      bookdown::gitbook(
-        split_by = "none",
-        split_bib = FALSE,
-        template = "!expr protocolhelper:::protocol_css()",
-        css = "css/inbo_rapport.css",
-        config = list(
-          toc = list(
-            before = list(
-              '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>',
-              '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
-            ),
-            after = list(
-              '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>'
-            ) # nolint end
-          )
-        )
-      ),
-      bookdown::pdf_book(
-        keep_tex = FALSE,
-        pandoc_args = c("--top-level-division=chapter"),
-        template = "!expr protocolhelper:::protocol_tex()"
-      )
-    )
-  }
+  )
 
   use_output_yml(
     .yml = output_yml,
