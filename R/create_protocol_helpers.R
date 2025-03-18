@@ -183,7 +183,7 @@ create_protocol_code <- function(
     full_sequence <- seq(1, max(sfp_reserved, in_use, 1), 1)
     not_reserved_or_in_use <-
       full_sequence[!full_sequence %in% c(sfp_reserved, in_use)]
-    gapfill_number <- min(not_reserved_or_in_use)
+    gapfill_number <- min(not_reserved_or_in_use) |> suppressWarnings()
     next_number <- max(full_sequence) + 1
 
     protocol_trailing_number <- max(
