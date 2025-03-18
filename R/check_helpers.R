@@ -99,25 +99,39 @@ check_all_person_info <- function(
     person_list,
     problems_vect
     ) {
-  person_given <- map_lgl(person_list, ~is.string(.$name$given))
-  person_family <- map_lgl(person_list, ~is.string(.$name$family))
+  check_given <- function(x) {
+    has_name(x, "name") &&
+      has_name(x$name, "given") &&
+      is.string(x$name$given)
+  }
+  check_family <- function(x) {
+    has_name(x, "name") &&
+      has_name(x$name, "family") &&
+      is.string(x$name$given)
+  }
+  check_orcid <- function(x) {
+   has_name(x, "orcid") &&
+      is.string(x$orcid)
+  }
+  person_given <- map_lgl(person_list, check_given)
+  person_family <- map_lgl(person_list, check_family)
   person_orcid <- map_lgl(person_list, ~is.string(.$orcid))
   problems <-
     c(problems_vect,
       sprintf(
-        "Person nr %s had an invalid given name (no string)",
+        "Person nr %s had an invalid (not a string) or missing given name",
         seq_along(person_given)[!person_given]
       ))
   problems <-
     c(problems_vect,
       sprintf(
-        "Person nr %s had an invalid family name (no string)",
+        "Person nr %s had an invalid (not a string) or missing family name",
         seq_along(person_family)[!person_family]
       ))
   problems <-
     c(problems,
       sprintf(
-        "Person nr %s had an invalid orcid (no string)",
+        "Person nr %s had an invalid (not a string) or missing orcid",
         seq_along(person_orcid)[!person_orcid]
       ))
 

@@ -93,7 +93,7 @@ check_frontmatter <- function(
 
   problems <- c(problems,
                 paste0(
-                  "subtitle is not a string, NULL, or an empty string, ",
+                  "subtitle is not a string, is NULL, or is an empty string, ",
                   "please remove in the yaml header if not needed."
                 )[has_name(yml_protocol, "subtitle") &&
                     (!is.string(yml_protocol$subtitle) ||
@@ -101,7 +101,7 @@ check_frontmatter <- function(
   )
 
   # check persons
-  cit_meta <- citation_meta$new(x$path)
+  cit_meta <- citation_meta$new(x$path) |> suppressWarnings()
   problems <- c(problems, cit_meta$get_errors)
 
   problems <- check_all_person_info(
