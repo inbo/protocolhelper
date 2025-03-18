@@ -338,11 +338,12 @@ create_protocol <- function(
     paste("project_name:", project_name)[!is.null(project_name)],
     keywords,
     "community: \"inbo\"",
+    paste0("publisher: ", inbo_affiliation[[language]]),
     "site: bookdown::bookdown_site",
     "bibliography: references.yaml"[language == "en"],
     "bibliography: referenties.yaml"[language == "nl"],
     "link-citations: TRUE",
-    "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" #nolint
+    "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" # nolint
   ) -> yaml
 
   # read index template
