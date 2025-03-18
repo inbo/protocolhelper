@@ -115,7 +115,7 @@ check_all_person_info <- function(
   }
   person_given <- map_lgl(person_list, check_given)
   person_family <- map_lgl(person_list, check_family)
-  person_orcid <- map_lgl(person_list, ~is.string(.$orcid))
+  person_orcid <- map_lgl(person_list, check_orcid)
   problems <-
     c(problems_vect,
       sprintf(
