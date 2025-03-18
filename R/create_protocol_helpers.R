@@ -405,58 +405,41 @@ write_bookdown_yml <- function(
 #' @param language language of the protocol
 #' @param path_to_protocol path to the protocol
 #'
-#' @importFrom ymlthis use_output_yml yml_empty yml_output
-#' @importFrom bookdown gitbook pdf_book
-#' @importFrom xfun read_utf8 write_utf8
+#' @importFrom xfun write_utf8
 #'
 #' @noRd
 #'
 write_output_yml <- function(language, path_to_protocol) {
-  output_yml <- yml_empty()
-  before <- list(
-    en = list( # nolint start
-      '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>',
-      '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
-    ),
-    nl = list(
-      '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>',
-      '<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
-    ) # nolint end
-  )[[language]]
+  # Create the YAML content as a string directly
+  # nolint start
+  before_yaml <- c(en = '
+      - <li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>
+      - <li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>',
+  nl = '
+      - <li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>
+      - <li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>')[[language]]
 
-  output_yml <- yml_output(
-    output_yml,
-    bookdown::gitbook(
-      split_by = "none",
-      split_bib = FALSE,
-      template = "!expr protocolhelper:::protocol_css()",
-      css = "css/inbo_rapport.css",
-      config = list(
-        toc = list(
-          before = before,
-          after = list(
-            '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>' # nolint
-          )
-        )
-      )
-    ),
-    bookdown::pdf_book(
-      keep_tex = FALSE,
-      pandoc_args = c("--top-level-division=chapter"),
-      template = "!expr protocolhelper:::protocol_tex()"
-    )
-  )
+  yaml_content <- sprintf('
+bookdown::gitbook:
+  split_by: none
+  split_bib: no
+  template: !expr protocolhelper:::protocol_css()
+  css: css/inbo_rapport.css
+  config:
+    toc:
+      before:%s
+      after:
+        - <li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>
+bookdown::pdf_book:
+  keep_tex: no
+  pandoc_args: --top-level-division=chapter
+  template: !expr protocolhelper:::protocol_tex()
+', before_yaml)
+  # nolint end
 
-  use_output_yml(
-    .yml = output_yml,
-    path = path_to_protocol,
-    quiet = TRUE)
-  # remove single quotes
-  x <- read_utf8(file.path(path_to_protocol, "_output.yml"))
-  x <- gsub(pattern = "'", "", x)
-  write_utf8(x, file.path(path_to_protocol, "_output.yml"))
+  # Write the YAML file
+  xfun::write_utf8(yaml_content, file.path(path_to_protocol, "_output.yml"))
 }
-
 
 #' Fills in values from key-value pairs in `yaml` front matter
 #'
