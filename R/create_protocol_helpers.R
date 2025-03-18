@@ -312,7 +312,7 @@ create_from_docx <- function(
   # create new chapters
   file.create(file.path(path_to_protocol, filenames))
   # and add chapter contents from docx
-  for (chapter in unique(cumsum(is_title))) {
+  for (chapter in seq_len(sum(is_title))) {
     chapter_file <- file.path(path_to_protocol, filenames[chapter])
     chapter_contents <- contents[chapter == cumsum(is_title)]
     writeLines(
