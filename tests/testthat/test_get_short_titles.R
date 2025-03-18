@@ -29,7 +29,7 @@ test_that("Get short title works", {
 
 
   local_mocked_bindings(
-    ui_yeah = function(...) FALSE,
+    ask_yes_no = function(...) FALSE,
     use_author = function(...) author_df,
     use_reviewer = function(...) reviewer_df,
     use_file_manager = function(...) file_manager_df,
