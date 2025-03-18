@@ -42,3 +42,8 @@ reference:
     desc: "Function to render a protocol"
     contents:
       - has_concept("render")
+
+template:
+  bootstrap: 5
+
+url: https://inbo.github.io/protocolhelper/
