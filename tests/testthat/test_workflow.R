@@ -1,4 +1,40 @@
 test_that("complete workflow works", {
+  if (!requireNamespace("gert", quietly = TRUE)) {
+    stop("please install 'gert' package for these tests to work")
+  }
+  author_df <- data.frame(
+    stringsAsFactors = FALSE,
+    given = c("Hans"),
+    family = c("Van Calster"),
+    email = c("hans.vancalster@inbo.be"),
+    orcid = c("0000-0001-8595-8426"),
+    affiliation = c("Research Institute for Nature and Forest (INBO)")
+  )
+  reviewer_df <- data.frame(
+    stringsAsFactors = FALSE,
+    given = c("Els"),
+    family = c("Lommelen"),
+    email = c("els.lommelen@inbo.be"),
+    orcid = c("0000-0002-3481-5684"),
+    affiliation = c("Research Institute for Nature and Forest (INBO)")
+  )
+  file_manager_df <- data.frame(
+    stringsAsFactors = FALSE,
+    given = c("Pieter"),
+    family = c("Verschelde"),
+    email = c("pieter.verschelde@inbo.be"),
+    orcid = c("0000-0002-9199-421X"),
+    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
+  )
+
+
+  local_mocked_bindings(
+    ask_yes_no = function(...) FALSE,
+    use_author = function(...) author_df,
+    use_reviewer = function(...) reviewer_df,
+    use_file_manager = function(...) file_manager_df,
+    readline = function(...) "Een titel"
+  )
 
   update_news <- function(path, version_number) {
     news <- readLines(file.path(path, "NEWS.md"))
@@ -89,10 +125,7 @@ test_that("complete workflow works", {
   checklist::new_branch("sfp-101-en", repo = repo)
   version_number <- get_version_number()
   create_sfp(
-    title = "Test 1", subtitle = "subtitle", short_title = "water 1",
-    authors = "Van Calster, Hans", orcids = "0000-0001-8595-8426",
-    reviewers = "someone else, Jon Beton, Jef Plastiek, Suzy Wafel",
-    file_manager = "who?",
+    short_title = "water 1",
     version_number = version_number, theme = "water", language = "en"
   )
 
@@ -141,11 +174,7 @@ test_that("complete workflow works", {
   checklist::new_branch("sfp-407-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
   create_sfp(
-    title = "subsubprotocoltest", subtitle = "subtitle",
     short_title = "vegetation 1",
-    authors = c("Someone, Else", "Another, One"),
-    orcids = c("0000-0001-2345-6789", "0000-0001-2345-6789"),
-    reviewers = "someone else", file_manager = "who?",
     version_number = version_number_2, theme = "vegetation", language = "en"
   )
 
@@ -190,23 +219,19 @@ test_that("complete workflow works", {
   # create a second protocol to be used as subprotocol
   checklist::new_branch("sfp-102-en", repo = repo)
   version_number_3 <- get_version_number(path = repo)
-  create_sfp(title = "Second subprotocol",
-             subtitle = "subtitle",
-             short_title = "second subprotocol",
-             authors = "me, again",
-             orcids = "0000-0001-2345-6789",
-             reviewers = "someone else",
-             file_manager = "who?",
-             version_number = version_number_3,
-             theme = "water",
-             language = "en"
-             )
+  create_sfp(
+    short_title = "second subprotocol",
+    version_number = version_number_3,
+    theme = "water",
+    language = "en"
+  )
   # test non-default params
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
-    file = file.path("source/sfp/1_water/sfp_102_en_second_subprotocol",
-                     "07_stappenplan.Rmd"),
+    file = file.path(
+      "source/sfp/1_water/sfp_102_en_second_subprotocol",
+      "07_stappenplan.Rmd"),
     append = TRUE)
   # add the projectspecific parameter to index yaml
   index_yml <- rmarkdown::yaml_front_matter(
@@ -236,9 +261,10 @@ test_that("complete workflow works", {
     x = cars,
     file = "source/sfp/1_water/sfp_102_en_second_subprotocol/data/cars.csv")
   z <- tempfile()
-  download.file("https://www.r-project.org/logo/Rlogo.png",
-                z,
-                mode = "wb")
+  download.file(
+    "https://www.r-project.org/logo/Rlogo.png",
+    z,
+    mode = "wb")
   pic <- png::readPNG(z)
   png::writePNG(
     pic,
@@ -271,8 +297,9 @@ test_that("complete workflow works", {
     code_mainprotocol = "sfp-102-en")
 
   update_news(
-    path = file.path("source", "sfp", "1_water",
-                     "sfp_102_en_second_subprotocol"),
+    path = file.path(
+      "source", "sfp", "1_water",
+      "sfp_102_en_second_subprotocol"),
     version_number = version_number_3
   )
 
@@ -313,10 +340,7 @@ test_that("complete workflow works", {
   checklist::new_branch("spp-001-en", repo = repo)
   version_number_4 <- get_version_number(path = repo)
   create_spp(
-    title = "project protocol", subtitle = "subtitle",
-    orcids = "0000-0001-2345-6789",
     short_title = "mne protocol",
-    authors = "John, Doe", reviewers = "someone else", file_manager = "who?",
     version_number = version_number_4, project_name = "mne", language = "en"
   )
 

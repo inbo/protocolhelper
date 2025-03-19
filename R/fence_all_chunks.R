@@ -20,7 +20,6 @@
 #' @importFrom xfun read_utf8 write_utf8
 #' @importFrom knitr all_patterns
 #' @importFrom stringr str_extract
-#' @importFrom purrr prepend
 #'
 #' @noRd
 fence_all_chunks <- function(input) {
@@ -47,8 +46,7 @@ fence_all_chunks <- function(input) {
   labels[!is_fig] <- paste0("::: {#tab:", labels[!is_fig], "}")
   for (i in rev(seq_along(labels))) {
     text <- append(text, values = c(":::", ""), after = block_end[i])
-    text <- purrr::prepend(text, values = c("", labels[i]),
-                           before = block_start[i])
+    text <- append(text, values = c("", labels[i]), after = block_start[i] - 1)
   }
   xfun::write_utf8(text, input)
 }

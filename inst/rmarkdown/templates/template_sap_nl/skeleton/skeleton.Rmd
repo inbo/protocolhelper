@@ -5,7 +5,7 @@ author:
   - name:
     orcid:
 date:
-reviewers:
+reviewer:
 file_manager:
 protocol_code:
 version_number:
@@ -54,13 +54,23 @@ type <- get_protocol_type(metadata$protocol_code, auto_identifier = TRUE)
 # Metadata {.unnumbered}
 
 ```{r metadata-table}
+revs <- map_chr(
+  metadata[["reviewer"]],
+  \(x) x$name |> paste(collapse = " ")
+)
+fms <-  map_chr(
+  metadata[["file_manager"]],
+  \(x) x$name |> paste(collapse = " ")
+)
 tibble(
-  reviewers = metadata[["reviewers"]] |> paste(collapse = ", "),
-  documentbeheerder = metadata[["file_manager"]],
+  reviewers = revs,
+  documentbeheerder = fms,
   protocolcode = metadata[["protocol_code"]],
   versienummer = metadata[["version_number"]],
-  taal = metadata[["language"]]) %>%
+  taal = metadata[["language"]]
+) %>%
   pander::pander(split.tables = Inf)
+rm(revs, fms)
 ```
 
 ```{r results="asis"}

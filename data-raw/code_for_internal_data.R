@@ -9,8 +9,7 @@ library(googlesheets4)
 library(dplyr)
 gs4_auth(
   email = "*@inbo.be",
-  scopes = "https://www.googleapis.com/auth/spreadsheets.readonly",
-  use_oob = TRUE)
+  scopes = "https://www.googleapis.com/auth/spreadsheets.readonly")
 
 inventaris_labo <- "1ClXTqk8bDtWz1wAvWeb5HLCU2UHLx0H50ohi5f8zboM"
 
@@ -59,11 +58,11 @@ sop_gendiv <- googlesheets4::read_sheet(
 #####################################################
 # harmoniseren
 sip_cleaned <- sip %>%
-  filter(!is.na(sip)) %>%
+  filter(!is.na(sip_code)) %>%
   mutate(description = sprintf("Apparaat: %s; Type model: %s; Producent: %s",
                                apparaat, type_model, producent),
          inventory = "lab") %>%
-  select(protocolcode = sip,
+  select(protocolcode = sip_code,
          description,
          inventory) %>%
   mutate(protocolcode = paste0(tolower(protocolcode), "-nl")) %>%
@@ -151,7 +150,7 @@ all(grepl("s[fioap]p-\\w{3,6}-nl",
 sop_gendiv_cleaned <- sop_gendiv %>%
   filter(!is.na(sop_code)) %>%
   mutate(description = sprintf("Procedure: %s",
-                               procedure)) %>%
+                               methode)) %>%
   select(protocolcode = sop_code,
          description) %>%
   mutate(protocolcode = paste0(tolower(protocolcode), "-nl"),
@@ -205,4 +204,9 @@ reserved_codes <- reserved_codes %>%
             inventory = paste(inventory, collapse = " | "),
             .groups = "drop")
 
-usethis::use_data(themes_df, reserved_codes, internal = TRUE, overwrite = TRUE)
+org <- checklist::organisation$new()
+inbo_affiliation <- org$get_organisation[["inbo.be"]][["affiliation"]]
+
+usethis::use_data(
+  themes_df, reserved_codes, inbo_affiliation,
+  internal = TRUE, overwrite = TRUE)

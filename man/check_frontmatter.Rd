@@ -27,7 +27,7 @@ and published (for instance, it will fail if version number is
 \seealso{
 Other check: 
 \code{\link{check_all}()},
-\code{\link{check_all_author_info}()},
+\code{\link{check_all_person_info}()},
 \code{\link{check_structure}()},
 \code{\link{protocolcheck}},
 \code{\link{validate_orcid}()}

@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.6.1
+Version: 0.7.0
 Authors@R: c(
     person("Hans", "Van Calster", , "hans.vancalster@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8595-8426", affiliation = "Research Institute for Nature and Forest (INBO)")),
@@ -22,7 +22,8 @@ Depends:
 Imports: 
     assertthat,
     bookdown,
-    checklist (>= 0.2.4),
+    checklist (>= 0.4.1),
+    cli,
     commonmark,
     fs,
     gert,
@@ -30,10 +31,8 @@ Imports:
     knitr,
     purrr,
     R6,
-    reactable,
     rmarkdown,
     rprojroot,
-    slickR,
     stringr,
     xfun,
     xml2,
@@ -45,6 +44,8 @@ Suggests:
     magick,
     pander,
     png,
+    reactable,
+    slickR,
     testthat (>= 2.1.0),
     tinytex
 Additional_repositories: https://inbo.r-universe.dev

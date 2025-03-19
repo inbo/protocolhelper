@@ -1,3 +1,15 @@
+# protocolhelper 0.7.0
+
+## Enhancements
+
+* `create_protocol` now works interactively (#117)
+* we make use of `checklist::use_author()` for author, reviewer and file_manager
+  fields in YAML.
+
+## Breaking change
+
+* the author, reviewer and file_manager YAML fields now have a different format
+
 # protocolhelper 0.6.1
 
 ## Bug fixes

@@ -1,12 +1,35 @@
 ---
 title:
 subtitle:
-author: 
+author:
   - name:
-    orcid:
+      given: Firstname1
+      family: Last name1
+    email: "firstname1.lastname1@inbo.be"
+    orcid: 0000-0002-1825-0097
+    affiliation: Instituut voor Natuur- en Bosonderzoek (INBO)
+    corresponding: true
+  - name:
+      given: Firstname2
+      family: Lastname2
+    email: "voornaam2.achternaam2@inbo.be"
+    orcid: 0000-0002-1825-0097
+    affiliation: Instituut voor Natuur- en Bosonderzoek (INBO)
 date:
-reviewers:
+reviewer:
+  - name:
+      given: Firstname
+      family: Lastname
+    email: "firstname.lastname@inbo.be"
+    orcid: 0000-0002-1825-0097
+    affiliation: Instituut voor Natuur- en Bosonderzoek (INBO)
 file_manager:
+  - name:
+      given: Firstname
+      family: Lastname
+    email: "firstname.lastname@inbo.be"
+    orcid: 0000-0002-1825-0097
+    affiliation: Instituut voor Natuur- en Bosonderzoek (INBO)
 protocol_code:
 version_number:
 language: en
@@ -53,14 +76,23 @@ type <- get_protocol_type(metadata$protocol_code, auto_identifier = TRUE)
 # Metadata {.unnumbered}
 
 ```{r metadata-table}
+revs <- map_chr(
+  metadata[["reviewer"]],
+  \(x) x$name |> paste(collapse = " ")
+)
+fms <-  map_chr(
+  metadata[["file_manager"]],
+  \(x) x$name |> paste(collapse = " ")
+)
 tibble(
-  reviewers = metadata[["reviewers"]] |> paste(collapse = ", "),
-  `file manager` = metadata[["file_manager"]],
+  reviewers = revs,
+  `file manager` = fms,
   protocolcode = metadata[["protocol_code"]],
   `version number` = metadata[["version_number"]],
   language = metadata[["language"]]
 ) %>%
   pander::pander(split.tables = Inf)
+rm(revs, fms)
 ```
 
 ```{r results="asis"}
