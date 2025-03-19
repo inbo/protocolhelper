@@ -58,11 +58,11 @@ sop_gendiv <- googlesheets4::read_sheet(
 #####################################################
 # harmoniseren
 sip_cleaned <- sip %>%
-  filter(!is.na(sip)) %>%
+  filter(!is.na(sip_code)) %>%
   mutate(description = sprintf("Apparaat: %s; Type model: %s; Producent: %s",
                                apparaat, type_model, producent),
          inventory = "lab") %>%
-  select(protocolcode = sip,
+  select(protocolcode = sip_code,
          description,
          inventory) %>%
   mutate(protocolcode = paste0(tolower(protocolcode), "-nl")) %>%
@@ -150,7 +150,7 @@ all(grepl("s[fioap]p-\\w{3,6}-nl",
 sop_gendiv_cleaned <- sop_gendiv %>%
   filter(!is.na(sop_code)) %>%
   mutate(description = sprintf("Procedure: %s",
-                               procedure)) %>%
+                               methode)) %>%
   select(protocolcode = sop_code,
          description) %>%
   mutate(protocolcode = paste0(tolower(protocolcode), "-nl"),
