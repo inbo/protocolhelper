@@ -556,3 +556,106 @@ author2yaml <- function(author, corresponding = FALSE) {
 #' @importFrom checklist use_author
 #' @noRd
 use_reviewer <- use_file_manager <- use_author
+
+#' Helper to ask questions to construct yaml key-value pairs
+#'
+#' Asks for title, subtitle, authors, reviewers, file manager, keywords
+#'
+#' @importFrom checklist use_author ask_yes_no
+#' @importFrom cli cli_fmt cli_alert cli_alert_danger
+#' @noRd
+yaml_interactive <- function() {
+  readline(prompt = cli_fmt(cli_alert("Enter the title: "))) |>
+    gsub(pattern = "[\"|']", replacement = "") |>
+    sprintf(fmt = "title: \"%s\"") -> yaml
+  readline(
+    prompt = cli_fmt(
+      cli_alert(
+        "Enter the optional subtitle (leave empty to omit): "
+      )
+    )
+  ) |>
+    gsub(pattern = "[\"|']", replacement = "") -> subtitle
+  yaml <- c(yaml, sprintf(fmt = "subtitle: \"%s\"", subtitle)[subtitle != ""])
+  cli_alert("Please select the corresponding author")
+  authors <- use_author()
+  c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
+  while (
+    isTRUE(
+      ask_yes_no(
+        cli_fmt(
+          cli_alert(
+            "Add another author?"
+          )
+        )
+      )
+    )
+  ) {
+    author <- use_author()
+    authors[, c("given", "family", "email")] |>
+      rbind(author[, c("given", "family", "email")]) |>
+      anyDuplicated() -> duplo
+    if (duplo > 0) {
+      cli_alert_danger(
+        "{author$given} {author$family} is already listed as author"
+      )
+      next
+    }
+    c(yaml, author2yaml(author, corresponding = FALSE)) -> yaml
+    authors <- rbind(authors, author)
+  }
+  cli_alert("Please select a reviewer")
+  reviewer <- use_reviewer()
+  authors[, c("given", "family", "email")] |>
+    rbind(reviewer[, c("given", "family", "email")]) |>
+    anyDuplicated() -> duplo
+  if (duplo > 0) {
+    cli_alert_danger(
+      "{reviewer$given} {reviewer$family} is already listed as author"
+    )
+  }
+  c(yaml, "reviewer:", author2yaml(reviewer, corresponding = FALSE)) -> yaml
+  while (
+    isTRUE(
+      ask_yes_no(
+        cli_fmt(
+          cli_alert(
+            "Add another reviewer?"
+          )
+        )
+      )
+    )
+  ) {
+    reviewer <- use_reviewer()
+    authors[, c("given", "family", "email")] |>
+      rbind(reviewer[, c("given", "family", "email")]) |>
+      anyDuplicated() -> duplo
+    if (duplo > 0) {
+      cli_alert_danger(
+        "{reviewer$given} {reviewer$family} is already listed as author"
+      )
+      next
+    }
+    c(yaml, author2yaml(reviewer, corresponding = FALSE)) -> yaml
+  }
+  cli_alert("Please select the file manager")
+  file_manager <- use_file_manager()
+
+  readline(prompt = cli_fmt(
+    cli_alert("Enter one or more keywords separated by `;`"))) |>
+    gsub(pattern = "[\"|']", replacement = "") |>
+    strsplit(";") |>
+    unlist() |>
+    gsub(pattern = "^\\s+", replacement = "") |>
+    gsub(pattern = "\\s+$", replacement = "") |>
+    paste(collapse = "; ") |>
+    sprintf(fmt = "keywords: \"%s\"") -> keywords
+
+  c(
+    yaml,
+    "file_manager:", author2yaml(file_manager, corresponding = FALSE),
+    keywords
+  ) -> yaml
+
+  return(yaml)
+}

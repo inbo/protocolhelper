@@ -239,96 +239,12 @@ create_protocol <- function(
     system.file(package = "checklist") |>
     file_copy(file.path(path_to_protocol, "LICENSE.md"))
 
-  # build new yaml
-  readline(prompt = cli_fmt(cli_alert("Enter the title: "))) |>
-    gsub(pattern = "[\"|']", replacement = "") |>
-    sprintf(fmt = "title: \"%s\"") -> yaml
-  readline(
-    prompt = cli_fmt(
-      cli_alert(
-        "Enter the optional subtitle (leave empty to omit): "
-      )
-    )
-  ) |>
-    gsub(pattern = "[\"|']", replacement = "") -> subtitle
-  yaml <- c(yaml, sprintf(fmt = "subtitle: \"%s\"", subtitle)[subtitle != ""])
-  cli_alert("Please select the corresponding author")
-  authors <- use_author()
-  c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
-  while (
-    isTRUE(
-      ask_yes_no(
-        cli_fmt(
-          cli_alert(
-            "Add another author?"
-            )
-          )
-      )
-    )
-  ) {
-    author <- use_author()
-    authors[, c("given", "family", "email")] |>
-      rbind(author[, c("given", "family", "email")]) |>
-      anyDuplicated() -> duplo
-    if (duplo > 0) {
-      cli_alert_danger(
-        "{author$given} {author$family} is already listed as author"
-      )
-      next
-    }
-    c(yaml, author2yaml(author, corresponding = FALSE)) -> yaml
-    authors <- rbind(authors, author)
-  }
-  cli_alert("Please select a reviewer")
-  reviewer <- use_reviewer()
-  authors[, c("given", "family", "email")] |>
-    rbind(reviewer[, c("given", "family", "email")]) |>
-    anyDuplicated() -> duplo
-  if (duplo > 0) {
-    cli_alert_danger(
-      "{reviewer$given} {reviewer$family} is already listed as author"
-    )
-  }
-  c(yaml, "reviewer:", author2yaml(reviewer, corresponding = FALSE)) -> yaml
-  while (
-    isTRUE(
-      ask_yes_no(
-        cli_fmt(
-          cli_alert(
-            "Add another reviewer?"
-          )
-        )
-      )
-    )
-  ) {
-    reviewer <- use_reviewer()
-    authors[, c("given", "family", "email")] |>
-      rbind(reviewer[, c("given", "family", "email")]) |>
-      anyDuplicated() -> duplo
-    if (duplo > 0) {
-      cli_alert_danger(
-        "{reviewer$given} {reviewer$family} is already listed as author"
-      )
-      next
-    }
-    c(yaml, author2yaml(reviewer, corresponding = FALSE)) -> yaml
-  }
-  cli_alert("Please select the file manager")
-  file_manager <- use_file_manager()
+  # build new yaml - interactive part
+  yaml <- yaml_interactive()
 
-  readline(prompt = cli_fmt(
-    cli_alert("Enter one or more keywords separated by `;`"))) |>
-    gsub(pattern = "[\"|']", replacement = "") |>
-    strsplit(";") |>
-    unlist() |>
-    gsub(pattern = "^\\s+", replacement = "") |>
-    gsub(pattern = "\\s+$", replacement = "") |>
-    paste(collapse = "; ") |>
-    sprintf(fmt = "keywords: \"%s\"") -> keywords
-
-  c(
+  # add non-interactive key-values
+  yaml <- c(
     yaml,
-    "file_manager:", author2yaml(file_manager, corresponding = FALSE),
     paste("language:", language),
     paste("date:", "\"`r Sys.Date()`\""),
     paste("protocol_code:", protocol_code),
@@ -336,7 +252,6 @@ create_protocol <- function(
     paste("template_name:", template),
     paste("theme:", theme)[!is.null(theme)],
     paste("project_name:", project_name)[!is.null(project_name)],
-    keywords,
     "community: \"inbo\"",
     paste0("publisher: ", inbo_affiliation[[language]]),
     "site: bookdown::bookdown_site",
@@ -344,7 +259,7 @@ create_protocol <- function(
     "bibliography: referenties.yaml"[language == "nl"],
     "link-citations: TRUE",
     "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" # nolint
-  ) -> yaml
+  )
 
   # read index template
   path(path_to_protocol, "index.Rmd") |>
