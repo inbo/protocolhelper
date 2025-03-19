@@ -197,6 +197,8 @@ create_protocol_code <- function(
     protocol_number <- paste0(
       protocol_leading_number,
       protocol_trailing_number)
+    protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
+    return(protocol_code)
   }
   if (protocol_type == "sfp" && !is.null(protocol_number)) {
     expected_leading_number <-
