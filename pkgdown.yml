@@ -1,0 +1,8 @@
+pandoc: 3.6.3
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles: {}
+last_built: 2025-03-19T15:09Z
+urls:
+  reference: https://inbo.github.io/protocolhelper/reference
+  article: https://inbo.github.io/protocolhelper/articles

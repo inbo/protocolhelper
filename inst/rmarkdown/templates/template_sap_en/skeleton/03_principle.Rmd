@@ -1,7 +1,0 @@
-# Principle
-
-```{=html}
-<!--
-Brief description of the principles on which the protocol is based.
--->
-```

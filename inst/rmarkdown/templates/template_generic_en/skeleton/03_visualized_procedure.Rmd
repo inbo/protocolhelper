@@ -1,7 +1,0 @@
-# Visualized procedure
-
-```{=html}
-<!--
-Flowchart (can be optional but encouraged when helpful)
--->
-```

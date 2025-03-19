@@ -1,8 +1,0 @@
-# Summary
-
-```{=html}
-<!--
-A summary of the steps to follow.
-Use a flow chart if this can clarify the protocol.
--->
-```

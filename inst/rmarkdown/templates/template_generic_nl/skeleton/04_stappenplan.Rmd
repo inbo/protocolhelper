@@ -1,9 +1,0 @@
-# Stappenplan
-
-```{=html}
-<!--
-Stap voor stap uitgeschreven tekst (inclusief aspecten van kwaliteitsbewaking
-die eventueel in aparte protocollen staan uitgelegd).
-Best ook om visuele hulpmiddelen zoals foto's en diagrammen te gebruiken.
--->
-```
