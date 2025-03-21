@@ -466,7 +466,9 @@ $endif$
 \usepackage{orcidlink}
 
 $if(author)$
-\author{$for(author)$$author.name$\,\orcidlink{$author.orcid$}$sep$ \and $endfor$}
+\author{
+$for(author)$$author.name.given$ $author.name.family$\,\orcidlink{$author.orcid$}$sep$, $endfor$
+}
 $endif$
 
 \date{$date$}
