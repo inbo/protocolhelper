@@ -2,6 +2,10 @@
 
 ## Doelstelling
 
+<!-- description: start -->
+
+<!-- description: end -->
+
 ## Toepassingsgebied
 
 ## Niet binnen het toepassingsgebied
