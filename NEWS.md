@@ -1,5 +1,9 @@
 # protocolhelper 0.8.0
 
+## Bug fixes
+
+* authors were not rendered correctly in PDF version
+
 # protocolhelper 0.7.0
 
 ## Enhancements
