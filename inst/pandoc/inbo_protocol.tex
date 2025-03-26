@@ -471,6 +471,12 @@ $for(author)$$author.name.given$ $author.name.family$\,\orcidlink{$author.orcid$
 }
 $endif$
 
+% Conditional DOI inclusion for KOMA-Script documents
+% adding it to publishers field
+$if(doi)$
+    \publishers{\href{https://doi.org/$doi$}{DOI: $doi$}}
+$endif$
+
 \date{$date$}
 $if(beamer)$
 $if(institute)$
