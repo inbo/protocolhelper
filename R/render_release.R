@@ -15,6 +15,7 @@
 #'
 #' @param output_root A character string giving the root folder without version
 #' number. Default is "publish".
+#' @param sandbox Logical. Default TRUE. Whether or not to use Zenodo sandbox.
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom bookdown gitbook render_book pdf_book
@@ -35,7 +36,7 @@
 #' protocolhelper:::render_release()
 #'}
 
-render_release <- function(output_root = "publish") {
+render_release <- function(output_root = "publish", sandbox = TRUE) {
   assert_that(is.string(output_root))
   assert_that(
     requireNamespace("reactable", quietly = TRUE),
@@ -186,6 +187,13 @@ render_release <- function(output_root = "publish") {
       output_dir = target_dir,
       envir = new.env()
     ) |> suppressWarnings()
+
+    # upload protocol to protocol-specific zenodo archive
+    zenrecord <- upload_zenodo(
+      yaml = yaml[[i]],
+      rendered_folder = target_dir,
+      source_folder = ".",
+      sandbox = sandbox)
   }
   protocols <- dir_ls(
     output_root, recurse = TRUE, type = "file",

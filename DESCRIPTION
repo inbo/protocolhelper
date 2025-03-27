@@ -40,14 +40,17 @@ Imports:
     ymlthis
 Suggests: 
     dplyr,
+    keyring,
     lubridate,
     magick,
     pander,
     png,
     reactable,
+    rlang,
     slickR,
     testthat (>= 2.1.0),
-    tinytex
+    tinytex,
+    zen4R
 Additional_repositories: https://inbo.r-universe.dev
 Config/checklist/communities: inbo
 Config/checklist/keywords: protocols; R package; Reproducible research;
