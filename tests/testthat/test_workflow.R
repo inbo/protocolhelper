@@ -2,6 +2,13 @@ test_that("complete workflow works", {
   if (!requireNamespace("gert", quietly = TRUE)) {
     stop("please install 'gert' package for these tests to work")
   }
+  skip_if_offline()
+  skip_if_not_installed("zen4R")
+  skip_if_not_installed("keyring")
+  skip_if(
+    assertthat::is.error(try(keyring::key_get("ZENODO_SANDBOX"), silent = TRUE))
+  )
+
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),
@@ -136,6 +143,7 @@ test_that("complete workflow works", {
 
   protocolhelper:::update_news_release("sfp-101-en")
   protocolhelper:::update_zenodo()
+  doi <- protocolhelper:::update_doi("sfp-101-en")
 
   # add, commit and tag it
   sfp_staged <- gert::git_add(files = ".")
@@ -186,6 +194,7 @@ test_that("complete workflow works", {
 
   protocolhelper:::update_news_release("sfp-407-en")
   protocolhelper:::update_zenodo()
+  doi <- protocolhelper:::update_doi("sfp-407-en")
 
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-407-en_vegetation-1")
@@ -305,6 +314,7 @@ test_that("complete workflow works", {
 
   protocolhelper:::update_news_release("sfp-102-en")
   protocolhelper:::update_zenodo()
+  doi <- protocolhelper:::update_doi("sfp-102-en")
 
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-102-en_second_subprotocol")
@@ -366,6 +376,7 @@ test_that("complete workflow works", {
 
   protocolhelper:::update_news_release("spp-001-en")
   protocolhelper:::update_zenodo()
+  doi <- protocolhelper:::update_doi("spp-001-en")
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")
@@ -420,6 +431,7 @@ test_that("complete workflow works", {
 
   protocolhelper:::update_news_release("sfp-101-en")
   protocolhelper:::update_zenodo()
+  doi <- protocolhelper:::update_doi("sfp-101-en")
 
   # add, commit and tag it
   spp_staged <- gert::git_add(files = ".")

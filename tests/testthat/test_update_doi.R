@@ -1,6 +1,5 @@
 test_that("update doi works", {
   skip_if_offline()
-  skip_on_ci()
   skip_if_not_installed("zen4R")
   skip_if_not_installed("keyring")
   skip_if(
@@ -126,7 +125,7 @@ test_that("update doi works", {
                         "main", ifelse(any(branch_info$name == "origin/master"),
                                        "master", "unknown"))
 
-  # create a protocol to be used as subprotocol
+  # create a protocol
   checklist::new_branch("sfp-101-en", repo = repo)
   version_number <- get_version_number()
   create_sfp(
