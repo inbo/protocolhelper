@@ -45,9 +45,14 @@ jobs:
       - uses: r-lib/actions/setup-tinytex@v2
       - run: tlmgr --version
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-gnutls-dev
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck any::zen4R any::rlang any::keyring
+          extra-packages: any::rcmdcheck, any::zen4R, any::rlang, any::keyring
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
