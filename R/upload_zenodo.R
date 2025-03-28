@@ -2,11 +2,10 @@
 #'
 #' @description
 #' Not intended for interactive use.
-#' Should be used in a GitHub Action on main branch after merge of a protocol
-#' Helper function used in protocolhelper:::render_release()
+#' Should be used in a GitHub Action on main branch after merge of a protocol.
+#' Helper function used in protocolhelper:::render_release().
 #'
-#' @importFrom zen4R ZenodoManager
-#' @importFrom utils zip
+#' @importFrom utils browseURL zip
 #'
 #' @noRd
 upload_zenodo <- function(

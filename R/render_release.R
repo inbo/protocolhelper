@@ -189,7 +189,7 @@ render_release <- function(output_root = "publish", sandbox = TRUE) {
     ) |> suppressWarnings()
 
     # upload protocol to protocol-specific zenodo archive
-    upload_zenodo(
+    upload_zenodo( # nolint object_usage_linter
       yaml = yaml[[i]],
       rendered_folder = target_dir,
       source_folder = ".",

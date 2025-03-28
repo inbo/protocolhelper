@@ -13,9 +13,6 @@
 #' @importFrom fs
 #' path
 #' is_dir
-#' @importFrom zen4R
-#' ZenodoManager
-#' @importFrom rlang is_empty
 #' @importFrom rmarkdown yaml_front_matter
 #'
 #' @noRd
@@ -31,6 +28,7 @@ update_doi <- function(
   check_protocolcode(protocol_code)
   assert_that(requireNamespace("zen4R", quietly = TRUE))
   assert_that(requireNamespace("keyring", quietly = TRUE))
+  assert_that(requireNamespace("rlang", quietly = TRUE))
   assert_that(is.string(path), noNA(path), is.flag(sandbox), noNA(sandbox))
   assert_that(is_dir(path), msg = "`path` is not an existing directory")
 
