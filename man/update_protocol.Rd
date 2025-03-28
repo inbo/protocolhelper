@@ -13,7 +13,10 @@ update_protocol(protocol_code)
 NULL invisibly
 }
 \description{
-The function creates a branch named after the protocol_code
+The function creates a branch with the same name as the \code{protocol_code} and
+checks out that branch.
+Next, it will update the version number in the YAML of \code{index.Rmd} and
+update the protocol-specific \code{NEWS.md} file.
 }
 \seealso{
 Other creation: 
