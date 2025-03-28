@@ -30,6 +30,7 @@ jobs:
       _R_CHECK_SYSTEM_CLOCK_: false
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
 
     steps:
       - uses: actions/checkout@v3
