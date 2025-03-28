@@ -1,8 +1,15 @@
 # protocolhelper 0.8.0
 
+## New features
+
+* Each protocol will be published to a protocol-specific Zenodo archive (#112).
+  The protocol-specific Zenodo DOI is automatically added to protocol metadata
+  (YAML section of the `Index.Rmd` file) and will be visible in the rendered
+  versions.
+
 ## Bug fixes
 
-* authors were not rendered correctly in PDF version
+* Authors were not rendered correctly in PDF version.
 
 # protocolhelper 0.7.0
 
