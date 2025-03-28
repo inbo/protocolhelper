@@ -30,6 +30,7 @@ jobs:
       _R_CHECK_SYSTEM_CLOCK_: false
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
 
     steps:
       - uses: actions/checkout@v3
@@ -44,9 +45,15 @@ jobs:
       - uses: r-lib/actions/setup-tinytex@v2
       - run: tlmgr --version
 
+      - name: Install system dependencies
+        if: runner.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-gnutls-dev libraptor2-dev
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: any::rcmdcheck, any::zen4R, any::rlang, any::keyring
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2

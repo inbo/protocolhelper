@@ -1,10 +1,5 @@
 # Summary
 
-<!-- description: start -->
-
-
-<!-- description: end -->
-
 ```{=html}
 <!--
 A summary of the steps to follow.

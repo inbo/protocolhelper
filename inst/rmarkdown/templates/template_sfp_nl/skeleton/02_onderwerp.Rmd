@@ -9,6 +9,10 @@ Definities van begrippen en afkortingen die noodzakelijk zijn om dit document te
 ```
 ## Doelstelling en toepassingsgebied
 
+<!-- description: start -->
+
+<!-- description: end -->
+
 ```{=html}
 <!--
 Doelstelling: omschrijving in woorden waarvoor het protocol dient.

@@ -9,6 +9,11 @@ Definitions of terms and abbreviations necessary to understand this document and
 ```
 ## Goal and area of application
 
+<!-- description: start -->
+
+<!-- description: end -->
+
+
 ```{=html}
 <!--
 Objective: description in words what the protocol is for.

@@ -254,7 +254,7 @@ create_protocol <- function(
     paste("template_name:", template),
     paste("theme:", theme)[!is.null(theme)],
     paste("project_name:", project_name)[!is.null(project_name)],
-    "community: \"inbo\"",
+    "community: \"inbo\"", # required by citation_meta
     paste0("publisher: ", inbo_affiliation[[language]]),
     "site: bookdown::bookdown_site",
     "bibliography: references.yaml"[language == "en"],

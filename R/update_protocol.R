@@ -1,6 +1,9 @@
 #' Preparatory steps to start the update of a pre-existing version of a protocol
 #'
-#' The function creates a branch named after the protocol_code
+#' The function creates a branch with the same name as the `protocol_code` and
+#' checks out that branch.
+#' Next, it will update the version number in the YAML of `index.Rmd` and
+#' update the protocol-specific `NEWS.md` file.
 #'
 #' @inheritParams get_path_to_protocol
 #'

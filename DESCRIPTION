@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.7.0
+Version: 0.8.0
 Authors@R: c(
     person("Hans", "Van Calster", , "hans.vancalster@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8595-8426", affiliation = "Research Institute for Nature and Forest (INBO)")),
@@ -40,14 +40,17 @@ Imports:
     ymlthis
 Suggests: 
     dplyr,
+    keyring,
     lubridate,
     magick,
     pander,
     png,
     reactable,
+    rlang,
     slickR,
     testthat (>= 2.1.0),
-    tinytex
+    tinytex,
+    zen4R
 Additional_repositories: https://inbo.r-universe.dev
 Config/checklist/communities: inbo
 Config/checklist/keywords: protocols; R package; Reproducible research;
