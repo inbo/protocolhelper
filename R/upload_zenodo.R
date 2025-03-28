@@ -87,7 +87,7 @@ upload_zenodo <- function(
   return(invisible(myrec))
 }
 
-#' source code from: inbo/checklist
+#' source code from: `inbo/checklist`
 zen_creator <- function(zen_rec, creators) {
   for (x in creators) {
     zen_rec$addCreator(
@@ -97,7 +97,7 @@ zen_creator <- function(zen_rec, creators) {
   return(zen_rec)
 }
 
-#' source code from: inbo/checklist
+#' source code from: `inbo/checklist`
 zen_contributor <- function(zen_rec, contributors) {
   for (x in contributors) {
     zen_rec$addContributor(

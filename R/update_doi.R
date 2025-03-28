@@ -1,7 +1,7 @@
 #' @title Update the protocol-specific Zenodo doi
 #'
 #' @description
-#' Gets and sets a doi in the yaml front matter.
+#' Gets and sets a DOI in the yaml front matter.
 #' Not intended for interactive use.
 #' Should be used in a GitHub Action on a PR branch.
 #'
