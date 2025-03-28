@@ -35,7 +35,6 @@ update_doi <- function(
   assert_that(is_dir(path), msg = "`path` is not an existing directory")
 
   ppath <- get_path_to_protocol(protocol_code)
-  current_branch <- git_branch(repo = path)
 
   # read index
   path(ppath, "index.Rmd") |>
@@ -45,7 +44,7 @@ update_doi <- function(
   yml_list <- yaml_front_matter(path(ppath, "index.Rmd"))
 
   # get reserved doi or new version doi
-  zenodo <- ZenodoManager$new(
+  zenodo <- zen4R::ZenodoManager$new(
     token = token,
     sandbox = sandbox,
     logger = logger

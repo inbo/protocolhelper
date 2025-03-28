@@ -52,7 +52,7 @@ upload_zenodo <- function(
   to_upload <- list(pdf, zip_html)
 
   # prepare upload to zenodo
-  zenodo <- ZenodoManager$new(
+  zenodo <- zen4R::ZenodoManager$new(
     token = token,
     sandbox = sandbox,
     logger = logger
@@ -88,6 +88,7 @@ upload_zenodo <- function(
 }
 
 #' source code from: `inbo/checklist`
+#' @noRd
 zen_creator <- function(zen_rec, creators) {
   for (x in creators) {
     zen_rec$addCreator(
@@ -98,6 +99,7 @@ zen_creator <- function(zen_rec, creators) {
 }
 
 #' source code from: `inbo/checklist`
+#' @noRd
 zen_contributor <- function(zen_rec, contributors) {
   for (x in contributors) {
     zen_rec$addContributor(
