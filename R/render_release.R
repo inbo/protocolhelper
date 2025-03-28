@@ -189,11 +189,12 @@ render_release <- function(output_root = "publish", sandbox = TRUE) {
     ) |> suppressWarnings()
 
     # upload protocol to protocol-specific zenodo archive
-    zenrecord <- upload_zenodo(
+    upload_zenodo(
       yaml = yaml[[i]],
       rendered_folder = target_dir,
       source_folder = ".",
-      sandbox = sandbox)
+      sandbox = sandbox
+    )
   }
   protocols <- dir_ls(
     output_root, recurse = TRUE, type = "file",
