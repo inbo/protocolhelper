@@ -53,7 +53,7 @@ test_that("test that adding dependencies to yaml works", {
     short_title = "water 1",
     version_number = version_number,
     theme = "water",
-    lang = "en"
+    language = "en"
   )
 
   # add a projectspecific parameter to index yaml

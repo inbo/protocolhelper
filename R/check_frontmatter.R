@@ -157,7 +157,7 @@ check_frontmatter <- function(
   )
 
   problems <- c(problems,
-                "'lang' must be 'nl' or 'en'"[
+                "'language' must be 'nl' or 'en'"[
                   !any(yml_protocol$language %in% c("nl", "en"))]
                 )
 

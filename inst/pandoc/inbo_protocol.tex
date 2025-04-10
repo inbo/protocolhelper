@@ -361,7 +361,7 @@ $if(csl-refs)$
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 $endif$
-$if(lang)$
+$if(language)$
 \ifLuaTeX
 \usepackage[bidi=basic]{babel}
 \else
@@ -425,8 +425,8 @@ $endif$
 $if(author-meta)$
   pdfauthor={$author-meta$},
 $endif$
-$if(lang)$
-  pdflang={$lang$},
+$if(language)$
+  pdflang={$language$},
 $endif$
 $if(subject)$
   pdfsubject={$subject$},

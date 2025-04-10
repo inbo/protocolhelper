@@ -94,7 +94,7 @@ To do this, you can use the following code:
   version_number <- "2020.01"
   create_sfp(
     short_title = "water 1",
-    version_number = version_number, theme = "water", lang = "nl"
+    version_number = version_number, theme = "water", language = "nl"
   )
 ```
 

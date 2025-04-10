@@ -138,7 +138,7 @@ render_release <- function(output_root = "publish", sandbox = TRUE) {
             "thema",
             c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
           ),
-          pandoc_variable_arg("lang", yaml[[i]][["language"]])
+          pandoc_variable_arg("language", yaml[[i]][["language"]])
         )
       ),
       output_file = pdf_name,
@@ -167,7 +167,7 @@ render_release <- function(output_root = "publish", sandbox = TRUE) {
             "thema",
             c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
           ),
-          pandoc_variable_arg("lang", yaml[[i]][["language"]])
+          pandoc_variable_arg("language", yaml[[i]][["language"]])
         ),
         template = "css/gitbook.html",
         css = "css/inbo_rapport.css",

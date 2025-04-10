@@ -10,7 +10,6 @@ file_manager:
 protocol_code:
 version_number:
 language: nl
-lang: nl
 template_name: spp
 project_name:
 site: bookdown::bookdown_site
