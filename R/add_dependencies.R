@@ -40,7 +40,7 @@ add_dependencies <- function(code_mainprotocol,
   right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
   assert_that(
     right_format,
-    msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+    msg = "protocol code not in s*p-###-nl or s*p-###-en format"
   )
 
   # force appendix to TRUE when corresponding params are given

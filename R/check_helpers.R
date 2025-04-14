@@ -38,7 +38,7 @@ check_protocolcode <- function(protocolcode) {
   if (!(is.flag(Sys.getenv("CI")) && isTRUE(Sys.getenv("CI")))) {
     assert_that(
       right_format | is_reserved,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+      msg = "protocol code not in s*p-###-nl or s*p-###-en format"
     )
   } else {
     assert_that(
