@@ -31,6 +31,7 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
+      PKG_SYSREQS: false
 
     steps:
       - uses: actions/checkout@v3
@@ -49,10 +50,7 @@ jobs:
         if: runner.os == 'linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y software-properties-common
-          sudo add-apt-repository universe
-          sudo apt-get update
-          sudo apt-get install -y libcurl4-gnutls-dev libraptor2-dev
+          sudo apt-get -y install pandoc git libcurl4-gnutls-dev libssl-dev make libgit2-dev zlib1g-dev libsecret-1-dev imagemagick libmagick++-dev gsfonts libpng-dev libfreetype6-dev libjpeg-dev libtiff-dev librdf0-dev libsodium-dev libicu-dev libfontconfig1-dev libfribidi-dev libharfbuzz-dev libxml2-dev
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
