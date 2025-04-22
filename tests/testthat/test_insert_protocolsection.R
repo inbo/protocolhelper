@@ -69,7 +69,8 @@ test_that("Test that insert_protocolsection works", {
       code_subprotocol = "sfp-101-nl",
       version_number = "2020.01",
       file_name = "07_werkwijze.Rmd",
-      fetch_remote = FALSE)
+      fetch_remote = FALSE
+    )
   )
 
   # test addition of a chapter + demote_header
@@ -79,7 +80,8 @@ test_that("Test that insert_protocolsection works", {
       version_number = "2020.01",
       file_name = "07_werkwijze.Rmd",
       demote_header = 1,
-      fetch_remote = FALSE)
+      fetch_remote = FALSE
+    )
   )
 
   # test add a section from a chapter
@@ -89,7 +91,8 @@ test_that("Test that insert_protocolsection works", {
       version_number = "2020.01",
       file_name = "07_werkwijze.Rmd",
       section = "## Uitvoering",
-      fetch_remote = FALSE)
+      fetch_remote = FALSE
+    )
   )
 
   # test add a section from a chapter + demote_header by -1
@@ -100,7 +103,8 @@ test_that("Test that insert_protocolsection works", {
       file_name = "07_werkwijze.Rmd",
       section = "## Uitvoering",
       demote_header = -1,
-      fetch_remote = FALSE)
+      fetch_remote = FALSE
+    )
   )
 
   # test add a chapter with non-default params
@@ -108,10 +112,12 @@ test_that("Test that insert_protocolsection works", {
   write(
     x = test_params,
     file = "source/sfp/1_water/sfp_101_nl_water_1/07_werkwijze.Rmd",
-    append = TRUE)
+    append = TRUE
+  )
   # add the protocolspecific parameter to index yaml
   index <- readLines(
-    "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd")
+    "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
+  )
   index <- c(
     index[1:14],
     "  protocolspecific: defaultvalue",
@@ -119,7 +125,8 @@ test_that("Test that insert_protocolsection works", {
   )
   writeLines(
     index,
-    con = "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd")
+    con = "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
+  )
   version_number <- "2020.02"
   gert::git_commit_all(message = "sfp-101-nl_water-1")
   specific_tag <- paste("sfp-101-nl", version_number, sep = "-")
@@ -134,10 +141,10 @@ test_that("Test that insert_protocolsection works", {
       code_subprotocol = "sfp-101-nl",
       version_number = "2020.02",
       file_name = "07_werkwijze.Rmd",
-      fetch_remote = FALSE)
+      fetch_remote = FALSE
+    )
   )
 
   # Cleanup
   unlink(repo, recursive = TRUE)
-
 })

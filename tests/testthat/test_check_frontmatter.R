@@ -38,29 +38,37 @@ test_that("Check frontmatter works", {
 
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
   on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
-  repo <- gert::git_clone(url = origin_repo,
-                          path = tempfile("protocol_local"), verbose = FALSE)
+  repo <- gert::git_clone(
+    url = origin_repo,
+    path = tempfile("protocol_local"), verbose = FALSE
+  )
   on.exit(unlink(repo, recursive = TRUE), add = TRUE)
   old_wd <- setwd(repo)
   on.exit(setwd(old_wd), add = TRUE)
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(name = "user.email", value = "someone@example.org",
-                       repo = repo)
+  gert::git_config_set(
+    name = "user.email", value = "someone@example.org",
+    repo = repo
+  )
   file.create("NEWS.md")
   gert::git_add("NEWS.md")
   gert::git_commit_all(message = "add empty NEWS repo file")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   branch_info <- gert::git_branch_list(repo = repo)
   main_branch <- ifelse(any(branch_info$name == "origin/main"),
-                        "main", ifelse(any(branch_info$name == "origin/master"),
-                                       "master", "unknown"))
+    "main", ifelse(any(branch_info$name == "origin/master"),
+      "master", "unknown"
+    )
+  )
   # create a protocol
   version_number <- get_version_number()
   create_sfp(
@@ -78,14 +86,20 @@ test_that("Check frontmatter works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
-  expect_output(check_frontmatter(protocol_code = "sfp-101-en",
-                                  fail = FALSE),
-                "Well done! No problems found")
+  expect_output(
+    check_frontmatter(
+      protocol_code = "sfp-101-en",
+      fail = FALSE
+    ),
+    "Well done! No problems found"
+  )
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
@@ -94,10 +108,12 @@ test_that("Check frontmatter works", {
   gert::git_merge(ref = refspec, repo = repo)
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   # another protocol
   checklist::new_branch("sfp-102-en", repo = repo)
@@ -114,15 +130,21 @@ test_that("Check frontmatter works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
 
-  expect_output(check_frontmatter(protocol_code = "sfp-102-en",
-                    fail = FALSE),
-                "Well done! No problems found")
+  expect_output(
+    check_frontmatter(
+      protocol_code = "sfp-102-en",
+      fail = FALSE
+    ),
+    "Well done! No problems found"
+  )
 
   # create some problems
   path_to_protocol <- get_path_to_protocol("sfp-102-en")
@@ -130,17 +152,20 @@ test_that("Check frontmatter works", {
   x[[3]] <- "subtitle:"
   writeLines(x, file.path(path_to_protocol, "index.Rmd"))
   index_yml <- rmarkdown::yaml_front_matter(
-    file.path(path_to_protocol, "index.Rmd"))
+    file.path(path_to_protocol, "index.Rmd")
+  )
   index_yml <- ymlthis::as_yml(index_yml)
   index_yml <- ymlthis::yml_replace(
     index_yml,
     title = c("bla", "bla"),
     version_number = "2020.01.dev",
-    language = "en")
+    language = "en"
+  )
   index_yml <- ymlthis::yml_author(
     index_yml,
     name = "Doe, John",
-    orcid = "0000-1234-4321")
+    orcid = "0000-1234-4321"
+  )
   template_rmd <- file.path(path_to_protocol, "template.rmd")
   parent_rmd <- file.path(path_to_protocol, "index.Rmd")
   file.copy(from = parent_rmd, to = template_rmd)
@@ -152,23 +177,33 @@ test_that("Check frontmatter works", {
     include_body = TRUE,
     include_yaml = FALSE,
     quiet = TRUE,
-    open_doc = FALSE)
+    open_doc = FALSE
+  )
   unlink(template_rmd)
 
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_commit_all(message = "mess up sfp-102-en_water-2")
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
-  expect_error(check_frontmatter(protocol_code = "sfp-102-en",
-                                 fail = TRUE),
-               "Some problems occur")
+  expect_error(
+    check_frontmatter(
+      protocol_code = "sfp-102-en",
+      fail = TRUE
+    ),
+    "Some problems occur"
+  )
 
-  expect_output(check_frontmatter(protocol_code = "sfp-102-en",
-                    fail = FALSE),
-                "Errors in protocol sfp-102-en:")
-
+  expect_output(
+    check_frontmatter(
+      protocol_code = "sfp-102-en",
+      fail = FALSE
+    ),
+    "Errors in protocol sfp-102-en:"
+  )
 })

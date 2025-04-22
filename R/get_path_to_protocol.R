@@ -40,23 +40,29 @@
 #' @examples
 #' \dontrun{
 #' get_path_to_protocol(protocol_code = "sfp-401-nl")
-#'}
+#' }
 get_path_to_protocol <- function(protocol_code,
                                  theme = NULL,
                                  project_name = NULL,
                                  short_title = NULL) {
   assert_that(is.string(protocol_code))
-  protocol_type <- regmatches(protocol_code,
-                              regexpr("^s[f|p|i|o|a]p", protocol_code))
+  protocol_type <- regmatches(
+    protocol_code,
+    regexpr("^s[f|p|i|o|a]p", protocol_code)
+  )
   assert_that(protocol_type %in% c("sfp", "spp", "sip", "sap", "sop"))
 
   # first case: the path exists already
   project_root <- find_root(is_git_root)
-  ld <- list.dirs(path = file.path(project_root, "source"),
-                  full.names = TRUE,
-                  recursive = TRUE)
-  ld <- str_subset(string = ld,
-                   pattern = str_replace_all(protocol_code, "-", "_"))
+  ld <- list.dirs(
+    path = file.path(project_root, "source"),
+    full.names = TRUE,
+    recursive = TRUE
+  )
+  ld <- str_subset(
+    string = ld,
+    pattern = str_replace_all(protocol_code, "-", "_")
+  )
   if (!identical(ld, character(0))) {
     path_to_protocol <- ld[[1]]
     return(path_to_protocol)
@@ -70,14 +76,20 @@ get_path_to_protocol <- function(protocol_code,
                  you need to provide a short title"))
   } else {
     protocol_folder_name <- paste(
-      str_replace_all(protocol_code, "-", "_"), short_title, sep = "_")
+      str_replace_all(protocol_code, "-", "_"), short_title,
+      sep = "_"
+    )
   }
 
   if (protocol_type == "sfp") {
-    assert_that(is.string(theme),
-                theme %in% themes_df$theme)
-    protocol_leading_number <- themes_df[themes_df$theme == theme,
-                                         "theme_number"]
+    assert_that(
+      is.string(theme),
+      theme %in% themes_df$theme
+    )
+    protocol_leading_number <- themes_df[
+      themes_df$theme == theme,
+      "theme_number"
+    ]
     theme <- paste0(protocol_leading_number, "_", theme)
   }
 
@@ -85,30 +97,39 @@ get_path_to_protocol <- function(protocol_code,
     assert_that(is.string(project_name))
   }
 
-  path_to_protocol <- switch(
-    protocol_type,
-    "sfp" = file.path(project_root,
-                      "source",
-                      "sfp",
-                      theme,
-                      protocol_folder_name),
-    "spp" = file.path(project_root,
-                      "source",
-                      "spp",
-                      project_name,
-                      protocol_folder_name),
-    "sap" = file.path(project_root,
-                      "source",
-                      "sap",
-                      protocol_folder_name),
-    "sip" = file.path(project_root,
-                      "source",
-                      "sip",
-                      protocol_folder_name),
-    "sop" = file.path(project_root,
-                      "source",
-                      "sop",
-                      protocol_folder_name)
+  path_to_protocol <- switch(protocol_type,
+    "sfp" = file.path(
+      project_root,
+      "source",
+      "sfp",
+      theme,
+      protocol_folder_name
+    ),
+    "spp" = file.path(
+      project_root,
+      "source",
+      "spp",
+      project_name,
+      protocol_folder_name
+    ),
+    "sap" = file.path(
+      project_root,
+      "source",
+      "sap",
+      protocol_folder_name
+    ),
+    "sip" = file.path(
+      project_root,
+      "source",
+      "sip",
+      protocol_folder_name
+    ),
+    "sop" = file.path(
+      project_root,
+      "source",
+      "sop",
+      protocol_folder_name
+    )
   )
   return(path_to_protocol)
 }

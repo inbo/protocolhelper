@@ -12,15 +12,19 @@ check_all <- function(protocol_code, fail = !interactive()) {
   cat("Checking protocol YAML block with metadata (frontmatter) ...")
   check_fm <-
     tryCatch(
-      check_frontmatter(protocol_code = protocol_code,
-                        fail = fail),
+      check_frontmatter(
+        protocol_code = protocol_code,
+        fail = fail
+      ),
       error = function(e) e
     )
   cat("Checking protocol structure...")
   check_str <-
     tryCatch(
-      check_structure(protocol_code = protocol_code,
-                      fail = fail),
+      check_structure(
+        protocol_code = protocol_code,
+        fail = fail
+      ),
       error = function(e) e
     )
   if (inherits(check_fm, "error") || inherits(check_str, "error")) {

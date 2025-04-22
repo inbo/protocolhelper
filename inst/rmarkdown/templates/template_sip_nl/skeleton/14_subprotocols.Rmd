@@ -13,7 +13,8 @@ if (exists("params")) {
     if (length(child_docs) > 0) {
       res <- map(child_docs, knit_child, quiet = TRUE)
       cat(
-        c("# (PART) Subprotocols {.unnumbered}", "", unlist(res)), sep = "\n")
+        c("# (PART) Subprotocols {.unnumbered}", "", unlist(res)), sep = "\n"
+      )
     }
   }
 }

@@ -35,15 +35,13 @@
 #' @examples
 #' \dontrun{
 #' protocolhelper:::render_release()
-#'}
-
+#' }
 render_release <- function(
     output_root = "publish",
     sandbox = TRUE,
     zenodo_token = keyring::key_get(
       c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
-    )
-) {
+    )) {
   assert_that(is.string(output_root))
   assert_that(
     requireNamespace("reactable", quietly = TRUE),
@@ -58,21 +56,25 @@ render_release <- function(
 
   # write zenodo metadata file
   fs::dir_create(output_root)
-  adapt_zenodo(json = ".zenodo.json",
-               write = TRUE,
-               path_from = git_root,
-               path_to = output_root)
+  adapt_zenodo(
+    json = ".zenodo.json",
+    write = TRUE,
+    path_from = git_root,
+    path_to = output_root
+  )
 
   protocol_index <- dir_ls(
     file.path(git_root, "source"),
     type = "file",
     recurse = TRUE,
-    regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd")
+    regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd"
+  )
   output_yml_files <- dir_ls(
     file.path(git_root, "source"),
     type = "file",
     recurse = TRUE,
-    regexp = "source\\/s[fpioa]p\\/.+\\/_output\\.yml")
+    regexp = "source\\/s[fpioa]p\\/.+\\/_output\\.yml"
+  )
 
   yaml <- map(protocol_index, yaml_front_matter)
   output_yaml <- map(output_yml_files, read_yaml, eval.expr = TRUE)
@@ -110,19 +112,31 @@ render_release <- function(
         file.path(dirname(protocol_index[i]), "css")
       )
     }
-    on.exit(unlink(file.path(dirname(protocol_index[i]), "css"),
-                   recursive = TRUE), add = TRUE)
+    on.exit(
+      unlink(
+        file.path(dirname(protocol_index[i]), "css"),
+        recursive = TRUE
+      ),
+      add = TRUE
+    )
     if (!dir_exists(file.path(dirname(protocol_index[i]), "pandoc"))) {
       dir_copy(
         system.file("pandoc", package = "protocolhelper"),
         file.path(dirname(protocol_index[i]), "pandoc")
       )
     }
-    on.exit(unlink(file.path(dirname(protocol_index[i]), "pandoc"),
-                   recursive = TRUE), add = TRUE)
+    on.exit(
+      unlink(
+        file.path(dirname(protocol_index[i]), "pandoc"),
+        recursive = TRUE
+      ),
+      add = TRUE
+    )
     setwd(dirname(protocol_index[i]))
-    pdf_name <- paste0(yaml[[i]][["protocol_code"]], "_",
-                       yaml[[i]][["version_number"]], ".pdf")
+    pdf_name <- paste0(
+      yaml[[i]][["protocol_code"]], "_",
+      yaml[[i]][["version_number"]], ".pdf"
+    )
     render_book(
       input = ".",
       output_format = pdf_book(
@@ -183,12 +197,12 @@ render_release <- function(
           toc = list(
             before =
               ifelse(yaml[[i]][["language"]] == "en",
-                       '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n', # nolint start
-                       '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n'
+                '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n', # nolint start
+                '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n'
               ),
             after = '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>' # nolint end
-            )
           )
+        )
       ),
       output_file = "index.html",
       output_dir = target_dir,
@@ -205,7 +219,8 @@ render_release <- function(
     )
   }
   protocols <- dir_ls(
-    output_root, recurse = TRUE, type = "file",
+    output_root,
+    recurse = TRUE, type = "file",
     regexp = "[0-9]{4}\\.[0-9]{2}/index.html"
   )
   meta <- map(
@@ -221,8 +236,10 @@ render_release <- function(
   meta <- do.call(rbind, meta)
   meta$type <- get_protocol_type(meta$code)
   type_abbr <- c("sfp", "sip", "sap", "sop", "spp")
-  meta_order <- order(meta$type, meta$theme, meta$code,
-                      -as.integer(factor(meta$version)))
+  meta_order <- order(
+    meta$type, meta$theme, meta$code,
+    -as.integer(factor(meta$version))
+  )
   meta <- meta[meta_order, ]
   rownames(meta) <- NULL
   meta <- meta[, c("type", "version", "code", "title", "theme")]
@@ -240,23 +257,27 @@ render_release <- function(
   if (!dir_exists(file.path(git_root, "source", "homepage"))) {
     dir_copy(
       system.file("rmarkdown/homepage", package = "protocolhelper"),
-      file.path(git_root, "source", "homepage"))
+      file.path(git_root, "source", "homepage")
+    )
   }
   setwd(file.path(git_root, "source", "homepage"))
   for (i in seq_along(meta)) {
-    write.csv(x = meta[[i]],
-              file = paste0(type_abbr[i], ".csv"),
-              row.names = FALSE)
+    write.csv(
+      x = meta[[i]],
+      file = paste0(type_abbr[i], ".csv"),
+      row.names = FALSE
+    )
   }
   index <- readLines("index.Rmd")
   repo_news <- readLines("../../NEWS.md")
   writeLines(
-    c(index,
+    c(
+      index,
       "",
       "# NEWS",
       "",
       repo_news
-      ),
+    ),
     "index.Rmd"
   )
   if (!dir_exists(file.path(git_root, "source", "homepage", "css"))) {
@@ -265,8 +286,13 @@ render_release <- function(
       file.path(git_root, "source", "homepage", "css")
     )
   }
-  on.exit(unlink(file.path(git_root, "source", "homepage"),
-                 recursive = TRUE), add = TRUE)
+  on.exit(
+    unlink(
+      file.path(git_root, "source", "homepage"),
+      recursive = TRUE
+    ),
+    add = TRUE
+  )
   render_book(
     "index.Rmd",
     output_file = "index.html",
@@ -304,20 +330,25 @@ adapt_zenodo <- function(json = ".zenodo.json", write = TRUE, path_from = ".",
                          path_to) {
   # read `.zenodo.json` from protocolsource
   zenodo <- jsonlite::fromJSON(file.path(path_from, json),
-                               simplifyVector = FALSE)
+    simplifyVector = FALSE
+  )
   # adapt it
   zenodo$title <- "Protocols website of the Research Institute for Nature and Forest (INBO)" # nolint
-  zenodo$description <- "This archive contains the rendered html and pdf files of protocols used at the Research Institute for Nature and Forest (INBO), Brussels, Belgium (<a href=\"https://www.inbo.be/en\">www.inbo.be</a>). The website with the compiled protocols (including older versions) is at <a href=\"https://protocols.inbo.be\">https://protocols.inbo.be</a>."# nolint
+  zenodo$description <- "This archive contains the rendered html and pdf files of protocols used at the Research Institute for Nature and Forest (INBO), Brussels, Belgium (<a href=\"https://www.inbo.be/en\">www.inbo.be</a>). The website with the compiled protocols (including older versions) is at <a href=\"https://protocols.inbo.be\">https://protocols.inbo.be</a>." # nolint
 
   if (write) {
     # write it to publish folder
-    jsonlite::write_json(x = zenodo,
-                         file.path(path_to, ".zenodo.json"),
-                         pretty = TRUE,
-                         auto_unbox = TRUE)
+    jsonlite::write_json(
+      x = zenodo,
+      file.path(path_to, ".zenodo.json"),
+      pretty = TRUE,
+      auto_unbox = TRUE
+    )
   } else {
-    jsonlite::toJSON(x = zenodo,
-                     pretty = TRUE,
-                     auto_unbox = TRUE)
+    jsonlite::toJSON(
+      x = zenodo,
+      pretty = TRUE,
+      auto_unbox = TRUE
+    )
   }
 }

@@ -98,15 +98,19 @@ test_that("complete workflow works", {
 
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
   on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
-  repo <- gert::git_clone(url = origin_repo,
-                          path = tempfile("protocol_local"), verbose = FALSE)
+  repo <- gert::git_clone(
+    url = origin_repo,
+    path = tempfile("protocol_local"), verbose = FALSE
+  )
   on.exit(unlink(repo, recursive = TRUE), add = TRUE)
   old_wd <- setwd(repo)
   on.exit(setwd(old_wd), add = TRUE)
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(name = "user.email", value = "someone@example.org",
-                       repo = repo)
+  gert::git_config_set(
+    name = "user.email", value = "someone@example.org",
+    repo = repo
+  )
   file.create("NEWS.md")
   file.create(".zenodo.json")
   writeLines(jsontxt, con = ".zenodo.json")
@@ -118,15 +122,19 @@ test_that("complete workflow works", {
 
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   branch_info <- gert::git_branch_list(repo = repo)
   main_branch <- ifelse(any(branch_info$name == "origin/main"),
-                        "main", ifelse(any(branch_info$name == "origin/master"),
-                                       "master", "unknown"))
+    "main", ifelse(any(branch_info$name == "origin/master"),
+      "master", "unknown"
+    )
+  )
 
   # create a protocol to be used as subprotocol
   checklist::new_branch("sfp-101-en", repo = repo)
@@ -154,10 +162,12 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
 
 
@@ -168,10 +178,12 @@ test_that("complete workflow works", {
   gert::git_merge(ref = refspec, repo = repo)
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
@@ -187,8 +199,10 @@ test_that("complete workflow works", {
   )
 
   update_news(
-    path = file.path("source", "sfp", "4_vegetation",
-                     "sfp_407_en_vegetation_1"),
+    path = file.path(
+      "source", "sfp", "4_vegetation",
+      "sfp_407_en_vegetation_1"
+    ),
     version_number = version_number_2
   )
 
@@ -204,10 +218,12 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
@@ -216,10 +232,12 @@ test_that("complete workflow works", {
   gert::git_merge(ref = refspec, repo = repo)
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
   gert::git_branch_delete("sfp-407-en", repo = origin_repo)
   gert::git_branch_delete("sfp-407-en", repo = repo)
 
@@ -240,11 +258,14 @@ test_that("complete workflow works", {
     x = test_params,
     file = file.path(
       "source/sfp/1_water/sfp_102_en_second_subprotocol",
-      "07_stappenplan.Rmd"),
-    append = TRUE)
+      "07_stappenplan.Rmd"
+    ),
+    append = TRUE
+  )
   # add the projectspecific parameter to index yaml
   index_yml <- rmarkdown::yaml_front_matter(
-    "source/sfp/1_water/sfp_102_en_second_subprotocol/index.Rmd")
+    "source/sfp/1_water/sfp_102_en_second_subprotocol/index.Rmd"
+  )
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
   index_yml <- ymlthis::yml_params(index_yml, protocolspecific = "defaultvalue")
@@ -252,7 +273,8 @@ test_that("complete workflow works", {
     "source/sfp/1_water/sfp_102_en_second_subprotocol/template.Rmd"
   file.copy(
     from = "source/sfp/1_water/sfp_102_en_second_subprotocol/index.Rmd",
-    to = template_rmd)
+    to = template_rmd
+  )
   unlink("source/sfp/1_water/sfp_102_en_second_subprotocol/index.Rmd")
   ymlthis::use_index_rmd(
     .yml = index_yml,
@@ -261,35 +283,43 @@ test_that("complete workflow works", {
     include_body = TRUE,
     include_yaml = FALSE,
     quiet = TRUE,
-    open_doc = FALSE)
+    open_doc = FALSE
+  )
   unlink(template_rmd)
 
 
   # test data and media
   write.csv(
     x = cars,
-    file = "source/sfp/1_water/sfp_102_en_second_subprotocol/data/cars.csv")
+    file = "source/sfp/1_water/sfp_102_en_second_subprotocol/data/cars.csv"
+  )
   z <- tempfile()
   download.file(
     "https://www.r-project.org/logo/Rlogo.png",
     z,
-    mode = "wb")
+    mode = "wb"
+  )
   pic <- png::readPNG(z)
   png::writePNG(
     pic,
-    "source/sfp/1_water/sfp_102_en_second_subprotocol/media/Rlogo.png")
+    "source/sfp/1_water/sfp_102_en_second_subprotocol/media/Rlogo.png"
+  )
   data_media_staged <- gert::git_add(files = ".")
-  chunk1 <- paste0("```{r, out.width='25%'}\nknitr::include_graphics(path",
-                   " = './media/Rlogo.png')\n```")
+  chunk1 <- paste0(
+    "```{r, out.width='25%'}\nknitr::include_graphics(path",
+    " = './media/Rlogo.png')\n```"
+  )
   chunk2 <- "```{r}\nread.csv('./data/cars.csv')\n```"
   write(
     x = chunk1,
     file = "source/sfp/1_water/sfp_102_en_second_subprotocol/07_workflow.Rmd",
-    append = TRUE)
+    append = TRUE
+  )
   write(
     x = chunk2,
     file = "source/sfp/1_water/sfp_102_en_second_subprotocol/07_workflow.Rmd",
-    append = TRUE)
+    append = TRUE
+  )
 
   # add a sub-subprotocol to
   # source/sfp/1_water/sfp_102_en_second_subprotocol
@@ -303,12 +333,14 @@ test_that("complete workflow works", {
 
   add_subprotocols(
     fetch_remote = TRUE,
-    code_mainprotocol = "sfp-102-en")
+    code_mainprotocol = "sfp-102-en"
+  )
 
   update_news(
     path = file.path(
       "source", "sfp", "1_water",
-      "sfp_102_en_second_subprotocol"),
+      "sfp_102_en_second_subprotocol"
+    ),
     version_number = version_number_3
   )
 
@@ -324,10 +356,12 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
@@ -336,10 +370,12 @@ test_that("complete workflow works", {
   gert::git_merge(ref = refspec, repo = repo)
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
   gert::git_branch_delete("sfp-102-en", repo = origin_repo)
   gert::git_branch_delete("sfp-102-en", repo = repo)
 
@@ -366,11 +402,14 @@ test_that("complete workflow works", {
 
   add_subprotocols(
     fetch_remote = TRUE,
-    code_mainprotocol = "spp-001-en")
+    code_mainprotocol = "spp-001-en"
+  )
 
   update_news(
-    path = file.path("source", "spp", "mne",
-                     "spp_001_en_mne_protocol"),
+    path = file.path(
+      "source", "spp", "mne",
+      "spp_001_en_mne_protocol"
+    ),
     version_number = version_number_4
   )
 
@@ -387,10 +426,12 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
@@ -399,10 +440,12 @@ test_that("complete workflow works", {
   gert::git_merge(ref = refspec, repo = repo)
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
   gert::git_branch_delete("spp-001-en", repo = origin_repo)
   gert::git_branch_delete("spp-001-en", repo = repo)
 
@@ -442,10 +485,12 @@ test_that("complete workflow works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
@@ -454,10 +499,12 @@ test_that("complete workflow works", {
   gert::git_merge(ref = refspec, repo = repo)
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
@@ -465,5 +512,4 @@ test_that("complete workflow works", {
 
   # Cleanup
   unlink(repo, recursive = TRUE)
-
 })

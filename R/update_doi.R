@@ -23,8 +23,7 @@ update_doi <- function(
     token = keyring::key_get(
       c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
     ),
-    logger = "INFO"
-) {
+    logger = "INFO") {
   check_protocolcode(protocol_code)
   assert_that(requireNamespace("zen4R", quietly = TRUE))
   assert_that(requireNamespace("keyring", quietly = TRUE))
@@ -59,7 +58,8 @@ update_doi <- function(
       myrec,
       delete_latest_files = TRUE,
       files = list(),
-      publish = FALSE)
+      publish = FALSE
+    )
     doi <- myrec$pids$doi$identifier
   }
 

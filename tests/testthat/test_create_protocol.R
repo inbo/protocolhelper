@@ -40,7 +40,8 @@ test_that("add author works", {
   on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
   repo <- gert::git_clone(
     url = origin_repo,
-    path = tempfile("protocol_local"), verbose = FALSE)
+    path = tempfile("protocol_local"), verbose = FALSE
+  )
   on.exit(unlink(repo, recursive = TRUE), add = TRUE)
   old_wd <- setwd(repo)
   on.exit(setwd(old_wd), add = TRUE)
@@ -48,7 +49,8 @@ test_that("add author works", {
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
   gert::git_config_set(
     name = "user.email", value = "someone@example.org",
-    repo = repo)
+    repo = repo
+  )
   file.create("NEWS.md")
   gert::git_add("NEWS.md")
   gert::git_commit_all(message = "add empty NEWS repo file")
@@ -56,16 +58,19 @@ test_that("add author works", {
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_push(
     remote = "origin",
-    refspec =  refspec,
+    refspec = refspec,
     set_upstream = TRUE,
-    repo = repo)
+    repo = repo
+  )
 
   branch_info <- gert::git_branch_list(repo = repo)
   main_branch <- ifelse(
     any(branch_info$name == "origin/main"),
     "main", ifelse(
       any(branch_info$name == "origin/master"),
-      "master", "unknown"))
+      "master", "unknown"
+    )
+  )
   # create a protocol
   version_number <- get_version_number()
   create_sfp(

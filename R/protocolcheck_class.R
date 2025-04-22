@@ -8,7 +8,6 @@
 #'
 protocolcheck <- R6Class(
   "Protocolcheck",
-
   public = list(
     #' @field protocol_code Character string giving the protocol code.
     protocol_code = NULL,
@@ -25,7 +24,8 @@ protocolcheck <- R6Class(
     initialize = function(protocol_code) {
       self$protocol_code <- protocol_code
       self$path <- get_path_to_protocol(
-        protocol_code = protocol_code)
+        protocol_code = protocol_code
+      )
       invisible(self)
     },
 

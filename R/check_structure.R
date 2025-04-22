@@ -29,15 +29,19 @@ check_structure <- function(protocol_code, fail = !interactive()) {
   x <- load_protocolcheck(x = protocol_code)
 
   if (!file.exists(file.path(x$path, "index.Rmd"))) {
-    x$add_error(msg = paste0(file.path(x$path, "index.Rmd"),
-                             " does not exist."))
+    x$add_error(msg = paste0(
+      file.path(x$path, "index.Rmd"),
+      " does not exist."
+    ))
     return(x$check(fail = fail))
   }
 
   yml_protocol <- yaml_front_matter(input = file.path(x$path, "index.Rmd"))
 
-  if (!(is.string(yml_protocol$template_name) &&
-        is.string(yml_protocol$language))) {
+  if (
+    !(is.string(yml_protocol$template_name) &&
+        is.string(yml_protocol$language))
+  ) {
     x$add_error(msg = sprintf("yaml keys `template_name` and `language`
                               should be present in the yaml section of index.Rmd
                               and their values should be strings."))
@@ -46,17 +50,24 @@ check_structure <- function(protocol_code, fail = !interactive()) {
 
   template_name <-
     paste("template", yml_protocol$template_name,
-          yml_protocol$language, sep = "_")
+      yml_protocol$language,
+      sep = "_"
+    )
 
   path_to_template <-
     system.file(
       file.path("rmarkdown", "templates", template_name, "skeleton"),
-      package = "protocolhelper")
-  files_protocol <- dir_ls(x$path, recurse = TRUE, type = "file",
-                           regexp = "css", invert = TRUE)
+      package = "protocolhelper"
+    )
+  files_protocol <- dir_ls(x$path,
+    recurse = TRUE, type = "file",
+    regexp = "css", invert = TRUE
+  )
   files_protocol <- path_rel(files_protocol, x$path)
-  files_template <- dir_ls(path_to_template, recurse = TRUE, type = "file",
-                           regexp = "css", invert = TRUE)
+  files_template <- dir_ls(path_to_template,
+    recurse = TRUE, type = "file",
+    regexp = "css", invert = TRUE
+  )
   files_template <- path_rel(files_template, path_to_template)
 
   # check if file(name)s from template are conserved
@@ -83,15 +94,18 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     pattern = "(?<=^\\d{2})(\\w|\\.)+",
     replacement = "",
     x = chapters,
-    perl = TRUE)
+    perl = TRUE
+  )
   chapter_numbers <- as.numeric(chapter_numbers)
-  x$add_error(msg =
-                sprintf("multiple file names starting with %s",
-                        formatC(
-                          chapter_numbers[duplicated(chapter_numbers)],
-                          width = 2, flag = "0"
-                        )
-                )
+  x$add_error(
+    msg =
+      sprintf(
+        "multiple file names starting with %s",
+        formatC(
+          chapter_numbers[duplicated(chapter_numbers)],
+          width = 2, flag = "0"
+        )
+      )
   )
   # check numbers are in order
   if (!all(sort(chapter_numbers) == seq_along(chapter_numbers))) {
@@ -108,8 +122,10 @@ check_structure <- function(protocol_code, fail = !interactive()) {
     if (has_name(yml, "bibliography")) {
       x$add_error(
         msg =
-          sprintf("%s not found (needed for references)",
-                  yml$bibliography[!yml$bibliography %in% files_protocol])
+          sprintf(
+            "%s not found (needed for references)",
+            yml$bibliography[!yml$bibliography %in% files_protocol]
+          )
       )
     }
   }
@@ -125,8 +141,10 @@ check_file <- function(filename, x, files_template, path_to_template) {
     msg =
       sprintf(
         "file %s should be removed (after moving the content)",
-        filename[!filename %in% c(files_template, "index.Rmd") &&
-                   grepl("^\\d{2}_", filename)]
+        filename[
+          !filename %in% c(files_template, "index.Rmd") &&
+            grepl("^\\d{2}_", filename)
+        ]
       )
   )
 
@@ -138,7 +156,7 @@ check_file <- function(filename, x, files_template, path_to_template) {
     msg =
       paste(", file", filename, "has a problem with chunks")[
         !(length(start_chunk) == length(end_chunk) &&
-            all(start_chunk < end_chunk))
+          all(start_chunk < end_chunk))
       ]
   )
 
@@ -150,13 +168,15 @@ check_file <- function(filename, x, files_template, path_to_template) {
     msg = sprintf(
       "file %s: Headings have to start with a '#',
         remove the leading whitespace in headings %s",
-      filename, headings[grepl("^[[:space:]]+#", headings)])
+      filename, headings[grepl("^[[:space:]]+#", headings)]
+    )
   )
   x$add_error(
     msg = sprintf(
       "file %s: Whitespace at the end of a heading is not allowed,
         remove them in headings %s",
-      filename, headings[grepl("[[:space:]]+$", headings)])
+      filename, headings[grepl("[[:space:]]+$", headings)]
+    )
   )
 
   # compare headings with template
@@ -191,24 +211,26 @@ check_file <- function(filename, x, files_template, path_to_template) {
 
     if (
       length(headings[headings %in% headings_template]) ==
-      length(headings_template) &&
-      !all(headings[headings %in% headings_template] == headings_template)
+        length(headings_template) &&
+        !all(headings[headings %in% headings_template] == headings_template)
     ) {
       x$add_error(
-        msg = paste("Headings of file", filename,
-                    "are not in this order:",
-                    paste(headings_template, collapse = " > ")
+        msg = paste(
+          "Headings of file", filename,
+          "are not in this order:",
+          paste(headings_template, collapse = " > ")
         )
       )
     }
-
   } else {
     if (!grepl("^\\d{2}_", filename) && filename != "index.Rmd") {
       headings1 <- headings[grepl("^# .*", headings)]
       x$add_error(
         msg = sprintf(
-          paste(filename,
-            "should not have headings of level 1, please adapt header(s): %s"),
+          paste(
+            filename,
+            "should not have headings of level 1, please adapt header(s): %s"
+          ),
           headings1
         )
       )
@@ -259,7 +281,8 @@ check_news_protocol <- function(x) {
   xml <- markdown_xml(news_file)
   xml <- read_xml(xml)
   all_headings <- xml_find_all(xml,
-                               xpath = ".//d1:heading")
+    xpath = ".//d1:heading"
+  )
   headings_level_2 <- all_headings[xml_attr(all_headings, "level") == "2"]
   headings_text <- xml_text(headings_level_2)
   headings_link <- xml_attr(xml_children(headings_level_2), "destination")
@@ -273,18 +296,21 @@ check_news_protocol <- function(x) {
     version_number <- yml$version_number
 
     if (!any(str_detect(version_number, headings_text))) {
-        x$add_error(
-          "An entry is missing in NEWS.md for this version of the protocol")
+      x$add_error(
+        "An entry is missing in NEWS.md for this version of the protocol"
+      )
     }
 
     problems <- sprintf(
       paste0(
         "Mismatch detected between link text '%1$s' ",
-        "and link destination '%2$s' /nin level 2 headings of NEWS.md file"),
+        "and link destination '%2$s' /nin level 2 headings of NEWS.md file"
+      ),
       headings_text,
-      headings_link)[
-        !str_detect(headings_link, headings_text)
-      ]
+      headings_link
+    )[
+      !str_detect(headings_link, headings_text)
+    ]
 
     current_link <- headings_link[grepl(version_number, headings_link)]
     correct_link <- paste0("../", version_number, "/index.html")

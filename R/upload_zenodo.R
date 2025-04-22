@@ -16,8 +16,7 @@ upload_zenodo <- function(
     token = keyring::key_get(
       c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
     ),
-    logger = "INFO"
-) {
+    logger = "INFO") {
   assert_that(requireNamespace("zen4R", quietly = TRUE))
   assert_that(requireNamespace("keyring", quietly = TRUE))
 
