@@ -7,6 +7,7 @@ themes_df <- data.frame(
 
 # code to prepare reserved_codes internal dataset goes here
 library(googlesheets4)
+library(janitor)
 library(dplyr)
 gs4_auth(
   email = "*@inbo.be",
