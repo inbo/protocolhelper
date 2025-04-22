@@ -188,7 +188,8 @@ protocol.
 protocolhelper::create_protocol(
   protocol_type = "sfp",
   short_title = "water 1",
-  theme = "water", language = "en")
+  theme = "water", language = "en"
+)
 }
 }
 \seealso{
