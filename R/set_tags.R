@@ -22,8 +22,9 @@
 set_tags <- function(
     protocol_code,
     path = ".") {
+
   if (
-    !as.logical(Sys.getenv("GITHUB_ACTIONS", "false")) ||
+      !as.logical(Sys.getenv("GITHUB_ACTIONS", "false")) ||
       !Sys.getenv("GITHUB_REF") %in%
         c("refs/heads/main", "refs/heads/master") ||
       Sys.getenv("GITHUB_EVENT_NAME") != "push"
@@ -61,8 +62,8 @@ set_tags <- function(
     repo = path
   )
 
-  # determine and print the next protocols tag
-  # determine and print the next protocol-specific tag(s)
+  #determine and print the next protocols tag
+  #determine and print the next protocol-specific tag(s)
   path_to_protocol <- get_path_to_protocol(
     protocol_code = protocol_code
   )
@@ -73,10 +74,8 @@ set_tags <- function(
   specific_tag <- paste0(protocol_code, "-", yml$version_number)
   general_tag <- paste0("protocols-", yml$version_number)
 
-  message(
-    "The general tag is: ", general_tag,
-    "\nThe specific tag is: ", specific_tag
-  )
+  message("The general tag is: ", general_tag,
+          "\nThe specific tag is: ", specific_tag)
 
   general_tag_message <- paste0("Title: ", yml$title)
 
