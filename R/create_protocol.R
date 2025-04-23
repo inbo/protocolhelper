@@ -8,8 +8,8 @@
 #' optional subtitle, the authors, reviewers, file manager and keywords.
 #' These metadata (YAML section of `index.Rmd` file) will then be filled in
 #' automatically.
-#' The other metadata still need to be passed to the arguments of the function
-#'  - see examples section.
+#' The other metadata still need to be passed to the arguments of the function.
+#' See examples section.
 #' Optionally, the rmarkdown chapters are rendered to an html file which will
 #' be saved in a matching subfolder of the `docs` folder.
 #'
