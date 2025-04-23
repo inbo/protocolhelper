@@ -9,7 +9,7 @@
 
 ## Bug fixes
 
-* Authors were not rendered correctly in PDF version.
+* Fixed rendering of authors in PDF version.
 
 # protocolhelper 0.7.0
 
