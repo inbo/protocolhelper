@@ -17,7 +17,8 @@ empty_table <- tibble(
   rename(
     `Protocolcode` = protocol_code,
     `Versienummer` = version_number,
-    `Opgenomen als subprotocol` = appendix) %>%
+    `Opgenomen als subprotocol` = appendix
+  ) %>%
   pander::pander(split.tables = Inf)
 
 if (exists("params")) {
@@ -35,7 +36,8 @@ if (exists("params")) {
       rename(
         `Protocolcode` = protocol_code,
         `Versienummer` = version_number,
-        `Opgenomen als subprotocol` = appendix) %>%
+        `Opgenomen als subprotocol` = appendix
+      ) %>%
       pander::pander(split.tables = Inf)
   } else {
     empty_table

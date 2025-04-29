@@ -28,19 +28,18 @@
 #'   protocol_code = c("sfp-123-en", "spp-124-en"),
 #'   version_number = c("2020.01", "2020.02"),
 #'   params = list(NA, list(width = 8, height = 8))
-#'   )
-#'}
+#' )
+#' }
 add_dependencies <- function(code_mainprotocol,
                              protocol_code,
                              version_number,
                              params,
                              appendix = !is.na(params)) {
-
   assert_that(is.string(code_mainprotocol))
   right_format <- grepl("s[fpioa]p-[0-9]{3}-[nl|en]", code_mainprotocol)
   assert_that(
     right_format,
-    msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+    msg = "protocol code not in s*p-###-nl or s*p-###-en format"
   )
 
   # force appendix to TRUE when corresponding params are given
@@ -58,7 +57,8 @@ add_dependencies <- function(code_mainprotocol,
       protocol_code = protocol_code,
       version_number = version_number,
       params = params,
-      appendix = appendix)
+      appendix = appendix
+    )
 
   dependencies_list <- transpose(dependencies_list)
 
@@ -66,8 +66,10 @@ add_dependencies <- function(code_mainprotocol,
   if (is.null(index_yml$params)) {
     index_yml$params <- list(dependencies = list(value = dependencies_list))
   } else {
-    index_yml$params <- c(index_yml$params,
-                          list(dependencies = list(value = dependencies_list)))
+    index_yml$params <- c(
+      index_yml$params,
+      list(dependencies = list(value = dependencies_list))
+    )
   }
 
   # overwrite old yaml sections
@@ -81,7 +83,7 @@ add_dependencies <- function(code_mainprotocol,
     include_body = TRUE,
     include_yaml = FALSE,
     quiet = TRUE,
-    open_doc = FALSE)
+    open_doc = FALSE
+  )
   unlink(template_rmd)
-
-  }
+}

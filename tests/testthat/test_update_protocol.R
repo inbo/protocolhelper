@@ -37,13 +37,15 @@ test_that("Update of a protocol works", {
   on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
   repo <- gert::git_clone(
     url = origin_repo,
-    path = tempfile("protocol_local"), verbose = FALSE)
+    path = tempfile("protocol_local"), verbose = FALSE
+  )
   on.exit(unlink(repo, recursive = TRUE), add = TRUE)
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
   gert::git_config_set(
     name = "user.email", value = "someone@example.org",
-    repo = repo)
+    repo = repo
+  )
   # create a protocol
   old_wd <- setwd(repo)
   on.exit(setwd(old_wd), add = TRUE)
@@ -62,18 +64,22 @@ test_that("Update of a protocol works", {
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(remote = "origin",
-           refspec =  refspec,
-           set_upstream = TRUE,
-           repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
   # prepare to start an update of the protocol
   update_protocol("sfp-101-en")
   gert::git_commit_all(message = "update version number sfp-101-en_water-1")
-  gert::git_push(remote = "origin",
-                 refspec =  refspec,
-                 set_upstream = TRUE,
-                 repo = repo)
+  gert::git_push(
+    remote = "origin",
+    refspec = refspec,
+    set_upstream = TRUE,
+    repo = repo
+  )
 
 
   expect_identical(
@@ -82,8 +88,11 @@ test_that("Update of a protocol works", {
   )
   expect_identical(
     yaml_front_matter(
-      file.path(get_path_to_protocol("sfp-101-en"),
-                "index.Rmd"))$version,
+      file.path(
+        get_path_to_protocol("sfp-101-en"),
+        "index.Rmd"
+      )
+    )$version,
     paste0(format(Sys.Date(), "%Y"), ".01")
   )
 })

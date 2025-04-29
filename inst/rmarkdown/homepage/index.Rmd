@@ -190,7 +190,8 @@ inbo_hoofd <- rgb(192, 67, 132, maxColorValue = 255)
 inbo_achtergrond <- rgb(243, 243, 243, maxColorValue = 255)
 
 table_theme <- reactableTheme(
-    borderColor = inbo_hoofd)
+  borderColor = inbo_hoofd
+)
 
 row_style <- JS("
   function(rowInfo, state) {
@@ -206,34 +207,35 @@ row_style <- JS("
 
 ```{r sfp}
 sfp <- read.csv("sfp.csv", colClasses = c(version = "character"))
-reactable(sfp,
-          columns = list(
-            version = colDef(
-              html = TRUE,
-              filterable = TRUE,
-              rowHeader = TRUE,
-              align = "left",
-              cell = function(value, index) {
-                sprintf('<a href="%s" target="_blank">%s</a>',
-                        sfp$address[index], value)
-              }
-            ),
-            code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE, minWidth = 400),
-            address = colDef(show = FALSE),
-            striping = colDef(show = FALSE),
-            theme = colDef(minWidth = 150)
-            ),
-          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
-          sortable = FALSE,
-          defaultPageSize = 10,
-          groupBy = "theme",
-          paginateSubRows = TRUE,
-          defaultExpanded = TRUE,
-          theme = table_theme,
-          rowStyle = row_style,
-          borderless = TRUE
-          )
+reactable(
+  sfp,
+  columns = list(
+    version = colDef(
+      html = TRUE,
+      filterable = TRUE,
+      rowHeader = TRUE,
+      align = "left",
+      cell = function(value, index) {
+        sprintf('<a href="%s" target="_blank">%s</a>',
+                sfp$address[index], value)
+      }
+    ),
+    code = colDef(filterable = TRUE),
+    title = colDef(filterable = TRUE, minWidth = 400),
+    address = colDef(show = FALSE),
+    striping = colDef(show = FALSE),
+    theme = colDef(minWidth = 150)
+  ),
+  defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+  sortable = FALSE,
+  defaultPageSize = 10,
+  groupBy = "theme",
+  paginateSubRows = TRUE,
+  defaultExpanded = TRUE,
+  theme = table_theme,
+  rowStyle = row_style,
+  borderless = TRUE
+)
 ```
 
 
@@ -242,33 +244,34 @@ reactable(sfp,
 ```{r sip}
 sip <- read.csv("sip.csv", colClasses = c(version = "character"))
 
-reactable(sip,
-          columns = list(
-            version = colDef(
-              html = TRUE,
-              filterable = TRUE,
-              rowHeader = TRUE,
-              align = "left",
-              cell = function(value, index) {
-                sprintf('<a href="%s" target="_blank">%s</a>',
-                        sip$address[index], value)
-              }
-            ),
-            code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE, minWidth = 400),
-            address = colDef(show = FALSE),
-            theme = colDef(show = FALSE),
-            striping = colDef(show = FALSE)
-            ),
-          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
-          sortable = FALSE,
-          defaultPageSize = 10,
-          paginateSubRows = TRUE,
-          defaultExpanded = TRUE,
-          theme = table_theme,
-          rowStyle = row_style,
-          borderless = TRUE
-          )
+reactable(
+  sip,
+  columns = list(
+    version = colDef(
+      html = TRUE,
+      filterable = TRUE,
+      rowHeader = TRUE,
+      align = "left",
+      cell = function(value, index) {
+        sprintf('<a href="%s" target="_blank">%s</a>',
+                sip$address[index], value)
+      }
+    ),
+    code = colDef(filterable = TRUE),
+    title = colDef(filterable = TRUE, minWidth = 400),
+    address = colDef(show = FALSE),
+    theme = colDef(show = FALSE),
+    striping = colDef(show = FALSE)
+  ),
+  defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+  sortable = FALSE,
+  defaultPageSize = 10,
+  paginateSubRows = TRUE,
+  defaultExpanded = TRUE,
+  theme = table_theme,
+  rowStyle = row_style,
+  borderless = TRUE
+)
 ```
 
 # Standard analytical protocols (sap)
@@ -276,32 +279,33 @@ reactable(sip,
 ```{r sap}
 sap <- read.csv("sap.csv", colClasses = c(version = "character"))
 
-reactable(sap,
-          columns = list(
-            version = colDef(
-              html = TRUE,
-              filterable = TRUE,
-              rowHeader = TRUE,
-              align = "left",
-              cell = function(value, index) {
-                sprintf('<a href="%s" target="_blank">%s</a>',
-                        sap$address[index], value)
-              }
-            ),
-            code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE, minWidth = 400),
-            address = colDef(show = FALSE),
-            theme = colDef(show = FALSE),
-            striping = colDef(show = FALSE)
-            ),
-          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
-          sortable = FALSE,
-          defaultPageSize = 10,
-          paginateSubRows = TRUE,
-          defaultExpanded = TRUE,
-          theme = table_theme,
-          rowStyle = row_style,
-          borderless = TRUE
+reactable(
+  sap,
+  columns = list(
+    version = colDef(
+      html = TRUE,
+      filterable = TRUE,
+      rowHeader = TRUE,
+      align = "left",
+      cell = function(value, index) {
+        sprintf('<a href="%s" target="_blank">%s</a>',
+                sap$address[index], value)
+      }
+    ),
+    code = colDef(filterable = TRUE),
+    title = colDef(filterable = TRUE, minWidth = 400),
+    address = colDef(show = FALSE),
+    theme = colDef(show = FALSE),
+    striping = colDef(show = FALSE)
+  ),
+  defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+  sortable = FALSE,
+  defaultPageSize = 10,
+  paginateSubRows = TRUE,
+  defaultExpanded = TRUE,
+  theme = table_theme,
+  rowStyle = row_style,
+  borderless = TRUE
 )
 ```
 
@@ -309,32 +313,33 @@ reactable(sap,
 
 ```{r sop}
 sop <- read.csv("sop.csv", colClasses = c(version = "character"))
-reactable(sop,
-          columns = list(
-            version = colDef(
-              html = TRUE,
-              filterable = TRUE,
-              rowHeader = TRUE,
-              align = "left",
-              cell = function(value, index) {
-                sprintf('<a href="%s" target="_blank">%s</a>',
-                        sop$address[index], value)
-              }
-            ),
-            code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE, minWidth = 400),
-            address = colDef(show = FALSE),
-            theme = colDef(show = FALSE),
-            striping = colDef(show = FALSE)
-            ),
-          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
-          sortable = FALSE,
-          defaultPageSize = 10,
-          paginateSubRows = TRUE,
-          defaultExpanded = TRUE,
-          theme = table_theme,
-          rowStyle = row_style,
-          borderless = TRUE
+reactable(
+  sop,
+  columns = list(
+    version = colDef(
+      html = TRUE,
+      filterable = TRUE,
+      rowHeader = TRUE,
+      align = "left",
+      cell = function(value, index) {
+        sprintf('<a href="%s" target="_blank">%s</a>',
+                sop$address[index], value)
+      }
+    ),
+    code = colDef(filterable = TRUE),
+    title = colDef(filterable = TRUE, minWidth = 400),
+    address = colDef(show = FALSE),
+    theme = colDef(show = FALSE),
+    striping = colDef(show = FALSE)
+  ),
+  defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+  sortable = FALSE,
+  defaultPageSize = 10,
+  paginateSubRows = TRUE,
+  defaultExpanded = TRUE,
+  theme = table_theme,
+  rowStyle = row_style,
+  borderless = TRUE
 )
 ```
 
@@ -343,32 +348,33 @@ reactable(sop,
 ```{r spp}
 spp <- read.csv("spp.csv", colClasses = c(version = "character"))
 
-reactable(spp,
-          columns = list(
-            version = colDef(
-              html = TRUE,
-              filterable = TRUE,
-              rowHeader = TRUE,
-              align = "left",
-              cell = function(value, index) {
-                sprintf('<a href="%s" target="_blank">%s</a>',
-                        spp$address[index], value)
-              }
-            ),
-            code = colDef(filterable = TRUE),
-            title = colDef(filterable = TRUE, minWidth = 400),
-            address = colDef(show = FALSE),
-            striping = colDef(show = FALSE),
-            theme = colDef(name = "project")
-            ),
-          defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
-          sortable = FALSE,
-          groupBy = "theme",
-          defaultPageSize = 10,
-          paginateSubRows = TRUE,
-          defaultExpanded = TRUE,
-          theme = table_theme,
-          rowStyle = row_style,
-          borderless = TRUE
+reactable(
+  spp,
+  columns = list(
+    version = colDef(
+      html = TRUE,
+      filterable = TRUE,
+      rowHeader = TRUE,
+      align = "left",
+      cell = function(value, index) {
+        sprintf('<a href="%s" target="_blank">%s</a>',
+                spp$address[index], value)
+      }
+    ),
+    code = colDef(filterable = TRUE),
+    title = colDef(filterable = TRUE, minWidth = 400),
+    address = colDef(show = FALSE),
+    striping = colDef(show = FALSE),
+    theme = colDef(name = "project")
+  ),
+  defaultSorted = list(theme = "asc", code = "asc", version = "desc"),
+  sortable = FALSE,
+  groupBy = "theme",
+  defaultPageSize = 10,
+  paginateSubRows = TRUE,
+  defaultExpanded = TRUE,
+  theme = table_theme,
+  rowStyle = row_style,
+  borderless = TRUE
 )
 ```

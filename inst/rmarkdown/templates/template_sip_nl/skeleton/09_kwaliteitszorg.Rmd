@@ -8,7 +8,8 @@ Alle acties betreffende kalibratie worden bijgehouden in het toestel registratie
 kalib <- data.frame(
   kalibratie = c("R^2", "Helling", "Area Blanco", "Area Standaard"),
   Criterium = "",
-  Termijn = "")
+  Termijn = ""
+)
 
 pander::pander(kalib, split.tables = Inf)
 ```
@@ -22,7 +23,8 @@ controle <- data.frame(
   Onderdeel = "",
   Controle = "",
   Criterium = "",
-  Termijn = "")
+  Termijn = ""
+)
 
 pander::pander(controle, split.tables = Inf)
 ```
@@ -36,7 +38,8 @@ onderhoud <- data.frame(
   Onderhoud = c("Extern", "Intern"),
   Handeling = "",
   Criterium = "",
-  Termijn = "")
+  Termijn = ""
+)
 
 pander::pander(onderhoud, split.tables = Inf)
 ```

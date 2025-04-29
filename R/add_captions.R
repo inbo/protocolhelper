@@ -43,13 +43,12 @@
 #' @family convert
 #'
 add_captions <- function(
-  from,
-  to,
-  name_figure_from = "Figuur",
-  name_table_from = "Tabel",
-  name_figure_to = "Figuur",
-  name_table_to = "Tabel") {
-
+    from,
+    to,
+    name_figure_from = "Figuur",
+    name_table_from = "Tabel",
+    name_figure_to = "Figuur",
+    name_table_to = "Tabel") {
   # input checks
   assert_that(!missing(from))
   from <- normalizePath(from)
@@ -70,11 +69,11 @@ add_captions <- function(
   split_string <-
     gsub(
       pattern =
-        sprintf(
-          "^(.+)?\\]\\((.*)\\)\\{([^\\}]*)\\}\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?(.+?)\\*?\\*?\\n\\n(.*)", #nolint
+      sprintf(
+          "^(.+)?\\]\\((.*)\\)\\{([^\\}]*)\\}\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?(.+?)\\*?\\*?\\n\\n(.*)", # nolint
           name_figure_from
         ),
-      replacement = "(#fig:\\4\\5) \\7](\\2){\\3}\n\n\\8", #nolint
+      replacement = "(#fig:\\4\\5) \\7](\\2){\\3}\n\n\\8", # nolint
       x = split_string
     )
   text_1string <- paste(split_string, collapse = "![")
@@ -82,7 +81,7 @@ add_captions <- function(
   text_1string <-
     gsub(
       pattern =
-        sprintf("([^\\#fig\\:])(%s) (\\d+(\\D\\d+)?)", name_figure_from),
+      sprintf("([^\\#fig\\:])(%s) (\\d+(\\D\\d+)?)", name_figure_from),
       replacement = sprintf("\\1%s \\\\@ref(fig:\\2\\3)", name_figure_to),
       x = text_1string
     )
@@ -90,7 +89,7 @@ add_captions <- function(
   text_1string <-
     gsub(
       pattern =
-        sprintf("([^\\#fig\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_figure_from),
+      sprintf("([^\\#fig\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_figure_from),
       replacement = sprintf("\\1%s\n\\\\@ref(fig:\\2\\3)", name_figure_to),
       x = text_1string
     )
@@ -100,8 +99,8 @@ add_captions <- function(
   split_string <-
     gsub(
       pattern =
-        sprintf(
-          "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?(.+?)\\*?\\*?\\n\\n", #nolint
+      sprintf(
+          "(.*)\\n\\n\\*?\\*?(%s) (\\d+(\\D\\d+)?)[.:]?\\*?\\*? \\*?\\*?(.+?)\\*?\\*?\\n\\n", # nolint
           name_table_from
         ),
       replacement = "\\1\n\nTable: (#tab:\\2\\3) \\5\n\n",
@@ -120,7 +119,7 @@ add_captions <- function(
   text_1string <-
     gsub(
       pattern =
-        sprintf("([^\\#tab\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_table_from),
+      sprintf("([^\\#tab\\:])(%s)\\n(\\d+(\\D\\d+)?)", name_table_from),
       replacement = sprintf("\\1%s\n\\\\@ref(tab:\\2\\3)", name_table_to),
       x = text_1string
     )
@@ -129,4 +128,4 @@ add_captions <- function(
   writeLines(text2, con = con)
   close(con)
   return(invisible(NULL))
-  }
+}

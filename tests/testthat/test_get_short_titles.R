@@ -53,12 +53,15 @@ test_that("Get short title works", {
     version_number = version_number, theme = "water", language = "en"
   )
 
-  expect_identical(get_short_titles("sfp", "en"),
-                   "water_1")
+  expect_identical(
+    get_short_titles("sfp", "en"),
+    "water_1"
+  )
   expect_error(
     protocolhelper::create_protocol(
       short_title = "water 1",
-      version_number = version_number, theme = "water", language = "en"),
+      version_number = version_number, theme = "water", language = "en"
+    ),
     "The given short title already exists"
-    )
+  )
 })

@@ -36,7 +36,7 @@ Use \code{\link[=add_subprotocols]{add_subprotocols()}} instead.
 }
 \examples{
 \dontrun{
-  add_subprotocols(code_mainprotocol = 'spp-999-en')
+add_subprotocols(code_mainprotocol = "spp-999-en")
 }
 }
 \seealso{

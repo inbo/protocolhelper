@@ -22,15 +22,15 @@
 #' @examples
 #' \dontrun{
 #' render_protocol(protocol_code = "sfp_401-nl")
-#'}
+#' }
 render_protocol <- function(protocol_code = NULL,
                             output_dir = NULL,
                             ...) {
   assert_that(is.string(protocol_code))
 
   path_to_protocol <- get_path_to_protocol(
-      protocol_code = protocol_code
-    )
+    protocol_code = protocol_code
+  )
 
   # copy css
   if (!dir_exists(file.path(path_to_protocol, "css"))) {
@@ -39,8 +39,13 @@ render_protocol <- function(protocol_code = NULL,
       file.path(path_to_protocol, "css")
     )
   }
-  on.exit(unlink(file.path(path_to_protocol, "css"),
-                 recursive = TRUE), add = TRUE)
+  on.exit(
+    unlink(
+      file.path(path_to_protocol, "css"),
+      recursive = TRUE
+    ),
+    add = TRUE
+  )
   # copy pandoc
   if (!dir_exists(file.path(path_to_protocol, "pandoc"))) {
     dir_copy(
@@ -48,24 +53,32 @@ render_protocol <- function(protocol_code = NULL,
       file.path(path_to_protocol, "pandoc")
     )
   }
-  on.exit(unlink(file.path(path_to_protocol, "pandoc"),
-                 recursive = TRUE), add = TRUE)
+  on.exit(
+    unlink(file.path(path_to_protocol, "pandoc"),
+      recursive = TRUE
+    ),
+    add = TRUE
+  )
   old_wd <- setwd(dir = path_to_protocol)
   on.exit(setwd(old_wd), add = TRUE)
   suppressWarnings(
     # render pdf
-    render_book(input = "index.Rmd",
-                output_dir = output_dir,
-                output_format = "bookdown::pdf_book",
-                envir = new.env(),
-                ...)
+    render_book(
+      input = "index.Rmd",
+      output_dir = output_dir,
+      output_format = "bookdown::pdf_book",
+      envir = new.env(),
+      ...
     )
+  )
   suppressWarnings(
     # render html
-    render_book(input = "index.Rmd",
-              output_dir = output_dir,
-              output_file = "index.html",
-              envir = new.env(),
-              ...)
+    render_book(
+      input = "index.Rmd",
+      output_dir = output_dir,
+      output_file = "index.html",
+      envir = new.env(),
+      ...
+    )
   )
 }

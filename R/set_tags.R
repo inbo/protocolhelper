@@ -20,13 +20,14 @@
 #' @noRd
 #'
 set_tags <- function(
-  protocol_code,
-  path = ".") {
+    protocol_code,
+    path = ".") {
 
   if (
     !as.logical(Sys.getenv("GITHUB_ACTIONS", "false")) ||
-    !Sys.getenv("GITHUB_REF") %in% c("refs/heads/main", "refs/heads/master") ||
-    Sys.getenv("GITHUB_EVENT_NAME") != "push"
+      !Sys.getenv("GITHUB_REF") %in%
+        c("refs/heads/main", "refs/heads/master") ||
+      Sys.getenv("GITHUB_EVENT_NAME") != "push"
   ) {
     message("Not on GitHub, not a push or not on main or master.")
     return(invisible(NULL))
@@ -40,14 +41,16 @@ set_tags <- function(
     git_config_set(
       "user.name",
       old_config$value[old_config$name == "user.name"],
-      repo = path),
+      repo = path
+    ),
     add = TRUE
   )
   on.exit(
     git_config_set(
       "user.email",
       old_config$value[old_config$name == "user.email"],
-      repo = path),
+      repo = path
+    ),
     add = TRUE
   )
   git_config_set(
@@ -62,7 +65,8 @@ set_tags <- function(
   #determine and print the next protocols tag
   #determine and print the next protocol-specific tag(s)
   path_to_protocol <- get_path_to_protocol(
-    protocol_code = protocol_code)
+    protocol_code = protocol_code
+  )
 
   yml <- yaml_front_matter(file.path(path_to_protocol, "index.Rmd"))
 
@@ -78,12 +82,14 @@ set_tags <- function(
   git_tag_create(
     name = general_tag,
     message = general_tag_message,
-    repo = path)
+    repo = path
+  )
 
   git_tag_create(
     name = specific_tag,
     message = "See protocol-specific NEWS.md file for details",
-    repo = path)
+    repo = path
+  )
 
   return(invisible(NULL))
 }

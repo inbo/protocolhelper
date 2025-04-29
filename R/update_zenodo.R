@@ -40,10 +40,13 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE, path = ".") {
   current_branch <- git_branch(repo = path)
   branch_info <- git_branch_list(repo = path)
   main_branch <- ifelse(any(branch_info$name == "origin/main"),
-                        "main", ifelse(any(branch_info$name == "origin/master"),
-                                       "master", "unknown"))
+    "main", ifelse(any(branch_info$name == "origin/master"),
+      "master", "unknown"
+    )
+  )
   assert_that(main_branch %in% c("main", "master"),
-              msg = "no branch `origin/main` or `origin/master` found.")
+    msg = "no branch `origin/main` or `origin/master` found."
+  )
   git_branch_checkout(branch = main_branch)
 
   zenodo <- jsonlite::fromJSON(json, simplifyVector = FALSE)
@@ -58,9 +61,10 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE, path = ".") {
   orcids <- purrr::flatten(authormeta)
   orcids <- purrr::map_chr(orcids, "orcid")
   contributororcids <- purrr::map_chr(contributors, "orcid")
-  to_add <- which(!orcids %in%
-                    contributororcids
-                  )
+  to_add <- which(
+    !orcids %in%
+      contributororcids
+  )
 
   # add missing author metadata to contributors
   authors_to_add <- purrr::flatten(unname(authormeta))[to_add]
@@ -68,20 +72,25 @@ update_zenodo <- function(json = ".zenodo.json", write = TRUE, path = ".") {
     authors_to_add[[i]] <- append(
       authors_to_add[[i]],
       list(type = "Researcher"),
-      after = 1)
-      }
+      after = 1
+    )
+  }
   contributors <- append(contributors, authors_to_add)
 
   # write updated .zenodo.json file
   zenodo$contributors <- contributors
   if (write) {
-    jsonlite::write_json(x = zenodo,
-                         ".zenodo.json",
-                         pretty = TRUE,
-                         auto_unbox = TRUE)
+    jsonlite::write_json(
+      x = zenodo,
+      ".zenodo.json",
+      pretty = TRUE,
+      auto_unbox = TRUE
+    )
   } else {
-    jsonlite::toJSON(x = zenodo,
-                     pretty = TRUE,
-                     auto_unbox = TRUE)
+    jsonlite::toJSON(
+      x = zenodo,
+      pretty = TRUE,
+      auto_unbox = TRUE
+    )
   }
 }

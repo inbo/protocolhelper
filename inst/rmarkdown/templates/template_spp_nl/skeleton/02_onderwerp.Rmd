@@ -17,3 +17,7 @@ Probeer de doelstelling zo veel mogelijk generiek te beschrijven en vermijd proj
 Toepassingsgebied: bespreek hier onder welke condities het protocol kan gebruikt worden.
 -->
 ```
+
+<!-- description: start -->
+
+<!-- description: end -->

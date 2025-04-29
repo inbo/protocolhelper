@@ -361,7 +361,7 @@ $if(csl-refs)$
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 $endif$
-$if(lang)$
+$if(language)$
 \ifLuaTeX
 \usepackage[bidi=basic]{babel}
 \else
@@ -425,8 +425,8 @@ $endif$
 $if(author-meta)$
   pdfauthor={$author-meta$},
 $endif$
-$if(lang)$
-  pdflang={$lang$},
+$if(language)$
+  pdflang={$language$},
 $endif$
 $if(subject)$
   pdfsubject={$subject$},
@@ -466,7 +466,15 @@ $endif$
 \usepackage{orcidlink}
 
 $if(author)$
-\author{$for(author)$$author.name$\,\orcidlink{$author.orcid$}$sep$ \and $endfor$}
+\author{
+$for(author)$$author.name.given$ $author.name.family$\,\orcidlink{$author.orcid$}$sep$, $endfor$
+}
+$endif$
+
+% Conditional DOI inclusion for KOMA-Script documents
+% adding it to publishers field
+$if(doi)$
+    \publishers{\href{https://doi.org/$doi$}{DOI: $doi$}}
 $endif$
 
 \date{$date$}

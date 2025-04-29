@@ -23,7 +23,7 @@
 #'
 #' @noRd
 fence_all_chunks <- function(input) {
-  #adapted from bookdown::fence_theorems()
+  # adapted from bookdown::fence_theorems()
   text <- read_utf8(input)
   md_pattern <- knitr::all_patterns$md
   block_start <- grep(md_pattern$chunk.begin, text)
@@ -33,12 +33,15 @@ fence_all_chunks <- function(input) {
   params <- params[to_convert]
   block_start <- block_start[to_convert]
   block_end <- grep(md_pattern$chunk.end, text)
-  block_end <- vapply(block_start,
-                      function(x) block_end[block_end > x][1],
-                      integer(1))
+  block_end <- vapply(
+    block_start,
+    function(x) block_end[block_end > x][1],
+    integer(1)
+  )
   chunk_names <- stringr::str_extract(
     params,
-    "(?<=r\\s)[a-zA-Z0-9_]+")
+    "(?<=r\\s)[a-zA-Z0-9_]+"
+  )
   is_fig <- grepl("fig\\.cap", params)
   labels <- chunk_names
   labels[is_fig] <- paste0("::: {#fig:", labels[is_fig], "}")

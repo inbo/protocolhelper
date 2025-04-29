@@ -34,18 +34,23 @@ get_version_number <- function(path = ".") {
   current_branch <- git_branch(repo = path)
   branch_info <- git_branch_list(repo = path)
   main_branch <- ifelse(any(branch_info$name == "origin/main"),
-                        "main", ifelse(any(branch_info$name == "origin/master"),
-                                       "master", "unknown"))
+    "main", ifelse(any(branch_info$name == "origin/master"),
+      "master", "unknown"
+    )
+  )
   assert_that(main_branch %in% c("main", "master"),
-              msg = "no branch `origin/main` or `origin/master` found.")
+    msg = "no branch `origin/main` or `origin/master` found."
+  )
   status <- git_status(repo = path)
   status <- status[status$status != "new", ]
   if (nrow(status)) git_stash_save(repo = path)
   git_branch_checkout(branch = main_branch)
 
   # list all index.Rmd files
-  indexpaths <- dir_ls(path = path, recurse = TRUE,
-                       regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd")
+  indexpaths <- dir_ls(
+    path = path, recurse = TRUE,
+    regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd"
+  )
 
   # read YAML front matter
   yamllists <- map(indexpaths, yaml_front_matter)
@@ -81,7 +86,6 @@ get_version_number <- function(path = ".") {
 #' @importFrom stringr str_detect
 #' @importFrom purrr map
 increment_version_number <- function(versions) {
-
   assert_that(is.character(versions))
   map(versions, check_versionnumber)
 
@@ -96,11 +100,13 @@ increment_version_number <- function(versions) {
     lastincrement <- str_extract(last, "\\d{2}$")
     currentyear <- format(Sys.Date(), "%Y")
     increment <- formatC(as.numeric(lastincrement) + 1,
-                         width = 2, flag = 0)
+      width = 2, flag = 0
+    )
     new_version <- ifelse(
       lastyear == currentyear,
       paste0(lastyear, ".", increment),
-      paste0(currentyear, ".01"))
+      paste0(currentyear, ".01")
+    )
     return(new_version)
   } else {
     new_version <- paste0(format(Sys.Date(), "%Y"), ".01")

@@ -38,7 +38,7 @@ check_protocolcode <- function(protocolcode) {
   if (!(is.flag(Sys.getenv("CI")) && isTRUE(Sys.getenv("CI")))) {
     assert_that(
       right_format | is_reserved,
-      msg = "protocol code not in s*f-###-nl or s*f-###-en format"
+      msg = "protocol code not in s*p-###-nl or s*p-###-en format"
     )
   } else {
     assert_that(
@@ -97,8 +97,7 @@ validate_orcid <- function(orcid) {
 #' @family check
 check_all_person_info <- function(
     person_list,
-    problems_vect
-    ) {
+    problems_vect) {
   check_given <- function(x) {
     has_name(x, "name") &&
       has_name(x$name, "given") &&
@@ -110,42 +109,53 @@ check_all_person_info <- function(
       is.string(x$name$given)
   }
   check_orcid <- function(x) {
-   has_name(x, "orcid") &&
+    has_name(x, "orcid") &&
       is.string(x$orcid)
   }
   person_given <- map_lgl(person_list, check_given)
   person_family <- map_lgl(person_list, check_family)
   person_orcid <- map_lgl(person_list, check_orcid)
   problems <-
-    c(problems_vect,
+    c(
+      problems_vect,
       sprintf(
         "Person nr %s had an invalid (not a string) or missing given name",
         seq_along(person_given)[!person_given]
-      ))
+      )
+    )
   problems <-
-    c(problems_vect,
+    c(
+      problems_vect,
       sprintf(
         "Person nr %s had an invalid (not a string) or missing family name",
         seq_along(person_family)[!person_family]
-      ))
+      )
+    )
   problems <-
-    c(problems,
+    c(
+      problems,
       sprintf(
         "Person nr %s had an invalid (not a string) or missing orcid",
         seq_along(person_orcid)[!person_orcid]
-      ))
+      )
+    )
 
   if (all(person_orcid)) {
     orcids <- map_chr(person_list, "orcid")
     problems <-
-      c(problems,
+      c(
+        problems,
         "Please provide `orcids` in the `0000-0000-0000-0000` format."[
-          !all(nchar(orcids) == 19)])
+          !all(nchar(orcids) == 19)
+        ]
+      )
     valid_orcids <- map_lgl(orcids, validate_orcid)
     problems <- c(
       problems,
-      sprintf("protocolhelper::validate_orcid() indicates %s is not valid",
-              orcids)[!valid_orcids]
+      sprintf(
+        "protocolhelper::validate_orcid() indicates %s is not valid",
+        orcids
+      )[!valid_orcids]
     )
   }
 

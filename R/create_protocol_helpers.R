@@ -23,11 +23,10 @@
 #' @examples
 #' \dontrun{
 #' get_protocolnumbers()
-#'}
+#' }
 get_protocolnumbers <- function(
     protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
     language = c("nl", "en")) {
-
   protocol_type <- match.arg(protocol_type)
   language <- match.arg(language)
 
@@ -40,13 +39,16 @@ get_protocolnumbers <- function(
   )
   ld <- str_subset(
     string = ld,
-    pattern = protocol_type)
+    pattern = protocol_type
+  )
   ld <- str_subset(
     string = ld,
-    pattern = paste0("_", language, "_"))
+    pattern = paste0("_", language, "_")
+  )
   ld <- str_extract(
     string = ld,
-    pattern = paste0("(?<=", protocol_type, "_)\\d{3}"))
+    pattern = paste0("(?<=", protocol_type, "_)\\d{3}")
+  )
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
 
@@ -79,11 +81,10 @@ get_protocolnumbers <- function(
 #' @examples
 #' \dontrun{
 #' get_short_titles()
-#'}
+#' }
 get_short_titles <- function(
     protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
     language = c("nl", "en")) {
-
   protocol_type <- match.arg(protocol_type)
   language <- match.arg(language)
 
@@ -96,12 +97,15 @@ get_short_titles <- function(
   )
   ld <- str_subset(
     string = ld,
-    pattern = str_replace_all(protocol_type, "-", "_"))
+    pattern = str_replace_all(protocol_type, "-", "_")
+  )
   ld <- str_extract(
     string = ld,
     pattern = paste0(
       "(?<=\\w{3,6}_", language,
-      "_)([a-z]|_|[:digit:])*"))
+      "_)([a-z]|_|[:digit:])*"
+    )
+  )
   ld <- ld[!is.na(ld)]
   ld <- unique(ld)
 
@@ -154,30 +158,35 @@ get_short_titles <- function(
 #' @export
 #' @keywords internal
 create_protocol_code <- function(
-    protocol_type, theme, protocol_number, language
-) {
-
+    protocol_type, theme, protocol_number, language) {
   reserved_codes$bare <- as.integer(reserved_codes$protocolnumber_bare)
   reserved_codes$theme_number <- ifelse(
-    reserved_codes$protocoltype ==  "sfp",
+    reserved_codes$protocoltype == "sfp",
     as.character(str_extract(reserved_codes$protocolnumber_bare, "^\\d")),
-    NA)
+    NA
+  )
   bare_numbers <- unique(
-    reserved_codes[, c("protocoltype", "theme_number", "bare")])
+    reserved_codes[, c("protocoltype", "theme_number", "bare")]
+  )
 
   if (protocol_type == "sfp" && is.null(protocol_number)) {
     protocol_leading_number <-
-      themes_df[themes_df$theme == theme,
-                "theme_number"]
+      themes_df[
+        themes_df$theme == theme,
+        "theme_number"
+      ]
     sfp_reserved <- bare_numbers$bare[
       bare_numbers$protocoltype == protocol_type &
-        bare_numbers$theme_number == protocol_leading_number] -
+        bare_numbers$theme_number == protocol_leading_number
+    ] -
       as.numeric(protocol_leading_number) * 100
     all_numbers <- get_protocolnumbers(
       protocol_type = protocol_type,
-      language = language)
+      language = language
+    )
     theme_numbers <- str_subset(
-      all_numbers, paste0("^", protocol_leading_number))
+      all_numbers, paste0("^", protocol_leading_number)
+    )
     in_use <- as.numeric(theme_numbers) -
       as.numeric(protocol_leading_number) * 100
     full_sequence <- seq(1, max(sfp_reserved, in_use, 1), 1)
@@ -193,36 +202,45 @@ create_protocol_code <- function(
     )
     protocol_trailing_number <- formatC(
       protocol_trailing_number,
-      width = 2, format = "d", flag = "0")
+      width = 2, format = "d", flag = "0"
+    )
     protocol_number <- paste0(
       protocol_leading_number,
-      protocol_trailing_number)
+      protocol_trailing_number
+    )
     protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
     return(protocol_code)
   }
   if (protocol_type == "sfp" && !is.null(protocol_number)) {
     expected_leading_number <-
-      themes_df[themes_df$theme == theme,
-                "theme_number"]
+      themes_df[
+        themes_df$theme == theme,
+        "theme_number"
+      ]
     observed_leading_number <- str_extract(protocol_number, "^\\d")
     assert_that(expected_leading_number == observed_leading_number)
     sfp_reserved <- as.character(bare_numbers$bare[
       bare_numbers$protocoltype == protocol_type &
-        bare_numbers$theme_number == observed_leading_number])
+        bare_numbers$theme_number == observed_leading_number
+    ])
     validate_that(
       protocol_number %in% sfp_reserved,
       msg = cli_alert_danger(
         "The protocol number {protocol_number} is not on the list of
         reserved numbers.
-        Are you sure you want to pass a number manually?") |> cli_fmt())
+        Are you sure you want to pass a number manually?"
+      ) |> cli_fmt()
+    )
   }
   if (protocol_type %in% c("spp", "sap", "sip", "sop")) {
     reserved <- bare_numbers$bare[
-      bare_numbers$protocoltype == protocol_type]
+      bare_numbers$protocoltype == protocol_type
+    ]
     if (is.null(protocol_number)) {
       all_numbers <- get_protocolnumbers(
         protocol_type = protocol_type,
-        language = language)
+        language = language
+      )
       in_use <- as.numeric(all_numbers)
       full_sequence <- seq(1, max(reserved, in_use, 1), 1)
       not_reserved_or_in_use <-
@@ -238,7 +256,8 @@ create_protocol_code <- function(
 
       protocol_number <- formatC(
         protocol_number,
-        width = 3, format = "d", flag = "0")
+        width = 3, format = "d", flag = "0"
+      )
     } else {
       reserved <- as.character(reserved)
       validate_that(
@@ -285,7 +304,8 @@ create_from_docx <- function(
     dir_media = ".",
     wrap = NA,
     overwrite = FALSE,
-    verbose = FALSE)
+    verbose = FALSE
+  )
   # add captions
   temp2_filename <- "temp2.Rmd"
   add_captions(
@@ -296,19 +316,24 @@ create_from_docx <- function(
   contents <- readLines(
     con = file.path(
       path_to_protocol,
-      temp2_filename))
+      temp2_filename
+    )
+  )
   # replace absolute path to media folder by relative path
   contents <- str_replace_all(contents, path_to_protocol, ".")
   is_title <- str_detect(string = contents, pattern = "^(#{1}\\s{1})")
   title_numbers <- formatC(
     x = cumsum(is_title),
-    width = 2, format = "d", flag = "0")
+    width = 2, format = "d", flag = "0"
+  )
   filenames <- str_remove(
     string = tolower(contents[is_title]),
-    pattern = "^(#{1}\\s{1})")
+    pattern = "^(#{1}\\s{1})"
+  )
   filenames <- str_remove(
     string = filenames,
-    pattern = "\\s$")
+    pattern = "\\s$"
+  )
   filenames <- str_replace_all(filenames, pattern = "\\s", replacement = "_")
   filenames <- paste0(unique(title_numbers), "_", filenames, ".Rmd")
   # create new chapters
@@ -319,7 +344,8 @@ create_from_docx <- function(
     chapter_contents <- contents[chapter == cumsum(is_title)]
     writeLines(
       text = chapter_contents,
-      con = chapter_file)
+      con = chapter_file
+    )
   }
   # delete the complete Rmd (output of convert_docx_rmd)
   file.remove(file.path(path_to_protocol, temp_filename))
@@ -349,37 +375,42 @@ write_bookdown_yml <- function(
   rmd_files <- c(
     "index.Rmd",
     "NEWS.md",
-    list.files(path = path_to_protocol,
-               pattern = "^\\d{2}.+Rmd$"))
+    list.files(
+      path = path_to_protocol,
+      pattern = "^\\d{2}.+Rmd$"
+    )
+  )
 
 
   if (language == "en") {
     labels <- list(
-      fig = 'Figure ', # nolint start
-      tab = 'Table ',
-      eq = 'Equation ',
-      thm = 'Theorem ',
-      lem = 'Lemma ',
-      def = 'Definition ',
-      cor = 'Corrolary ',
-      prp = 'Proposition ',
-      ex = 'Example ',
-      proof = 'Proof. ',
-      remark = 'Remark. ')
+      fig = "Figure ", # nolint start
+      tab = "Table ",
+      eq = "Equation ",
+      thm = "Theorem ",
+      lem = "Lemma ",
+      def = "Definition ",
+      cor = "Corrolary ",
+      prp = "Proposition ",
+      ex = "Example ",
+      proof = "Proof. ",
+      remark = "Remark. "
+    )
   }
   if (language == "nl") {
     labels <- list(
-      fig = 'Figuur ',
-      tab = 'Tabel ',
-      eq = 'Vergelijking ',
-      thm = 'Theorema ',
-      lem = 'Lemma ',
-      def = 'Definitie ',
-      cor = 'Bijgevolg ',
-      prp = 'Propositie ',
-      ex = 'Voorbeeld ',
-      proof = 'Bewijs. ',
-      remark = 'Opmerking. ') # nolint end
+      fig = "Figuur ",
+      tab = "Tabel ",
+      eq = "Vergelijking ",
+      thm = "Theorema ",
+      lem = "Lemma ",
+      def = "Definitie ",
+      cor = "Bijgevolg ",
+      prp = "Propositie ",
+      ex = "Voorbeeld ",
+      proof = "Bewijs. ",
+      remark = "Opmerking. "
+    ) # nolint end
   }
   bookdown_yml <- yml_empty()
   bookdown_yml <- yml_bookdown_opts(
@@ -396,7 +427,8 @@ write_bookdown_yml <- function(
   use_yml_file(
     .yml = bookdown_yml,
     path = file.path(path_to_protocol, "_bookdown.yml"),
-    quiet = TRUE)
+    quiet = TRUE
+  )
 }
 
 
@@ -414,12 +446,14 @@ write_bookdown_yml <- function(
 write_output_yml <- function(language, path_to_protocol) {
   # Create the YAML content as a string directly
   # nolint start
-  before_yaml <- c(en = '
+  before_yaml <- c(
+    en = '
       - <li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>
       - <li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>',
-  nl = '
+    nl = '
       - <li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>
-      - <li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>')[[language]]
+      - <li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>'
+  )[[language]]
 
   yaml_content <- sprintf('
 bookdown::gitbook:
@@ -471,8 +505,7 @@ write_yaml_front_matter <- function(
     protocol_type,
     template,
     theme,
-    project_name
-) {
+    project_name) {
   # change values in parent rmarkdown
   index_yml <- yaml_front_matter(parent_rmd)
   unlink("css", recursive = TRUE)
@@ -490,21 +523,25 @@ write_yaml_front_matter <- function(
   }
   index_yml <- yml_date(
     index_yml,
-    date = date)
+    date = date
+  )
   if (protocol_type == "sfp" && template == protocol_type) {
     index_yml <- yml_replace(
       index_yml,
-      theme = theme)
+      theme = theme
+    )
   }
   if (protocol_type == "sfp" && template == "generic") {
     index_yml <- yml_toplevel(
       index_yml,
-      theme = theme)
+      theme = theme
+    )
   }
   if (protocol_type == "spp") {
     index_yml <- yml_replace(
       index_yml,
-      project_name = project_name)
+      project_name = project_name
+    )
   }
   # set url and github_repo
   index_yml <- yml_toplevel(
@@ -525,7 +562,8 @@ write_yaml_front_matter <- function(
     include_body = TRUE,
     include_yaml = FALSE,
     quiet = TRUE,
-    open_doc = FALSE)
+    open_doc = FALSE
+  )
   unlink(template_rmd)
 }
 
@@ -644,7 +682,8 @@ yaml_interactive <- function() {
   file_manager <- use_file_manager()
 
   readline(prompt = cli_fmt(
-    cli_alert("Enter one or more keywords separated by `;`"))) |>
+    cli_alert("Enter one or more keywords separated by `;`")
+  )) |>
     gsub(pattern = "[\"|']", replacement = "") |>
     strsplit(";") |>
     unlist() |>

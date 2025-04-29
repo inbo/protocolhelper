@@ -39,14 +39,13 @@
 #' @export
 #' @family convert
 convert_docx_to_rmd <- function(
-  from,
-  to = sub("docx$", "Rmd", from),
-  dir_media = ".",
-  wrap = NA,
-  overwrite = FALSE,
-  verbose = FALSE,
-  wd = getwd()) {
-
+    from,
+    to = sub("docx$", "Rmd", from),
+    dir_media = ".",
+    wrap = NA,
+    overwrite = FALSE,
+    verbose = FALSE,
+    wd = getwd()) {
   assert_that(is.string(from))
   assert_that(grepl("\\.docx$", from))
   assert_that(is.string(to))
@@ -62,24 +61,32 @@ convert_docx_to_rmd <- function(
   md <- str_replace_all(md, pattern = "\\r", replacement = "")
 
   # convert emf to png
-  emf_images <- list.files(path = file.path(wd,
-                                            ifelse(dir_media == ".",
-                                                   "",
-                                                   dir_media),
-                                            "media"),
-                           pattern = ".emf",
-                           full.names = TRUE)
+  emf_images <- list.files(
+    path = file.path(
+      wd,
+      ifelse(dir_media == ".",
+        "",
+        dir_media
+      ),
+      "media"
+    ),
+    pattern = ".emf",
+    full.names = TRUE
+  )
   if (length(emf_images) > 0) {
     if (!requireNamespace("magick", quietly = TRUE)) {
       stop("Package \"magick\" needed for docx protocols with emf images. ",
-           "Please install it with 'install.packages(\"magick\")'.",
-           call. = FALSE)
+        "Please install it with 'install.packages(\"magick\")'.",
+        call. = FALSE
+      )
     }
     for (img in emf_images) {
       img_emf <- magick::image_read(path = img)
-      magick::image_write(image = img_emf,
-                          format = "png",
-                          path = str_replace(img, ".emf", ".png"))
+      magick::image_write(
+        image = img_emf,
+        format = "png",
+        path = str_replace(img, ".emf", ".png")
+      )
       file.remove(img)
     }
   }
@@ -105,19 +112,21 @@ pandoc_docx_to_md <- function(from,
   }
   filter_opts <- character(0)
   from_format <- "docx"
-  other_opts <- c("--standalone",
-                  "--markdown-headings=atx",
-                  paste0("--extract-media=", dir)
-                  )
+  other_opts <- c(
+    "--standalone",
+    "--markdown-headings=atx",
+    paste0("--extract-media=", dir)
+  )
   opts <- c(filter_opts, wrap_opts, other_opts)
   md_tmp <- tempfile(fileext = ".md")
-  pandoc_convert(input = from,
-                 from = from_format,
-                 to = "markdown",
-                 output = md_tmp,
-                 options = opts,
-                 verbose = verbose,
-                 wd = wd
+  pandoc_convert(
+    input = from,
+    from = from_format,
+    to = "markdown",
+    output = md_tmp,
+    options = opts,
+    verbose = verbose,
+    wd = wd
   )
   return(readfile(md_tmp))
 }

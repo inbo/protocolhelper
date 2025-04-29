@@ -18,34 +18,40 @@
 get_protocol_type <- function(protocol_code,
                               labels = TRUE,
                               auto_identifier = FALSE) {
-  type <- regmatches(protocol_code,
-                     regexpr("^s.p", protocol_code))
+  type <- regmatches(
+    protocol_code,
+    regexpr("^s.p", protocol_code)
+  )
   if (!labels) {
     return(factor(
       type,
       levels = c("sfp", "sip", "sap", "sop", "spp"),
-      labels = c("sfp", "sip", "sap", "sop", "spp"))
-    )
+      labels = c("sfp", "sip", "sap", "sop", "spp")
+    ))
   }
   if (!auto_identifier) {
     type <- factor(
       type,
       levels = c("sfp", "sip", "sap", "sop", "spp"),
-      labels = c("Standard field protocols (sfp)",
-                 "Standard instrument protocols (sip)",
-                 "Standard analytical protocols (sap)",
-                 "Standard operating procedures (sop)",
-                 "Project-specific protocols (spp)")
+      labels = c(
+        "Standard field protocols (sfp)",
+        "Standard instrument protocols (sip)",
+        "Standard analytical protocols (sap)",
+        "Standard operating procedures (sop)",
+        "Project-specific protocols (spp)"
+      )
     )
   } else {
     type <- factor(
       type,
       levels = c("sfp", "sip", "sap", "sop", "spp"),
-      labels = c("standard-field-protocols-sfp",
-                 "standard-instrument-protocols-sip",
-                 "standard-analytical-protocols-sap",
-                 "standard-operating-procedures-sop",
-                 "project-specific-protocols-spp")
+      labels = c(
+        "standard-field-protocols-sfp",
+        "standard-instrument-protocols-sip",
+        "standard-analytical-protocols-sap",
+        "standard-operating-procedures-sop",
+        "project-specific-protocols-spp"
+      )
     )
   }
   return(type)

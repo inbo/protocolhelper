@@ -21,7 +21,7 @@ execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
   on.exit(setwd(old_wd), add = TRUE)
 
   if (.Platform$OS.type == "windows") {
-    res <- shell(commandstring, intern = TRUE, ...)# nolint
+    res <- shell(commandstring, intern = TRUE, ...) # nolint
   } else {
     res <- system(commandstring, intern = TRUE, ...)
   }

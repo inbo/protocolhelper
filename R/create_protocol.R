@@ -8,8 +8,8 @@
 #' optional subtitle, the authors, reviewers, file manager and keywords.
 #' These metadata (YAML section of `index.Rmd` file) will then be filled in
 #' automatically.
-#' The other metadata still need to be passed to the arguments of the function
-#'  - see examples section.
+#' The other metadata still need to be passed to the arguments of the function.
+#' See examples section.
 #' Optionally, the rmarkdown chapters are rendered to an html file which will
 #' be saved in a matching subfolder of the `docs` folder.
 #'
@@ -87,20 +87,20 @@
 #' protocolhelper::create_protocol(
 #'   protocol_type = "sfp",
 #'   short_title = "water 1",
-#'   theme = "water", language = "en")
+#'   theme = "water", language = "en"
+#' )
 #' }
 create_protocol <- function(
-  protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
-  short_title,
-  version_number = get_version_number(),
-  theme = NULL,
-  project_name = NULL,
-  language = c("nl", "en"),
-  from_docx = NULL,
-  protocol_number = NULL,
-  template = protocol_type,
-  render = FALSE) {
-
+    protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
+    short_title,
+    version_number = get_version_number(),
+    theme = NULL,
+    project_name = NULL,
+    language = c("nl", "en"),
+    from_docx = NULL,
+    protocol_number = NULL,
+    template = protocol_type,
+    render = FALSE) {
   # check parameters
   protocol_type <- match.arg(protocol_type)
   assert_that(template %in% c("sfp", "spp", "sap", "sop", "sip", "generic"))
@@ -109,7 +109,8 @@ create_protocol <- function(
   if (protocol_type == "sfp") {
     assert_that(
       is.string(theme),
-      theme %in% themes_df$theme)
+      theme %in% themes_df$theme
+    )
   }
   if (protocol_type == "spp") {
     assert_that(is.string(project_name))
@@ -120,7 +121,8 @@ create_protocol <- function(
       is.string(protocol_number),
       !(protocol_number %in% get_protocolnumbers(
         protocol_type = protocol_type,
-        language = language)),
+        language = language
+      )),
       msg = cli_fmt(cli_alert_danger(
         "The protocolnumber {protocol_number} is already in use
         for protocol type {protocol_type} and language {language}."
@@ -135,23 +137,26 @@ create_protocol <- function(
     theme,
     protocol_number,
     language
-    )
+  )
 
 
   short_title <- tolower(short_title)
   short_title <- str_replace_all(short_title, " ", "_")
   short_titles <- get_short_titles(
     protocol_type = protocol_type,
-    language = language)
+    language = language
+  )
   assert_that(
     !(short_title %in% short_titles),
     msg = "The given short title already exists.
               Give a short title that is not in use.
               Use get_short_titles() to get an overview of short titles
-              that are in use.")
+              that are in use."
+  )
   folder_name <- paste0(
     str_replace_all(protocol_code, "-", "_"),
-    "_", short_title)
+    "_", short_title
+  )
   folder_name <- tolower(folder_name)
   protocol_filename <- folder_name
   # set _bookdown.yml values
@@ -164,51 +169,60 @@ create_protocol <- function(
     protocol_code,
     theme = theme,
     project_name = project_name,
-    short_title = short_title)
+    short_title = short_title
+  )
   output_dir <- gsub("source", "docs", path_to_protocol)
 
   # next make it relative to path_to_protocol
   output_dir_rel <- path_rel(output_dir, path_to_protocol)
 
   # check for existence of non-empty folders
-  assert_that(!(dir.exists(path_to_protocol) &&
+  assert_that(
+    !(dir.exists(path_to_protocol) &&
       !identical(
         unname(
           unclass(
             dir_ls(
               path_to_protocol,
-              type = "file")
+              type = "file"
+            )
           )
         ),
         character(0)
       )),
-      msg = cli_fmt(cli_alert_danger(
-        "The protocol repository already has a non-empty folder
-        {.path {path_to_protocol}}!")
-      ))
-  assert_that(!(dir.exists(output_dir) &&
+    msg = cli_fmt(cli_alert_danger(
+      "The protocol repository already has a non-empty folder
+        {.path {path_to_protocol}}!"
+    ))
+  )
+  assert_that(
+    !(dir.exists(output_dir) &&
       !identical(
         unname(
           unclass(
             dir_ls(
               output_dir,
-              type = "file")
+              type = "file"
+            )
           )
         ),
         character(0)
       )),
-      msg = cli_fmt(cli_alert_danger(
-        "The protocol repository already has a non-empty folder
-        {.path {output_dir}}!")
-      ))
+    msg = cli_fmt(cli_alert_danger(
+      "The protocol repository already has a non-empty folder
+        {.path {output_dir}}!"
+    ))
+  )
   # create new directories
   cli_alert_info("Creating folder structure")
   dir_create(
     file.path(path_to_protocol),
-    recurse = TRUE)
+    recurse = TRUE
+  )
   dir_create(
     file.path(output_dir),
-    recurse = TRUE)
+    recurse = TRUE
+  )
   # create subfolders data and media
   dir_create(file.path(path_to_protocol, "data"))
   dir_create(file.path(path_to_protocol, "media"))
@@ -222,7 +236,8 @@ create_protocol <- function(
     file = parent_rmd,
     template = template_folder,
     package = "protocolhelper",
-    edit = FALSE)
+    edit = FALSE
+  )
 
   # write _bookdown.yml
   cli_alert_info("Writing _bookdown.yml")
@@ -230,7 +245,8 @@ create_protocol <- function(
     language = language,
     book_filename = book_filename,
     path_to_protocol = path_to_protocol,
-    output_dir_rel = output_dir_rel)
+    output_dir_rel = output_dir_rel
+  )
   # write _output.yml
   cli_alert_info("Writing _output.yml")
   write_output_yml(language = language, path_to_protocol = path_to_protocol)
@@ -254,7 +270,7 @@ create_protocol <- function(
     paste("template_name:", template),
     paste("theme:", theme)[!is.null(theme)],
     paste("project_name:", project_name)[!is.null(project_name)],
-    "community: \"inbo\"",
+    "community: \"inbo\"", # required by citation_meta
     paste0("publisher: ", inbo_affiliation[[language]]),
     "site: bookdown::bookdown_site",
     "bibliography: references.yaml"[language == "en"],
@@ -286,7 +302,8 @@ create_protocol <- function(
       "-   ...",
       ""
     ),
-    after = 2)
+    after = 2
+  )
   xfun::write_utf8(news, file.path(path_to_protocol, "NEWS.md"))
 
 
@@ -294,7 +311,8 @@ create_protocol <- function(
     assert_that(file.exists(from_docx))
     create_from_docx(
       from_docx = from_docx,
-      path_to_protocol = path_to_protocol)
+      path_to_protocol = path_to_protocol
+    )
   }
 
   # render html
@@ -308,8 +326,8 @@ create_protocol <- function(
       "Rendering may fail if Rmarkdown files do not correspond with
       those listed in the rmd_files field in the _bookdown.yml file.",
       "Please check if the names of the Rmarkdown files comply with
-      those listed in the rmd_files field in the _bookdown.yml file.")
-    )
+      those listed in the rmd_files field in the _bookdown.yml file."
+    ))
   }
   cli_alert_success(
     "Your protocol has been created in folder {.path {path_to_protocol}}."
@@ -320,14 +338,14 @@ create_protocol <- function(
 #' @rdname create_protocol
 #' @export
 create_sfp <- function(
-  short_title,
-  version_number = get_version_number(),
-  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-  language = c("nl", "en"),
-  from_docx = NULL,
-  protocol_number = NULL,
-  template = c("sfp", "generic"),
-  render = FALSE) {
+    short_title,
+    version_number = get_version_number(),
+    theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+    language = c("nl", "en"),
+    from_docx = NULL,
+    protocol_number = NULL,
+    template = c("sfp", "generic"),
+    render = FALSE) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sfp",
@@ -338,20 +356,21 @@ create_sfp <- function(
     from_docx = from_docx,
     protocol_number = protocol_number,
     template = template,
-    render = render)
+    render = render
+  )
 }
 
 #' @rdname create_protocol
 #' @export
 create_spp <- function(
-  short_title,
-  version_number = get_version_number(),
-  project_name,
-  language = c("nl", "en"),
-  from_docx = NULL,
-  protocol_number = NULL,
-  template = c("spp"),
-  render = FALSE) {
+    short_title,
+    version_number = get_version_number(),
+    project_name,
+    language = c("nl", "en"),
+    from_docx = NULL,
+    protocol_number = NULL,
+    template = c("spp"),
+    render = FALSE) {
   create_protocol(
     protocol_type = "spp",
     short_title = short_title,
@@ -361,7 +380,8 @@ create_spp <- function(
     from_docx = from_docx,
     protocol_number = protocol_number,
     template = template,
-    render = render)
+    render = render
+  )
 }
 
 #' @rdname create_protocol
@@ -383,7 +403,8 @@ create_sap <- function(
     from_docx = from_docx,
     protocol_number = protocol_number,
     template = template,
-    render = render)
+    render = render
+  )
 }
 
 #' @rdname create_protocol
@@ -405,7 +426,8 @@ create_sip <- function(
     from_docx = from_docx,
     protocol_number = protocol_number,
     template = template,
-    render = render)
+    render = render
+  )
 }
 
 #' @rdname create_protocol
@@ -427,5 +449,6 @@ create_sop <- function(
     from_docx = from_docx,
     protocol_number = protocol_number,
     template = template,
-    render = render)
+    render = render
+  )
 }

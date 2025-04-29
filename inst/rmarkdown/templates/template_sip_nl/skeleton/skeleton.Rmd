@@ -10,7 +10,6 @@ file_manager:
 protocol_code:
 version_number:
 language: nl
-lang: nl
 template_name: sip
 site: bookdown::bookdown_site
 bibliography: referenties.yaml
@@ -67,7 +66,8 @@ tibble(
   documentbeheerder = fms,
   protocolcode = metadata[["protocol_code"]],
   versienummer = metadata[["version_number"]],
-  taal = metadata[["language"]]) %>%
+  taal = metadata[["language"]]
+) %>%
   pander::pander(split.tables = Inf)
 rm(revs, fms)
 ```

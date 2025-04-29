@@ -31,10 +31,13 @@ update_news_release <- function(protocol_code, path = ".") {
   current_branch <- git_branch(repo = path)
   branch_info <- git_branch_list(repo = path)
   main_branch <- ifelse(any(branch_info$name == "origin/main"),
-                        "main", ifelse(any(branch_info$name == "origin/master"),
-                                       "master", "unknown"))
+    "main", ifelse(any(branch_info$name == "origin/master"),
+      "master", "unknown"
+    )
+  )
   assert_that(main_branch %in% c("main", "master"),
-              msg = "no branch `origin/main` or `origin/master` found.")
+    msg = "no branch `origin/main` or `origin/master` found."
+  )
   git_branch_checkout(branch = main_branch)
 
   news_file <- file.path(path, "NEWS.md")
@@ -64,11 +67,13 @@ update_news_release <- function(protocol_code, path = ".") {
       "- Version number: ", yaml$version_number, "\n",
       "- Link to this version: [", yaml$protocol_code, " version ",
       yaml$version_number, "](", yaml$version_number, "/index.html)\n"
-      ),
-    news_contents)
+    ),
+    news_contents
+  )
 
-  writeLines(news,
-             file.path(path, "NEWS.md"))
+  writeLines(
+    news,
+    file.path(path, "NEWS.md")
+  )
   return(invisible(NULL))
-
 }

@@ -41,7 +41,7 @@ protocolhelper::add_dependencies(
   protocol_code = c("sfp-123-en", "spp-124-en"),
   version_number = c("2020.01", "2020.02"),
   params = list(NA, list(width = 8, height = 8))
-  )
+)
 }
 }
 \seealso{

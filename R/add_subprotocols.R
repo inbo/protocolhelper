@@ -32,16 +32,14 @@
 #'
 #' @examples
 #' \dontrun{
-#'   add_subprotocols(code_mainprotocol = 'spp-999-en')
+#' add_subprotocols(code_mainprotocol = "spp-999-en")
 #' }
-
 add_one_subprotocol <-
   function(code_subprotocol,
            version_number,
            params2 = NULL,
            code_mainprotocol,
            fetch_remote = TRUE) {
-
     check_versionnumber(version_number)
     check_protocolcode(code_subprotocol)
     check_protocolcode(code_mainprotocol)
@@ -61,26 +59,33 @@ add_one_subprotocol <-
     if (fetch_remote) {
       firstremote <- execshell("git remote", intern = TRUE)[1]
       execshell(paste0("git fetch ", firstremote),
-                ignore.stdout = TRUE,
-                ignore.stderr = TRUE)
+        ignore.stdout = TRUE,
+        ignore.stderr = TRUE
+      )
     }
     existing_tags <- execshell("git tag", intern = TRUE)
     tag <- paste(code_subprotocol, version_number, sep = "-")
     assert_that(tag %in% existing_tags,
-                msg = paste("The combination of code_subprotocol and",
-                            "version_number does not refer to an existing",
-                            "released protocol."))
+      msg = paste(
+        "The combination of code_subprotocol and",
+        "version_number does not refer to an existing",
+        "released protocol."
+      )
+    )
 
-    #use git ls-tree to list the protocol files
+    # use git ls-tree to list the protocol files
     #-r for recursive listing
     #--name-only to only return relative path filenames
-    gitcommand <- paste0("git ls-tree -r --name-only ",
-                         tag, ":",
-                         protocol_path_rel)
+    gitcommand <- paste0(
+      "git ls-tree -r --name-only ",
+      tag, ":",
+      protocol_path_rel
+    )
 
     protocol_files <- execshell(gitcommand,
-                                intern = TRUE)
-    #git show to copy paste all files to a subdir of main protocol location
+      intern = TRUE
+    )
+    # git show to copy paste all files to a subdir of main protocol location
     if (length(protocol_files) > 0) {
       subdirs <- path_dir(protocol_files)
       subdirs <- subdirs[grepl("\\w+", subdirs)]
@@ -90,22 +95,31 @@ add_one_subprotocol <-
         path_rel(start = find_root(is_git_root))
 
       create_command <- function(file_path, dest_path, tag) {
-        paste0("git show ",
-               tag, ":",
-               file_path, " > ",
-               dest_path
+        paste0(
+          "git show ",
+          tag, ":",
+          file_path, " > ",
+          dest_path
         )
       }
       # use version_number as folder name instead of code_subprotocol
       # to avoid problems with get_path_to_protocol()
-      dir_create(file.path(mainprotocol_path_abs,
-                           version_number))
-      dir_create(file.path(mainprotocol_path_abs,
-                           version_number,
-                           subdirs),
-                 recurse = TRUE)
-      dest_paths <- file.path(mainprotocol_path_abs, version_number,
-                              protocol_files) %>%
+      dir_create(file.path(
+        mainprotocol_path_abs,
+        version_number
+      ))
+      dir_create(
+        file.path(
+          mainprotocol_path_abs,
+          version_number,
+          subdirs
+        ),
+        recurse = TRUE
+      )
+      dest_paths <- file.path(
+        mainprotocol_path_abs, version_number,
+        protocol_files
+      ) %>%
         path_rel(start = find_root(is_git_root))
       git_commands <- pmap(list(git_filepaths, dest_paths, tag), create_command)
       map(git_commands, execshell, intern = FALSE)
@@ -115,55 +129,63 @@ add_one_subprotocol <-
     }
 
 
-    #render the protocol
-    #with params and with bookdown::markdown_document2() as output format
-    #and output to the main bookdown working directory
+    # render the protocol
+    # with params and with bookdown::markdown_document2() as output format
+    # and output to the main bookdown working directory
     mdfile <- paste0(code_subprotocol, "-", version_number, ".md")
     old_wd <- getwd()
     setwd(dir = file.path(mainprotocol_path_abs, version_number))
     yaml_sub <- yaml_front_matter("index.Rmd")
     if (!is.na(params2)) {
-      render_book(input = "index.Rmd",
-                  output_format = markdown_document2(
-                    variant = "markdown",
-                    number_sections = FALSE,
-                    keep_md = TRUE,
-                    pandoc_args = c(
-                      "--markdown-headings=atx",
-                      "--shift-heading-level-by=1",
-                      "--metadata=suppress-bibliography=TRUE"
-                    )
-                  ),
-                  output_file = mdfile,
-                  output_dir = ".",
-                  params = params2,
-                  envir = new.env())
+      render_book(
+        input = "index.Rmd",
+        output_format = markdown_document2(
+          variant = "markdown",
+          number_sections = FALSE,
+          keep_md = TRUE,
+          pandoc_args = c(
+            "--markdown-headings=atx",
+            "--shift-heading-level-by=1",
+            "--metadata=suppress-bibliography=TRUE"
+          )
+        ),
+        output_file = mdfile,
+        output_dir = ".",
+        params = params2,
+        envir = new.env()
+      )
     } else {
-      render_book(input = "index.Rmd",
-                  output_format = markdown_document2(
-                    variant = "markdown",
-                    number_sections = FALSE,
-                    keep_md = TRUE,
-                    pandoc_args = c(
-                      "--markdown-headings=atx",
-                      "--shift-heading-level-by=1",
-                      "--metadata=suppress-bibliography=TRUE"
-                    )
-                  ),
-                  output_file = mdfile,
-                  output_dir = ".",
-                  envir = new.env())
+      render_book(
+        input = "index.Rmd",
+        output_format = markdown_document2(
+          variant = "markdown",
+          number_sections = FALSE,
+          keep_md = TRUE,
+          pandoc_args = c(
+            "--markdown-headings=atx",
+            "--shift-heading-level-by=1",
+            "--metadata=suppress-bibliography=TRUE"
+          )
+        ),
+        output_file = mdfile,
+        output_dir = ".",
+        envir = new.env()
+      )
     }
 
     # post-processing
     # add title and replace paths media and data
     mdcontents <- readLines(mdfile, encoding = "UTF8")
-    mdcontents <- str_replace_all(mdcontents,
-                                  "media\\/",
-                                  paste0(version_number, "/media/"))
-    mdcontents <- str_replace_all(mdcontents,
-                                  "data\\/",
-                                  paste0(version_number, "/data/"))
+    mdcontents <- str_replace_all(
+      mdcontents,
+      "media\\/",
+      paste0(version_number, "/media/")
+    )
+    mdcontents <- str_replace_all(
+      mdcontents,
+      "data\\/",
+      paste0(version_number, "/data/")
+    )
     title <- paste0("# ", yaml_sub$title, "\n")
     mdcontents <- c(title, mdcontents)
     # alternative to pandoc arg --id-prefix which doesn't work for md output
@@ -196,7 +218,7 @@ add_one_subprotocol <-
         # deal with sub-sub protocols
         # which already have protocolcode prepended
         if (grepl("\\s\\{\\#s[fpiao]p.+\\}", header_text)) {
-          header_text #keep as is
+          header_text # keep as is
         } else {
           header_text <- sub("\\s\\{\\#.+\\}", "", header_text)
           identifier <- tolower(header_text)
@@ -257,7 +279,8 @@ add_one_subprotocol <-
       include_body = TRUE,
       include_yaml = FALSE,
       quiet = TRUE,
-      open_doc = FALSE)
+      open_doc = FALSE
+    )
     unlink(template_rmd)
 
     setwd(old_wd)
@@ -293,7 +316,6 @@ add_one_subprotocol <-
 add_subprotocols <-
   function(code_mainprotocol,
            fetch_remote = TRUE) {
-
     check_protocolcode(code_mainprotocol)
 
     assert_that(is.flag(fetch_remote), noNA(fetch_remote))
@@ -331,7 +353,8 @@ add_subprotocols <-
           version_number = yml$params$dependencies$value[[i]]$version_number,
           params2 = yml$params$dependencies$value[[i]]$params,
           code_mainprotocol = code_mainprotocol,
-          fetch_remote = fetch_remote)
+          fetch_remote = fetch_remote
+        )
       }
     }
   }

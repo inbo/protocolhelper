@@ -49,11 +49,14 @@ update_version_number <- function(
   } else {
     index <- read_utf8(file.path(path_to_protocol, "index.Rmd"))
     index[grepl("version_number:", index)] <- paste0(
-      "version_number: '", new_version, "'")
+      "version_number: '", new_version, "'"
+    )
     write_utf8(index, file.path(path_to_protocol, "index.Rmd"))
 
-    message_text <- paste0("Bumped ", old_version, " to ", new_version,
-                           " in index.Rmd")
+    message_text <- paste0(
+      "Bumped ", old_version, " to ", new_version,
+      " in index.Rmd"
+    )
 
     # update in NEWS.md
     if (update_news) {
@@ -61,11 +64,14 @@ update_version_number <- function(
       news <- str_replace_all(
         string = old_news,
         pattern = sprintf("##\\s\\[%1$s\\]\\(\\.\\.\\/%1$s\\/", old_version),
-        replacement = sprintf("## [%1$s](../%1$s/", new_version))
+        replacement = sprintf("## [%1$s](../%1$s/", new_version)
+      )
       write_utf8(news, file.path(path_to_protocol, "NEWS.md"))
 
-      message_text <- paste0(message_text,
-                             " and NEWS.md"[!identical(old_news, news)])
+      message_text <- paste0(
+        message_text,
+        " and NEWS.md"[!identical(old_news, news)]
+      )
     }
     message(message_text)
 
@@ -76,8 +82,10 @@ update_version_number <- function(
       if (length(changes)) {
         git_add(changes, repo = path)
       }
-      git_commit(message = message_text,
-                 repo = path)
+      git_commit(
+        message = message_text,
+        repo = path
+      )
     }
     return(TRUE)
   }

@@ -1,18 +1,21 @@
 library(fs)
 library(stringr)
 
-chapters <- fs::dir_ls(path = file.path("./inst/rmarkdown/templates"),
-           all = FALSE,
-           recurse = TRUE,
-           type = "file",
-           regexp = "\\d{2}_")
+chapters <- fs::dir_ls(
+  path = file.path("./inst/rmarkdown/templates"),
+  all = FALSE,
+  recurse = TRUE,
+  type = "file",
+  regexp = "\\d{2}_"
+)
 
-
-rmd_md_files <- fs::dir_ls(path = file.path("./inst/rmarkdown/templates"),
-                       all = FALSE,
-                       recurse = TRUE,
-                       type = "file",
-                       regexp = "md$")
+rmd_md_files <- fs::dir_ls(
+  path = file.path("./inst/rmarkdown/templates"),
+  all = FALSE,
+  recurse = TRUE,
+  type = "file",
+  regexp = "md$"
+)
 
 titles <- purrr::map_chr(chapters, function(x) {
   x <- readLines(x)
@@ -22,7 +25,8 @@ titles <- purrr::map_chr(chapters, function(x) {
 compare <- data.frame(
   path = unname(chapters),
   chapter_file = fs::path_file(chapters),
-  titles = unname(titles))
+  titles = unname(titles)
+)
 View(compare)
 
 library(commonmark)
@@ -36,9 +40,11 @@ headings <- purrr::map_dfr(chapters, function(x) {
                                xpath = ".//d1:heading")
   headings_level <- xml_attr(all_headings, "level")
   headings_text <- xml_text(all_headings)
-  tibble::tibble(file = x,
-             level = headings_level,
-             text = headings_text)
+  tibble::tibble(
+    file = x,
+    level = headings_level,
+    text = headings_text
+  )
 })
 
 library(dplyr)

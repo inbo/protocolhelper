@@ -43,7 +43,7 @@
 #'   version_number = "2021.01",
 #'   file_name = "07_stappenplan.Rmd"
 #' )
-#'}
+#' }
 insert_protocolsection <-
   function(code_subprotocol,
            version_number,
@@ -51,18 +51,20 @@ insert_protocolsection <-
            section = NULL,
            demote_header = c(0, 1, 2, -1),
            fetch_remote = TRUE) {
-
     check_versionnumber(version_number)
     check_protocolcode(code_subprotocol)
 
     demote_choices <- eval(formals()$demote_header)
     if (missing(demote_header)) {
       demote_header <- demote_choices[1]
-      } else {
-        assert_that(demote_header %in% demote_choices,
-                    msg = paste("demote_header must be one of",
-                                paste(demote_choices, collapse = ", ")))
-      }
+    } else {
+      assert_that(demote_header %in% demote_choices,
+        msg = paste(
+          "demote_header must be one of",
+          paste(demote_choices, collapse = ", ")
+        )
+      )
+    }
     assert_that(is.string(file_name))
     if (!missing(section)) {
       assert_that(is.string(section))
@@ -77,24 +79,31 @@ insert_protocolsection <-
     if (fetch_remote) {
       firstremote <- execshell("git remote", intern = TRUE)[1]
       execshell(paste0("git fetch ", firstremote),
-                ignore.stdout = TRUE,
-                ignore.stderr = TRUE)
+        ignore.stdout = TRUE,
+        ignore.stderr = TRUE
+      )
     }
     existing_tags <- execshell("git tag", intern = TRUE)
     tag <- paste(code_subprotocol, version_number, sep = "-")
     assert_that(tag %in% existing_tags,
-                msg = paste("The combination of code_subprotocol and",
-                            "version_number does not refer to an existing",
-                            "released protocol."))
+      msg = paste(
+        "The combination of code_subprotocol and",
+        "version_number does not refer to an existing",
+        "released protocol."
+      )
+    )
 
-    gitcommand <- paste0("git show ",
-                         tag, ":",
-                         git_filepath)
+    gitcommand <- paste0(
+      "git show ",
+      tag, ":",
+      git_filepath
+    )
 
     # get the content of the Rmd file
     # this will return a character vector (each element is one sentence)
     rmd_content <- execshell(gitcommand,
-           intern = TRUE)
+      intern = TRUE
+    )
     # What happens if this fails?
 
     # avoid looking in chunks
@@ -133,11 +142,14 @@ insert_protocolsection <-
         }
       } else {
         rmd_content[h1] <- paste0(
-          paste0(rep("#", demote_header), collapse = ""), rmd_content[h1])
+          paste0(rep("#", demote_header), collapse = ""), rmd_content[h1]
+        )
         rmd_content[h2] <- paste0(
-          paste0(rep("#", demote_header), collapse = ""), rmd_content[h2])
+          paste0(rep("#", demote_header), collapse = ""), rmd_content[h2]
+        )
         rmd_content[h3] <- paste0(
-          paste0(rep("#", demote_header), collapse = ""), rmd_content[h3])
+          paste0(rep("#", demote_header), collapse = ""), rmd_content[h3]
+        )
       }
     }
 
@@ -148,7 +160,7 @@ insert_protocolsection <-
     # insert_protocolsection() outside render_protocol()
     if (!is.null(opts_knit$get("output.dir"))) {
       res <- knit_child(text = rmd_content, quiet = TRUE)
-    }  else {
+    } else {
       res <- rmd_content
     }
 
@@ -184,11 +196,15 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
   # dealing with external figures and tabular data
   # extract all paths to data or media
   pat_data <- "(data\\/\\w+\\.(csv|tsv|xls|xlsx))"
-  data_files <- str_extract_all(rmd_content[grepl(pat_data, rmd_content)],
-                                pat_data)
+  data_files <- str_extract_all(
+    rmd_content[grepl(pat_data, rmd_content)],
+    pat_data
+  )
   pat_media <- "(media\\/\\w+\\.(png|jpg))"
-  media_files <- str_extract_all(rmd_content[grepl(pat_media, rmd_content)],
-                                 pat_media)
+  media_files <- str_extract_all(
+    rmd_content[grepl(pat_media, rmd_content)],
+    pat_media
+  )
   all_files <- c(data_files, media_files)
   if (length(all_files) > 0) {
     git_filepaths <-
@@ -199,10 +215,11 @@ get_data_media <- function(rmd_content, code_subprotocol, tag) {
     # use git show to get the contents of data and media
     # and copy it to the project protocol
     create_command <- function(file_path, dest_path, tag) {
-      paste0("git show ",
-             tag, ":",
-             file_path, " > ",
-             dest_path
+      paste0(
+        "git show ",
+        tag, ":",
+        file_path, " > ",
+        dest_path
       )
     }
     git_commands <- pmap(list(git_filepaths, all_files, tag), create_command)

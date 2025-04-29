@@ -57,9 +57,9 @@ test_that("render_protocol works as expected", {
     file.exists("docs/sfp/1_water/sfp_101_en_water_1/index.html")
   )
   expect_true(
-    file.exists("docs/sfp/1_water/sfp_101_en_water_1/sfp_101_en_water_1.pdf"))
+    file.exists("docs/sfp/1_water/sfp_101_en_water_1/sfp_101_en_water_1.pdf")
+  )
 
   # Cleanup
   unlink(repo, recursive = TRUE)
-
 })

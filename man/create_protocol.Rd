@@ -143,12 +143,10 @@ The function is (partly) interactive and will ask for the title,
 optional subtitle, the authors, reviewers, file manager and keywords.
 These metadata (YAML section of \code{index.Rmd} file) will then be filled in
 automatically.
-The other metadata still need to be passed to the arguments of the function
-\itemize{
-\item see examples section.
+The other metadata still need to be passed to the arguments of the function.
+See examples section.
 Optionally, the rmarkdown chapters are rendered to an html file which will
 be saved in a matching subfolder of the \code{docs} folder.
-}
 }
 \details{
 It is assumed that the \code{source} folder is a subfolder of an RStudio
@@ -188,7 +186,8 @@ protocol.
 protocolhelper::create_protocol(
   protocol_type = "sfp",
   short_title = "water 1",
-  theme = "water", language = "en")
+  theme = "water", language = "en"
+)
 }
 }
 \seealso{
