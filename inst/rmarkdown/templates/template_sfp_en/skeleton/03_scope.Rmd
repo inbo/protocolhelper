@@ -1,9 +1,0 @@
-# Scope
-
-```{=html}
-<!--
-To be completed only if applicable.
-Discuss under which conditions the protocol cannot be used or when deviations from the standard protocol are necessary.
-Also mention possible interferences, bottlenecks, ...
--->
-```
