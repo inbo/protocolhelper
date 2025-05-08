@@ -2,12 +2,12 @@ citHeader("To cite `protocolhelper` in publications please use:")
 # begin checklist entry
 bibentry(
   bibtype = "Manual",
-  title = "protocolhelper: Helper Functions to Manage Protocols. Version 0.8.0",
+  title = "protocolhelper: Helper Functions to Manage Protocols. Version 0.8.1",
   author = c( author = c(person(given = "Hans", family = "Van Calster"), person(given = "Thierry", family = "Onkelinx"), person(given = "Floris", family = "Vanderhaeghe"))),
   year = 2025,
   url = "https://inbo.github.io/protocolhelper/",
   abstract = "Helper functions to manage INBO protocols.",
-  textVersion = "Van Calster, Hans; Onkelinx, Thierry; Vanderhaeghe, Floris (2025) protocolhelper: Helper Functions to Manage Protocols. Version 0.8.0. https://inbo.github.io/protocolhelper/",
+  textVersion = "Van Calster, Hans; Onkelinx, Thierry; Vanderhaeghe, Floris (2025) protocolhelper: Helper Functions to Manage Protocols. Version 0.8.1. https://inbo.github.io/protocolhelper/",
   keywords = "protocols; R package; Reproducible research; Rmarkdown templates",
 )
 # end checklist entry
