@@ -241,7 +241,7 @@ check_file <- function(filename, x, files_template, path_to_template) {
     template_end <-
       template[max(grep("^[[:space:]]?#", template)):length(template)]
     rmd_end <- rmd[max(grep("^[[:space:]]?#", rmd)):length(rmd)]
-    if (!all(template_end == rmd_end)) {
+    if (!all(rmd_end[rmd_end != ""] == template_end[template_end != ""])) {
       x$add_error(
         msg = "Heading 'Metadata' or the table below have changed"
       )
