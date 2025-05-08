@@ -1,5 +1,10 @@
 # protocolhelper 0.8.1
 
+## Bug fix
+
+* `protocolhelper:::update_doi()` no longer removes the DOI when it is not
+  published
+
 # protocolhelper 0.8.0
 
 ## New features

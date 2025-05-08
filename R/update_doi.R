@@ -54,13 +54,19 @@ update_doi <- function(
   } else {
     lookup_doi <- yml_list$doi
     myrec <- zenodo$getDepositionByDOI(lookup_doi)
-    myrec <- zenodo$depositRecordVersion(
-      myrec,
-      delete_latest_files = TRUE,
-      files = list(),
-      publish = FALSE
-    )
-    doi <- myrec$pids$doi$identifier
+    if (!myrec$is_published) {
+      # early return in case a not published doi is already present
+      return(invisible(lookup_doi))
+    } else {
+      # get a doi for a new version
+      myrec <- zenodo$depositRecordVersion(
+        myrec,
+        delete_latest_files = TRUE,
+        files = list(),
+        publish = FALSE
+      )
+      doi <- myrec$pids$doi$identifier
+    }
   }
 
   # add or replace doi
@@ -75,10 +81,6 @@ update_doi <- function(
   # add new yaml
   index <- c(index_yml, index)
   writeLines(index, path(ppath, "index.Rmd"))
-
-  # add, commit (optionally? can also be done in GHA docker shell)
-
-
 
   return(invisible(doi))
 }

@@ -146,6 +146,7 @@ test_that("update doi works", {
     version_number = version_number
   )
 
+  # the following is run in GHA when reviewer conditions are met
   protocolhelper:::update_news_release("sfp-101-en")
   protocolhelper:::update_zenodo()
   doi <- protocolhelper:::update_doi("sfp-101-en")
@@ -153,6 +154,11 @@ test_that("update doi works", {
   check_doi <- rmarkdown::yaml_front_matter(
     file.path("source", "sfp", "1_water", "sfp_101_en_water_1", "index.Rmd")
   )$doi
+  expect_equal(doi, check_doi)
+
+  # extra test to check if doi is retained in cases where an extra approval is
+  # needed - for instance, when a branch is out of date
+  doi <- protocolhelper:::update_doi("sfp-101-en")
   expect_equal(doi, check_doi)
 
   # add, commit and tag it
@@ -170,8 +176,6 @@ test_that("update doi works", {
     set_upstream = TRUE,
     repo = repo
   )
-
-
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
@@ -223,6 +227,11 @@ test_that("update doi works", {
   check_doi <- rmarkdown::yaml_front_matter(
     file.path("source", "sfp", "1_water", "sfp_101_en_water_1", "index.Rmd")
   )$doi
+  expect_equal(doi, check_doi)
+
+  # extra test to check if doi is retained in cases where an extra approval is
+  # needed - for instance, when a branch is out of date
+  doi <- protocolhelper:::update_doi("sfp-101-en")
   expect_equal(doi, check_doi)
 
   # add, commit and tag it
