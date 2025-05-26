@@ -1,3 +1,9 @@
+# protocolhelper 0.8.2
+
+## Enhancement
+
+* Fixed a layout issue in the html version (doi appearing in wrong place)
+
 # protocolhelper 0.8.1
 
 ## Bug fix
