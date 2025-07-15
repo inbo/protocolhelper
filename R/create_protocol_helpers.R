@@ -688,9 +688,10 @@ yaml_interactive <- function() {
     strsplit(";") |>
     unlist() |>
     gsub(pattern = "^\\s+", replacement = "") |>
-    gsub(pattern = "\\s+$", replacement = "") |>
-    paste(collapse = "; ") |>
-    sprintf(fmt = "keywords: \"%s\"") -> keywords
+    gsub(pattern = "\\s+$", replacement = "") %>%
+    paste0("'", ., "'") |>
+    paste(collapse = ",") |>
+    sprintf(fmt = "keywords: [%s]") -> keywords
 
   c(
     yaml,
