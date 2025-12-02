@@ -2,7 +2,13 @@
 
 ## Enhancement
 
-* Fixed a layout issue in the html version (doi appearing in wrong place)
+* Fixed a layout issue in the html version (DOI appearing in wrong place)
+* Handle multiple reviewers in metadata table (#134)
+
+
+## Bug fix
+
+* Fix `render_release` failure in case of multiple reviewers (#137)
 
 # protocolhelper 0.8.1
 
