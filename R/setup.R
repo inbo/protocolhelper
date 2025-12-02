@@ -1,5 +1,6 @@
 ignore_unused_imports <- function() {
-  slickR::slickR
+  bsplus::bs_carousel
+  bsplus::bs_append
   reactable::reactable
 }
 

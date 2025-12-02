@@ -39,6 +39,7 @@ Imports:
     yaml,
     ymlthis
 Suggests: 
+    bsplus,
     dplyr,
     keyring,
     lubridate,
@@ -47,7 +48,6 @@ Suggests:
     png,
     reactable,
     rlang,
-    slickR,
     testthat (>= 2.1.0),
     tinytex,
     zen4R

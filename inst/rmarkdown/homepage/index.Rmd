@@ -10,7 +10,8 @@ Voor Nederlands [klik hier](#welkom).
 For English [click here](#welcome).
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
+library(knitr)
+opts_chunk$set(
   echo = FALSE,
   eval = TRUE,
   warning = FALSE,
@@ -18,17 +19,49 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 library(htmlwidgets)
-library(slickR)
+library(bsplus)
 library(reactable)
 ```
 
 
 ```{r}
-slickR(obj = c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png",
-               "voorbeeld4.jpg", "voorbeeld5.png", "voorbeeld6.jpg"),
-       width = "95%") +
-  settings(dots = TRUE, adaptiveHeight = TRUE,
-           autoplay = TRUE)
+bs_carousel(id = "Voorbeelden", use_indicators = TRUE) %>%
+  bs_append(
+    content = bs_carousel_image(
+      src = image_uri("voorbeeld1.png"),
+      alt = "Vervangprotocol"
+    )
+  ) %>%
+  bs_append(
+    content = bs_carousel_image(
+      src = image_uri("voorbeeld2.jpeg"),
+      alt = "Vegetatieopname"
+    )
+  ) %>%
+  bs_append(
+    content = bs_carousel_image(
+      src = image_uri("voorbeeld3.png"),
+      alt = "Navigatie"
+    )
+  ) %>%
+  bs_append(
+    content = bs_carousel_image(
+      src = image_uri("voorbeeld4.jpg"),
+      alt = "Bodemstaalnamemateriaal"
+    )
+  ) %>%
+  bs_append(
+    content = bs_carousel_image(
+      src = image_uri("voorbeeld5.png"),
+      alt = "Peilbuizen"
+    )
+  ) %>%
+  bs_append(
+    content = bs_carousel_image(
+      src = image_uri("voorbeeld6.jpg"),
+      alt = "Bodemstaal"
+    )
+  )
 ```
 
 
