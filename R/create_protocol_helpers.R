@@ -1,3 +1,6 @@
+utils::globalVariables(c("."))
+
+
 #' @title Function to list all occupied protocol numbers
 #'
 #' @description This function will search for protocol numbers in filenames of

@@ -1,7 +1,7 @@
 #' @title Convert a docx-file (a protocol) to an (R)markdown file
 #'
 #' @description This function is derived from the
-#' [`redoc::dedoc()`](https://noamross.github.io/redoc/reference/dedoc.html)
+#' `redoc::dedoc()`
 #' function and uses `pandoc` to convert between docx and markdown.
 #' Several options are preset to end-up with a markdown document that is in
 #' syntax as close as possible to Rmarkdown files in RStudio.
