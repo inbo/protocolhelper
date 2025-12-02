@@ -27,7 +27,7 @@
 #' @importFrom stats aggregate
 #' @importFrom stringr str_replace_all
 #' @importFrom utils tail write.csv
-#' @importFrom yaml as.yaml read_yaml
+#' @importFrom yaml as.yaml read_yaml write_yaml
 #'
 #' @noRd
 #'
@@ -137,29 +137,32 @@ render_release <- function(
       yaml[[i]][["protocol_code"]], "_",
       yaml[[i]][["version_number"]], ".pdf"
     )
+    # 1. Create a temporary YAML file for this iteration's specific metadata
+    temp_metadata_file <- tempfile(
+      pattern = "meta_override_",
+      fileext = ".yaml"
+    )
+    # 2. Construct the list of pandoc variables
+    override_vars <- list(
+      reviewer = yaml[[i]][["reviewer"]],
+      file_manager = yaml[[i]][["file_manager"]],
+      protocol_code = yaml[[i]][["protocol_code"]],
+      version_number = yaml[[i]][["version_number"]],
+      thema = c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1],
+      language = yaml[[i]][["language"]]
+    )
+
+    # 3. Write this list to the temp file
+    yaml::write_yaml(override_vars, temp_metadata_file)
+
+    # 4. Pass the FILE to pandoc_args instead of individual variables
     render_book(
       input = ".",
       output_format = pdf_book(
-        template = "pandoc/inbo_protocol.tex", # nolint
+        template = "pandoc/inbo_protocol.tex",# nolint
         pandoc_args = c(
           "--top-level-division=chapter",
-          pandoc_variable_arg(
-            "reviewer", yaml[[i]][["reviewer"]]
-          ),
-          pandoc_variable_arg(
-            "file_manager", yaml[[i]][["file_manager"]]
-          ),
-          pandoc_variable_arg(
-            "protocol_code", yaml[[i]][["protocol_code"]]
-          ),
-          pandoc_variable_arg(
-            "version_number", yaml[[i]][["version_number"]]
-          ),
-          pandoc_variable_arg(
-            "thema",
-            c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
-          ),
-          pandoc_variable_arg("language", yaml[[i]][["language"]])
+          "--metadata-file", temp_metadata_file
         )
       ),
       output_file = pdf_name,
@@ -172,23 +175,7 @@ render_release <- function(
         split_by = output_yaml[[i]][["bookdown::gitbook"]][["split_by"]],
         split_bib = output_yaml[[i]][["bookdown::gitbook"]][["split_bib"]],
         pandoc_args = c(
-          pandoc_variable_arg(
-            "reviewer", yaml[[i]][["reviewer"]]
-          ),
-          pandoc_variable_arg(
-            "file_manager", yaml[[i]][["file_manager"]]
-          ),
-          pandoc_variable_arg(
-            "protocol_code", yaml[[i]][["protocol_code"]]
-          ),
-          pandoc_variable_arg(
-            "version_number", yaml[[i]][["version_number"]]
-          ),
-          pandoc_variable_arg(
-            "thema",
-            c(yaml[[i]][["theme"]], yaml[[i]][["project_name"]])[1]
-          ),
-          pandoc_variable_arg("language", yaml[[i]][["language"]])
+          "--metadata-file", temp_metadata_file
         ),
         template = "css/gitbook.html",
         css = "css/inbo_rapport.css",
@@ -197,8 +184,8 @@ render_release <- function(
           toc = list(
             before =
               ifelse(yaml[[i]][["language"]] == "en",
-                '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n', # nolint start
-                '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n'
+                     '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/en-gb/homepage/"><img src="css/img/inbo-en.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n', # nolint start
+                     '<li class="toc-logo"><a href="https://www.vlaanderen.be/inbo/home/"><img src="css/img/inbo-nl.jpg"></a></li>\n<li class="toc-logo"><a href="https://inbo.github.io/protocols/"><button class="btn"><i class="fa fa-home"></i> Protocols homepage</button></li>\n'
               ),
             after = '<li class="cc"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="css/img/cc-by.png"></a></li>' # nolint end
           )
