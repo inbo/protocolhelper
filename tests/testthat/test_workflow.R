@@ -1,7 +1,4 @@
 test_that("complete workflow works", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   skip_if_offline()
   skip_if_not_installed("zen4R")
   skip_if_not_installed("keyring")

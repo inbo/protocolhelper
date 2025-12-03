@@ -1,7 +1,4 @@
 test_that("test that adding dependencies to yaml works", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   library(ymlthis)
   author_df <- data.frame(
     stringsAsFactors = FALSE,

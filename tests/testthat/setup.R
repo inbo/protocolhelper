@@ -1,6 +1,3 @@
-if (!requireNamespace("gert", quietly = TRUE)) {
-  stop("please install 'gert' package for these tests to work")
-}
 if (!requireNamespace("tinytex", quietly = TRUE)) {
   stop("please install the 'tinytex' R package for these tests to work")
 }

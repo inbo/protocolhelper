@@ -2,9 +2,6 @@ test_that("Test that insert_protocolsection works", {
   if (!requireNamespace("png", quietly = TRUE)) {
     stop("please install 'png' package for these tests to work")
   }
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),

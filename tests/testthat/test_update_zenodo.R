@@ -95,11 +95,6 @@ test_that(
     ]
 }'
 
-
-    if (!requireNamespace("gert", quietly = TRUE)) {
-      stop("please install 'gert' package for these tests to work")
-    }
-
     author_df <- data.frame(
       stringsAsFactors = FALSE,
       given = c("Hans"),
