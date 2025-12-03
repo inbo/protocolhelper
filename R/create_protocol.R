@@ -276,6 +276,7 @@ create_protocol <- function(
     "bibliography: references.yaml"[language == "en"],
     "bibliography: referenties.yaml"[language == "nl"],
     "link-citations: TRUE",
+    "license: CC-BY 4.0", # required by citation_meta
     "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" # nolint
   )
 
