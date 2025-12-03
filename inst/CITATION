@@ -3,7 +3,7 @@ citHeader("To cite `protocolhelper` in publications please use:")
 bibentry(
   bibtype = "Manual",
   title = "protocolhelper: Helper Functions to Manage Protocols. Version 0.8.2",
-  author = c( author = c(person(given = "Hans", family = "Van Calster"), person(given = "Thierry", family = "Onkelinx"), person(given = "Floris", family = "Vanderhaeghe"))),
+  author = c(person(given = "Hans", family = "Van Calster"), person(given = "Thierry", family = "Onkelinx"), person(given = "Floris", family = "Vanderhaeghe")),
   year = 2025,
   url = "https://inbo.github.io/protocolhelper/",
   abstract = "Helper functions to manage INBO protocols.",
