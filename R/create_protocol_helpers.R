@@ -1,6 +1,3 @@
-utils::globalVariables(c("."))
-
-
 #' @title Function to list all occupied protocol numbers
 #'
 #' @description This function will search for protocol numbers in filenames of
@@ -691,8 +688,9 @@ yaml_interactive <- function() {
     strsplit(";") |>
     unlist() |>
     gsub(pattern = "^\\s+", replacement = "") |>
-    gsub(pattern = "\\s+$", replacement = "") %>%
-    paste0("'", ., "'") |>
+    gsub(pattern = "\\s+$", replacement = "") -> keywords
+
+  paste0("'", keywords, "'") |>
     paste(collapse = ",") |>
     sprintf(fmt = "keywords: [%s]") -> keywords
 
