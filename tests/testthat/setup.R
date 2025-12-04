@@ -32,7 +32,7 @@ if (tinytex::tinytex_root(error = FALSE) == "") {
     "scheme-infraonly", "selnolig", "stringenc", "symbol", "tabu",
     "tex", "tex-ini-files", "texlive-scripts", "texlive-scripts-extra",
     "texlive.infra", "threeparttable", "threeparttablex", "times",
-    "tipa", "titlesec", "tlgpg", "tlgs", "tlperl", "tocloft", "tools",
+    "tipa", "titlesec", "tlgpg", "tocloft", "tools",
     "tracklang", "trimspaces", "ulem", "unicode-data", "unicode-math",
     "uniquecounter", "url", "varwidth", "wrapfig", "xcolor", "xetex",
     "xetexconfig", "xkeyval", "xpatch", "xunicode", "zapfding"
