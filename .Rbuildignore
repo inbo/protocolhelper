@@ -16,6 +16,7 @@
 ^data-raw$
 ^docs$
 ^man-roxygen$
+^organisation.yml$
 ^pkgdown$
 ^protocolhelper\.Rproj$
 ^publish$
