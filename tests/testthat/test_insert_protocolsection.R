@@ -8,7 +8,7 @@ test_that("Test that insert_protocolsection works", {
     family = c("Van Calster"),
     email = c("hans.vancalster@inbo.be"),
     orcid = c("0000-0001-8595-8426"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
+    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
   reviewer_df <- data.frame(
     stringsAsFactors = FALSE,
@@ -16,7 +16,7 @@ test_that("Test that insert_protocolsection works", {
     family = c("Lommelen"),
     email = c("els.lommelen@inbo.be"),
     orcid = c("0000-0002-3481-5684"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
+    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
   file_manager_df <- data.frame(
     stringsAsFactors = FALSE,
