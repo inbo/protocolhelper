@@ -11,15 +11,10 @@ jobs:
   check-package:
     runs-on: ubuntu-latest
     name: "check package"
-    env:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
-    permissions:
-      contents: read
     steps:
-      - uses: r-lib/actions/setup-pandoc@v2
-        with:
-          pandoc-version: '3.1.11'
-
       - uses: inbo/actions/check_pkg@main
+        with:
+          - CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          - GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          - ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
+
