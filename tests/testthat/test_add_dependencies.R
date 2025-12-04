@@ -41,6 +41,8 @@ test_that("test that adding dependencies to yaml works", {
   dir.create(test_repo)
   setwd(test_repo)
   repo <- gert::git_init()
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = ".")
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 

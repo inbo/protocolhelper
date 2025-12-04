@@ -131,6 +131,8 @@ test_that(
 
 
     origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
+    url = "https://github.com/inbo/unittests"
+    gert::git_remote_add(url = url, repo = origin_repo)
     on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
     repo <- gert::git_clone(
       url = origin_repo,
