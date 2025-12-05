@@ -69,6 +69,7 @@ test_that("Check frontmatter works", {
     )
   )
   # create a protocol
+  fs::dir_create(file.path(repo, "source"))
   version_number <- get_version_number()
   create_sfp(
     short_title = "water 1",
