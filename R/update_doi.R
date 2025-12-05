@@ -54,7 +54,7 @@ update_doi <- function(
   } else {
     lookup_doi <- yml_list$doi
     myrec <- zenodo$getDepositionByDOI(lookup_doi)
-    if (!myrec$is_published) {
+    if (is.null(myrec$is_published) || !myrec$is_published) {
       # early return in case a not published doi is already present
       return(invisible(lookup_doi))
     } else {
