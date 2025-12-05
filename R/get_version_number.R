@@ -48,10 +48,10 @@ get_version_number <- function(path = ".") {
 
   # list all index.Rmd files
   indexpaths <- dir_ls(
-    path = path, recurse = TRUE,
-    regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd"
+    path = file.path(path, "source"),
+    recurse = TRUE,
+    regexp = "index\\.Rmd$"
   )
-
   # read YAML front matter
   yamllists <- map(indexpaths, yaml_front_matter)
 
