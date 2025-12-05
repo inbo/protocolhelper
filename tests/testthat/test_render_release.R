@@ -28,7 +28,7 @@ test_that("complete workflow works", {
     family = c("Verschelde"),
     email = c("pieter.verschelde@inbo.be"),
     orcid = c("0000-0002-9199-421X"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
+    affiliation = c("Research Institute for Nature and Forest (INBO)")
   )
 
 
