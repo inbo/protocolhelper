@@ -120,6 +120,7 @@ test_that("Check frontmatter works", {
   checklist::new_branch("sfp-102-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
   cat(version_number_2)
+
   protocolhelper::create_protocol(
     short_title = "water 2",
     version_number = version_number_2, theme = "water", language = "en"
@@ -139,6 +140,8 @@ test_that("Check frontmatter works", {
     repo = repo
   )
 
+  controle <- get_version_number(path = repo)
+  cat(controle)
 
   expect_output(
     check_frontmatter(
