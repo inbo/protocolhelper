@@ -116,8 +116,10 @@ test_that("Check frontmatter works", {
   )
 
   # another protocol
+  fs::dir_tree(path = repo)
   checklist::new_branch("sfp-102-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
+  cat(version_number_2)
   protocolhelper::create_protocol(
     short_title = "water 2",
     version_number = version_number_2, theme = "water", language = "en"
