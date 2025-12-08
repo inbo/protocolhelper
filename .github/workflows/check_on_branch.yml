@@ -11,7 +11,7 @@ jobs:
   check-package:
     runs-on: ubuntu-latest
     steps:
-      - uses: inbo/actions/check_pkg@devel
+      - uses: inbo/actions/check_pkg@main
         with:
           path: "."
           # aptget: "" (optional)
