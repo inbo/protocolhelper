@@ -44,8 +44,7 @@ render_release <- function(
     )) {
   assert_that(is.string(output_root))
   assert_that(
-    requireNamespace("reactable", quietly = TRUE),
-    requireNamespace("bsplus", quietly = TRUE)
+    requireNamespace("reactable", quietly = TRUE)
   )
 
   old_wd <- getwd()

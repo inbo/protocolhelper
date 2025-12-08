@@ -40,7 +40,6 @@ Imports:
     yaml,
     ymlthis
 Suggests: 
-    bsplus,
     dplyr,
     keyring,
     lubridate,

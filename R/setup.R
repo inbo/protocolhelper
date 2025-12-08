@@ -1,6 +1,4 @@
 ignore_unused_imports <- function() {
-  bsplus::bs_carousel
-  bsplus::bs_append
   reactable::reactable
 }
 

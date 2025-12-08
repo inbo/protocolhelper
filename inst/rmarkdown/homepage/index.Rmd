@@ -19,49 +19,20 @@ opts_chunk$set(
   message = FALSE
 )
 library(htmlwidgets)
-library(bsplus)
 library(reactable)
 ```
 
+```{r image-grid, echo=FALSE, fig.show="hold", out.width="32%", out.height="250px", out.extra='style="object-fit: cover;"'}
+image_list <- c(
+  "voorbeeld1.png",
+  "voorbeeld2.jpeg",
+  "voorbeeld3.png",
+  "voorbeeld4.jpg",
+  "voorbeeld5.png",
+  "voorbeeld6.jpg"
+)
 
-```{r}
-bs_carousel(id = "Voorbeelden", use_indicators = TRUE) %>%
-  bs_append(
-    content = bs_carousel_image(
-      src = image_uri("voorbeeld1.png"),
-      alt = "Vervangprotocol"
-    )
-  ) %>%
-  bs_append(
-    content = bs_carousel_image(
-      src = image_uri("voorbeeld2.jpeg"),
-      alt = "Vegetatieopname"
-    )
-  ) %>%
-  bs_append(
-    content = bs_carousel_image(
-      src = image_uri("voorbeeld3.png"),
-      alt = "Navigatie"
-    )
-  ) %>%
-  bs_append(
-    content = bs_carousel_image(
-      src = image_uri("voorbeeld4.jpg"),
-      alt = "Bodemstaalnamemateriaal"
-    )
-  ) %>%
-  bs_append(
-    content = bs_carousel_image(
-      src = image_uri("voorbeeld5.png"),
-      alt = "Peilbuizen"
-    )
-  ) %>%
-  bs_append(
-    content = bs_carousel_image(
-      src = image_uri("voorbeeld6.jpg"),
-      alt = "Bodemstaal"
-    )
-  )
+include_graphics(image_list)
 ```
 
 
