@@ -119,7 +119,7 @@ test_that("Check frontmatter works", {
   fs::dir_tree(path = repo)
   checklist::new_branch("sfp-102-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
-  cat(version_number_2)
+  cat(version_number_2, "\n", sep = "")
 
   protocolhelper::create_protocol(
     short_title = "water 2",
@@ -159,6 +159,11 @@ test_that("Check frontmatter works", {
   cat(sprintf("output of get_version_number() is %s", a), "\n", sep = "")
   b <- yml_protocol$version_number # should be "2025.02"
   cat(sprintf("output of yml_protocol$version_number is %s", b), "\n", sep = "")
+  check_frontmatter(
+    protocol_code = "sfp-102-en",
+    fail = FALSE
+  )
+  .traceback()
 
   expect_output(
     check_frontmatter(
