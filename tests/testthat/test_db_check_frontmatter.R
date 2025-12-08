@@ -157,13 +157,25 @@ test_that("Check frontmatter works", {
   cat(sprintf("repo path is %s", repo), "\n", sep = "")
   a <- get_version_number() # should be "2025.02"
   cat(sprintf("output of get_version_number() is %s", a), "\n", sep = "")
+  cat(sprintf("class of get_version_number() is %s", class(a)), "\n", sep = "")
   b <- yml_protocol$version_number # should be "2025.02"
   cat(sprintf("output of yml_protocol$version_number is %s", b), "\n", sep = "")
+  cat(
+    sprintf(
+      "class of yml_protocol$version_number is %s", class(b)
+      ), "\n", sep = ""
+  )
+  cat(
+    sprintf(
+      "get version number and yaml version number are identical: %s",
+    identical(a, b)
+    ),
+    "\n", sep = ""
+  )
   check_frontmatter(
     protocol_code = "sfp-102-en",
     fail = FALSE
   )
-  .traceback()
 
   expect_output(
     check_frontmatter(
