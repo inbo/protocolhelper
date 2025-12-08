@@ -51,7 +51,9 @@ test_that("render_protocol works as expected", {
     version_number = version_number, theme = "water", language = "en"
   )
 
-  render_protocol(protocol_code = "sfp-101-en")
+  expect_no_error(
+    render_protocol(protocol_code = "sfp-101-en")
+  )
   expect_true(
     file.exists("docs/sfp/1_water/sfp_101_en_water_1/index.html")
   )
