@@ -140,8 +140,25 @@ test_that("Check frontmatter works", {
     repo = repo
   )
 
+  cat("debugging only, delete afterwards", "\n", sep = "")
   controle <- get_version_number(path = repo)
-  cat(controle)
+  cat(sprintf("output of get_version_number(path = repo) is %s", controle),
+      "\n", sep = "") # should be "2025.02"
+  cat(sprintf("output of version_number_2 is %s", version_number_2),
+      "\n", sep = "") # should be "2025.05
+  protocol_code <- "sfp-102-en"
+  x <- load_protocolcheck(x = protocol_code)
+  yml_protocol <- rmarkdown::yaml_front_matter(
+    input = file.path(x$path, "index.Rmd")
+  )
+  # check if get_version_number equals the version number in yaml
+  wd <- getwd()
+  cat(sprintf("wd is %s", wd), "\n", sep = "")
+  cat(sprintf("repo path is %s", repo), "\n", sep = "")
+  a <- get_version_number() # should be "2025.02"
+  cat(sprintf("output of get_version_number() is %s", a), "\n", sep = "")
+  b <- yml_protocol$version_number # should be "2025.02"
+  cat(sprintf("output of yml_protocol$version_number is %s", b), "\n", sep = "")
 
   expect_output(
     check_frontmatter(
