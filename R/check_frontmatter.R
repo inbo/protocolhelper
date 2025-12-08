@@ -183,13 +183,14 @@ check_frontmatter <- function(
     ]
   )
 
+  vn <- get_version_number()
   problems <- c(
     problems,
     paste0(
       "version number in the YAML of index.Rmd needs to be updated.\n",
       "Please use protocolhelper::update_version_number()."
     )[
-      !identical(get_version_number(), yml_protocol$version_number)
+      !identical(vn, yml_protocol$version_number)
     ]
   )
 

@@ -172,6 +172,17 @@ test_that("Check frontmatter works", {
     ),
     "\n", sep = ""
   )
+  cat(dput(a), sep = "\n")
+  cat(dput(b), sep = "\n")
+  length(a) |> cat("\n", sep = "")
+  length(b) |> cat("\n", sep = "")
+  nchar(a, type = "chars") |> cat("\n", sep = "")
+  nchar(b, type = "chars") |> cat("\n", sep = "")
+  nchar(b, type = "bytes") |> cat("\n", sep = "")
+  nchar(b, type = "bytes") |> cat("\n", sep = "")
+  Encoding(a) |> cat("\n", sep = "")
+  Encoding(b) |> cat("\n", sep = "")
+
   check_frontmatter(
     protocol_code = "sfp-102-en",
     fail = FALSE
