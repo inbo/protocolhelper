@@ -59,6 +59,14 @@ upload_zenodo <- function(
   zenodojson <- jsonlite::read_json(file.path(source_folder, ".zenodo.json"))
 
   myrec <- zenodo$getDepositionByDOI(yaml$doi)
+  if (is.null(myrec)) {
+    stop(
+      paste(
+        "Zenodo API returned NULL for the record.",
+        "The record might not be accessible yet or creation failed."
+      )
+    )
+  }
   myrec$setPublicationDate(Sys.Date())
   myrec$setVersion(yaml$version)
   myrec$setTitle(yaml$title)
