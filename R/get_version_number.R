@@ -108,6 +108,7 @@ increment_version_number <- function(versions) {
       paste0(lastyear, ".", increment),
       paste0(currentyear, ".01")
     )
+    new_version <- unname(new_version)
     return(new_version)
   } else {
     new_version <- paste0(format(Sys.Date(), "%Y"), ".01")
