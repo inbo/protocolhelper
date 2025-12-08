@@ -116,10 +116,8 @@ test_that("Check frontmatter works", {
   )
 
   # another protocol
-  fs::dir_tree(path = repo)
   checklist::new_branch("sfp-102-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
-  cat(version_number_2, "\n", sep = "")
 
   protocolhelper::create_protocol(
     short_title = "water 2",
@@ -139,49 +137,6 @@ test_that("Check frontmatter works", {
     set_upstream = TRUE,
     repo = repo
   )
-
-  cat("debugging only, delete afterwards", "\n", sep = "")
-  controle <- get_version_number(path = repo)
-  cat(sprintf("output of get_version_number(path = repo) is %s", controle),
-      "\n", sep = "") # should be "2025.02"
-  cat(sprintf("output of version_number_2 is %s", version_number_2),
-      "\n", sep = "") # should be "2025.05
-  protocol_code <- "sfp-102-en"
-  x <- load_protocolcheck(x = protocol_code)
-  yml_protocol <- rmarkdown::yaml_front_matter(
-    input = file.path(x$path, "index.Rmd")
-  )
-  # check if get_version_number equals the version number in yaml
-  wd <- getwd()
-  cat(sprintf("wd is %s", wd), "\n", sep = "")
-  cat(sprintf("repo path is %s", repo), "\n", sep = "")
-  a <- get_version_number() # should be "2025.02"
-  cat(sprintf("output of get_version_number() is %s", a), "\n", sep = "")
-  cat(sprintf("class of get_version_number() is %s", class(a)), "\n", sep = "")
-  b <- yml_protocol$version_number # should be "2025.02"
-  cat(sprintf("output of yml_protocol$version_number is %s", b), "\n", sep = "")
-  cat(
-    sprintf(
-      "class of yml_protocol$version_number is %s", class(b)
-      ), "\n", sep = ""
-  )
-  cat(
-    sprintf(
-      "get version number and yaml version number are identical: %s",
-    identical(a, b)
-    ),
-    "\n", sep = ""
-  )
-  cat(dput(a), sep = "\n")
-  cat(dput(b), sep = "\n")
-  length(a) |> cat("\n", sep = "")
-  length(b) |> cat("\n", sep = "")
-  nchar(a, type = "chars") |> cat("\n", sep = "")
-  nchar(b, type = "chars") |> cat("\n", sep = "")
-  nchar(b, type = "bytes") |> cat("\n", sep = "")
-  nchar(b, type = "bytes") |> cat("\n", sep = "")
-  Encoding(a) |> cat("\n", sep = "")
-  Encoding(b) |> cat("\n", sep = "")
 
   check_frontmatter(
     protocol_code = "sfp-102-en",
