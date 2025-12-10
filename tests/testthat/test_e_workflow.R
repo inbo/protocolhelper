@@ -489,6 +489,7 @@ test_that("complete workflow works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
+  Sys.sleep(5)
   expect_no_error(protocolhelper:::render_release())
 
 })
