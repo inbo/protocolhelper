@@ -33,12 +33,12 @@ test_that("render_protocol works as expected", {
     readline = function(...) "Een titel"
   )
 
-  old_wd <- getwd()
-  on.exit(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
   dir.create(test_repo)
-  setwd(test_repo)
+  old_wd <- setwd(test_repo)
+  withr::defer(setwd(old_wd))
   repo <- gert::git_init()
+  withr::defer(unlink(repo, recursive = TRUE))
   url = "https://github.com/inbo/unittests"
   gert::git_remote_add(url = url, repo = ".")
   gert::git_config_set(name = "user.name", value = "someone")
@@ -60,7 +60,4 @@ test_that("render_protocol works as expected", {
   expect_true(
     file.exists("docs/sfp/1_water/sfp_101_en_water_1/sfp_101_en_water_1.pdf")
   )
-
-  # Cleanup
-  unlink(repo, recursive = TRUE)
 })

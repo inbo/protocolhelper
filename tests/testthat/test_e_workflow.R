@@ -96,14 +96,14 @@ test_that("complete workflow works", {
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
   url = "https://github.com/inbo/unittests"
   gert::git_remote_add(url = url, repo = origin_repo)
-  on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
+  on.exit(unlink(origin_repo, recursive = TRUE))
   repo <- gert::git_clone(
     url = origin_repo,
     path = tempfile("protocol_local"), verbose = FALSE
   )
-  on.exit(unlink(repo, recursive = TRUE), add = TRUE)
+  on.exit(unlink(repo, recursive = TRUE))
   old_wd <- setwd(repo)
-  on.exit(setwd(old_wd), add = TRUE)
+  on.exit(setwd(old_wd))
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
   gert::git_config_set(
@@ -186,7 +186,7 @@ test_that("complete workflow works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
-  protocolhelper:::render_release()
+  expect_no_error(protocolhelper:::render_release())
 
 
   # create a protocol which will also be used as subprotocol
@@ -240,7 +240,7 @@ test_that("complete workflow works", {
   gert::git_branch_delete("sfp-407-en", repo = origin_repo)
   gert::git_branch_delete("sfp-407-en", repo = repo)
 
-  protocolhelper:::render_release()
+  expect_no_error(protocolhelper:::render_release())
 
   # create a second protocol to be used as subprotocol
   checklist::new_branch("sfp-102-en", repo = repo)
@@ -378,7 +378,7 @@ test_that("complete workflow works", {
   gert::git_branch_delete("sfp-102-en", repo = origin_repo)
   gert::git_branch_delete("sfp-102-en", repo = repo)
 
-  protocolhelper:::render_release()
+  expect_no_error(protocolhelper:::render_release())
 
 
   # create a project protocol
@@ -448,29 +448,11 @@ test_that("complete workflow works", {
   gert::git_branch_delete("spp-001-en", repo = origin_repo)
   gert::git_branch_delete("spp-001-en", repo = repo)
 
-  protocolhelper:::render_release()
-
+  expect_no_error(protocolhelper:::render_release())
 
   # update first protocol
-  checklist::new_branch("sfp-101-en", repo = repo)
   version_number_5 <- get_version_number()
-  index_file <- readLines(
-    file.path("source", "sfp", "1_water", "sfp_101_en_water_1", "index.Rmd")
-  )
-  index_file <- gsub(
-    "version_number: '[0-9]{4}.[0-9]{2}'",
-    paste0("version_number: '", version_number_5, "'"),
-    index_file
-  )
-  writeLines(
-    index_file,
-    file.path("source", "sfp", "1_water", "sfp_101_en_water_1", "index.Rmd")
-  )
-  update_news(
-    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    version_number = version_number_5
-  )
-
+  protocolhelper::update_protocol("sfp-101-en")
   protocolhelper:::update_news_release("sfp-101-en")
   protocolhelper:::update_zenodo()
   doi <- protocolhelper:::update_doi("sfp-101-en")
@@ -507,8 +489,6 @@ test_that("complete workflow works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
-  protocolhelper:::render_release()
+  expect_no_error(protocolhelper:::render_release())
 
-  # Cleanup
-  unlink(repo, recursive = TRUE)
 })

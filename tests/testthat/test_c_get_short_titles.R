@@ -35,7 +35,7 @@ test_that("Get short title works", {
 
 
   old_wd <- getwd()
-  on.exit(setwd(old_wd))
+  withr::defer(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
   dir.create(test_repo)
   setwd(test_repo)

@@ -96,14 +96,14 @@ test_that("complete workflow works", {
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
   url = "https://github.com/inbo/unittests"
   gert::git_remote_add(url = url, repo = origin_repo)
-  on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
+  withr::defer(unlink(origin_repo, recursive = TRUE))
   repo <- gert::git_clone(
     url = origin_repo,
     path = tempfile("protocol_local"), verbose = FALSE
   )
-  on.exit(unlink(repo, recursive = TRUE), add = TRUE)
+  withr::defer(unlink(repo, recursive = TRUE))
   old_wd <- setwd(repo)
-  on.exit(setwd(old_wd), add = TRUE)
+  withr::defer(setwd(old_wd))
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
   gert::git_config_set(
@@ -205,8 +205,5 @@ test_that("complete workflow works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
-  protocolhelper:::render_release()
-
-  # Cleanup
-  unlink(repo, recursive = TRUE)
+  expect_no_error(protocolhelper:::render_release())
 })

@@ -15,6 +15,7 @@
 #' @importFrom fs dir_ls
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom gert git_tag_create git_config git_config_set
+#' @importFrom withr defer
 #'
 #' @return invisible NULL
 #' @noRd
@@ -37,21 +38,20 @@ set_tags <- function(
   check_protocolcode(protocol_code)
 
   old_config <- git_config(repo = path)
-  on.exit(
+  withr::defer(
     git_config_set(
       "user.name",
       old_config$value[old_config$name == "user.name"],
       repo = path
     ),
-    add = TRUE
+
   )
-  on.exit(
+  withr::defer(
     git_config_set(
       "user.email",
       old_config$value[old_config$name == "user.email"],
       repo = path
-    ),
-    add = TRUE
+    )
   )
   git_config_set(
     "user.name", "Protocolhelper bot",

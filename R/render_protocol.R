@@ -14,6 +14,7 @@
 #'
 #' @importFrom assertthat assert_that is.string
 #' @importFrom fs path dir_exists dir_copy
+#' @importFrom withr defer local_dir
 #'
 #' @export
 #' @family render
@@ -39,12 +40,11 @@ render_protocol <- function(protocol_code = NULL,
       file.path(path_to_protocol, "css")
     )
   }
-  on.exit(
+  withr::defer(
     unlink(
       file.path(path_to_protocol, "css"),
       recursive = TRUE
-    ),
-    add = TRUE
+    )
   )
   # copy pandoc
   if (!dir_exists(file.path(path_to_protocol, "pandoc"))) {
@@ -53,14 +53,12 @@ render_protocol <- function(protocol_code = NULL,
       file.path(path_to_protocol, "pandoc")
     )
   }
-  on.exit(
+  withr::defer(
     unlink(file.path(path_to_protocol, "pandoc"),
       recursive = TRUE
-    ),
-    add = TRUE
+    )
   )
-  old_wd <- setwd(dir = path_to_protocol)
-  on.exit(setwd(old_wd), add = TRUE)
+  withr::local_dir(path_to_protocol)
   suppressWarnings(
     # render pdf
     render_book(

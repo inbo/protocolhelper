@@ -17,8 +17,7 @@
 #' @noRd
 #'
 execshell <- function(commandstring, intern = FALSE, path = ".", ...) {
-  old_wd <- setwd(path)
-  on.exit(setwd(old_wd), add = TRUE)
+  withr::local_dir(path)
 
   if (.Platform$OS.type == "windows") {
     res <- shell(commandstring, intern = TRUE, ...) # nolint

@@ -28,6 +28,7 @@
 #' @importFrom stringr str_replace_all
 #' @importFrom utils tail write.csv
 #' @importFrom yaml as.yaml read_yaml write_yaml
+#' @importFrom withr defer
 #'
 #' @noRd
 #'
@@ -48,7 +49,7 @@ render_release <- function(
   )
 
   old_wd <- getwd()
-  on.exit(setwd(old_wd), add = TRUE)
+  withr::defer(setwd(old_wd))
 
   git_root <- find_root(is_git_root)
   output_root <- file.path(git_root, output_root)
@@ -111,12 +112,11 @@ render_release <- function(
         file.path(dirname(protocol_index[i]), "css")
       )
     }
-    on.exit(
+    withr::defer(
       unlink(
         file.path(dirname(protocol_index[i]), "css"),
         recursive = TRUE
-      ),
-      add = TRUE
+      )
     )
     if (!dir_exists(file.path(dirname(protocol_index[i]), "pandoc"))) {
       dir_copy(
@@ -124,12 +124,11 @@ render_release <- function(
         file.path(dirname(protocol_index[i]), "pandoc")
       )
     }
-    on.exit(
+    withr::defer(
       unlink(
         file.path(dirname(protocol_index[i]), "pandoc"),
         recursive = TRUE
-      ),
-      add = TRUE
+      )
     )
     setwd(dirname(protocol_index[i]))
     pdf_name <- paste0(
@@ -240,10 +239,11 @@ render_release <- function(
     return(x)
   })
 
-  if (!dir_exists(file.path(git_root, "source", "homepage"))) {
+  if (!file_exists(file.path(git_root, "source", "homepage", "index.Rmd"))) {
     dir_copy(
       system.file("rmarkdown/homepage", package = "protocolhelper"),
-      file.path(git_root, "source", "homepage")
+      file.path(git_root, "source", "homepage"),
+      overwrite = TRUE
     )
   }
   setwd(file.path(git_root, "source", "homepage"))
@@ -272,12 +272,11 @@ render_release <- function(
       file.path(git_root, "source", "homepage", "css")
     )
   }
-  on.exit(
+  withr::defer(
     unlink(
       file.path(git_root, "source", "homepage"),
       recursive = TRUE
-    ),
-    add = TRUE
+    )
   )
   render_book(
     "index.Rmd",

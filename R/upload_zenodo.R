@@ -6,6 +6,7 @@
 #' Helper function used in protocolhelper:::render_release().
 #'
 #' @importFrom utils browseURL zip
+#' @importFrom withr with_dir
 #'
 #' @noRd
 upload_zenodo <- function(
@@ -40,13 +41,17 @@ upload_zenodo <- function(
     paste0(yaml$protocol_code, "-", yaml$version, ".zip")
   )
   zip_html_rel <- zip_html |> path_rel(rendered_folder)
-  oldwd <- setwd(rendered_folder)
-  zip(
-    zipfile = zip_html_rel,
-    files = not_pdf,
-    flags = "-r9XqT"
+  withr::with_dir(
+    rendered_folder,
+    {
+      zip(
+        zipfile = zip_html_rel,
+        files = not_pdf,
+        flags = "-r9XqT"
+      )
+    }
   )
-  setwd(oldwd)
+
   to_upload <- list(pdf, zip_html)
 
   # prepare upload to zenodo
@@ -90,6 +95,9 @@ upload_zenodo <- function(
   if (interactive()) {
     browseURL(myrec$links$self_html)
   }
+
+  gc() |> suppressWarnings()
+
   return(invisible(myrec))
 }
 
