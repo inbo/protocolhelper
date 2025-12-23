@@ -63,7 +63,7 @@ upload_zenodo <- function(
 
   zenodojson <- jsonlite::read_json(file.path(source_folder, ".zenodo.json"))
 
-  myrec <- zenodo$getDepositionByDOI(yaml$doi)
+  myrec <- get_deposition_with_retry(zenodo, yaml$doi)
   if (is.null(myrec)) {
     stop(
       paste(
@@ -72,6 +72,7 @@ upload_zenodo <- function(
       )
     )
   }
+
   myrec$setPublicationDate(Sys.Date())
   myrec$setVersion(yaml$version)
   myrec$setTitle(yaml$title)
@@ -122,4 +123,22 @@ zen_contributor <- function(zen_rec, contributors) {
     )
   }
   return(zen_rec)
+}
+
+#' robustly get deposition by DOI with retries
+#' @noRd
+get_deposition_with_retry <- function(
+    zenodo,
+    doi,
+    max_tries = 5,
+    initial_wait = 2
+) {
+  wait <- initial_wait
+  for (i in seq_len(max_tries)) {
+    myrec <- tryCatch(zenodo$getDepositionByDOI(doi), error = function(e) NULL)
+    if (!is.null(myrec)) return(myrec)
+    Sys.sleep(wait)
+    wait <- min(30, wait * 2)
+  }
+  return(NULL)
 }
