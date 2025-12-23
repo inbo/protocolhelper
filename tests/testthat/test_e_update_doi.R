@@ -268,6 +268,5 @@ test_that("update doi works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
-  skip_on_ci()
   expect_no_error(protocolhelper:::render_release())
 })
