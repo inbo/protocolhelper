@@ -195,7 +195,7 @@ test_that("update doi works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
-  protocolhelper:::render_release()
+  expect_no_error(protocolhelper:::render_release())
 
 
   # prepare to start an update of the protocol (new version doi)
@@ -269,5 +269,5 @@ test_that("update doi works", {
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
   skip_on_ci()
-  protocolhelper:::render_release()
+  expect_no_error(protocolhelper:::render_release())
 })
