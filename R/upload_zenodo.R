@@ -137,7 +137,7 @@ get_deposition_with_retry <- function(
   wait <- initial_wait
   for (i in seq_len(max_tries)) {
     myrec <- tryCatch(
-      zenodo$getDepositionByDOI(utils::URLencode(doi)),
+      zenodo$getDepositionByDOI(doi),
       error = function(e) NULL
     )
     if (!is.null(myrec)) return(myrec)
