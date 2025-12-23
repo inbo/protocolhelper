@@ -10,14 +10,15 @@
 #'
 #' @noRd
 upload_zenodo <- function(
-    yaml,
-    rendered_folder,
-    source_folder,
-    sandbox = TRUE,
-    token = keyring::key_get(
-      c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
-    ),
-    logger = "INFO") {
+  yaml,
+  rendered_folder,
+  source_folder,
+  sandbox = TRUE,
+  token = keyring::key_get(
+    c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
+  ),
+  logger = "INFO"
+) {
   assert_that(requireNamespace("zen4R", quietly = TRUE))
   assert_that(requireNamespace("keyring", quietly = TRUE))
 
@@ -128,10 +129,10 @@ zen_contributor <- function(zen_rec, contributors) {
 #' robustly get deposition by DOI with retries
 #' @noRd
 get_deposition_with_retry <- function(
-    zenodo,
-    doi,
-    max_tries = 5,
-    initial_wait = 2
+  zenodo,
+  doi,
+  max_tries = 5,
+  initial_wait = 2
 ) {
   wait <- initial_wait
   for (i in seq_len(max_tries)) {
