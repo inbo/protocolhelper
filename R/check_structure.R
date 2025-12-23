@@ -134,60 +134,45 @@ check_structure <- function(protocol_code, fail = !interactive()) {
 }
 
 
-
 check_file <- function(filename, x, files_template, path_to_template) {
-  # check if file is present in template
-  x$add_error(
-    msg =
-      sprintf(
-        "file %s should be removed (after moving the content)",
-        filename[
-          !filename %in% c(files_template, "index.Rmd") &&
-            grepl("^\\d{2}_", filename)
-        ]
-      )
-  )
+  # 1. Check if file is present in template
+  check_file_presence(x, filename, files_template)
 
-  # check if chunks in Rmd files are correct
-  rmd <- readLines(file.path(x$path, filename))
-  start_chunk <- grep("^```\\{.*}", rmd)
-  end_chunk <- grep("^```[:space:]?$", rmd)
-  x$add_error(
-    msg =
-      paste(", file", filename, "has a problem with chunks")[
-        !(length(start_chunk) == length(end_chunk) &&
-          all(start_chunk < end_chunk))
-      ]
-  )
+  # 2. Read and clean File
+  rmd <- read_and_clean_rmd(file.path(x$path, filename))
 
-  template <- remove_chunks(rmd, start_chunk, end_chunk)
-
-  # check headings general
-  headings <- rmd[grepl("^[[:space:]]?#", rmd)]
   x$add_error(
     msg = sprintf(
-      "file %s: Headings have to start with a '#',
-        remove the leading whitespace in headings %s",
-      filename, headings[grepl("^[[:space:]]+#", headings)]
-    )
-  )
-  x$add_error(
-    msg = sprintf(
-      "file %s: Whitespace at the end of a heading is not allowed,
-        remove them in headings %s",
-      filename, headings[grepl("[[:space:]]+$", headings)]
-    )
+      "File %s has an odd number of code fences (unclosed chunk).",
+      filename
+    )[!rmd$valid_chunks]
   )
 
-  # compare headings with template
+  # 3. Check Headings General
+  headings <- extract_headings(lines = rmd$cleaned)
+  validate_heading_syntax(x, headings, filename)
+
+  # 4. Compare headings with template
   if (filename %in% files_template) {
-    template <- readLines(file.path(path_to_template, filename))
-    start_chunk <- grep("^```\\{.*}", template)
-    end_chunk <- grep("^```[:space:]?$", template)
-    template <- remove_chunks(template, start_chunk, end_chunk)
-    headings_template <- template[grepl("^[[:space:]]?#", template)]
+    template_lines <- readLines(file.path(path_to_template, filename))
+
+    t_fences <- grep("^```", template_lines)
+
+    # safety check for template validity
+    if (length(t_fences) %% 2 != 0 || length(t_fences) == 0) {
+      t_start <- integer(0)
+      t_end   <- integer(0)
+    } else {
+      t_start <- t_fences[c(TRUE, FALSE)]
+      t_end   <- t_fences[c(FALSE, TRUE)]
+    }
+
+    template_cleaned <- remove_chunks(template_lines, t_start, t_end)
+
+    headings_template <- extract_headings(template_cleaned)
     headings_template <-
       headings_template[!grepl("^### Subtit", headings_template)]
+
     # strip stuff behind title between {} before comparing
     headings_template_rm <- gsub("\\s{.+}$", "", headings_template, perl = TRUE)
     headings_rm <- gsub("\\s{.+}$", "", headings, perl = TRUE)
@@ -236,22 +221,97 @@ check_file <- function(filename, x, files_template, path_to_template) {
       )
     }
   }
+
   if (filename == "index.Rmd") {
-    template <- readLines(file.path(path_to_template, "skeleton.Rmd"))
-    template_end <-
-      template[max(grep("^[[:space:]]?#", template)):length(template)]
-    rmd_end <- rmd[max(grep("^[[:space:]]?#", rmd)):length(rmd)]
-    template_end <- template_end[template_end != ""]
-    rmd_end <- rmd_end[rmd_end != ""]
-    if (length(rmd_end) != length(template_end) ||
-          !all(rmd_end == template_end)) {
-      x$add_error(
-        msg = "Heading 'Metadata' or the table below have changed in index.Rmd"
-      )
-    }
+    validate_index_integrity(
+      x = x,
+      rmd_raw = rmd$raw,
+      path_to_template = path_to_template
+    )
   }
   return(x)
 }
+
+read_and_clean_rmd <- function(filepath) {
+  raw_lines <- readLines(filepath)
+  all_fences <- grep("^```", raw_lines)
+  is_valid <- length(all_fences) %% 2 == 0
+
+  start_chunk <- integer(0)
+  end_chunk   <- integer(0)
+
+  if (is_valid && length(all_fences) > 0) {
+    start_chunk <- all_fences[c(TRUE, FALSE)]
+    end_chunk   <- all_fences[c(FALSE, TRUE)]
+  }
+
+  cleaned <- remove_chunks(raw_lines, start_chunk, end_chunk)
+  list(raw = raw_lines, cleaned = cleaned, valid_chunks = is_valid)
+}
+
+extract_headings <- function(lines) {
+  lines[grepl("^[[:space:]]?#", lines)]
+}
+
+check_file_presence <- function(x, filename, files_template) {
+  is_target <- !filename %in% c(files_template, "index.Rmd") &&
+    grepl("^\\d{2}_", filename)
+
+  if (is_target) {
+    x$add_error(
+      msg = sprintf(
+        "file %s should be removed (after moving the content)",
+        filename
+      )
+    )
+  }
+}
+
+validate_heading_syntax <- function(x, headings, filename) {
+  # Check leading whitespace
+  bad_start <- headings[grepl("^[[:space:]]+#", headings)]
+  if (length(bad_start) > 0) {
+    x$add_error(msg = sprintf(
+      "file %s: Headings have to start with a '#',
+        remove the leading whitespace in headings %s",
+      filename, bad_start
+    ))
+  }
+
+  # Check trailing whitespace
+  bad_end <- headings[grepl("[[:space:]]+$", headings)]
+  if (length(bad_end) > 0) {
+    x$add_error(msg = sprintf(
+      "file %s: Whitespace at the end of a heading is not allowed,
+        remove them in headings %s",
+      filename, bad_end
+    ))
+  }
+}
+
+
+validate_index_integrity <- function(x, rmd_raw, path_to_template) {
+  # Read skeleton
+  skeleton_raw <- readLines(file.path(path_to_template, "skeleton.Rmd"))
+
+  # Extract the end sections (from the last heading onwards)
+  get_tail <- function(lines) {
+    header_indices <- grep("^[[:space:]]?#", lines)
+    if (length(header_indices) == 0) return(character(0))
+    tail_content <- lines[max(header_indices):length(lines)]
+    return(tail_content[tail_content != ""])
+  }
+
+  rmd_end <- get_tail(rmd_raw)
+  tpl_end <- get_tail(skeleton_raw)
+
+  if (length(rmd_end) != length(tpl_end) || !all(rmd_end == tpl_end)) {
+    x$add_error(
+      msg = "Heading 'Metadata' or the table below have changed in index.Rmd"
+    )
+  }
+}
+
 
 
 remove_chunks <- function(rmd, start, end) {
