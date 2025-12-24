@@ -77,8 +77,7 @@ upload_zenodo <- function(
   myrec$setPublicationDate(Sys.Date())
   myrec$setVersion(yaml$version)
   myrec$setTitle(yaml$title)
-  zenodojson$description |>
-    myrec$setDescription()
+  myrec$setDescription(zenodojson$description)
   myrec$setResourceType("publication")
 
   myrec <- zen_creator(myrec, zenodojson$creator)
@@ -86,6 +85,7 @@ upload_zenodo <- function(
   myrec$setLicense("cc-by-4.0", sandbox = sandbox)
   myrec$setSubjects(yaml$keywords)
   myrec$setPublisher(yaml$publisher)
+  myrec$addLanguage(zenodojson$language)
 
   myrec <- zenodo$depositRecord(myrec, publish = FALSE)
   for (i in seq_along(to_upload)) {
