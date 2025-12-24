@@ -468,7 +468,9 @@ $endif$
 
 $if(author)$
 \author{
-$for(author)$$author.name.given$ $author.name.family$\,\orcidlink{$author.orcid$}$sep$, $endfor$
+  \parbox{\linewidth}{\centering \linespread{1.2}\selectfont
+    $for(author)$$author.name.given$ $author.name.family$\,\orcidlink{$author.orcid$}$sep$, $endfor$
+  }
 }
 $endif$
 
