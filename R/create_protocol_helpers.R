@@ -600,7 +600,7 @@ use_reviewer <- use_file_manager <- use_author
 #' Helper to ask questions to construct yaml key-value pairs
 #'
 #' Asks for title, subtitle, authors, reviewers, file manager, keywords
-#' @inheritParams create_protocol
+#' @inheritParams create_protocol_code
 #'
 #' @importFrom checklist use_author ask_yes_no
 #' @importFrom cli cli_fmt cli_alert cli_alert_danger
