@@ -258,7 +258,7 @@ create_protocol <- function(
     file_copy(file.path(path_to_protocol, "LICENSE.md"))
 
   # build new yaml - interactive part
-  yaml <- yaml_interactive(language = language)
+  yaml <- yaml_interactive(language = language) # nolint
 
   # add non-interactive key-values
   yaml <- c(
