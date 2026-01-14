@@ -23,7 +23,7 @@ Depends:
 Imports: 
     assertthat,
     bookdown,
-    checklist (>= 0.5.1),
+    checklist (>= 0.5.2),
     cli,
     commonmark,
     fs,
