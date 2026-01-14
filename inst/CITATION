@@ -4,10 +4,10 @@ bibentry(
   bibtype = "Manual",
   title = "protocolhelper: Helper Functions to Manage Protocols. Version 0.8.2",
   author = c(person(given = "Hans", family = "Van Calster"), person(given = "Thierry", family = "Onkelinx"), person(given = "Floris", family = "Vanderhaeghe")),
-  year = 2025,
+  year = 2026,
   url = "https://inbo.github.io/protocolhelper/",
   abstract = "Helper functions to manage INBO protocols.",
-  textVersion = "Van Calster, Hans; Onkelinx, Thierry; Vanderhaeghe, Floris (2025) protocolhelper: Helper Functions to Manage Protocols. Version 0.8.2. https://inbo.github.io/protocolhelper/",
+  textVersion = "Van Calster, Hans; Onkelinx, Thierry; Vanderhaeghe, Floris (2026) protocolhelper: Helper Functions to Manage Protocols. Version 0.8.2. https://inbo.github.io/protocolhelper/",
   keywords = "protocols; R package; Reproducible research; Rmarkdown templates",
 )
 # end checklist entry
