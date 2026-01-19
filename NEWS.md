@@ -1,3 +1,9 @@
+# protocolhelper 0.8.3
+
+## Bug fix
+
+* Unit tests failed on Windows due to issues with `TeX` installation
+
 # protocolhelper 0.8.2
 
 ## Enhancement
