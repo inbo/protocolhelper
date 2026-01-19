@@ -346,7 +346,7 @@ add_subprotocols <-
     prm_na <- map_lgl(prm, is.na)
     assert_that(all(prm_list | prm_na))
 
-    for (i in seq_len(length(yml$params$dependencies$value))) {
+    for (i in seq_along(yml$params$dependencies$value)) {
       if (yml$params$dependencies$value[[i]]$appendix) {
         add_one_subprotocol(
           code_subprotocol = yml$params$dependencies$value[[i]]$protocol_code,

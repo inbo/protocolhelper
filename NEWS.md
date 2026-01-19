@@ -1,3 +1,17 @@
+# protocolhelper 0.8.2
+
+## Enhancement
+
+* Fixed a layout issue in the html version (DOI appearing in wrong place)
+* Fixed author names overflowing in the PDF version (#130)
+* Handle multiple reviewers in metadata table (#134)
+* Allow verbatim chunks (#136)
+
+## Bug fix
+
+* Fix `render_release` failure in case of multiple reviewers (#137)
+* Fix parsing of Zenodo keywords (#132)
+
 # protocolhelper 0.8.1
 
 ## Bug fix

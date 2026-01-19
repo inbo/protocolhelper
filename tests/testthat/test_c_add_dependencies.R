@@ -1,7 +1,4 @@
 test_that("test that adding dependencies to yaml works", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   library(ymlthis)
   author_df <- data.frame(
     stringsAsFactors = FALSE,
@@ -39,11 +36,13 @@ test_that("test that adding dependencies to yaml works", {
 
 
   old_wd <- getwd()
-  on.exit(setwd(old_wd))
+  withr::defer(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
   dir.create(test_repo)
   setwd(test_repo)
   repo <- gert::git_init()
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = ".")
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 

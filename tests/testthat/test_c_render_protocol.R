@@ -1,7 +1,4 @@
 test_that("render_protocol works as expected", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),
@@ -36,12 +33,14 @@ test_that("render_protocol works as expected", {
     readline = function(...) "Een titel"
   )
 
-  old_wd <- getwd()
-  on.exit(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
   dir.create(test_repo)
-  setwd(test_repo)
+  old_wd <- setwd(test_repo)
+  withr::defer(setwd(old_wd))
   repo <- gert::git_init()
+  withr::defer(unlink(repo, recursive = TRUE))
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = ".")
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
@@ -52,14 +51,13 @@ test_that("render_protocol works as expected", {
     version_number = version_number, theme = "water", language = "en"
   )
 
-  render_protocol(protocol_code = "sfp-101-en")
+  expect_no_error(
+    render_protocol(protocol_code = "sfp-101-en")
+  )
   expect_true(
     file.exists("docs/sfp/1_water/sfp_101_en_water_1/index.html")
   )
   expect_true(
     file.exists("docs/sfp/1_water/sfp_101_en_water_1/sfp_101_en_water_1.pdf")
   )
-
-  # Cleanup
-  unlink(repo, recursive = TRUE)
 })

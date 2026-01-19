@@ -39,7 +39,7 @@ Defaults to \code{FALSE}.}
 }
 \description{
 This function is derived from the
-\href{https://noamross.github.io/redoc/reference/dedoc.html}{\code{redoc::dedoc()}}
+\code{redoc::dedoc()}
 function and uses \code{pandoc} to convert between docx and markdown.
 Several options are preset to end-up with a markdown document that is in
 syntax as close as possible to Rmarkdown files in RStudio.

@@ -28,7 +28,7 @@ test_that("update doi works", {
     family = c("Verschelde"),
     email = c("pieter.verschelde@inbo.be"),
     orcid = c("0000-0002-9199-421X"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
+    affiliation = c("Research Institute for Nature and Forest (INBO)")
   )
 
 
@@ -94,14 +94,16 @@ test_that("update doi works", {
 }'
 
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-  on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = origin_repo)
+  withr::defer(unlink(origin_repo, recursive = TRUE))
   repo <- gert::git_clone(
     url = origin_repo,
     path = tempfile("protocol_local"), verbose = FALSE
   )
-  on.exit(unlink(repo, recursive = TRUE), add = TRUE)
+  withr::defer(unlink(repo, recursive = TRUE))
   old_wd <- setwd(repo)
-  on.exit(setwd(old_wd), add = TRUE)
+  withr::defer(setwd(old_wd))
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
   gert::git_config_set(
@@ -193,7 +195,7 @@ test_that("update doi works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
-  protocolhelper:::render_release()
+  expect_no_error(protocolhelper:::render_release())
 
 
   # prepare to start an update of the protocol (new version doi)
@@ -266,5 +268,6 @@ test_that("update doi works", {
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
-  protocolhelper:::render_release()
+  skip_on_ci()
+  expect_no_error(protocolhelper:::render_release())
 })

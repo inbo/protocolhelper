@@ -1,4 +1,5 @@
 
+!source/**/_extensions/**
 # Example code in package build process
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 # Output files from R CMD build
@@ -11,20 +12,29 @@
 # knitr and R markdown default cache directories
 # produced vignettes
 *-Ex.R
+*.[rR][dD]ata
+*.[rR]ds
 *.dbf
 *.doc*
+*.eps
 *.gddoc
 *.gdsheet
 *.gpkg
 *.html
 *.knit.md
 *.mdb
+*.pdf
 *.shp*
 *.shx
+*.sty
+*.tex
 *.utf8.md
 *.xls*
+*_cache
 *_cache/
 *_files
+*_freeze
+*_libs
 .DS_Store
 .RData
 .Rapp.history
@@ -34,6 +44,7 @@
 .Rproj.user/
 .Ruserdata
 .httr-oauth
+.quarto
 /*.Rcheck/
 /*.tar.gz
 /cache/

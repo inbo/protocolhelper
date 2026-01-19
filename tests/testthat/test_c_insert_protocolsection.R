@@ -2,16 +2,13 @@ test_that("Test that insert_protocolsection works", {
   if (!requireNamespace("png", quietly = TRUE)) {
     stop("please install 'png' package for these tests to work")
   }
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),
     family = c("Van Calster"),
     email = c("hans.vancalster@inbo.be"),
     orcid = c("0000-0001-8595-8426"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
+    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
   reviewer_df <- data.frame(
     stringsAsFactors = FALSE,
@@ -19,7 +16,7 @@ test_that("Test that insert_protocolsection works", {
     family = c("Lommelen"),
     email = c("els.lommelen@inbo.be"),
     orcid = c("0000-0002-3481-5684"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
+    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
   file_manager_df <- data.frame(
     stringsAsFactors = FALSE,
@@ -39,12 +36,14 @@ test_that("Test that insert_protocolsection works", {
     readline = function(...) "Een titel"
   )
 
-  old_wd <- getwd()
-  on.exit(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
   dir.create(test_repo)
-  setwd(test_repo)
+  old_wd <- setwd(test_repo)
+  withr::defer(setwd(old_wd))
   repo <- gert::git_init()
+  withr::defer(unlink(repo, recursive = TRUE))
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = ".")
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
@@ -144,7 +143,4 @@ test_that("Test that insert_protocolsection works", {
       fetch_remote = FALSE
     )
   )
-
-  # Cleanup
-  unlink(repo, recursive = TRUE)
 })

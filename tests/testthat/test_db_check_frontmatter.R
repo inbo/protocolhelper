@@ -1,7 +1,4 @@
 test_that("Check frontmatter works", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),
@@ -37,14 +34,16 @@ test_that("Check frontmatter works", {
   )
 
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-  on.exit(unlink(origin_repo, recursive = TRUE), add = TRUE)
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = origin_repo)
+  withr::defer(unlink(origin_repo, recursive = TRUE))
   repo <- gert::git_clone(
     url = origin_repo,
     path = tempfile("protocol_local"), verbose = FALSE
   )
-  on.exit(unlink(repo, recursive = TRUE), add = TRUE)
+  withr::defer(unlink(repo, recursive = TRUE))
   old_wd <- setwd(repo)
-  on.exit(setwd(old_wd), add = TRUE)
+  withr::defer(setwd(old_wd))
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
   gert::git_config_set(
@@ -70,6 +69,7 @@ test_that("Check frontmatter works", {
     )
   )
   # create a protocol
+  fs::dir_create(file.path(repo, "source"))
   version_number <- get_version_number()
   create_sfp(
     short_title = "water 1",
@@ -118,6 +118,7 @@ test_that("Check frontmatter works", {
   # another protocol
   checklist::new_branch("sfp-102-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
+
   protocolhelper::create_protocol(
     short_title = "water 2",
     version_number = version_number_2, theme = "water", language = "en"
@@ -137,6 +138,10 @@ test_that("Check frontmatter works", {
     repo = repo
   )
 
+  check_frontmatter(
+    protocol_code = "sfp-102-en",
+    fail = FALSE
+  )
 
   expect_output(
     check_frontmatter(

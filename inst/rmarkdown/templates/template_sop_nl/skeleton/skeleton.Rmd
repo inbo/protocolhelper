@@ -62,7 +62,7 @@ fms <-  map_chr(
   \(x) x$name |> paste(collapse = " ")
 )
 tibble(
-  reviewers = revs,
+  reviewers = paste(revs, collapse = ", "),
   documentbeheerder = fms,
   protocolcode = metadata[["protocol_code"]],
   versienummer = metadata[["version_number"]],

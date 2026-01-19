@@ -1,7 +1,4 @@
 test_that("Get short title works", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),
@@ -38,11 +35,13 @@ test_that("Get short title works", {
 
 
   old_wd <- getwd()
-  on.exit(setwd(old_wd))
+  withr::defer(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
   dir.create(test_repo)
   setwd(test_repo)
   repo <- gert::git_init()
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = ".")
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 

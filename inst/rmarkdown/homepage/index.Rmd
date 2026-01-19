@@ -10,7 +10,8 @@ Voor Nederlands [klik hier](#welkom).
 For English [click here](#welcome).
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
+library(knitr)
+opts_chunk$set(
   echo = FALSE,
   eval = TRUE,
   warning = FALSE,
@@ -18,17 +19,20 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 library(htmlwidgets)
-library(slickR)
 library(reactable)
 ```
 
+```{r image-grid, echo=FALSE, fig.show="hold", out.width="32%", out.height="250px", out.extra='style="object-fit: cover;"'}
+image_list <- c(
+  "voorbeeld1.png",
+  "voorbeeld2.jpeg",
+  "voorbeeld3.png",
+  "voorbeeld4.jpg",
+  "voorbeeld5.png",
+  "voorbeeld6.jpg"
+)
 
-```{r}
-slickR(obj = c("voorbeeld1.png", "voorbeeld2.jpeg", "voorbeeld3.png",
-               "voorbeeld4.jpg", "voorbeeld5.png", "voorbeeld6.jpg"),
-       width = "95%") +
-  settings(dots = TRUE, adaptiveHeight = TRUE,
-           autoplay = TRUE)
+include_graphics(image_list)
 ```
 
 

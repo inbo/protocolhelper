@@ -6,17 +6,19 @@
 #' Helper function used in protocolhelper:::render_release().
 #'
 #' @importFrom utils browseURL zip
+#' @importFrom withr with_dir
 #'
 #' @noRd
 upload_zenodo <- function(
-    yaml,
-    rendered_folder,
-    source_folder,
-    sandbox = TRUE,
-    token = keyring::key_get(
-      c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
-    ),
-    logger = "INFO") {
+  yaml,
+  rendered_folder,
+  source_folder,
+  sandbox = TRUE,
+  token = keyring::key_get(
+    c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
+  ),
+  logger = "INFO"
+) {
   assert_that(requireNamespace("zen4R", quietly = TRUE))
   assert_that(requireNamespace("keyring", quietly = TRUE))
 
@@ -40,13 +42,17 @@ upload_zenodo <- function(
     paste0(yaml$protocol_code, "-", yaml$version, ".zip")
   )
   zip_html_rel <- zip_html |> path_rel(rendered_folder)
-  oldwd <- setwd(rendered_folder)
-  zip(
-    zipfile = zip_html_rel,
-    files = not_pdf,
-    flags = "-r9XqT"
+  withr::with_dir(
+    rendered_folder,
+    {
+      zip(
+        zipfile = zip_html_rel,
+        files = not_pdf,
+        flags = "-r9XqT"
+      )
+    }
   )
-  setwd(oldwd)
+
   to_upload <- list(pdf, zip_html)
 
   # prepare upload to zenodo
@@ -58,12 +64,20 @@ upload_zenodo <- function(
 
   zenodojson <- jsonlite::read_json(file.path(source_folder, ".zenodo.json"))
 
-  myrec <- zenodo$getDepositionByDOI(yaml$doi)
+  myrec <- get_deposition_with_retry(zenodo, yaml$doi)
+  if (is.null(myrec)) {
+    stop(
+      paste(
+        "Zenodo API returned NULL for the record.",
+        "The record might not be accessible yet or creation failed."
+      )
+    )
+  }
+
   myrec$setPublicationDate(Sys.Date())
   myrec$setVersion(yaml$version)
   myrec$setTitle(yaml$title)
-  zenodojson$description |>
-    myrec$setDescription()
+  myrec$setDescription(zenodojson$description)
   myrec$setResourceType("publication")
 
   myrec <- zen_creator(myrec, zenodojson$creator)
@@ -71,6 +85,7 @@ upload_zenodo <- function(
   myrec$setLicense("cc-by-4.0", sandbox = sandbox)
   myrec$setSubjects(yaml$keywords)
   myrec$setPublisher(yaml$publisher)
+  myrec$addLanguage(zenodojson$language)
 
   myrec <- zenodo$depositRecord(myrec, publish = FALSE)
   for (i in seq_along(to_upload)) {
@@ -82,6 +97,9 @@ upload_zenodo <- function(
   if (interactive()) {
     browseURL(myrec$links$self_html)
   }
+
+  gc() |> suppressWarnings()
+
   return(invisible(myrec))
 }
 
@@ -106,4 +124,25 @@ zen_contributor <- function(zen_rec, contributors) {
     )
   }
   return(zen_rec)
+}
+
+#' robustly get deposition by DOI with retries
+#' @noRd
+get_deposition_with_retry <- function(
+  zenodo,
+  doi,
+  max_tries = 5,
+  initial_wait = 2
+) {
+  wait <- initial_wait
+  for (i in seq_len(max_tries)) {
+    myrec <- tryCatch(
+      zenodo$getDepositionByDOI(doi),
+      error = function(e) NULL
+    )
+    if (!is.null(myrec)) return(myrec)
+    Sys.sleep(wait)
+    wait <- min(30, wait * 2)
+  }
+  return(NULL)
 }

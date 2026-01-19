@@ -48,8 +48,9 @@ get_version_number <- function(path = ".") {
 
   # list all index.Rmd files
   indexpaths <- dir_ls(
-    path = path, recurse = TRUE,
-    regexp = "source\\/s[fpioa]p\\/.+\\/index\\.Rmd"
+    path = path,
+    recurse = TRUE,
+    regexp = "index\\.Rmd$"
   )
 
   # read YAML front matter
@@ -107,6 +108,7 @@ increment_version_number <- function(versions) {
       paste0(lastyear, ".", increment),
       paste0(currentyear, ".01")
     )
+    new_version <- unname(new_version)
     return(new_version)
   } else {
     new_version <- paste0(format(Sys.Date(), "%Y"), ".01")

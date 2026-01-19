@@ -600,11 +600,12 @@ use_reviewer <- use_file_manager <- use_author
 #' Helper to ask questions to construct yaml key-value pairs
 #'
 #' Asks for title, subtitle, authors, reviewers, file manager, keywords
+#' @inheritParams create_protocol_code
 #'
 #' @importFrom checklist use_author ask_yes_no
 #' @importFrom cli cli_fmt cli_alert cli_alert_danger
 #' @noRd
-yaml_interactive <- function() {
+yaml_interactive <- function(language) {
   readline(prompt = cli_fmt(cli_alert("Enter the title: "))) |>
     gsub(pattern = "[\"|']", replacement = "") |>
     sprintf(fmt = "title: \"%s\"") -> yaml
@@ -618,7 +619,8 @@ yaml_interactive <- function() {
     gsub(pattern = "[\"|']", replacement = "") -> subtitle
   yaml <- c(yaml, sprintf(fmt = "subtitle: \"%s\"", subtitle)[subtitle != ""])
   cli_alert("Please select the corresponding author")
-  authors <- use_author()
+  lang <- paste0(language, "-BE"[language == "nl"], "-GB"[language == "en"])
+  authors <- use_author(lang = lang)
   c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
   while (
     isTRUE(
@@ -631,7 +633,7 @@ yaml_interactive <- function() {
       )
     )
   ) {
-    author <- use_author()
+    author <- use_author(lang = lang)
     authors[, c("given", "family", "email")] |>
       rbind(author[, c("given", "family", "email")]) |>
       anyDuplicated() -> duplo
@@ -645,7 +647,7 @@ yaml_interactive <- function() {
     authors <- rbind(authors, author)
   }
   cli_alert("Please select a reviewer")
-  reviewer <- use_reviewer()
+  reviewer <- use_reviewer(lang = lang)
   authors[, c("given", "family", "email")] |>
     rbind(reviewer[, c("given", "family", "email")]) |>
     anyDuplicated() -> duplo
@@ -666,7 +668,7 @@ yaml_interactive <- function() {
       )
     )
   ) {
-    reviewer <- use_reviewer()
+    reviewer <- use_reviewer(lang = lang)
     authors[, c("given", "family", "email")] |>
       rbind(reviewer[, c("given", "family", "email")]) |>
       anyDuplicated() -> duplo
@@ -679,7 +681,7 @@ yaml_interactive <- function() {
     c(yaml, author2yaml(reviewer, corresponding = FALSE)) -> yaml
   }
   cli_alert("Please select the file manager")
-  file_manager <- use_file_manager()
+  file_manager <- use_file_manager(lang = lang)
 
   readline(prompt = cli_fmt(
     cli_alert("Enter one or more keywords separated by `;`")
@@ -688,9 +690,11 @@ yaml_interactive <- function() {
     strsplit(";") |>
     unlist() |>
     gsub(pattern = "^\\s+", replacement = "") |>
-    gsub(pattern = "\\s+$", replacement = "") |>
-    paste(collapse = "; ") |>
-    sprintf(fmt = "keywords: \"%s\"") -> keywords
+    gsub(pattern = "\\s+$", replacement = "") -> keywords
+
+  paste0("'", keywords, "'") |>
+    paste(collapse = ",") |>
+    sprintf(fmt = "keywords: [%s]") -> keywords
 
   c(
     yaml,

@@ -1,7 +1,4 @@
 test_that("check structure works", {
-  if (!requireNamespace("gert", quietly = TRUE)) {
-    stop("please install 'gert' package for these tests to work")
-  }
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),
@@ -37,12 +34,14 @@ test_that("check structure works", {
   )
 
 
-  old_wd <- getwd()
-  on.exit(setwd(old_wd))
   test_repo <- tempfile("test_protocol")
   dir.create(test_repo)
-  setwd(test_repo)
+  old_wd <- setwd(test_repo)
+  withr::defer(setwd(old_wd))
   repo <- gert::git_init()
+  withr::defer(unlink(repo, recursive = TRUE))
+  url = "https://github.com/inbo/unittests"
+  gert::git_remote_add(url = url, repo = ".")
   gert::git_config_set(name = "user.name", value = "someone")
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
@@ -161,8 +160,4 @@ test_that("check structure works", {
     check_structure("sfp-102-en", fail = TRUE),
     "No problems"
   )
-
-
-  # Cleanup
-  unlink(test_repo, recursive = TRUE)
 })

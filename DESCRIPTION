@@ -1,6 +1,6 @@
 Package: protocolhelper
 Title: Helper Functions to Manage Protocols
-Version: 0.8.1
+Version: 0.8.2
 Authors@R: c(
     person("Hans", "Van Calster", , "hans.vancalster@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8595-8426", affiliation = "Research Institute for Nature and Forest (INBO)")),
@@ -10,7 +10,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-6378-6229", affiliation = "Research Institute for Nature and Forest (INBO)")),
     person("Els", "Lommelen", , "els.lommelen@inbo.be", role = "ctb",
            comment = c(ORCID = "0000-0002-3481-5684", affiliation = "Research Institute for Nature and Forest (INBO)")),
-    person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = c("cph", "fnd"))
+    person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = c("cph", "fnd"),
+           comment = c(ROR = "https://ror.org/00j54wy13"))
   )
 Description: Helper functions to manage INBO protocols.
 License: GPL-3
@@ -18,11 +19,11 @@ URL: https://inbo.github.io/protocolhelper/,
     https://github.com/inbo/protocolhelper
 BugReports: https://github.com/inbo/protocolhelper/issues
 Depends: 
-    R (>= 3.6)
+    R (>= 4.1.0)
 Imports: 
     assertthat,
     bookdown,
-    checklist (>= 0.4.1),
+    checklist (>= 0.5.2),
     cli,
     commonmark,
     fs,
@@ -34,6 +35,7 @@ Imports:
     rmarkdown,
     rprojroot,
     stringr,
+    withr,
     xfun,
     xml2,
     yaml,
@@ -47,7 +49,6 @@ Suggests:
     png,
     reactable,
     rlang,
-    slickR,
     testthat (>= 2.1.0),
     tinytex,
     zen4R
@@ -55,9 +56,10 @@ Additional_repositories: https://inbo.r-universe.dev
 Config/checklist/communities: inbo
 Config/checklist/keywords: protocols; R package; Reproducible research;
     Rmarkdown templates
+Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 SystemRequirements: Pandoc (>= 2.0.0)
