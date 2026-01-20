@@ -1,5 +1,6 @@
 test_that("update doi works", {
   skip_if_offline()
+  skip_if_no_tex()
   skip_if_not_installed("zen4R")
   skip_if_not_installed("keyring")
   skip_if(

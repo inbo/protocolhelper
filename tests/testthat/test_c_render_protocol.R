@@ -1,4 +1,5 @@
 test_that("render_protocol works as expected", {
+  skip_if_no_tex()
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),

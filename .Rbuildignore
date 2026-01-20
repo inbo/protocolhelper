@@ -4,6 +4,8 @@
 ^LICENSE.md$
 ^LICENSE\.md$
 ^README\.Rmd$
+^\.Renviron$
+^\.Renviron\.template$
 ^\.Rproj\.user$
 ^\.github$
 ^\.httr-oauth$
