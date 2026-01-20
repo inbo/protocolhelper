@@ -1,7 +1,0 @@
-# Extra aspecten van kwaliteitszorg t.o.v. de subprotocols
-
-```{=html}
-<!--
-Geen herhaling van wat al in subprotocols staat
--->
-```

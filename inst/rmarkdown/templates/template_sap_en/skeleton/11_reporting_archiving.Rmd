@@ -1,3 +1,0 @@
-# Reporting and archiving
-
-The results of the calibration, the samples and the reference material are entered in `LIMS`, in the batch of the method.

@@ -1,0 +1,114 @@
+# Package index
+
+## Protocol creation and updating
+
+Functions for starting work on a new protocol or update a protocol
+
+- [`add_dependencies()`](https://inbo.github.io/protocolhelper/reference/add_dependencies.md)
+  :
+
+  Adds dependencies to the YAML of an `index.Rmd` file
+
+- [`add_one_subprotocol()`](https://inbo.github.io/protocolhelper/reference/add_one_subprotocol.md)
+  : Helper function to add one sub-protocol to a project-specific
+  protocol of which it is a dependency
+
+- [`add_subprotocols()`](https://inbo.github.io/protocolhelper/reference/add_subprotocols.md)
+  : Render all sub-protocols belonging to a main protocol to single
+  markdown files
+
+- [`create_protocol()`](https://inbo.github.io/protocolhelper/reference/create_protocol.md)
+  [`create_sfp()`](https://inbo.github.io/protocolhelper/reference/create_protocol.md)
+  [`create_spp()`](https://inbo.github.io/protocolhelper/reference/create_protocol.md)
+  [`create_sap()`](https://inbo.github.io/protocolhelper/reference/create_protocol.md)
+  [`create_sip()`](https://inbo.github.io/protocolhelper/reference/create_protocol.md)
+  [`create_sop()`](https://inbo.github.io/protocolhelper/reference/create_protocol.md)
+  : Create a folder with a bookdown (R markdown) template to start a new
+  protocol and optionally render to html
+
+- [`insert_protocolsection()`](https://inbo.github.io/protocolhelper/reference/insert_protocolsection.md)
+  : Function to add a chapter or a section of a published protocol for
+  re-use in another protocol
+
+- [`update_protocol()`](https://inbo.github.io/protocolhelper/reference/update_protocol.md)
+  : Preparatory steps to start the update of a pre-existing version of a
+  protocol
+
+- [`update_version_number()`](https://inbo.github.io/protocolhelper/reference/update_version_number.md)
+  :
+
+  Updates the version number in the YAML section of a protocol
+  `index.Rmd` file and optionally in protocol `NEWS.md`
+
+## docx convertion
+
+Functions to convert docx to markdown
+
+- [`add_captions()`](https://inbo.github.io/protocolhelper/reference/add_captions.md)
+  :
+
+  Touch up figure and table captions after using
+  [`convert_docx_to_rmd()`](https://inbo.github.io/protocolhelper/reference/convert_docx_to_rmd.md)
+
+- [`convert_docx_to_rmd()`](https://inbo.github.io/protocolhelper/reference/convert_docx_to_rmd.md)
+  : Convert a docx-file (a protocol) to an (R)markdown file
+
+## Protocol checking
+
+Functions to check if protocols comply with standards
+
+- [`check_all()`](https://inbo.github.io/protocolhelper/reference/check_all.md)
+  :
+
+  Check protocol `frontmatter` and `structure`
+
+- [`check_all_person_info()`](https://inbo.github.io/protocolhelper/reference/check_all_person_info.md)
+  : Helper function to check if person information is correct
+
+- [`check_frontmatter()`](https://inbo.github.io/protocolhelper/reference/check_frontmatter.md)
+  : Checks protocol metadata
+
+- [`check_structure()`](https://inbo.github.io/protocolhelper/reference/check_structure.md)
+  : Checks protocol document structure
+
+- [`protocolcheck`](https://inbo.github.io/protocolhelper/reference/protocolcheck.md)
+  :
+
+  The `protocolcheck` R6 class
+
+- [`validate_orcid()`](https://inbo.github.io/protocolhelper/reference/validate_orcid.md)
+  : validate an ORCID string
+
+## Utility functions
+
+Functions that can be useful when working with protocols
+
+- [`add_label()`](https://inbo.github.io/protocolhelper/reference/add_label.md)
+  :
+
+  Helper function to create labelled captions for `pander` tables
+
+- [`get_path_to_protocol()`](https://inbo.github.io/protocolhelper/reference/get_path_to_protocol.md)
+  : Function to get (or set) the full path to a protocol
+
+- [`get_protocol_type()`](https://inbo.github.io/protocolhelper/reference/get_protocol_type.md)
+  : Get protocol type from protocol code
+
+- [`get_protocolnumbers()`](https://inbo.github.io/protocolhelper/reference/get_protocolnumbers.md)
+  : Function to list all occupied protocol numbers
+
+- [`get_short_titles()`](https://inbo.github.io/protocolhelper/reference/get_short_titles.md)
+  : Function to list all short titles that are already in use.
+
+- [`get_version_number()`](https://inbo.github.io/protocolhelper/reference/get_version_number.md)
+  : Get version number for a protocol
+
+- [`increment_version_number()`](https://inbo.github.io/protocolhelper/reference/increment_version_number.md)
+  : Increment version number
+
+## Protocol preview
+
+Function to render a protocol
+
+- [`render_protocol()`](https://inbo.github.io/protocolhelper/reference/render_protocol.md)
+  : Function to render a protocol to html and pdf.

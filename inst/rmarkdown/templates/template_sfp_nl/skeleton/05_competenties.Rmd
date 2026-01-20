@@ -1,8 +1,0 @@
-# Vereiste competenties
-
-```{=html}
-<!--
-Omschrijving van de basiskennis (bv. kennis van bepaalde soorten) en vaardigheden (bv. bepaalde apparatuur kunnen bedienen), die de gebruiker van het protocol moet hebben om het protocol op een gepaste manier te kunnen uitvoeren.
-Eventueel kan er verwezen worden naar bepaalde opleidingen.
--->
-```

@@ -1,9 +1,0 @@
-# Beperkingen van het protocol
-
-```{=html}
-<!--
-Alleen in te vullen indien van toepassing.
-Bespreek onder welke condities het protocol niet gebruikt kan worden of wanneer afwijkingen nodig zijn ten opzichte van het standaard protocol.
-Vermeld hier ook mogelijke interferenties, knelpunten, ...
--->
-```

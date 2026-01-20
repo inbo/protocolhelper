@@ -1,5 +1,0 @@
-# Referenties {.unnumbered}
-
-::: {#refs}
-\item
-:::
