@@ -4,9 +4,11 @@
 ^LICENSE.md$
 ^LICENSE\.md$
 ^README\.Rmd$
+^\.Renviron$
 ^\.Rproj\.user$
 ^\.github$
 ^\.httr-oauth$
+^\.renvirontemplate$
 ^\.zenodo\.json$
 ^_pkgdown.yml$
 ^_pkgdown\.yml$

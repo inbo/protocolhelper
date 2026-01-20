@@ -1,4 +1,5 @@
 test_that("render_protocol works as expected", {
+  skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev
   author_df <- data.frame(
     stringsAsFactors = FALSE,
     given = c("Hans"),

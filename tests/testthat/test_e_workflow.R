@@ -1,5 +1,6 @@
 test_that("complete workflow works", {
   skip_if_offline()
+  skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev
   skip_if_not_installed("zen4R")
   skip_if_not_installed("keyring")
   skip_if(
