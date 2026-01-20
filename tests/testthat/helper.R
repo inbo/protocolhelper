@@ -1,15 +1,5 @@
-skip_if_no_tex <- function() {
-  if (isTRUE(getOption("protocolhelper.skip_tex", TRUE))) {
-    testthat::skip("TeX environment not fully available")
-  }
-}
-
 #' Install all TeX requirements for protocolhelper
-#' Use this locally to prepare your machine.
 install_protocol_tex <- function() {
-  if (!requireNamespace("tinytex", quietly = TRUE)) {
-    stop("Please install the 'tinytex' R package first.")
-  }
   tex_pkgs <- c(
     "amscls", "amsfonts", "amsmath", "atbegshi", "atveryend", "auxhook",
     "babel", "bibtex", "bigintcalc", "bitset", "bookmark", "booktabs",
