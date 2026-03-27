@@ -1,7 +1,0 @@
-# Definitions and abbreviations
-
-```{=html}
-<!--
-Definitions of terms and abbreviations necessary to understand this document and execute the protocol appropriately.
--->
-```

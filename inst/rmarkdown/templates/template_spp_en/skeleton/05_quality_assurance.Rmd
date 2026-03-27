@@ -1,7 +1,0 @@
-# Extra aspects of quality assurance compared to subprotocols
-
-```{=html}
-<!--
-Do not repeat what is already mentioned in subprotocols
--->
-```

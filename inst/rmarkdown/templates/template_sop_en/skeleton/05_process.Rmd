@@ -1,9 +1,0 @@
-# Process
-
-```{=html}
-<!--
-schematic of the process
-for example use `draw.io` and export as png
-or create the schema with an R package like `visNetwork`
--->
-```

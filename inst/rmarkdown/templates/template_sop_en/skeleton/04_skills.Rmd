@@ -1,8 +1,0 @@
-# Required skills and training
-
-```{=html}
-<!--
-Description of the basic knowledge and skills that the user of the protocol must have in order to be able to perform the protocol in an appropriate manner.
-If necessary, reference can be made to specific courses.
--->
-```

@@ -1,7 +1,0 @@
-# Definities en afkortingen
-
-```{=html}
-<!--
-Definities van begrippen en afkortingen die noodzakelijk zijn om dit document te begrijpen en het protocol op een gepaste manier te kunnen uitvoeren.
--->
-```
