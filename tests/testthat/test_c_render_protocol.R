@@ -1,7 +1,6 @@
 test_that("render_protocol works as expected", {
   skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev
   author_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Hans"),
     family = c("Van Calster"),
     email = c("hans.vancalster@inbo.be"),
@@ -9,7 +8,6 @@ test_that("render_protocol works as expected", {
     affiliation = c("Research Institute for Nature and Forest (INBO)")
   )
   reviewer_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Els"),
     family = c("Lommelen"),
     email = c("els.lommelen@inbo.be"),
@@ -17,7 +15,6 @@ test_that("render_protocol works as expected", {
     affiliation = c("Research Institute for Nature and Forest (INBO)")
   )
   file_manager_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Pieter"),
     family = c("Verschelde"),
     email = c("pieter.verschelde@inbo.be"),
