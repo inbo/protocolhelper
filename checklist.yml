@@ -40,6 +40,8 @@ spelling:
   default: en-GB
   ignore:
   - inst/rmarkdown/homepage/index.Rmd
+  - docs/
+  - LICENSE.md
   - README.md
   - tests
   other:
