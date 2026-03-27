@@ -48,7 +48,7 @@ update_version_number <- function(
     return(FALSE)
   } else {
     index <- read_utf8(file.path(path_to_protocol, "index.Rmd"))
-    index[grepl("version_number:", index)] <- paste0(
+    index[grepl("^version_number:", index)] <- paste0(
       "version_number: '", new_version, "'"
     )
     write_utf8(index, file.path(path_to_protocol, "index.Rmd"))

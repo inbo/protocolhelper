@@ -3,7 +3,6 @@ test_that("Test that insert_protocolsection works", {
     stop("please install 'png' package for these tests to work")
   }
   author_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Hans"),
     family = c("Van Calster"),
     email = c("hans.vancalster@inbo.be"),
@@ -11,7 +10,6 @@ test_that("Test that insert_protocolsection works", {
     affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
   reviewer_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Els"),
     family = c("Lommelen"),
     email = c("els.lommelen@inbo.be"),
@@ -19,7 +17,6 @@ test_that("Test that insert_protocolsection works", {
     affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
   )
   file_manager_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Pieter"),
     family = c("Verschelde"),
     email = c("pieter.verschelde@inbo.be"),

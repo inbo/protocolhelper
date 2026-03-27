@@ -1,3 +1,9 @@
+# protocolhelper 0.8.4
+
+## Bug fix
+
+* `update_version_number` only updates the protocol version number (#141)
+
 # protocolhelper 0.8.3
 
 ## Bug fix

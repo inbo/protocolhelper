@@ -1,5 +1,4 @@
 ## code to prepare `themes_df` dataset goes here
-options(stringsAsFactors = FALSE)
 themes_df <- data.frame(
   theme = c("generic", "water", "soil", "air", "vegetation", "species"),
   theme_number = c("0", "1", "2", "3", "4", "5")

@@ -49,7 +49,6 @@ To do this, you can use the following code:
   gert::git_config_set(name = "user.email", value = "someone@example.org")
 
   author_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Hans"),
     family = c("Van Calster"),
     email = c("hans.vancalster@inbo.be"),
@@ -57,7 +56,6 @@ To do this, you can use the following code:
     affiliation = c("Research Institute for Nature and Forest (INBO)")
   )
   reviewer_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Els"),
     family = c("Lommelen"),
     email = c("els.lommelen@inbo.be"),
@@ -65,7 +63,6 @@ To do this, you can use the following code:
     affiliation = c("Research Institute for Nature and Forest (INBO)")
   )
   file_manager_df <- data.frame(
-    stringsAsFactors = FALSE,
     given = c("Pieter"),
     family = c("Verschelde"),
     email = c("pieter.verschelde@inbo.be"),
