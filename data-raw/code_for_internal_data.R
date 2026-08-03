@@ -142,7 +142,7 @@ sap_cleaned <- sap %>%
     methode, toestel, matrix
   )) %>%
   select(
-    protocolcode = sap_code,
+    protocolcode = sap,
     description
   ) %>%
   mutate(
@@ -271,8 +271,9 @@ reserved_codes <- reserved_codes %>%
     .groups = "drop"
   )
 
-org <- checklist::organisation$new()
-inbo_affiliation <- org$get_organisation[["inbo.be"]][["affiliation"]]
+org <- citeme::get_available_organisations()
+inbo_affiliation <- org$names$`info@inbo.be`
+
 
 usethis::use_data(
   themes_df, reserved_codes, inbo_affiliation,
