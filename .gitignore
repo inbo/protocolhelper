@@ -54,5 +54,6 @@ output
 publish
 renv/library
 src
+tests/testthat/_problems
 vignettes/*.html
 vignettes/*.pdf
