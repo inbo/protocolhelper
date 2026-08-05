@@ -91,16 +91,17 @@
 #' )
 #' }
 create_protocol <- function(
-    protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
-    short_title,
-    version_number = get_version_number(),
-    theme = NULL,
-    project_name = NULL,
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = protocol_type,
-    render = FALSE) {
+  protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
+  short_title,
+  version_number = get_version_number(),
+  theme = NULL,
+  project_name = NULL,
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = protocol_type,
+  render = FALSE
+) {
   # check parameters
   protocol_type <- match.arg(protocol_type)
   assert_that(template %in% c("sfp", "spp", "sap", "sop", "sip", "generic"))
@@ -353,14 +354,15 @@ create_protocol <- function(
 #' @rdname create_protocol
 #' @export
 create_sfp <- function(
-    short_title,
-    version_number = get_version_number(),
-    theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sfp", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sfp", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sfp",
@@ -378,14 +380,15 @@ create_sfp <- function(
 #' @rdname create_protocol
 #' @export
 create_spp <- function(
-    short_title,
-    version_number = get_version_number(),
-    project_name,
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("spp"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  project_name,
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("spp"),
+  render = FALSE
+) {
   create_protocol(
     protocol_type = "spp",
     short_title = short_title,
@@ -402,13 +405,14 @@ create_spp <- function(
 #' @rdname create_protocol
 #' @export
 create_sap <- function(
-    short_title,
-    version_number = get_version_number(),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sap", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sap", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sap",
@@ -425,13 +429,14 @@ create_sap <- function(
 #' @rdname create_protocol
 #' @export
 create_sip <- function(
-    short_title,
-    version_number = get_version_number(),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sip", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sip", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sip",
@@ -448,13 +453,14 @@ create_sip <- function(
 #' @rdname create_protocol
 #' @export
 create_sop <- function(
-    short_title,
-    version_number = get_version_number(),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sop", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sop", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sop",

@@ -38,11 +38,12 @@
 #' protocolhelper:::render_release()
 #' }
 render_release <- function(
-    output_root = "publish",
-    sandbox = TRUE,
-    zenodo_token = keyring::key_get(
-      c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
-    )) {
+  output_root = "publish",
+  sandbox = TRUE,
+  zenodo_token = keyring::key_get(
+    c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
+  )
+) {
   assert_that(is.string(output_root))
   assert_that(
     requireNamespace("reactable", quietly = TRUE)

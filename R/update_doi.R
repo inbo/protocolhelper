@@ -15,13 +15,14 @@
 #'
 #' @noRd
 update_doi <- function(
-    protocol_code,
-    path = ".",
-    sandbox = TRUE,
-    token = keyring::key_get(
-      c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
-    ),
-    logger = "INFO") {
+  protocol_code,
+  path = ".",
+  sandbox = TRUE,
+  token = keyring::key_get(
+    c("ZENODO_SANDBOX", "ZENODO")[c(sandbox, !sandbox)]
+  ),
+  logger = "INFO"
+) {
   check_protocolcode(protocol_code)
   assert_that(requireNamespace("zen4R", quietly = TRUE))
   assert_that(requireNamespace("keyring", quietly = TRUE))

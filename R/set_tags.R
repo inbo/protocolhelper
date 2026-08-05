@@ -21,9 +21,9 @@
 #' @noRd
 #'
 set_tags <- function(
-    protocol_code,
-    path = ".") {
-
+  protocol_code,
+  path = "."
+) {
   if (
     !as.logical(Sys.getenv("GITHUB_ACTIONS", "false")) ||
       !Sys.getenv("GITHUB_REF") %in%

@@ -24,8 +24,9 @@
 #' @family check
 #'
 check_frontmatter <- function(
-    protocol_code,
-    fail = !interactive()) {
+  protocol_code,
+  fail = !interactive()
+) {
   check_protocolcode(protocol_code)
   assert_that(is.flag(fail), noNA(fail))
 

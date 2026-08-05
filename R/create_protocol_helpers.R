@@ -25,8 +25,9 @@
 #' get_protocolnumbers()
 #' }
 get_protocolnumbers <- function(
-    protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
-    language = c("nl", "en")) {
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")
+) {
   protocol_type <- match.arg(protocol_type)
   language <- match.arg(language)
 
@@ -83,8 +84,9 @@ get_protocolnumbers <- function(
 #' get_short_titles()
 #' }
 get_short_titles <- function(
-    protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
-    language = c("nl", "en")) {
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")
+) {
   protocol_type <- match.arg(protocol_type)
   language <- match.arg(language)
 
@@ -158,7 +160,8 @@ get_short_titles <- function(
 #' @export
 #' @keywords internal
 create_protocol_code <- function(
-    protocol_type, theme, protocol_number, language) {
+  protocol_type, theme, protocol_number, language
+) {
   reserved_codes$bare <- as.integer(reserved_codes$protocolnumber_bare)
   reserved_codes$theme_number <- ifelse(
     reserved_codes$protocoltype == "sfp",
@@ -295,8 +298,9 @@ create_protocol_code <- function(
 #' @export
 #' @keywords internal
 create_from_docx <- function(
-    from_docx,
-    path_to_protocol) {
+  from_docx,
+  path_to_protocol
+) {
   temp_filename <- "temp.Rmd"
   convert_docx_to_rmd(
     from = from_docx,
@@ -366,10 +370,11 @@ create_from_docx <- function(
 #'
 #' @noRd
 write_bookdown_yml <- function(
-    language,
-    book_filename,
-    path_to_protocol,
-    output_dir_rel) {
+  language,
+  book_filename,
+  path_to_protocol,
+  output_dir_rel
+) {
   # create a character vector with the names of all rmd_files
   # in correct order for compilation
   rmd_files <- c(
@@ -494,18 +499,19 @@ bookdown::pdf_book:
 #' @noRd
 #'
 write_yaml_front_matter <- function(
-    parent_rmd,
-    path_to_protocol,
-    title,
-    subtitle,
-    date,
-    version_number,
-    protocol_code,
-    language,
-    protocol_type,
-    template,
-    theme,
-    project_name) {
+  parent_rmd,
+  path_to_protocol,
+  title,
+  subtitle,
+  date,
+  version_number,
+  protocol_code,
+  language,
+  protocol_type,
+  template,
+  theme,
+  project_name
+) {
   # change values in parent rmarkdown
   index_yml <- yaml_front_matter(parent_rmd)
   unlink("css", recursive = TRUE)
@@ -681,7 +687,7 @@ yaml_interactive <- function(language) {
     c(yaml, author2yaml(reviewer, corresponding = FALSE)) -> yaml
   }
   cli_alert("Please select the file manager")
-  file_manager <- select_file_manager(lang = lang)
+  file_manager <- select_file_manager(lang = lang) # nolint: object_usage_linter
 
   readline(prompt = cli_fmt(
     cli_alert("Enter one or more keywords separated by `;`")
