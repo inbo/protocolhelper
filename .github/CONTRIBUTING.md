@@ -12,22 +12,15 @@ If you’ve found a bug, create an associated issue and illustrate the bug with 
 
 ### Pull request process
 
-*  We recommend that you create a Git branch for each pull request (PR).
-*  We use [roxygen2](https://cran.r-project.org/package=roxygen2), with
-[Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/markdown.html), 
-for documentation.  
-*  We use [testthat](https://cran.r-project.org/package=testthat). Contributions
-with test cases included are easier to accept.  
-*  For user-facing changes, add a bullet to the top of `NEWS.md` below the
-current development version header describing the changes made followed by your
-GitHub username, and links to relevant issue(s)/PR(s).
-* We use [checklist](https://github.com/inbo/checklist) to check if the package passes all quality checks. To check for errors, warnings and notes when working in a local branch, you can proceed as follows:
-
-    1. [_Build_](https://r-pkgs.org/whole-game.html#install) the package.
-    1. Run `x <- checklist::check_package()`.
-      Fix any issues that arise during the checks.
-    1. Run `x <- checklist::check_package()` again until you get _No problems found_ at the end of the checklist output.
-    1. Commit and push any remaining changes.
+*  We recommend that you create a Git branch for each pull request (PR).  
+*  Look at the GitHub Actions build status before and after making changes.
+The `README` should contain badges for any continuous integration services used by the package.  
+*  We require the `tidyverse` [style guide](http://style.tidyverse.org).
+You can use the [`styler`](https://CRAN.R-project.org/package=styler) package to apply these styles, but please don't restyle code that has nothing to do with your PR.  
+*  We use [`roxygen2`](https://cran.r-project.org/package=roxygen2).  
+*  We use [`testthat`](https://cran.r-project.org/package=testthat). 
+Contributions with test cases included are easier to accept.  
+*  For user-facing changes, add a bullet to the top of `NEWS.md` below the current development version header describing the changes made followed by your GitHub username, and links to relevant issue(s)/PR(s).
 
 ### Testing a function from the package
 
