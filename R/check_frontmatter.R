@@ -18,7 +18,7 @@
 #' @importFrom assertthat assert_that is.string has_name is.flag noNA
 #' @importFrom stringr str_detect
 #' @importFrom purrr map_lgl map_chr
-#' @importFrom checklist citation_meta
+#' @importFrom citeme citation_meta
 #'
 #' @export
 #' @family check

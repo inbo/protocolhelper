@@ -10,9 +10,7 @@
 #' @param path Default current working directory. The root folder of the
 #' `protocolsource` repo.
 #'
-#' @importFrom fs
-#' path
-#' is_dir
+#' @importFrom fs path is_dir
 #' @importFrom rmarkdown yaml_front_matter
 #'
 #' @noRd

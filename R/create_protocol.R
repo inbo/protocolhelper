@@ -76,9 +76,9 @@
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
 #' @importFrom fs path_rel dir_create dir_ls file_copy
-#' @importFrom checklist use_author citation_meta ask_yes_no
+#' @importFrom citeme select_individual citation_meta ask_yes_no
 #' @importFrom cli cli_alert_success cli_alert cli_alert_info cli_alert_danger
-#' cli_fmt
+#' @importFrom cli cli_fmt
 #'
 #' @export
 #' @family creation

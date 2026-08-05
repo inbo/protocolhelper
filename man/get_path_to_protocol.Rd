@@ -53,12 +53,12 @@ get_path_to_protocol(protocol_code = "sfp-401-nl")
 }
 }
 \seealso{
-Other utility: 
-\code{\link{add_label}()},
-\code{\link{get_protocol_type}()},
-\code{\link{get_protocolnumbers}()},
-\code{\link{get_short_titles}()},
-\code{\link{get_version_number}()},
-\code{\link{increment_version_number}()}
+Other utility:
+\code{\link[=add_label]{add_label()}},
+\code{\link[=get_protocol_type]{get_protocol_type()}},
+\code{\link[=get_protocolnumbers]{get_protocolnumbers()}},
+\code{\link[=get_short_titles]{get_short_titles()}},
+\code{\link[=get_version_number]{get_version_number()}},
+\code{\link[=increment_version_number]{increment_version_number()}}
 }
 \concept{utility}

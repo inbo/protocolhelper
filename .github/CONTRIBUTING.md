@@ -65,9 +65,9 @@ To do this, you can use the following code:
 
   local_mocked_bindings(
     ask_yes_no = function(...) FALSE,
-    use_author = function(...) author_df,
-    use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df,
+    select_individual = function(...) author_df,
+    select_reviewer = function(...) reviewer_df,
+    select_file_manager = function(...) file_manager_df,
     readline = function(...) "Een titel"
   )
 

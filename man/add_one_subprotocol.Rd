@@ -28,7 +28,7 @@ main protocol}
 }
 \description{
 The function renders the sub-protocol to
-\code{\link[bookdown:html_document2]{bookdown::markdown_document2()}} and
+\code{\link[bookdown:markdown_document2]{bookdown::markdown_document2()}} and
 saves the resulting \code{md} file (and any associated media and data files) in a
 subfolder of the directory of the project-specific protocol.
 This function should normally not be called directly.
@@ -40,12 +40,12 @@ add_subprotocols(code_mainprotocol = "spp-999-en")
 }
 }
 \seealso{
-Other creation: 
-\code{\link{add_dependencies}()},
-\code{\link{add_subprotocols}()},
-\code{\link{create_protocol}()},
-\code{\link{insert_protocolsection}()},
-\code{\link{update_protocol}()},
-\code{\link{update_version_number}()}
+Other creation:
+\code{\link[=add_dependencies]{add_dependencies()}},
+\code{\link[=add_subprotocols]{add_subprotocols()}},
+\code{\link[=create_protocol]{create_protocol()}},
+\code{\link[=insert_protocolsection]{insert_protocolsection()}},
+\code{\link[=update_protocol]{update_protocol()}},
+\code{\link[=update_version_number]{update_version_number()}}
 }
 \concept{creation}

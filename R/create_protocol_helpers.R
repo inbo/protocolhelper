@@ -488,7 +488,7 @@ bookdown::pdf_book:
 #' @inheritParams create_protocol
 #'
 #' @importFrom ymlthis yml_replace yml_discard as_yml yml_author yml_date
-#' yml_toplevel use_index_rmd
+#' @importFrom ymlthis yml_toplevel use_index_rmd
 #' @importFrom rmarkdown yaml_front_matter
 #'
 #' @noRd
@@ -593,16 +593,16 @@ author2yaml <- function(author, corresponding = FALSE) {
   paste(c(yaml, "    corresponding: true"), collapse = "\n")
 }
 
-#' @importFrom checklist use_author
+#' @importFrom citeme select_individual
 #' @noRd
-use_reviewer <- use_file_manager <- use_author
+select_reviewer <- select_file_manager <- select_individual
 
 #' Helper to ask questions to construct yaml key-value pairs
 #'
 #' Asks for title, subtitle, authors, reviewers, file manager, keywords
 #' @inheritParams create_protocol_code
 #'
-#' @importFrom checklist use_author ask_yes_no
+#' @importFrom citeme select_individual ask_yes_no
 #' @importFrom cli cli_fmt cli_alert cli_alert_danger
 #' @noRd
 yaml_interactive <- function(language) {
@@ -620,7 +620,7 @@ yaml_interactive <- function(language) {
   yaml <- c(yaml, sprintf(fmt = "subtitle: \"%s\"", subtitle)[subtitle != ""])
   cli_alert("Please select the corresponding author")
   lang <- paste0(language, "-BE"[language == "nl"], "-GB"[language == "en"])
-  authors <- use_author(lang = lang)
+  authors <- select_individual(lang = lang)
   c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
   while (
     isTRUE(
@@ -633,7 +633,7 @@ yaml_interactive <- function(language) {
       )
     )
   ) {
-    author <- use_author(lang = lang)
+    author <- select_individual(lang = lang)
     authors[, c("given", "family", "email")] |>
       rbind(author[, c("given", "family", "email")]) |>
       anyDuplicated() -> duplo
@@ -647,7 +647,7 @@ yaml_interactive <- function(language) {
     authors <- rbind(authors, author)
   }
   cli_alert("Please select a reviewer")
-  reviewer <- use_reviewer(lang = lang)
+  reviewer <- select_reviewer(lang = lang)
   authors[, c("given", "family", "email")] |>
     rbind(reviewer[, c("given", "family", "email")]) |>
     anyDuplicated() -> duplo
@@ -668,7 +668,7 @@ yaml_interactive <- function(language) {
       )
     )
   ) {
-    reviewer <- use_reviewer(lang = lang)
+    reviewer <- select_reviewer(lang = lang)
     authors[, c("given", "family", "email")] |>
       rbind(reviewer[, c("given", "family", "email")]) |>
       anyDuplicated() -> duplo
@@ -681,7 +681,7 @@ yaml_interactive <- function(language) {
     c(yaml, author2yaml(reviewer, corresponding = FALSE)) -> yaml
   }
   cli_alert("Please select the file manager")
-  file_manager <- use_file_manager(lang = lang)
+  file_manager <- select_file_manager(lang = lang)
 
   readline(prompt = cli_fmt(
     cli_alert("Enter one or more keywords separated by `;`")
