@@ -276,6 +276,7 @@ create_protocol <- function(
     paste("theme:", theme)[!is.null(theme)],
     paste("project_name:", project_name)[!is.null(project_name)],
     "community: \"inbo\"", # required by citation_meta
+    "publication_type: \"publication-technicalnote\"",#required by citation_meta
     paste0("publisher: ", inbo_affiliation[[language]]),
     "rightsholder:",
     "  - name:",
