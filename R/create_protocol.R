@@ -277,7 +277,11 @@ create_protocol <- function(
     paste("project_name:", project_name)[!is.null(project_name)],
     "community: \"inbo\"", # required by citation_meta
     "publication_type: \"publication-technicalnote\"",#required by citation_meta
-    paste0("publisher: ", inbo_affiliation[[language]]),
+    "publisher:",
+    "  - name:",
+    paste0("      given: ", inbo_affiliation[[language]]),
+    "    email: info@inbo.be",
+    "    ror: 00j54wy13",
     "rightsholder:",
     "  - name:",
     paste0("      given: ", inbo_affiliation[[language]]),
