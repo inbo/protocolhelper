@@ -113,13 +113,13 @@ test_that("Check frontmatter works", {
   )
 
   # another protocol
-  checklist::new_branch("sfp-102-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
 
   protocolhelper::create_protocol(
     short_title = "water 2",
     version_number = version_number_2, theme = "water", language = "en"
   )
+  checklist::new_branch("sfp-102-en", repo = repo)
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-102-en_water-2")
   specific_tag <- paste("sfp-102-en", version_number_2, sep = "-")
@@ -133,11 +133,6 @@ test_that("Check frontmatter works", {
     refspec = refspec,
     set_upstream = TRUE,
     repo = repo
-  )
-
-  check_frontmatter(
-    protocol_code = "sfp-102-en",
-    fail = FALSE
   )
 
   expect_output(

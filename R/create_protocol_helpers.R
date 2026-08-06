@@ -143,6 +143,8 @@ get_short_titles <- function(
 #' Note that for backwards compatibility with protocol numbers that were already
 #' in use at INBO, we made a list of reserved numbers.
 #' These reserved numbers will not be used when `protocol_number` is NULL.
+#' You can inspect the list of reserved numbers with
+#' `protocolhelper:::reserved_codes`.
 #' The only time you will need to explicitly pass a protocol number to the
 #' `protocol_number` argument is when you want to migrate a pre-existing INBO
 #' protocol to `protocolsource` and hence use one of the reserved numbers.
@@ -154,6 +156,8 @@ get_short_titles <- function(
 #' @importFrom stringr str_subset str_extract
 #' @importFrom assertthat assert_that validate_that
 #' @importFrom cli cli_fmt cli_alert_danger
+#' @importFrom rprojroot find_root is_git_root
+#' @importFrom gert git_branch_list
 #'
 #' @return A character string containing the protocol_code
 #'
@@ -183,6 +187,8 @@ create_protocol_code <- function(
         bare_numbers$theme_number == protocol_leading_number
     ] -
       as.numeric(protocol_leading_number) * 100
+
+    # get all protocolnumbers in main branch
     all_numbers <- get_protocolnumbers(
       protocol_type = protocol_type,
       language = language
@@ -192,9 +198,25 @@ create_protocol_code <- function(
     )
     in_use <- as.numeric(theme_numbers) -
       as.numeric(protocol_leading_number) * 100
-    full_sequence <- seq(1, max(sfp_reserved, in_use, 1), 1)
-    not_reserved_or_in_use <-
-      full_sequence[!full_sequence %in% c(sfp_reserved, in_use)]
+
+    # check for sfp protocolnumbers in_remote_branches
+    # i.e. protocols that are being developed
+    branchesdf <- git_branch_list(
+      local = FALSE, repo = find_root(is_git_root)
+    )
+    in_remotebranch <- str_extract(
+      branchesdf$name,
+      paste0("sfp-", protocol_leading_number, "(\\d{2})-", language),
+      group = 1
+    )
+    in_remotebranch <- in_remotebranch[!is.na(in_remotebranch)] |>
+      unique() |>
+      as.numeric()
+
+    full_sequence <- seq(1, max(sfp_reserved, in_use, in_remotebranch, 1), 1)
+    not_reserved_or_in_use <- full_sequence[
+      !full_sequence %in% c(sfp_reserved, in_use, in_remotebranch)
+    ]
     gapfill_number <- min(not_reserved_or_in_use) |> suppressWarnings()
     next_number <- max(full_sequence) + 1
 
@@ -231,6 +253,7 @@ create_protocol_code <- function(
       msg = cli_alert_danger(
         "The protocol number {protocol_number} is not on the list of
         reserved numbers.
+        See `protocolhelper:::reserved_codes`.
         Are you sure you want to pass a number manually?"
       ) |> cli_fmt()
     )
@@ -245,9 +268,23 @@ create_protocol_code <- function(
         language = language
       )
       in_use <- as.numeric(all_numbers)
-      full_sequence <- seq(1, max(reserved, in_use, 1), 1)
+      # check for non-sfp protocolnumbers in_remote_branches
+      # i.e. protocols that are being developed
+      branchesdf <- git_branch_list(
+        local = FALSE, repo = find_root(is_git_root)
+      )
+      in_remotebranch <- str_extract(
+        branchesdf$name,
+        paste0(protocol_type, "-(\\d{3})-", language),
+        group = 1
+      )
+      in_remotebranch <- in_remotebranch[!is.na(in_remotebranch)] |>
+        unique() |>
+        as.numeric()
+
+      full_sequence <- seq(1, max(reserved, in_use, in_remotebranch, 1), 1)
       not_reserved_or_in_use <-
-        full_sequence[!full_sequence %in% c(reserved, in_use)]
+        full_sequence[!full_sequence %in% c(reserved, in_use, in_remotebranch)]
       gapfill_number <- min(not_reserved_or_in_use)
       next_number <- max(full_sequence) + 1
 
@@ -267,7 +304,9 @@ create_protocol_code <- function(
         protocol_number %in% reserved,
         msg = cli_alert_danger(
           "The protocol number {protocol_number} is not on the list
-          of reserved numbers. Are you sure you want to pass a number manually?"
+          of reserved numbers.
+          See `protocolhelper:::reserved_codes`.
+          Are you sure you want to pass a number manually?"
         ) |> cli_fmt()
       )
     }
