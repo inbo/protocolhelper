@@ -44,6 +44,8 @@ Imports:
 Suggests: 
     dplyr,
     keyring,
+    googlesheets4,
+    janitor,
     lubridate,
     magick,
     pander,
@@ -51,6 +53,7 @@ Suggests:
     reactable,
     rlang,
     testthat (>= 2.1.0),
+    tidyr,
     tinytex,
     zen4R
 Additional_repositories: https://inbo.r-universe.dev
