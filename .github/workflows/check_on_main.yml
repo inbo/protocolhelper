@@ -17,4 +17,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
     steps:
+      - uses: r-lib/actions/setup-tinytex@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+      - run: tlmgr --version
+
       - uses: inbo/actions/check_pkg@main
