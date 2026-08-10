@@ -15,6 +15,7 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ZENODO_SANDBOX: ${{ secrets.ZENODO_SANDBOX }}
+      R_KEYRING_BACKEND: env
     permissions:
       contents: read
     steps:
