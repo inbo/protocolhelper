@@ -43,9 +43,9 @@ Imports:
     ymlthis
 Suggests: 
     dplyr,
-    keyring,
     googlesheets4,
     janitor,
+    keyring,
     lubridate,
     magick,
     pander,
