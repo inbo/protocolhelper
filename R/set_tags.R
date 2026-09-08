@@ -43,8 +43,7 @@ set_tags <- function(
       "user.name",
       old_config$value[old_config$name == "user.name"],
       repo = path
-    ),
-
+    )
   )
   withr::defer(
     git_config_set(
