@@ -32,9 +32,9 @@ test_that("update doi works", {
 
   local_mocked_bindings(
     ask_yes_no = function(...) FALSE,
-    use_author = function(...) author_df,
-    use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df,
+    select_individual = function(...) author_df,
+    select_reviewer = function(...) reviewer_df,
+    select_file_manager = function(...) file_manager_df,
     readline = function(...) "Een titel"
   )
 
@@ -134,12 +134,12 @@ test_that("update doi works", {
   )
 
   # create a protocol
-  checklist::new_branch("sfp-101-en", repo = repo)
   version_number <- get_version_number()
   create_sfp(
     short_title = "water 1",
     version_number = version_number, theme = "water", language = "en"
   )
+  checklist::new_branch("sfp-101-en", repo = repo)
 
   update_news(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),

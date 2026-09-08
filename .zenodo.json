@@ -1,6 +1,6 @@
 {
   "title": "protocolhelper: Helper Functions to Manage Protocols",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "license": "GPL-3.0",
   "upload_type": "software",
   "description": "<p>Helper functions to manage INBO protocols.<\/p>",
@@ -51,5 +51,6 @@
     {
       "identifier": "inbo"
     }
-  ]
+  ],
+  "publisher": "Research Institute for Nature and Forest (INBO)"
 }

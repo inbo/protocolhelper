@@ -31,110 +31,148 @@ export(update_protocol)
 export(update_version_number)
 export(validate_orcid)
 importFrom(R6,R6Class)
-importFrom(assertthat,assert_that)
-importFrom(assertthat,has_name)
-importFrom(assertthat,is.date)
-importFrom(assertthat,is.flag)
-importFrom(assertthat,is.string)
-importFrom(assertthat,noNA)
-importFrom(assertthat,validate_that)
-importFrom(bookdown,gitbook)
-importFrom(bookdown,markdown_document2)
-importFrom(bookdown,pdf_book)
-importFrom(bookdown,render_book)
-importFrom(checklist,ask_yes_no)
-importFrom(checklist,citation_meta)
-importFrom(checklist,clean_git)
-importFrom(checklist,new_branch)
-importFrom(checklist,use_author)
-importFrom(cli,cli_alert)
-importFrom(cli,cli_alert_danger)
-importFrom(cli,cli_alert_info)
-importFrom(cli,cli_alert_success)
-importFrom(cli,cli_fmt)
+importFrom(assertthat,
+  assert_that,
+  has_name,
+  is.date,
+  is.flag,
+  is.string,
+  noNA,
+  validate_that
+)
+importFrom(bookdown,
+  gitbook,
+  markdown_document2,
+  pdf_book,
+  render_book
+)
+importFrom(checklist,
+  clean_git,
+  new_branch
+)
+importFrom(citeme,
+  ask_yes_no,
+  citation_meta,
+  select_individual
+)
+importFrom(cli,
+  cli_alert,
+  cli_alert_danger,
+  cli_alert_info,
+  cli_alert_success,
+  cli_fmt
+)
 importFrom(commonmark,markdown_xml)
-importFrom(fs,dir_copy)
-importFrom(fs,dir_create)
-importFrom(fs,dir_delete)
-importFrom(fs,dir_exists)
-importFrom(fs,dir_ls)
-importFrom(fs,file_copy)
-importFrom(fs,file_delete)
-importFrom(fs,file_exists)
-importFrom(fs,is_dir)
-importFrom(fs,path)
-importFrom(fs,path_dir)
-importFrom(fs,path_rel)
-importFrom(gert,git_add)
-importFrom(gert,git_branch)
-importFrom(gert,git_branch_checkout)
-importFrom(gert,git_branch_list)
-importFrom(gert,git_commit)
-importFrom(gert,git_config)
-importFrom(gert,git_config_set)
-importFrom(gert,git_stash_list)
-importFrom(gert,git_stash_pop)
-importFrom(gert,git_stash_save)
-importFrom(gert,git_status)
-importFrom(gert,git_tag_create)
-importFrom(jsonlite,fromJSON)
-importFrom(jsonlite,toJSON)
-importFrom(jsonlite,write_json)
-importFrom(knitr,all_patterns)
-importFrom(knitr,knit_child)
-importFrom(knitr,opts_knit)
-importFrom(purrr,"%>%")
-importFrom(purrr,flatten)
-importFrom(purrr,map)
-importFrom(purrr,map2)
-importFrom(purrr,map2_chr)
-importFrom(purrr,map_chr)
-importFrom(purrr,map_lgl)
-importFrom(purrr,pmap)
-importFrom(purrr,transpose)
-importFrom(rmarkdown,draft)
-importFrom(rmarkdown,html_document)
-importFrom(rmarkdown,pandoc_convert)
-importFrom(rmarkdown,pandoc_variable_arg)
-importFrom(rmarkdown,render)
-importFrom(rmarkdown,yaml_front_matter)
-importFrom(rprojroot,find_root)
-importFrom(rprojroot,is_git_root)
+importFrom(fs,
+  dir_copy,
+  dir_create,
+  dir_delete,
+  dir_exists,
+  dir_ls,
+  file_copy,
+  file_delete,
+  file_exists,
+  is_dir,
+  path,
+  path_dir,
+  path_rel
+)
+importFrom(gert,
+  git_add,
+  git_branch,
+  git_branch_checkout,
+  git_branch_list,
+  git_commit,
+  git_config,
+  git_config_set,
+  git_stash_list,
+  git_stash_pop,
+  git_stash_save,
+  git_status,
+  git_tag_create
+)
+importFrom(jsonlite,
+  fromJSON,
+  toJSON,
+  write_json
+)
+importFrom(knitr,
+  all_patterns,
+  knit_child,
+  opts_knit
+)
+importFrom(purrr,
+  "%>%",
+  flatten,
+  map,
+  map2,
+  map2_chr,
+  map_chr,
+  map_lgl,
+  pmap,
+  transpose
+)
+importFrom(rmarkdown,
+  draft,
+  html_document,
+  pandoc_convert,
+  pandoc_variable_arg,
+  render,
+  yaml_front_matter
+)
+importFrom(rprojroot,
+  find_root,
+  is_git_root
+)
 importFrom(stats,aggregate)
-importFrom(stringr,coll)
-importFrom(stringr,str_detect)
-importFrom(stringr,str_extract)
-importFrom(stringr,str_extract_all)
-importFrom(stringr,str_remove)
-importFrom(stringr,str_replace)
-importFrom(stringr,str_replace_all)
-importFrom(stringr,str_subset)
-importFrom(utils,browseURL)
-importFrom(utils,file_test)
-importFrom(utils,head)
-importFrom(utils,tail)
-importFrom(utils,write.csv)
-importFrom(utils,zip)
-importFrom(withr,defer)
-importFrom(withr,local_dir)
-importFrom(withr,with_dir)
-importFrom(xfun,read_utf8)
-importFrom(xfun,write_utf8)
-importFrom(xml2,read_xml)
-importFrom(xml2,xml_attr)
-importFrom(xml2,xml_children)
-importFrom(xml2,xml_find_all)
-importFrom(xml2,xml_text)
-importFrom(yaml,as.yaml)
-importFrom(yaml,read_yaml)
-importFrom(yaml,write_yaml)
-importFrom(ymlthis,as_yml)
-importFrom(ymlthis,use_index_rmd)
-importFrom(ymlthis,use_yml_file)
-importFrom(ymlthis,yml_author)
-importFrom(ymlthis,yml_bookdown_opts)
-importFrom(ymlthis,yml_date)
-importFrom(ymlthis,yml_discard)
-importFrom(ymlthis,yml_empty)
-importFrom(ymlthis,yml_replace)
-importFrom(ymlthis,yml_toplevel)
+importFrom(stringr,
+  coll,
+  str_detect,
+  str_extract,
+  str_extract_all,
+  str_remove,
+  str_replace,
+  str_replace_all,
+  str_subset
+)
+importFrom(utils,
+  browseURL,
+  file_test,
+  head,
+  tail,
+  write.csv,
+  zip
+)
+importFrom(withr,
+  defer,
+  local_dir,
+  with_dir
+)
+importFrom(xfun,
+  read_utf8,
+  write_utf8
+)
+importFrom(xml2,
+  read_xml,
+  xml_attr,
+  xml_children,
+  xml_find_all,
+  xml_text
+)
+importFrom(yaml,
+  as.yaml,
+  read_yaml,
+  write_yaml
+)
+importFrom(ymlthis,
+  as_yml,
+  use_index_rmd,
+  use_yml_file,
+  yml_author,
+  yml_bookdown_opts,
+  yml_date,
+  yml_discard,
+  yml_empty,
+  yml_replace,
+  yml_toplevel
+)

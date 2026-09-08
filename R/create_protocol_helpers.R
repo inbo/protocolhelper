@@ -25,8 +25,9 @@
 #' get_protocolnumbers()
 #' }
 get_protocolnumbers <- function(
-    protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
-    language = c("nl", "en")) {
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")
+) {
   protocol_type <- match.arg(protocol_type)
   language <- match.arg(language)
 
@@ -83,8 +84,9 @@ get_protocolnumbers <- function(
 #' get_short_titles()
 #' }
 get_short_titles <- function(
-    protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
-    language = c("nl", "en")) {
+  protocol_type = c("sfp", "sip", "sap", "sop", "spp"),
+  language = c("nl", "en")
+) {
   protocol_type <- match.arg(protocol_type)
   language <- match.arg(language)
 
@@ -141,6 +143,8 @@ get_short_titles <- function(
 #' Note that for backwards compatibility with protocol numbers that were already
 #' in use at INBO, we made a list of reserved numbers.
 #' These reserved numbers will not be used when `protocol_number` is NULL.
+#' You can inspect the list of reserved numbers with
+#' `protocolhelper:::reserved_codes`.
 #' The only time you will need to explicitly pass a protocol number to the
 #' `protocol_number` argument is when you want to migrate a pre-existing INBO
 #' protocol to `protocolsource` and hence use one of the reserved numbers.
@@ -152,13 +156,16 @@ get_short_titles <- function(
 #' @importFrom stringr str_subset str_extract
 #' @importFrom assertthat assert_that validate_that
 #' @importFrom cli cli_fmt cli_alert_danger
+#' @importFrom rprojroot find_root is_git_root
+#' @importFrom gert git_branch_list
 #'
 #' @return A character string containing the protocol_code
 #'
 #' @export
 #' @keywords internal
 create_protocol_code <- function(
-    protocol_type, theme, protocol_number, language) {
+  protocol_type, theme, protocol_number, language
+) {
   reserved_codes$bare <- as.integer(reserved_codes$protocolnumber_bare)
   reserved_codes$theme_number <- ifelse(
     reserved_codes$protocoltype == "sfp",
@@ -180,6 +187,8 @@ create_protocol_code <- function(
         bare_numbers$theme_number == protocol_leading_number
     ] -
       as.numeric(protocol_leading_number) * 100
+
+    # get all protocolnumbers in main branch
     all_numbers <- get_protocolnumbers(
       protocol_type = protocol_type,
       language = language
@@ -189,9 +198,25 @@ create_protocol_code <- function(
     )
     in_use <- as.numeric(theme_numbers) -
       as.numeric(protocol_leading_number) * 100
-    full_sequence <- seq(1, max(sfp_reserved, in_use, 1), 1)
-    not_reserved_or_in_use <-
-      full_sequence[!full_sequence %in% c(sfp_reserved, in_use)]
+
+    # check for sfp protocolnumbers in_remote_branches
+    # i.e. protocols that are being developed
+    branchesdf <- git_branch_list(
+      local = FALSE, repo = find_root(is_git_root)
+    )
+    in_remotebranch <- str_extract(
+      branchesdf$name,
+      paste0("sfp-", protocol_leading_number, "(\\d{2})-", language),
+      group = 1
+    )
+    in_remotebranch <- in_remotebranch[!is.na(in_remotebranch)] |>
+      unique() |>
+      as.numeric()
+
+    full_sequence <- seq(1, max(sfp_reserved, in_use, in_remotebranch, 1), 1)
+    not_reserved_or_in_use <- full_sequence[
+      !full_sequence %in% c(sfp_reserved, in_use, in_remotebranch)
+    ]
     gapfill_number <- min(not_reserved_or_in_use) |> suppressWarnings()
     next_number <- max(full_sequence) + 1
 
@@ -228,6 +253,7 @@ create_protocol_code <- function(
       msg = cli_alert_danger(
         "The protocol number {protocol_number} is not on the list of
         reserved numbers.
+        See `protocolhelper:::reserved_codes`.
         Are you sure you want to pass a number manually?"
       ) |> cli_fmt()
     )
@@ -242,9 +268,23 @@ create_protocol_code <- function(
         language = language
       )
       in_use <- as.numeric(all_numbers)
-      full_sequence <- seq(1, max(reserved, in_use, 1), 1)
+      # check for non-sfp protocolnumbers in_remote_branches
+      # i.e. protocols that are being developed
+      branchesdf <- git_branch_list(
+        local = FALSE, repo = find_root(is_git_root)
+      )
+      in_remotebranch <- str_extract(
+        branchesdf$name,
+        paste0(protocol_type, "-(\\d{3})-", language),
+        group = 1
+      )
+      in_remotebranch <- in_remotebranch[!is.na(in_remotebranch)] |>
+        unique() |>
+        as.numeric()
+
+      full_sequence <- seq(1, max(reserved, in_use, in_remotebranch, 1), 1)
       not_reserved_or_in_use <-
-        full_sequence[!full_sequence %in% c(reserved, in_use)]
+        full_sequence[!full_sequence %in% c(reserved, in_use, in_remotebranch)]
       gapfill_number <- min(not_reserved_or_in_use)
       next_number <- max(full_sequence) + 1
 
@@ -264,7 +304,9 @@ create_protocol_code <- function(
         protocol_number %in% reserved,
         msg = cli_alert_danger(
           "The protocol number {protocol_number} is not on the list
-          of reserved numbers. Are you sure you want to pass a number manually?"
+          of reserved numbers.
+          See `protocolhelper:::reserved_codes`.
+          Are you sure you want to pass a number manually?"
         ) |> cli_fmt()
       )
     }
@@ -295,8 +337,9 @@ create_protocol_code <- function(
 #' @export
 #' @keywords internal
 create_from_docx <- function(
-    from_docx,
-    path_to_protocol) {
+  from_docx,
+  path_to_protocol
+) {
   temp_filename <- "temp.Rmd"
   convert_docx_to_rmd(
     from = from_docx,
@@ -366,10 +409,11 @@ create_from_docx <- function(
 #'
 #' @noRd
 write_bookdown_yml <- function(
-    language,
-    book_filename,
-    path_to_protocol,
-    output_dir_rel) {
+  language,
+  book_filename,
+  path_to_protocol,
+  output_dir_rel
+) {
   # create a character vector with the names of all rmd_files
   # in correct order for compilation
   rmd_files <- c(
@@ -477,95 +521,6 @@ bookdown::pdf_book:
   xfun::write_utf8(yaml_content, file.path(path_to_protocol, "_output.yml"))
 }
 
-#' Fills in values from key-value pairs in `yaml` front matter
-#'
-#' Overwrites the `index.Rmd` file
-#'
-#' @param parent_rmd original `index.Rmd` file
-#' @param path_to_protocol path to the protocol
-#' @param protocol_code the protocol code
-#' @param protocol_type the protocol type
-#' @inheritParams create_protocol
-#'
-#' @importFrom ymlthis yml_replace yml_discard as_yml yml_author yml_date
-#' yml_toplevel use_index_rmd
-#' @importFrom rmarkdown yaml_front_matter
-#'
-#' @noRd
-#'
-write_yaml_front_matter <- function(
-    parent_rmd,
-    path_to_protocol,
-    title,
-    subtitle,
-    date,
-    version_number,
-    protocol_code,
-    language,
-    protocol_type,
-    template,
-    theme,
-    project_name) {
-  # change values in parent rmarkdown
-  index_yml <- yaml_front_matter(parent_rmd)
-  unlink("css", recursive = TRUE)
-  index_yml <- as_yml(index_yml)
-  index_yml <- yml_replace(
-    index_yml,
-    title = title,
-    subtitle = subtitle,
-    version_number = version_number,
-    protocol_code = protocol_code,
-    language = language
-  )
-  if (is.null(subtitle)) {
-    index_yml <- yml_discard(index_yml, "subtitle")
-  }
-  index_yml <- yml_date(
-    index_yml,
-    date = date
-  )
-  if (protocol_type == "sfp" && template == protocol_type) {
-    index_yml <- yml_replace(
-      index_yml,
-      theme = theme
-    )
-  }
-  if (protocol_type == "sfp" && template == "generic") {
-    index_yml <- yml_toplevel(
-      index_yml,
-      theme = theme
-    )
-  }
-  if (protocol_type == "spp") {
-    index_yml <- yml_replace(
-      index_yml,
-      project_name = project_name
-    )
-  }
-  # set url and github_repo
-  index_yml <- yml_toplevel(
-    index_yml,
-    url = "https://inbo.github.io/protocols/",
-    github_repo = "inbo/protocolsource"
-  )
-
-  # overwrite old yaml sections
-
-  template_rmd <- file.path(path_to_protocol, "template.rmd")
-  file.copy(from = parent_rmd, to = template_rmd)
-  unlink(parent_rmd)
-  ymlthis::use_index_rmd(
-    .yml = index_yml,
-    path = path_to_protocol,
-    template = template_rmd,
-    include_body = TRUE,
-    include_yaml = FALSE,
-    quiet = TRUE,
-    open_doc = FALSE
-  )
-  unlink(template_rmd)
-}
 
 #' @importFrom assertthat assert_that
 author2yaml <- function(author, corresponding = FALSE) {
@@ -593,16 +548,16 @@ author2yaml <- function(author, corresponding = FALSE) {
   paste(c(yaml, "    corresponding: true"), collapse = "\n")
 }
 
-#' @importFrom checklist use_author
+#' @importFrom citeme select_individual
 #' @noRd
-use_reviewer <- use_file_manager <- use_author
+select_reviewer <- select_file_manager <- select_individual
 
 #' Helper to ask questions to construct yaml key-value pairs
 #'
 #' Asks for title, subtitle, authors, reviewers, file manager, keywords
 #' @inheritParams create_protocol_code
 #'
-#' @importFrom checklist use_author ask_yes_no
+#' @importFrom citeme select_individual ask_yes_no
 #' @importFrom cli cli_fmt cli_alert cli_alert_danger
 #' @noRd
 yaml_interactive <- function(language) {
@@ -620,7 +575,7 @@ yaml_interactive <- function(language) {
   yaml <- c(yaml, sprintf(fmt = "subtitle: \"%s\"", subtitle)[subtitle != ""])
   cli_alert("Please select the corresponding author")
   lang <- paste0(language, "-BE"[language == "nl"], "-GB"[language == "en"])
-  authors <- use_author(lang = lang)
+  authors <- select_individual(lang = lang)
   c(yaml, "author:", author2yaml(authors, corresponding = TRUE)) -> yaml
   while (
     isTRUE(
@@ -633,7 +588,7 @@ yaml_interactive <- function(language) {
       )
     )
   ) {
-    author <- use_author(lang = lang)
+    author <- select_individual(lang = lang)
     authors[, c("given", "family", "email")] |>
       rbind(author[, c("given", "family", "email")]) |>
       anyDuplicated() -> duplo
@@ -647,7 +602,7 @@ yaml_interactive <- function(language) {
     authors <- rbind(authors, author)
   }
   cli_alert("Please select a reviewer")
-  reviewer <- use_reviewer(lang = lang)
+  reviewer <- select_reviewer(lang = lang)
   authors[, c("given", "family", "email")] |>
     rbind(reviewer[, c("given", "family", "email")]) |>
     anyDuplicated() -> duplo
@@ -668,7 +623,7 @@ yaml_interactive <- function(language) {
       )
     )
   ) {
-    reviewer <- use_reviewer(lang = lang)
+    reviewer <- select_reviewer(lang = lang)
     authors[, c("given", "family", "email")] |>
       rbind(reviewer[, c("given", "family", "email")]) |>
       anyDuplicated() -> duplo
@@ -681,7 +636,7 @@ yaml_interactive <- function(language) {
     c(yaml, author2yaml(reviewer, corresponding = FALSE)) -> yaml
   }
   cli_alert("Please select the file manager")
-  file_manager <- use_file_manager(lang = lang)
+  file_manager <- select_file_manager(lang = lang) # nolint: object_usage_linter
 
   readline(prompt = cli_fmt(
     cli_alert("Enter one or more keywords separated by `;`")

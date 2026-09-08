@@ -23,11 +23,11 @@ the value 10.
 validate_orcid("0000-0002-6378-6229")
 }
 \seealso{
-Other check: 
-\code{\link{check_all}()},
-\code{\link{check_all_person_info}()},
-\code{\link{check_frontmatter}()},
-\code{\link{check_structure}()},
+Other check:
+\code{\link[=check_all]{check_all()}},
+\code{\link[=check_all_person_info]{check_all_person_info()}},
+\code{\link[=check_frontmatter]{check_frontmatter()}},
+\code{\link[=check_structure]{check_structure()}},
 \code{\link{protocolcheck}}
 }
 \concept{check}

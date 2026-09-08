@@ -24,9 +24,9 @@ test_that("Check frontmatter works", {
 
   local_mocked_bindings(
     ask_yes_no = function(...) FALSE,
-    use_author = function(...) author_df,
-    use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df,
+    select_individual = function(...) author_df,
+    select_reviewer = function(...) reviewer_df,
+    select_file_manager = function(...) file_manager_df,
     readline = function(...) "Een titel"
   )
 
@@ -113,13 +113,13 @@ test_that("Check frontmatter works", {
   )
 
   # another protocol
-  checklist::new_branch("sfp-102-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
 
   protocolhelper::create_protocol(
     short_title = "water 2",
     version_number = version_number_2, theme = "water", language = "en"
   )
+  checklist::new_branch("sfp-102-en", repo = repo)
   sfp_staged <- gert::git_add(files = ".")
   gert::git_commit_all(message = "sfp-102-en_water-2")
   specific_tag <- paste("sfp-102-en", version_number_2, sep = "-")
@@ -133,11 +133,6 @@ test_that("Check frontmatter works", {
     refspec = refspec,
     set_upstream = TRUE,
     repo = repo
-  )
-
-  check_frontmatter(
-    protocol_code = "sfp-102-en",
-    fail = FALSE
   )
 
   expect_output(

@@ -32,10 +32,10 @@ test_that("complete workflow works", {
 
   local_mocked_bindings(
     ask_yes_no = function(...) FALSE,
-    use_author = function(...) author_df,
-    use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df,
-    readline = function(...) "Een titel"
+    select_individual = function(...) author_df,
+    select_reviewer = function(...) reviewer_df,
+    select_file_manager = function(...) file_manager_df,
+    readline = function(...) paste("Tekst", Sys.time())
   )
 
   update_news <- function(path, version_number) {
@@ -134,12 +134,12 @@ test_that("complete workflow works", {
   )
 
   # create a protocol to be used as subprotocol
-  checklist::new_branch("sfp-101-en", repo = repo)
   version_number <- get_version_number()
   create_sfp(
     short_title = "water 1",
     version_number = version_number, theme = "water", language = "en"
   )
+  checklist::new_branch("sfp-101-en", repo = repo)
 
   update_news(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
@@ -188,12 +188,12 @@ test_that("complete workflow works", {
 
 
   # create a protocol which will also be used as subprotocol
-  checklist::new_branch("sfp-407-en", repo = repo)
   version_number_2 <- get_version_number(path = repo)
   create_sfp(
     short_title = "vegetation 1",
     version_number = version_number_2, theme = "vegetation", language = "en"
   )
+  checklist::new_branch("sfp-407-en", repo = repo)
 
   update_news(
     path = file.path(
@@ -241,7 +241,6 @@ test_that("complete workflow works", {
   expect_no_error(protocolhelper:::render_release())
 
   # create a second protocol to be used as subprotocol
-  checklist::new_branch("sfp-102-en", repo = repo)
   version_number_3 <- get_version_number(path = repo)
   create_sfp(
     short_title = "second subprotocol",
@@ -249,6 +248,7 @@ test_that("complete workflow works", {
     theme = "water",
     language = "en"
   )
+  checklist::new_branch("sfp-102-en", repo = repo)
   # test non-default params
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
@@ -380,12 +380,12 @@ test_that("complete workflow works", {
 
 
   # create a project protocol
-  checklist::new_branch("spp-001-en", repo = repo)
   version_number_4 <- get_version_number(path = repo)
   create_spp(
     short_title = "mne protocol",
     version_number = version_number_4, project_name = "mne", language = "en"
   )
+  checklist::new_branch("spp-001-en", repo = repo)
 
   # add subprotocols to
   # source/spp/mne/spp_001_en_mne_protocol/

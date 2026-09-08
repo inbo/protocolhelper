@@ -44,6 +44,7 @@ spelling:
   - LICENSE.md
   - README.md
   - tests
+  - .github/agents/
   other:
     nl-BE:
     - inst/rmarkdown/templates/template_generic_nl/skeleton/01_samenvatting.Rmd
