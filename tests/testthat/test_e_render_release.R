@@ -21,47 +21,7 @@ test_that("complete workflow works", {
       file.path(path, "NEWS.md")
     )
   }
-  jsontxt <- '{
-    "title": "",
-    "description": "",
-    "license": "cc-by",
-    "upload_type": "other",
-    "access_right": "open",
-    "creators": [
-        {
-            "name": "Van Calster, Hans",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0001-8595-8426"
-        },
-        {
-            "name": "De Bie, Els",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0001-7679-743X"
-        },
-        {
-            "name": "Onkelinx, Thierry",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0001-8804-4216"
-        },
-        {
-            "name": "Vanderhaeghe, Floris",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0002-6378-6229"
-        }
-    ],
-    "keywords": [
-        "open protocol",
-        "open science",
-        "research institute",
-        "nature",
-        "forest",
-        "environment",
-        "markdown",
-        "Flanders",
-        "Belgium"
-        ]
-}'
-
+  
   origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
   url = "https://github.com/inbo/unittests"
   gert::git_remote_add(url = url, repo = origin_repo)
@@ -81,6 +41,8 @@ test_that("complete workflow works", {
   )
   file.create("NEWS.md")
   file.create(".zenodo.json")
+  
+  jsontxt <- mock_zenodo_json()
   writeLines(jsontxt, con = ".zenodo.json")
 
   file.create(".gitignore")

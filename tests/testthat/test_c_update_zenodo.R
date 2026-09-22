@@ -154,17 +154,33 @@ test_that(
     gert::git_tag_create(name = generic_tag, message = "bla")
 
     # new authors added
-    testobject <- protocolhelper:::update_zenodo(jsontxt, write = FALSE)
-    expectedobject <- jsonlite::fromJSON(jsonresult1, simplifyVector = FALSE)
-    expectedobject <- jsonlite::toJSON(
-      expectedobject,
+
+    # Prepare base JSON and expected result with author added to contributors
+    input_json <- mock_zenodo_json()
+    expected_list <- jsonlite::fromJSON(input_json, simplifyVector = FALSE)
+    expected_list$contributors <- list(
+      list(
+        name = list(given = "Hans", family = "Van Calster"),
+        type = "Researcher",
+        email = "hans.vancalster@inbo.be",
+        orcid = "0000-0001-8595-8426",
+        affiliation = "Research Institute for Nature and Forest (INBO)",
+        corresponding = TRUE
+      )
+    )
+    expected_json <- jsonlite::toJSON(
+      expected_list,
       pretty = TRUE,
       auto_unbox = TRUE
     )
 
+    # Test that update_zenodo() adds the new author to contributors
+    actual_json <- protocolhelper:::update_zenodo(input_json, write = FALSE)
+
     testthat::expect_equal(
-      object = testobject,
-      expected = expectedobject
+      object = actual_json,
+      expected = expected_json
     )
+
   }
 )
