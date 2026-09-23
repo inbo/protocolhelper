@@ -1,3 +1,20 @@
+# ==============================================================================
+# Unit Tests: update_zenodo()
+#
+# What is tested:
+#   - Zenodo metadata (zenodo.json) generation and updating.
+#   - Conversion and mapping of protocol authors into Zenodo contributor schema
+#     (names, affiliations, ORCIDs, contributor types, corresponding author status).
+#
+# How it is tested:
+#   - Sets up mock contributors and a mock git repository.
+#   - Scaffolds, commits, and tags a protocol (sfp-102-en).
+#   - Loads a mock Zenodo JSON payload via mock_zenodo_json().
+#   - Builds an expected JSON structure with new contributor entries.
+#   - Calls update_zenodo(input_json, write = FALSE) and asserts exact equality
+#     between actual and expected JSON strings.
+# ==============================================================================
+
 test_that(
   "Update zenodo works",
   {

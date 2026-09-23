@@ -1,3 +1,20 @@
+# ==============================================================================
+# Unit Tests: check_all()
+#
+# What is tested:
+#   - Comprehensive validation combining check_frontmatter() and check_structure().
+#   - Verification of protocol metadata, file layout, and NEWS.md version headers.
+#   - Failure propagation when any front matter, structural, or NEWS requirement fails.
+#   - Error handling for invalid/non-existent protocol codes.
+#
+# How it is tested:
+#   - Sets up mock contributors and a mock git repository with origin.
+#   - Scaffolds, tags, and pushes a valid protocol; asserts check_all() succeeds.
+#   - Introduces an error in NEWS.md (unmatched version header), commits, and pushes;
+#     asserts check_all(..., fail = TRUE) throws an error.
+#   - Invokes check_all() on a non-existent protocol code and asserts error is thrown.
+# ==============================================================================
+
 test_that("Test if check all works", {
   language <- "en"
   setup_mock_contributors()

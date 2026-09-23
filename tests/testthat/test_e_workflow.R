@@ -1,3 +1,26 @@
+# ==============================================================================
+# Unit Tests: Multi-Protocol End-to-End Workflow
+#
+# What is tested:
+#   - Full lifecycle management across multiple interrelated scientific protocols:
+#     scaffolding, versioning, subprotocol dependency injection, release rendering,
+#     and protocol updates.
+#   - Multi-theme protocol coordination (water SFP, vegetation SFP, and composite SPP).
+#   - Integration of Zenodo metadata updates, sandbox DOI assignment, git branch
+#     management, and release builds.
+#
+# How it is tested:
+#   - Skips test if offline, on r-universe, or if ZENODO_SANDBOX credential is unavailable.
+#   - Creates a mock repository with origin and Zenodo sandbox connection.
+#   - Sequentially executes:
+#     1. Scaffolds water protocol (sfp-101-en), tags, merges, and renders release.
+#     2. Scaffolds vegetation protocol (sfp-407-en), tags, merges, and renders release.
+#     3. Scaffolds composite project protocol (spp-001-en), embeds dependencies from both
+#        subprotocols via add_dependencies(), tags, merges, and renders release.
+#     4. Initiates update on sfp-101-en via update_protocol(), tags, merges, and renders release.
+#   - Asserts expect_no_error() at each release milestone.
+# ==============================================================================
+
 test_that("complete workflow works", {
   skip_if_offline()
   skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev

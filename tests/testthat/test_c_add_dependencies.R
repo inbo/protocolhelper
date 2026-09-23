@@ -1,3 +1,21 @@
+# ==============================================================================
+# Unit Tests: add_dependencies()
+#
+# What is tested:
+#   - Adding protocol dependencies to a protocol's index.Rmd YAML front matter.
+#   - Correct population of dependency metadata: protocol code, version number,
+#     custom rendering parameters, and appendix flag.
+#   - Preservation of existing project-specific parameters in the YAML front matter.
+#
+# How it is tested:
+#   - Initializes a mock git repository and mock contributors.
+#   - Scaffolds a new SFP protocol (sfp-101-en) via create_sfp().
+#   - Injects custom YAML parameters into index.Rmd using ymlthis.
+#   - Calls add_dependencies() with multiple subprotocol specifications and parameter lists.
+#   - Parses the resulting index.Rmd YAML front matter and asserts that the params
+#     structure exactly matches expected nested configuration.
+# ==============================================================================
+
 test_that("test that adding dependencies to yaml works", {
   library(ymlthis)
   language <- "en"
@@ -19,36 +37,30 @@ test_that("test that adding dependencies to yaml works", {
   )
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
+
+  # this is an added parameter to the index yml.
   index_yml <- ymlthis::yml_params(index_yml, protocolspecific = "defaultvalue")
-  template_rmd <-
-    file.path(
-      "source", "sfp", "1_water", "sfp_101_en_water_1",
-      "template.Rmd"
-    )
-  file.copy(
-    from = file.path(
+  # this is the index_rmd without params in the yml header
+  index_rmd <- file.path(
       "source", "sfp", "1_water", "sfp_101_en_water_1",
       "index.Rmd"
-    ),
-    to = template_rmd
-  )
-  unlink(file.path(
-    "source", "sfp", "1_water", "sfp_101_en_water_1",
-    "index.Rmd"
-  ))
+    )
+
+  # instead of creating a template rmd that is a copy of the index rmd
+  # we use the overwrite options of the usethis package
+  withr::with_options(list(usethis.overwrite = TRUE), {
   ymlthis::use_index_rmd(
     .yml = index_yml,
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    template = template_rmd,
+    template = index_rmd,
     include_body = TRUE,
     include_yaml = FALSE,
     quiet = TRUE,
     open_doc = FALSE
   )
-  unlink(template_rmd)
-
-
+})
   # add dependencies
+
   add_dependencies(
     code_mainprotocol = "sfp-101-en",
     protocol_code = c("sfp-123-en", "spp-124-en"),
@@ -64,6 +76,7 @@ test_that("test that adding dependencies to yaml works", {
   index_yml <- rmarkdown::yaml_front_matter(main)
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
+  # Comparing the params of index with the added dependencies in the header
   testthat::expect_equal(
     index_yml$params,
     list(

@@ -1,3 +1,22 @@
+# ==============================================================================
+# Unit Tests: insert_protocolsection()
+#
+# What is tested:
+#   - Modular insertion of complete chapters from a tagged subprotocol.
+#   - Dynamic header level demotion and promotion (demote_header = 1, -1).
+#   - Extraction and insertion of specific subsections by heading name.
+#   - Handling subprotocols with non-default parameter requirements.
+#
+# How it is tested:
+#   - Requires the 'png' package.
+#   - Sets up a mock repository with Dutch contributors and scaffolds subprotocol sfp-101-nl.
+#   - Commits and creates git version tags (specific protocol tag and generic tag).
+#   - Calls insert_protocolsection() across multiple combinations: full chapter,
+#     demoted header, specific section ("## Uitvoering"), and promoted header.
+#   - Injects custom params into the subprotocol and commits tag 2020.02.
+#   - Verifies all insertions produce expected output without throwing errors.
+# ==============================================================================
+
 test_that("Test that insert_protocolsection works", {
   if (!requireNamespace("png", quietly = TRUE)) {
     stop("please install 'png' package for these tests to work")

@@ -1,3 +1,23 @@
+# ==============================================================================
+# Unit Tests: update_doi() & DOI Lifecycle
+#
+# What is tested:
+#   - DOI reservation and assignment via Zenodo Sandbox API.
+#   - Correct DOI prefix pattern matching ('10.5072/...').
+#   - Injection and synchronization of the minted DOI into index.Rmd YAML front matter.
+#   - Idempotency: preserving existing reserved DOI during repeated calls on the same version.
+#   - Version update workflow: reserving a new DOI when a protocol version is incremented.
+#
+# How it is tested:
+#   - Skips test if offline, on r-universe, or if ZENODO_SANDBOX key is missing.
+#   - Initializes mock git repository with origin and Zenodo sandbox environment.
+#   - Scaffolds SFP protocol and calls update_doi(); verifies DOI format and YAML front matter.
+#   - Calls update_doi() again on same branch to verify DOI retention.
+#   - Merges initial version into main, runs update_protocol() to increment version,
+#     calls update_doi() again, and validates new DOI reservation.
+#   - Verifies render_release() succeeds after update.
+# ==============================================================================
+
 test_that("update doi works", {
   skip_if_offline()
   skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev
