@@ -2,17 +2,7 @@ test_that("test that adding dependencies to yaml works", {
   library(ymlthis)
   language <- "en"
   setup_mock_contributors(language =language)
-
-  old_wd <- getwd()
-  withr::defer(setwd(old_wd))
-  test_repo <- tempfile("test_protocol")
-  dir.create(test_repo)
-  setwd(test_repo)
-  repo <- gert::git_init()
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = ".")
-  gert::git_config_set(name = "user.name", value = "someone")
-  gert::git_config_set(name = "user.email", value = "someone@example.org")
+  setup_mock_repo(with_origin = FALSE)
 
   # create a protocol
   version_number <- "2021.01"
