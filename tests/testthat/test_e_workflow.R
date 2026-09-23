@@ -24,50 +24,11 @@ test_that("complete workflow works", {
     )
   }
 
-  origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = origin_repo)
-  on.exit(unlink(origin_repo, recursive = TRUE))
-  repo <- gert::git_clone(
-    url = origin_repo,
-    path = tempfile("protocol_local"), verbose = FALSE
-  )
-  on.exit(unlink(repo, recursive = TRUE))
-  old_wd <- setwd(repo)
-  on.exit(setwd(old_wd))
-
-  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(
-    name = "user.email", value = "someone@example.org",
-    repo = repo
-  )
-  file.create("NEWS.md")
-  file.create(".zenodo.json")
-
-  jsontxt <- mock_zenodo_json()
-  writeLines(jsontxt, con = ".zenodo.json")
-
-  file.create(".gitignore")
-  writeLines(c("docs/", "publish/"), con = ".gitignore")
-  gert::git_add("NEWS.md")
-  gert::git_commit_all(message = "add empty NEWS repo file")
-
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
-
-  branch_info <- gert::git_branch_list(repo = repo)
-  main_branch <- ifelse(any(branch_info$name == "origin/main"),
-    "main", ifelse(any(branch_info$name == "origin/master"),
-      "master", "unknown"
-    )
-  )
-
+  mock_repo <- setup_mock_repo(with_origin = TRUE, with_zenodo = TRUE)
+  repo <- mock_repo$repo
+  origin_repo <- mock_repo$origin_repo
+  main_branch <- mock_repo$main_branch
+  
   # create a protocol to be used as subprotocol
   version_number <- get_version_number()
   create_sfp(

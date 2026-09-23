@@ -2,43 +2,8 @@ test_that("add author works", {
   language <- "en"
   setup_mock_contributors(language=language)
 
-  origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = origin_repo)
-  withr::defer(unlink(origin_repo, recursive = TRUE))
-  repo <- gert::git_clone(
-    url = origin_repo,
-    path = tempfile("protocol_local"), verbose = FALSE
-  )
-  withr::defer(unlink(repo, recursive = TRUE))
-  old_wd <- setwd(repo)
-  withr::defer(setwd(old_wd))
-
-  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(
-    name = "user.email", value = "someone@example.org",
-    repo = repo
-  )
-  file.create("NEWS.md")
-  gert::git_add("NEWS.md")
-  gert::git_commit_all(message = "add empty NEWS repo file")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
-
-  branch_info <- gert::git_branch_list(repo = repo)
-  main_branch <- ifelse(
-    any(branch_info$name == "origin/main"),
-    "main", ifelse(
-      any(branch_info$name == "origin/master"),
-      "master", "unknown"
-    )
-  )
+  setup_mock_repo(with_origin = TRUE)
+  
   # create a protocol
   version_number <- get_version_number()
   create_sfp(

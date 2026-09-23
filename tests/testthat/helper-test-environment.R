@@ -181,6 +181,7 @@ setup_mock_repo <- function(with_origin = TRUE,
 
     file.create("NEWS.md")
     if (with_zenodo) {
+      file.create(".zenodo.json")
       writeLines(mock_zenodo_json(), con = ".zenodo.json")
       writeLines(c("docs/", "publish/"), con = ".gitignore")
     }

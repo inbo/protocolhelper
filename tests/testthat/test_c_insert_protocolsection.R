@@ -4,17 +4,7 @@ test_that("Test that insert_protocolsection works", {
   }
   language <- "nl"
   setup_mock_contributors(language = language)
-
-  test_repo <- tempfile("test_protocol")
-  dir.create(test_repo)
-  old_wd <- setwd(test_repo)
-  withr::defer(setwd(old_wd))
-  repo <- gert::git_init()
-  withr::defer(unlink(repo, recursive = TRUE))
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = ".")
-  gert::git_config_set(name = "user.name", value = "someone")
-  gert::git_config_set(name = "user.email", value = "someone@example.org")
+  setup_mock_repo(with_origin=FALSE)
 
   # create a protocol to be used as subprotocol
   version_number <- "2020.01"
