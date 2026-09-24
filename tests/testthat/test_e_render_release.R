@@ -2,17 +2,18 @@
 # Unit Tests: Release Pipeline (render_release)
 #
 # What is tested:
-#   - End-to-end execution of render_release() across protocols scheduled for release.
-#   - Integration with NEWS release updating, Zenodo metadata sync, and DOI reservation.
-#   - Branch cleanup and rendering after merging protocol branch into main.
+#   - Whether render_release() completes without error after a mock protocol release
+#     workflow has updated release metadata and merged the protocol branch.
 #
 # How it is tested:
-#   - Skips test if offline, on r-universe, or if ZENODO_SANDBOX credential is unavailable.
-#   - Sets up a mock repository with origin and Zenodo sandbox connectivity.
-#   - Scaffolds protocol, adds reviewers, updates NEWS.md, and runs update_news_release(),
-#     update_zenodo(), and update_doi().
-#   - Tags, pushes, merges to main, deletes local/remote feature branch.
-#   - Invokes render_release() and asserts successful completion (expect_no_error()).
+#   - Skips when offline, MY_UNIVERSE is nonempty, required packages are missing,
+#     or the ZENODO_SANDBOX credential is unavailable.
+#   - Sets up a mock repository with origin and Zenodo metadata, scaffolds a
+#     protocol, adds a reviewer, and calls the NEWS, Zenodo, and DOI update steps.
+#   - Commits, tags, and pushes the protocol branch, then merges it and deletes the
+#     local and remote feature branches.
+#   - Asserts only that the final render_release() call does not error; intermediate
+#     metadata and branch-cleanup results are not separately checked.
 # ==============================================================================
 
 test_that("complete workflow works", {

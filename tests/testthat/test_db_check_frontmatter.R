@@ -2,19 +2,17 @@
 # Unit Tests: check_frontmatter()
 #
 # What is tested:
-#   - Validation of YAML front matter metadata in index.Rmd.
-#   - Compliance of protocol title, subtitle, version format, language, and contributor roles.
-#   - Conflict checking against origin remote branches and tags.
-#   - Error reporting and strict failure handling (fail = TRUE vs fail = FALSE).
+#   - Front-matter validation for valid protocols and for edited subtitle, title,
+#     version, and author fields.
+#   - Error behavior with fail = TRUE and printed diagnostics with fail = FALSE.
 #
 # How it is tested:
-#   - Initializes a mock git repository with bare origin remote and contributor metadata.
-#   - Creates valid protocols, commits, tags, pushes to origin, and merges to main.
-#   - Asserts check_frontmatter() outputs success ("Well done! No problems found").
-#   - Introduces invalid YAML fields (corrupted title vector, invalid version format,
-#     malformed author block) and pushes to origin.
-#   - Asserts check_frontmatter() throws error on fail = TRUE and reports descriptive
-#     error details when fail = FALSE.
+#   - Initializes a mock git repository with a bare origin and contributor metadata.
+#   - Creates, tags, and pushes two valid protocols (merging the first into main),
+#     then confirms check_frontmatter() reports no problems for both.
+#   - Edits the second protocol's front matter, commits and pushes it, then checks
+#     for an error with fail = TRUE and diagnostic output with fail = FALSE.
+#   - Does not test conflicts against origin branches or tags.
 # ==============================================================================
 
 test_that("Check frontmatter works", {

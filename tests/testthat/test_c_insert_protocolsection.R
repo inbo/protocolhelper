@@ -2,22 +2,15 @@
 # Unit Tests: insert_protocolsection()
 #
 # What is tested:
-#   - Modular insertion of complete chapters from a tagged subprotocol.
-#   - Dynamic header level demotion and promotion (demote_header = 1, -1).
-#   - Extraction and insertion of specific subsections by heading name.
-#   - Handling subprotocols with non-default parameter requirements.
+#   - Calls to insert_protocolsection() for a full chapter, adjusted header levels,
+#     a named subsection, and a subprotocol with a custom parameter.
 #
 # How it is tested:
-#   - Requires the 'png' package.
-#   - Sets up a mock repository with Dutch contributors and scaffolds subprotocol sfp-101-nl.
-#   - Commits and creates git version tags (specific protocol tag and generic tag).
-#   - Calls insert_protocolsection() across multiple combinations: full chapter,
-#     demoted header, specific section ("## Uitvoering"), and promoted header.
-#   - Injects custom params into the subprotocol and commits tag 2020.02.
-#   - Verifies all insertions produce expected output without throwing errors.
-#
-# Important caveat:
-#   - Only tests if there is an output produced. Not if the output is correct
+#   - Requires the 'png' package; the test stops with an error if it is unavailable.
+#   - Sets up a local mock repository with Dutch contributors and creates a tagged
+#     SFP subprotocol, then adds a second version tag after editing its parameters.
+#   - Uses expect_output() for each call, checking that output is produced and no
+#     error is raised; it does not verify the inserted content.
 # ==============================================================================
 
 test_that("Test that insert_protocolsection works", {

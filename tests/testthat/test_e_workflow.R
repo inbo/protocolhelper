@@ -2,23 +2,20 @@
 # Unit Tests: Multi-Protocol End-to-End Workflow
 #
 # What is tested:
-#   - Full lifecycle management across multiple interrelated scientific protocols:
-#     scaffolding, versioning, subprotocol dependency injection, release rendering,
-#     and protocol updates.
-#   - Multi-theme protocol coordination (water SFP, vegetation SFP, and composite SPP).
-#   - Integration of Zenodo metadata updates, sandbox DOI assignment, git branch
-#     management, and release builds.
+#   - A multi-protocol workflow that scaffolds and updates SFPs and an SPP,
+#     connects protocols with dependencies, and runs release-render steps.
+#   - This is an integration smoke test: it checks release renders for errors but
+#     does not directly assert the resulting DOI, metadata, or dependency content.
 #
 # How it is tested:
-#   - Skips test if offline, on r-universe, or if ZENODO_SANDBOX credential is unavailable.
-#   - Creates a mock repository with origin and Zenodo sandbox connection.
-#   - Sequentially executes:
-#     1. Scaffolds water protocol (sfp-101-en), tags, merges, and renders release.
-#     2. Scaffolds vegetation protocol (sfp-407-en), tags, merges, and renders release.
-#     3. Scaffolds composite project protocol (spp-001-en), embeds dependencies from both
-#        subprotocols via add_dependencies(), tags, merges, and renders release.
-#     4. Initiates update on sfp-101-en via update_protocol(), tags, merges, and renders release.
-#   - Asserts expect_no_error() at each release milestone.
+#   - Skips when offline, MY_UNIVERSE is nonempty, required packages are missing,
+#     or the ZENODO_SANDBOX credential is unavailable.
+#   - Creates a mock repository with origin and Zenodo metadata.
+#   - Releases a water SFP, a vegetation SFP, a second water SFP containing data
+#     and media and depending on the vegetation SFP, and a composite SPP depending
+#     on the two water SFPs; then updates the first water SFP.
+#   - Runs render_release() after each release workflow and checks for no error.
+#     The final render check is skipped on CI.
 # ==============================================================================
 
 test_that("complete workflow works", {

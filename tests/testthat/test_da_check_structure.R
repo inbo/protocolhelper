@@ -2,20 +2,15 @@
 # Unit Tests: check_structure()
 #
 # What is tested:
-#   - Validation of protocol file and folder structure against template standards.
-#   - Detection of invalid/mismatched chapter titles in template Rmd files.
-#   - Detection of missing mandatory files (references.yaml, template chapters).
-#   - Detection of duplicate chapter numbering prefixes (e.g. multiple 01_*.Rmd).
-#   - Support for generic template protocol structures.
-#   - Differential behavior of fail parameter (error when TRUE, warning/message when FALSE).
+#   - Structure checks for chapter titles, required files/chapters, and duplicate
+#     chapter-number prefixes, including a protocol using the generic template.
+#   - Error behavior with fail = TRUE and printed diagnostics with fail = FALSE.
 #
 # How it is tested:
-#   - Sets up mock contributors and repository.
-#   - Scaffolds a valid protocol and asserts clean check output ("No problems").
-#   - Successively introduces intentional defects (corrupted chapter title, missing
-#     references.yaml, missing chapter, duplicate file prefix) and asserts error
-#     or expected console diagnostic output.
-#   - Verifies structure check passes cleanly for generic template protocols.
+#   - Sets up mock contributors and a local repository, then scaffolds protocols.
+#   - Confirms a valid protocol passes, introduces each listed defect in turn and
+#     checks the resulting error or console output, then confirms the generic-
+#     template protocol passes.
 # ==============================================================================
 
 test_that("check structure works", {

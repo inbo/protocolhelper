@@ -6,12 +6,11 @@
 #   - Output file generation in the standard 'docs/' folder hierarchy.
 #
 # How it is tested:
-#   - Skips test on r-universe.dev.
-#   - Sets up mock contributors and a temporary mock git repository.
-#   - Scaffolds an SFP protocol (sfp-101-en) via create_sfp().
-#   - Executes render_protocol("sfp-101-en") and asserts no errors occur.
-#   - Verifies the physical existence of both generated output targets:
-#     'docs/.../index.html' and 'docs/.../sfp_101_en_water_1.pdf'.
+#   - Skips whenever the MY_UNIVERSE environment variable is nonempty.
+#   - Sets up mock contributors and a temporary mock git repository, then
+#     scaffolds an SFP protocol (sfp-101-en).
+#   - Checks that render_protocol("sfp-101-en") does not error and that the
+#     expected HTML and PDF files exist; their contents are not checked.
 # ==============================================================================
 
 test_that("render_protocol works as expected", {

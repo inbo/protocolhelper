@@ -2,20 +2,21 @@
 # Unit Tests: update_doi() & DOI Lifecycle
 #
 # What is tested:
-#   - DOI reservation and assignment via Zenodo Sandbox API.
-#   - Correct DOI prefix pattern matching ('10.5072/...').
-#   - Injection and synchronization of the minted DOI into index.Rmd YAML front matter.
-#   - Idempotency: preserving existing reserved DOI during repeated calls on the same version.
-#   - Version update workflow: reserving a new DOI when a protocol version is incremented.
+#   - DOI prefix format and synchronization between update_doi()'s result and the
+#     protocol's index.Rmd YAML for an initial and an updated version.
+#   - Retention of the DOI when update_doi() is called again for each version.
+#   - The test does not assert that the DOI for the updated version differs from
+#     the initial DOI.
 #
 # How it is tested:
-#   - Skips test if offline, on r-universe, or if ZENODO_SANDBOX key is missing.
-#   - Initializes mock git repository with origin and Zenodo sandbox environment.
-#   - Scaffolds SFP protocol and calls update_doi(); verifies DOI format and YAML front matter.
-#   - Calls update_doi() again on same branch to verify DOI retention.
-#   - Merges initial version into main, runs update_protocol() to increment version,
-#     calls update_doi() again, and validates new DOI reservation.
-#   - Verifies render_release() succeeds after update.
+#   - Skips when offline, MY_UNIVERSE is nonempty, required packages are missing,
+#     or the ZENODO_SANDBOX credential is unavailable.
+#   - Sets up a mock repository with origin and Zenodo metadata, scaffolds an SFP,
+#     and checks the DOI and YAML after update_doi() and a repeated call.
+#   - Merges the initial version, runs update_protocol(), then repeats the DOI/YAML
+#     checks for the updated version.
+#   - Calls render_release() after both releases; the final render check is skipped
+#     on CI.
 # ==============================================================================
 
 test_that("update doi works", {
