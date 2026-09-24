@@ -27,19 +27,6 @@ test_that("complete workflow works", {
   language <- "en"
   setup_mock_contributors(language=language)
 
-  update_news <- function(path, version_number) {
-    news <- readLines(file.path(path, "NEWS.md"))
-    writeLines(
-      c(
-        head(news, 2),
-        sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
-        rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
-        tail(news, -2)
-      ),
-      file.path(path, "NEWS.md")
-    )
-  }
-  
   mock_repo <- setup_mock_repo(with_origin=TRUE, with_zenodo=TRUE)
   origin_repo <- mock_repo$origin_repo
   main_branch <- mock_repo$main_branch

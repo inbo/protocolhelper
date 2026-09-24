@@ -31,19 +31,6 @@ test_that("complete workflow works", {
     language=language, 
     readline_value = function(...) paste("Tekst", Sys.time()))
 
-  update_news <- function(path, version_number) {
-    news <- readLines(file.path(path, "NEWS.md"))
-    writeLines(
-      c(
-        head(news, 2),
-        sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
-        rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
-        tail(news, -2)
-      ),
-      file.path(path, "NEWS.md")
-    )
-  }
-
   mock_repo <- setup_mock_repo(with_origin = TRUE, with_zenodo = TRUE)
   repo <- mock_repo$repo
   origin_repo <- mock_repo$origin_repo
@@ -116,7 +103,8 @@ test_that("complete workflow works", {
       "source", "sfp", "4_vegetation",
       "sfp_407_en_vegetation_1"
     ),
-    version_number = version_number_2
+    version_number = version_number_2,
+    n_bullets = 4
   )
 
   protocolhelper:::update_news_release("sfp-407-en")
@@ -254,7 +242,8 @@ test_that("complete workflow works", {
       "source", "sfp", "1_water",
       "sfp_102_en_second_subprotocol"
     ),
-    version_number = version_number_3
+    version_number = version_number_3,
+    n_bullets= 6
   )
 
   protocolhelper:::update_news_release("sfp-102-en")
@@ -323,7 +312,8 @@ test_that("complete workflow works", {
       "source", "spp", "mne",
       "spp_001_en_mne_protocol"
     ),
-    version_number = version_number_4
+    version_number = version_number_4,
+    n_bullets=1
   )
 
   protocolhelper:::update_news_release("spp-001-en")

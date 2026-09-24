@@ -293,7 +293,7 @@ git_merge_to_main_and_delete <- function(branch_name,
 #'
 #' @param path Path to the protocol directory containing NEWS.md.
 #' @param version_number Version number string (e.g. "2021.01").
-#' @param n_bullets Number of bullet points to insert (default 2).
+#' @param n_bullets Number of bullet points to insert (default 2, used to be rpois).
 update_news <- function(path, version_number, n_bullets = 2) {
   news_file <- file.path(path, "NEWS.md")
   news <- readLines(news_file)

@@ -49,22 +49,11 @@ test_that("Test if check all works", {
   # no function fails
   expect_no_error(check_all("sfp-101-en", fail = TRUE))
 
-  make_news_error <- function(path, version_number) {
-    news <- readLines(file.path(path, "NEWS.md"))
-    writeLines(
-      c(
-        head(news, 2),
-        sprintf("\n## [%1$s](../%1$s/index.html)\n", "1900.01"),
-        rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
-        tail(news, -2)
-      ),
-      file.path(path, "NEWS.md")
-    )
-  }
   make_news_error(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
     version_number = version_number
   )
+
   gert::git_commit_all(message = "sfp-101-en_water-1")
   gert::git_push(
     remote = "origin",

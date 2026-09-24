@@ -30,20 +30,6 @@ test_that("update doi works", {
   language <- "en"
   setup_mock_contributors(language=language)
 
-  update_news <- function(path, version_number) {
-    news <- readLines(file.path(path, "NEWS.md"))
-    writeLines(
-      c(
-        head(news, 2),
-        sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
-        rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
-        tail(news, -2)
-      ),
-      file.path(path, "NEWS.md")
-    )
-  }
-  
-
   mock_repo <- setup_mock_repo(with_origin = TRUE, with_zenodo = TRUE)
   repo <- mock_repo$repo
   origin_repo <- mock_repo$origin_repo
@@ -59,7 +45,8 @@ test_that("update doi works", {
 
   update_news(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    version_number = version_number
+    version_number = version_number,
+    n_bullets = 3
   )
 
   # the following is run in GHA when reviewer conditions are met
@@ -126,7 +113,8 @@ test_that("update doi works", {
   version_number <- get_version_number(path = repo)
   update_news(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    version_number = version_number
+    version_number = version_number,
+    n_bullets = 5
   )
   gert::git_commit_all(message = "update version number sfp-101-en_water-1")
   gert::git_push(
