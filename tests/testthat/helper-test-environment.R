@@ -236,32 +236,25 @@ git_push_current_branch <- function(repo = ".", remote = "origin", set_upstream 
   )
 }
 
-#' Stage, commit, and create version tags for a protocol
-#' The changes are staged in the temporary repo
+#' Stage, commit, and tag a protocol
+#' The changes are staged in the temporary repo.
 #' 
 #' @param protocol_code Character. E.g. "sfp-101-en".
 #' @param version_number Character. E.g. "2021.01".
 #' @param message Commit message. Defaults to `paste(protocol_code, version_number, sep = "_")`.
 #' @param tag_message Message attached to both tags (default "test tag").
 #' @param repo Path to git repository (default ".").
-#' @param remote Remote name to push to (default "origin").
-#' @param push Logical. Whether to push after tagging (default TRUE).
 git_commit_and_tag_protocol <- function(protocol_code,
                                        version_number,
                                        message = paste(protocol_code, version_number, sep = "_"),
                                        tag_message = "test tag",
-                                       repo = ".",
-                                       remote = "origin",
-                                       push = TRUE) {
-  gert::git_add(files = ".", repo = repo) 
+                                       repo = ".") {
+  gert::git_add(files = ".", repo = repo)
   gert::git_commit_all(message = message, repo = repo)
   specific_tag <- paste(protocol_code, version_number, sep = "-")
   generic_tag <- paste("protocols", version_number, sep = "-")
   gert::git_tag_create(name = specific_tag, message = tag_message, repo = repo)
   gert::git_tag_create(name = generic_tag, message = tag_message, repo = repo)
-  if (push) {
-    git_push_current_branch(repo = repo, remote = remote)
-  }
 }
 
 #' Merge a feature branch into main, push, and delete the feature branch

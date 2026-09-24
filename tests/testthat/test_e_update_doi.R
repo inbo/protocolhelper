@@ -65,34 +65,23 @@ test_that("update doi works", {
   expect_equal(doi, check_doi)
 
   # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    protocol_code = "sfp-101-en",
+    message = "sfp-101-en_water-1",
+    tag_message = "bla",
+    version_number=version_number
   )
+  git_push_current_branch()
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_branch_checkout(main_branch)
   gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
+
+  git_push_current_branch()
+
+
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 
@@ -101,15 +90,12 @@ test_that("update doi works", {
 
   # prepare to start an update of the protocol (new version doi)
   update_protocol("sfp-101-en")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
+
+  #branch_info <- gert::git_branch_list(repo = repo)
+  #refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_commit_all(message = "update version number sfp-101-en_water-1")
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
+  git_push_current_branch()
+
   version_number <- get_version_number(path = repo)
   update_news(
     path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
@@ -117,12 +103,7 @@ test_that("update doi works", {
     n_bullets = 5
   )
   gert::git_commit_all(message = "update version number sfp-101-en_water-1")
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
+  git_push_current_branch()
 
   protocolhelper:::update_news_release("sfp-101-en")
   protocolhelper:::update_zenodo()
@@ -139,34 +120,22 @@ test_that("update doi works", {
   expect_equal(doi, check_doi)
 
   # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    protocol_code = "sfp-101-en",
+    message = "sfp-101-en_water-1",
+    version_number=version_number,
+    tag_message = "bla"
   )
+  git_push_current_branch()
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_branch_checkout(main_branch)
   gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
+
+  git_push_current_branch()
+  
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 

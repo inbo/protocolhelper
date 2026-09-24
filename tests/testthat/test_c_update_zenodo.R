@@ -26,14 +26,15 @@ test_that(
       short_title = "water 2",
       version_number = version_number, theme = "water", language = language
     )
-    # add, commit and tag it
-    sfp_staged <- gert::git_add(files = ".")
-    gert::git_commit_all(message = "sfp-102-en_water-1")
-    specific_tag <- paste("sfp-102-en", version_number, sep = "-")
-    generic_tag <- paste("protocols", version_number, sep = "-")
-    gert::git_tag_create(name = specific_tag, message = "bla")
-    gert::git_tag_create(name = generic_tag, message = "bla")
 
+    # add, commit and tag it
+    git_commit_and_tag_protocol(
+      protocol_code = "sfp-102-en",
+      message = "sfp-102-en_water-1",
+      version_number = version_number,
+      tag_message = "bla"
+    )
+    
     # Prepare base JSON and 
     input_json <- mock_zenodo_json()
     

@@ -25,16 +25,20 @@ test_that("Test that insert_protocolsection works", {
   version_number <- "2020.01"
   create_sfp(
     short_title = "water 1",
-    version_number = version_number, theme = "water", language = language
+    version_number = version_number,
+    theme = "water",
+    language = language
   )
 
   # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-nl_water-1")
-  specific_tag <- paste("sfp-101-nl", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
+
+  git_commit_and_tag_protocol(
+    message = "sfp-101-nl_water-1",
+    protocol_code = "sfp-101-nl",
+    version_number = version_number,
+    tag_message = "bla"
+  )
+  git_push_current_branch()
 
   # test addition of a chapter
   expect_output(
@@ -101,11 +105,14 @@ test_that("Test that insert_protocolsection works", {
     con = "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
   )
   version_number <- "2020.02"
-  gert::git_commit_all(message = "sfp-101-nl_water-1")
-  specific_tag <- paste("sfp-101-nl", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
+
+  git_commit_and_tag_protocol(
+    message = "sfp-101-nl_water-1",
+    protocol_code = "sfp-101-nl",
+    version_number = version_number,
+    tag_message = "bla"
+  )
+
 
   # non-default params values need to be passed via render_...() functions
   # insert_protocolsection does not deal with it

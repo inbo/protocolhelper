@@ -71,34 +71,24 @@ test_that("complete workflow works", {
   doi <- protocolhelper:::update_doi("sfp-101-en")
 
   # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    message ="sfp-101-en_water-1",
+    protocol_code = "sfp-101-en",
+    tag_message="bla",
+    version_number=version_number
   )
+  git_push_current_branch()
+  
+
 
   # merge into main
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_branch_checkout(main_branch)
   gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
+
+  git_push_current_branch()
+
   gert::git_branch_delete("sfp-101-en", repo = origin_repo)
   gert::git_branch_delete("sfp-101-en", repo = repo)
 

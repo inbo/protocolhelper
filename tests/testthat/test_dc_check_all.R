@@ -31,20 +31,14 @@ test_that("Test if check all works", {
 
   # add, commit and tag it
   checklist::new_branch("sfp-101-en", repo = repo)
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+
+  git_commit_and_tag_protocol(
+    protocol_code = "sfp-101-en",
+    message = "sfp-101-en_water-1",
+    version_number=version_number,
+    tag_message = "bla"
   )
+  git_push_current_branch()
 
   # no function fails
   expect_no_error(check_all("sfp-101-en", fail = TRUE))
@@ -55,12 +49,7 @@ test_that("Test if check all works", {
   )
 
   gert::git_commit_all(message = "sfp-101-en_water-1")
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
+  git_push_current_branch()
 
 
   # fails
