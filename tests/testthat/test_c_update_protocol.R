@@ -34,6 +34,8 @@ test_that("Update of a protocol works", {
   gert::git_commit_all(message = "sfp-101-en_water-1")
   specific_tag <- paste("sfp-101-en", version_number, sep = "-")
   generic_tag <- paste("protocols", version_number, sep = "-")
+
+  # both tags, tag the same commit
   gert::git_tag_create(name = specific_tag, message = "bla")
   gert::git_tag_create(name = generic_tag, message = "bla")
   branch_info <- gert::git_branch_list(repo = mock_repo$repo)
@@ -60,6 +62,8 @@ test_that("Update of a protocol works", {
     gert::git_branch(repo = mock_repo$repo),
     "sfp-101-en"
   )
+
+  # check if the year on the updated protocol is the same as the year at time of testing
   expect_identical(
     yaml_front_matter(
       file.path(

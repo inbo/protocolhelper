@@ -15,6 +15,9 @@
 #     demoted header, specific section ("## Uitvoering"), and promoted header.
 #   - Injects custom params into the subprotocol and commits tag 2020.02.
 #   - Verifies all insertions produce expected output without throwing errors.
+#
+# Important caveat:
+#   - Only tests if there is an output produced. Not if the output is correct
 # ==============================================================================
 
 test_that("Test that insert_protocolsection works", {

@@ -23,6 +23,7 @@ test_that("Check frontmatter works", {
   mock_repo <- setup_mock_repo(with_origin = TRUE)
   repo <-mock_repo$repo
   # create a protocol
+  # why do this?
   fs::dir_create(file.path(repo, "source"))
   version_number <- get_version_number()
   create_sfp(
