@@ -27,7 +27,7 @@ test_that("complete workflow works", {
   language <- "en"
   setup_mock_contributors(language=language)
 
-  mock_repo <- setup_mock_repo(with_origin=TRUE, with_zenodo=TRUE)
+  mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
   origin_repo <- mock_repo$origin_repo
   main_branch <- mock_repo$main_branch
   repo <- mock_repo$repo

@@ -18,8 +18,8 @@ test_that("render_protocol works as expected", {
   language <- "en"
   setup_mock_contributors(language=language)
 
-  setup_mock_repo(with_origin=FALSE)
-
+  #setup_mock_local_repo()
+  setup_mock_bare_origin_repo()
 
   # create a protocol to be used as subprotocol
   version_number <- "2021.01"

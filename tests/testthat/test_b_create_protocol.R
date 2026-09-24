@@ -17,7 +17,7 @@ test_that("add author works", {
   language <- "en"
   setup_mock_contributors(language=language)
 
-  setup_mock_repo(with_origin = TRUE)
+  setup_mock_bare_origin_repo()
   
   # create a protocol
   version_number <- get_version_number()

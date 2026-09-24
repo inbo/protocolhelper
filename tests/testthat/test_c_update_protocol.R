@@ -20,7 +20,7 @@ test_that("Update of a protocol works", {
   language <- "en"
   setup_mock_contributors(language = language)
 
-  mock_repo <- setup_mock_repo()
+  mock_repo <- setup_mock_bare_origin_repo()
 
   # create a protocol
   version_number <- "2021.01"

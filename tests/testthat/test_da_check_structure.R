@@ -16,8 +16,8 @@
 test_that("check structure works", {
   language <- "en"
   setup_mock_contributors(language=language)
-  setup_mock_repo(with_origin = FALSE)
-
+  #setup_mock_local_repo()
+  setup_mock_bare_origin_repo()
   # create a protocol
   version_number <- "2021.01"
   create_sfp(

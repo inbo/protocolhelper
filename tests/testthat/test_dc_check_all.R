@@ -18,7 +18,7 @@
 test_that("Test if check all works", {
   language <- "en"
   setup_mock_contributors()
-  mock_repo <- setup_mock_repo(with_origin=TRUE)
+  mock_repo <- setup_mock_bare_origin_repo()
   repo <- mock_repo$repo
   # create a protocol
   version_number <- get_version_number()

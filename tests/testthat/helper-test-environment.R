@@ -141,86 +141,82 @@ mock_zenodo_json <- function() {
 }'
 }
 
-#' Setup a temporary git testing repository
+#' Set up a temporary local Git repository without a bare origin
 #'
-#' Initializes an isolated git repository for testing. If `with_origin = TRUE`,
-#' creates a bare remote origin repo and a local clone, sets up user config,
-#' an initial commit of `NEWS.md`, and pushes upstream tracking to origin.
-#' Automatically defers cleanup of temp directories and restoration of
-#' working directory using [withr::defer] scoped to `env`.
+#' Creates an empty repository with an origin URL for citation metadata, but
+#' no reachable local bare remote or remote-tracking branches. Tests using this
+#' fixture should not fetch or push. Cleanup and working-directory restoration
+#' are deferred to `env`.
 #'
-#' @param with_origin Logical. If TRUE, sets up a bare origin and cloned local repo.
-#'   If FALSE, initializes a single local repo in a tempdir.
-#' @param with_zenodo Logical. If TRUE, also writes `.zenodo.json` and `.gitignore`.
-#' @param env The environment controlling cleanup lifetime (defaults to caller).
+#' @param env Environment controlling cleanup lifetime (defaults to caller).
+#' @return A list with `repo`, `origin_repo` (NULL), and `main_branch`.
+setup_mock_local_repo <- function(env = parent.frame()) {
+  repo <- tempfile("test_protocol")
+  withr::defer(unlink(repo, recursive = TRUE), envir = env)
+  
+  gert::git_init(path = repo)
+  old_wd <- setwd(repo)
+  withr::defer(setwd(old_wd), envir = env)
+
+  # keep url origin as citeme uses it for citation metadata
+  gert::git_remote_add(url = "https://github.com/inbo/unittests", repo = repo)
+  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
+  gert::git_config_set(name = "user.email", value = "someone@example.org", repo = repo)
+
+  list(repo = repo, origin_repo = NULL, main_branch = gert::git_branch(repo = repo))
+}
+
+#' Set up a temporary Git clone with a local bare origin
 #'
-#' @return A list with `repo` (path to local repo), `origin_repo` (path or NULL),
-#'   and `main_branch` ("main", "master", or other).
-setup_mock_repo <- function(with_origin = TRUE,
-                            with_zenodo = FALSE,
-                            env = parent.frame()) {
-  url <- "https://github.com/inbo/unittests"
+#' Creates a bare repository, clones it locally, commits `NEWS.md`, and pushes
+#' the initial branch with upstream tracking. Cleanup and working-directory
+#' restoration are deferred to `env`.
+#'
+#' @param include_zenodo_files If TRUE, also commits `.zenodo.json` and
+#'   `.gitignore`. This does not mock Zenodo API calls.
+#' @param env Environment controlling cleanup lifetime (defaults to caller).
+#' @return A list with `repo`, `origin_repo`, and `main_branch`.
+setup_mock_bare_origin_repo <- function(include_zenodo_files = FALSE,
+                                        env = parent.frame()) {
+  protocol_origin_path <- tempfile("protocol_origin")
+  protocol_local_path <- tempfile("protocol_local")
 
-  if (with_origin) {
-    origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-    gert::git_remote_add(url = url, repo = origin_repo)
-    withr::defer(unlink(origin_repo, recursive = TRUE), envir = env)
+  origin_repo <- gert::git_init(protocol_origin_path , bare = TRUE)
+  withr::defer(unlink(origin_repo, recursive = TRUE), envir = env)
 
-    repo <- gert::git_clone(
-      url = origin_repo,
-      path = tempfile("protocol_local"),
-      verbose = FALSE
-    )
-    withr::defer(unlink(repo, recursive = TRUE), envir = env)
+  repo <- gert::git_clone(
+    url = origin_repo,
+    path = protocol_local_path,
+    verbose = FALSE
+  )
+  withr::defer(unlink(repo, recursive = TRUE), envir = env)
 
-    old_wd <- setwd(repo)
-    withr::defer(setwd(old_wd), envir = env)
+  old_wd <- setwd(repo)
+  withr::defer(setwd(old_wd), envir = env)
 
-    gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-    gert::git_config_set(name = "user.email", value = "someone@example.org", repo = repo)
+  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
+  gert::git_config_set(name = "user.email", value = "someone@example.org", repo = repo)
 
-    file.create("NEWS.md")
-    if (with_zenodo) {
-      file.create(".zenodo.json")
-      writeLines(mock_zenodo_json(), con = ".zenodo.json")
-      writeLines(c("docs/", "publish/"), con = ".gitignore")
-    }
-
-    gert::git_add(".", repo = repo)
-    gert::git_commit_all(message = "add empty NEWS repo file", repo = repo)
-
-    branch_info <- gert::git_branch_list(repo = repo)
-    refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-    gert::git_push(
-      remote = "origin",
-      refspec = refspec,
-      set_upstream = TRUE,
-      repo = repo
-    )
-
-    branch_info <- gert::git_branch_list(repo = repo)
-    main_branch <- ifelse(
-      any(branch_info$name == "origin/main"),
-      "main",
-      ifelse(any(branch_info$name == "origin/master"), "master", "unknown")
-    )
-
-    list(repo = repo, origin_repo = origin_repo, main_branch = main_branch)
-  } else {
-    test_repo <- tempfile("test_protocol")
-    dir.create(test_repo)
-    withr::defer(unlink(test_repo, recursive = TRUE), envir = env)
-
-    old_wd <- setwd(test_repo)
-    withr::defer(setwd(old_wd), envir = env)
-
-    repo <- gert::git_init(path = test_repo)
-    gert::git_remote_add(url = url, repo = ".")
-    gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-    gert::git_config_set(name = "user.email", value = "someone@example.org", repo = repo)
-
-    list(repo = test_repo, origin_repo = NULL, main_branch = gert::git_branch(repo = repo))
+  file.create("NEWS.md")
+  if (include_zenodo_files) {
+    writeLines(mock_zenodo_json(), con = ".zenodo.json")
+    writeLines(c("docs/", "publish/"), con = ".gitignore")
   }
+
+  gert::git_add(".", repo = repo)
+  gert::git_commit_all(message = "add empty NEWS repo file", repo = repo)
+  git_push_current_branch(repo = repo)
+
+  branch_info <- gert::git_branch_list(repo = repo)
+  main_branch <- if ("origin/main" %in% branch_info$name) {
+    "main"
+  } else if ("origin/master" %in% branch_info$name) {
+    "master"
+  } else {
+    stop("No origin/main or origin/master branch found in mock repository")
+  }
+
+  list(repo = repo, origin_repo = origin_repo, main_branch = main_branch)
 }
 
 #' Push the currently checked-out branch to remote

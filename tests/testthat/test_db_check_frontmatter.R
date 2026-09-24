@@ -18,8 +18,9 @@
 test_that("Check frontmatter works", {
   language <- "en"
   setup_mock_contributors()
-  mock_repo <- setup_mock_repo(with_origin = TRUE)
-  repo <-mock_repo$repo
+  mock_repo <- setup_mock_bare_origin_repo()
+  repo <- mock_repo$repo
+  main_branch <- mock_repo$main_branch
   # create a protocol
   # why do this?
   fs::dir_create(file.path(repo, "source"))
