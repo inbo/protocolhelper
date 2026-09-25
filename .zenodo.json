@@ -1,33 +1,26 @@
 {
-  "title": "protocolhelper: Helper Functions to Manage Protocols",
-  "version": "0.8.5",
-  "license": "GPL-3.0",
-  "upload_type": "software",
-  "description": "<p>Helper functions to manage INBO protocols.<\/p>",
-  "keywords": [
-    "protocols",
-    "R package",
-    "Reproducible research",
-    "Rmarkdown templates"
-  ],
   "access_right": "open",
-  "language": "eng",
+  "communities": [
+    {
+      "identifier": "inbo"
+    }
+  ],
   "contributors": [
     {
       "name": "Van Calster, Hans",
       "affiliation": "Research Institute for Nature and Forest (INBO)",
       "orcid": "0000-0001-8595-8426",
-      "type": "contactperson"
+      "type": "ContactPerson"
     },
     {
       "name": "Lommelen, Els",
       "affiliation": "Research Institute for Nature and Forest (INBO)",
       "orcid": "0000-0002-3481-5684",
-      "type": "projectmember"
+      "type": "ProjectMember"
     },
     {
       "name": "Research Institute for Nature and Forest (INBO)",
-      "type": "rightsholder"
+      "type": "RightsHolder"
     }
   ],
   "creators": [
@@ -47,10 +40,17 @@
       "orcid": "0000-0002-6378-6229"
     }
   ],
-  "communities": [
-    {
-      "identifier": "inbo"
-    }
+  "description": "<p>Helper functions to manage INBO protocols.<\/p>",
+  "keywords": [
+    "protocols",
+    "R package",
+    "Reproducible research",
+    "Rmarkdown templates"
   ],
-  "publisher": "Research Institute for Nature and Forest (INBO)"
+  "language": "eng",
+  "license": "gpl-3.0-only",
+  "publisher": "Research Institute for Nature and Forest (INBO)",
+  "title": "protocolhelper: Helper Functions to Manage Protocols",
+  "upload_type": "software",
+  "version": "0.8.5"
 }
