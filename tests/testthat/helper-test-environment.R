@@ -257,7 +257,8 @@ git_commit_and_tag_protocol <- function(protocol_code,
   gert::git_tag_create(name = generic_tag, message = tag_message, repo = repo)
 }
 
-#' Merge a feature branch into main, push, and delete the feature branch
+#' Merge a feature branch into main, push, and delete the feature branch 
+#' (is this one useful? Not added yet to the unit tests)
 #'
 #' @param branch_name Branch to merge and delete.
 #' @param main_branch Main branch name (default "main").

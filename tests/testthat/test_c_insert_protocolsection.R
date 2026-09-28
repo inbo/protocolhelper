@@ -1,17 +1,9 @@
-# ==============================================================================
-# Unit Tests: insert_protocolsection()
-#
-# What is tested:
-#   - Calls to insert_protocolsection() for a full chapter, adjusted header levels,
-#     a named subsection, and a subprotocol with a custom parameter.
-#
-# How it is tested:
-#   - Requires the 'png' package; the test stops with an error if it is unavailable.
-#   - Sets up a local mock repository with Dutch contributors and creates a tagged
-#     SFP subprotocol, then adds a second version tag after editing its parameters.
-#   - Uses expect_output() for each call, checking that output is produced and no
-#     error is raised; it does not verify the inserted content.
-# ==============================================================================
+# Tests for insert_protocolsection(): inserts chapters or sections from a tagged subprotocol.
+# How it tests:
+# - Scaffolds and Git-tags a subprotocol (sfp-101-nl) in an isolated mock repository.
+# - Inserts an entire chapter and verifies text output with and without header demotion.
+# - Extracts a specific subsection by header title and tests header level adjustments.
+# - Updates the subprotocol with custom parameters and verifies insertion across protocol versions.
 
 test_that("Test that insert_protocolsection works", {
   if (!requireNamespace("png", quietly = TRUE)) {

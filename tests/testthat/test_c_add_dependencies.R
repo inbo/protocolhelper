@@ -1,20 +1,9 @@
-# ==============================================================================
-# Unit Tests: add_dependencies()
-#
-# What is tested:
-#   - Adding protocol dependencies to a protocol's index.Rmd YAML front matter.
-#   - Correct population of dependency metadata: protocol code, version number,
-#     custom rendering parameters, and appendix flag.
-#   - Preservation of existing project-specific parameters in the YAML front matter.
-#
-# How it is tested:
-#   - Initializes a mock git repository and mock contributors.
-#   - Scaffolds a new SFP protocol (sfp-101-en) via create_sfp().
-#   - Injects custom YAML parameters into index.Rmd using ymlthis.
-#   - Calls add_dependencies() with multiple subprotocol specifications and parameter lists.
-#   - Parses the resulting index.Rmd YAML front matter and asserts that the params
-#     structure exactly matches expected nested configuration.
-# ==============================================================================
+# Tests for add_dependencies(): writes subprotocol dependency metadata to index.Rmd YAML frontmatter.
+# How it tests:
+# - Sets up mock contributors and scaffolds a base protocol (sfp-101-en) in a mock repository.
+# - Injects custom protocol-specific parameters into index.Rmd.
+# - Invokes add_dependencies() with multiple subprotocol codes, versions, and parameter overrides.
+# - Parses index.Rmd frontmatter and asserts dependency metadata is added while preserving existing parameters.
 
 test_that("test that adding dependencies to yaml works", {
   library(ymlthis)

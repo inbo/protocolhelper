@@ -1,20 +1,9 @@
-# ==============================================================================
-# Unit Tests: Release Pipeline (render_release)
-#
-# What is tested:
-#   - Whether render_release() completes without error after a mock protocol release
-#     workflow has updated release metadata and merged the protocol branch.
-#
-# How it is tested:
-#   - Skips when offline, MY_UNIVERSE is nonempty, required packages are missing,
-#     or the ZENODO_SANDBOX credential is unavailable.
-#   - Sets up a mock repository with origin and Zenodo metadata, scaffolds a
-#     protocol, adds a reviewer, and calls the NEWS, Zenodo, and DOI update steps.
-#   - Commits, tags, and pushes the protocol branch, then merges it and deletes the
-#     local and remote feature branches.
-#   - Asserts only that the final render_release() call does not error; intermediate
-#     metadata and branch-cleanup results are not separately checked.
-# ==============================================================================
+# Tests for render_release(): builds release documentation for newly merged protocol versions.
+# How it tests:
+# - Sets up a mock repository with Zenodo sandbox files and scaffolds sfp-101-en.
+# - Updates index.Rmd reviewers, updates NEWS.md, and assigns a DOI via update_doi().
+# - Commits, tags, merges the protocol branch into main, and pushes to origin.
+# - Executes render_release() on main and asserts error-free compilation of release artifacts.
 
 test_that("complete workflow works", {
   skip_if_offline()

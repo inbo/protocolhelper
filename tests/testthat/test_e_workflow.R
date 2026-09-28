@@ -1,22 +1,10 @@
-# ==============================================================================
-# Unit Tests: Multi-Protocol End-to-End Workflow
-#
-# What is tested:
-#   - A multi-protocol workflow that scaffolds and updates SFPs and an SPP,
-#     connects protocols with dependencies, and runs release-render steps.
-#   - This is an integration smoke test: it checks release renders for errors but
-#     does not directly assert the resulting DOI, metadata, or dependency content.
-#
-# How it is tested:
-#   - Skips when offline, MY_UNIVERSE is nonempty, required packages are missing,
-#     or the ZENODO_SANDBOX credential is unavailable.
-#   - Creates a mock repository with origin and Zenodo metadata.
-#   - Releases a water SFP, a vegetation SFP, a second water SFP containing data
-#     and media and depending on the vegetation SFP, and a composite SPP depending
-#     on the two water SFPs; then updates the first water SFP.
-#   - Runs render_release() after each release workflow and checks for no error.
-#     The final render check is skipped on CI.
-# ==============================================================================
+# Tests end-to-end multi-protocol workflow: authoring, linking, releasing, and updating protocols.
+# How it tests:
+# - Sets up a mock origin repository configured with Zenodo sandbox credentials.
+# - Sequentially scaffolds, tags, merges, and releases subprotocols (sfp-101-en, sfp-407-en, sfp-102-en).
+# - Tests subprotocol dependencies, custom parameter overrides, and media/data file inclusions.
+# - Authors a composite project protocol (spp-001-en) linking subprotocols into an integrated manual.
+# - Updates an existing protocol to a new version and verifies render_release() succeeds after each cycle.
 
 test_that("complete workflow works", {
   skip_if_offline()

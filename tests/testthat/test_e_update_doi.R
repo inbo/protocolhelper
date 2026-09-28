@@ -1,23 +1,9 @@
-# ==============================================================================
-# Unit Tests: update_doi() & DOI Lifecycle
-#
-# What is tested:
-#   - DOI prefix format and synchronization between update_doi()'s result and the
-#     protocol's index.Rmd YAML for an initial and an updated version.
-#   - Retention of the DOI when update_doi() is called again for each version.
-#   - The test does not assert that the DOI for the updated version differs from
-#     the initial DOI.
-#
-# How it is tested:
-#   - Skips when offline, MY_UNIVERSE is nonempty, required packages are missing,
-#     or the ZENODO_SANDBOX credential is unavailable.
-#   - Sets up a mock repository with origin and Zenodo metadata, scaffolds an SFP,
-#     and checks the DOI and YAML after update_doi() and a repeated call.
-#   - Merges the initial version, runs update_protocol(), then repeats the DOI/YAML
-#     checks for the updated version.
-#   - Calls render_release() after both releases; the final render check is skipped
-#     on CI.
-# ==============================================================================
+# Tests for update_doi(): synchronizes Zenodo DOI identifiers into protocol frontmatter.
+# How it tests:
+# - Scaffolds an initial protocol version in a mock repository configured with Zenodo sandbox credentials.
+# - Calls update_doi() to mint a concept/version DOI and asserts sandbox prefix (10.5072) and YAML update.
+# - Confirms idempotency by verifying the DOI is retained unchanged on repeated update_doi() calls.
+# - Updates to a second protocol version, verifying DOI versioning and persistence across release cycles.
 
 test_that("update doi works", {
   skip_if_offline()

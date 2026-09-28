@@ -1,19 +1,9 @@
-# ==============================================================================
-# Unit Tests: update_protocol()
-#
-# What is tested:
-#   - Protocol update workflow: initiating a new version cycle for an existing protocol.
-#   - Creation and checkout of the protocol-specific git branch.
-#   - Automatic incrementing of version number in index.Rmd YAML front matter
-#     to the current calendar year format (YYYY.NN).
-#
-# How it is tested:
-#   - Initializes a mock repository with bare origin remote and mock contributors.
-#   - Scaffolds, commits, tags (2021.01), and pushes an initial protocol to origin.
-#   - Calls update_protocol("sfp-101-en"), commits, and pushes changes.
-#   - Asserts git branch is checked out to "sfp-101-en".
-#   - Asserts the index.Rmd YAML front matter version matches the current year.
-# ==============================================================================
+# Tests for update_protocol(): prepares an existing protocol for a new version release.
+# How it tests:
+# - Scaffolds, commits, tags, and pushes an initial protocol (sfp-101-en, version 2021.01).
+# - Calls update_protocol("sfp-101-en") to check out the protocol branch and bump the version.
+# - Asserts Git switches to the protocol branch ("sfp-101-en").
+# - Verifies index.Rmd YAML frontmatter is updated with the current year's version number.
 
 test_that("Update of a protocol works", {
   

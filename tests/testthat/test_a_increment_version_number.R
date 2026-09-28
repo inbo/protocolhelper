@@ -1,19 +1,8 @@
-# ==============================================================================
-# Unit Tests: increment_version_number()
-#
-# What is tested:
-#   - Increment logic for protocol version strings following the 'YYYY.NN' convention.
-#   - Rollover behavior across calendar years (resetting sequence number to '01'
-#     when existing versions belong to previous years).
-#   - Sequential increment within the current calendar year (e.g., 'YYYY.02' -> 'YYYY.03').
-#   - Initialization of version string when no prior versions exist (empty input).
-#
-# How it is tested:
-#   - Evaluates increment_version_number() against simulated vector scenarios:
-#     previous year versions, current year versions, and empty character vectors.
-#   - Compares function output against dynamically calculated expected strings
-#     derived from Sys.Date().
-# ==============================================================================
+# Tests for increment_version_number(): calculates the next sequential version number in YYYY.NN format.
+# How it tests:
+# - Tests year rollover by passing previous-year versions and asserting reset to <currentyear>.01.
+# - Tests in-year increments by passing existing current-year versions and asserting sequential bump.
+# - Tests empty input vector and asserts initialization to <currentyear>.01.
 
 test_that("increment version number works", {
   currentyear <- format(Sys.Date(), "%Y")

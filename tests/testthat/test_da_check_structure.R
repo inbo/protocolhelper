@@ -1,17 +1,9 @@
-# ==============================================================================
-# Unit Tests: check_structure()
-#
-# What is tested:
-#   - Structure checks for chapter titles, required files/chapters, and duplicate
-#     chapter-number prefixes, including a protocol using the generic template.
-#   - Error behavior with fail = TRUE and printed diagnostics with fail = FALSE.
-#
-# How it is tested:
-#   - Sets up mock contributors and a local repository, then scaffolds protocols.
-#   - Confirms a valid protocol passes, introduces each listed defect in turn and
-#     checks the resulting error or console output, then confirms the generic-
-#     template protocol passes.
-# ==============================================================================
+# Tests for check_structure(): validates protocol file structure, chapter titles, and numbering.
+# How it tests:
+# - Scaffolds a protocol and confirms clean validation output ("No problems").
+# - Simulates errors: alters chapter titles, removes references.yaml, and deletes template chapters.
+# - Introduces duplicate chapter numbers (01_) and asserts validation errors and diagnostic messages.
+# - Tests a generic template protocol to ensure structural rules apply across template variants.
 
 test_that("check structure works", {
   language <- "en"

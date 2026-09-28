@@ -1,17 +1,9 @@
-# ==============================================================================
-# Unit Tests: Protocol Creation & Scaffolding (create_sfp)
-#
-# What is tested:
-#   - Smoke test that create_sfp() scaffolds an English SFP using the generic
-#     template and water theme.
-#
-# How it is tested:
-#   - Mocks contributor prompts and creates an isolated git repository with a
-#     bare origin remote.
-#   - Gets a version number and calls create_sfp() with explicit parameters.
-#   - Asserts only that the call completes without error; metadata values are
-#     not separately checked.
-# ==============================================================================
+# Tests for create_sfp(): scaffolds a new Standard Field Protocol directory structure and template files.
+# How it tests:
+# - Sets up mock contributor metadata and an isolated bare-origin Git repository.
+# - Determines the next version number using get_version_number().
+# - Invokes create_sfp() with generic template and water theme in English.
+# - Asserts that protocol scaffolding completes without error.
 
 test_that("add author works", {
   language <- "en"

@@ -1,19 +1,9 @@
-# ==============================================================================
-# Unit Tests: check_all()
-#
-# What is tested:
-#   - Whether check_all() passes for a valid protocol, errors after a NEWS.md
-#     version-header mismatch, and errors for a nonexistent protocol code.
-#
-# How it is tested:
-#   - Sets up mock contributors and a mock git repository with an origin remote.
-#   - Scaffolds, tags, and pushes a valid protocol and checks that check_all()
-#     completes without error.
-#   - Changes the NEWS.md version header, commits and pushes the change, and checks
-#     that check_all(..., fail = TRUE) errors.
-#   - Calls check_all() with an unknown protocol code and checks that it errors.
-#   - Does not introduce front-matter or structure defects through check_all().
-# ==============================================================================
+# Tests for check_all(): runs composite validation across structure, frontmatter, and NEWS.
+# How it tests:
+# - Scaffolds, tags, and pushes a standard field protocol (sfp-101-en) in a mock repository.
+# - Runs check_all() and asserts clean passage without errors.
+# - Injects a version heading mismatch in NEWS.md using make_news_error() and verifies check_all() fails.
+# - Tests an invalid protocol code ("sfp-111-nl") and verifies error handling for non-existent protocols.
 
 test_that("Test if check all works", {
   language <- "en"

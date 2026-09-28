@@ -1,17 +1,9 @@
-# ==============================================================================
-# Unit Tests: render_protocol()
-#
-# What is tested:
-#   - Local rendering of a protocol into HTML (gitbook) and PDF formats via Bookdown.
-#   - Output file generation in the standard 'docs/' folder hierarchy.
-#
-# How it is tested:
-#   - Skips whenever the MY_UNIVERSE environment variable is nonempty.
-#   - Sets up mock contributors and a temporary mock git repository, then
-#     scaffolds an SFP protocol (sfp-101-en).
-#   - Checks that render_protocol("sfp-101-en") does not error and that the
-#     expected HTML and PDF files exist; their contents are not checked.
-# ==============================================================================
+# Tests for render_protocol(): compiles a protocol into HTML and PDF outputs.
+# How it tests:
+# - Sets up an isolated mock origin repository with contributor metadata.
+# - Scaffolds a standard field protocol (sfp-101-en) via create_sfp().
+# - Executes render_protocol() and verifies error-free completion.
+# - Asserts that both build artifacts (index.html and .pdf) are generated in docs/.
 
 test_that("render_protocol works as expected", {
   skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev

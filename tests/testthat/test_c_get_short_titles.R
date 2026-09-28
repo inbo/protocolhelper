@@ -1,17 +1,8 @@
-# ==============================================================================
-# Unit Tests: get_short_titles() & Title Uniqueness
-#
-# What is tested:
-#   - Whether get_short_titles("sfp", "en") returns the existing title "water_1".
-#   - Whether creating another protocol with the same short title raises the
-#     expected duplicate-title error.
-#
-# How it is tested:
-#   - Sets up mock contributors and a local test git repository without a bare
-#     origin clone.
-#   - Scaffolds one protocol, checks the returned title, then attempts to create
-#     a duplicate and checks the error message.
-# ==============================================================================
+# Tests for get_short_titles(): retrieves registered short titles and prevents duplicate naming.
+# How it tests:
+# - Sets up a mock repository and creates an initial protocol with short title "water 1".
+# - Queries get_short_titles() for sfp protocols in English and asserts "water_1" is returned.
+# - Attempts to create a second protocol with the same short title and asserts an informative error is raised.
 
 test_that("Get short title works", {
   language <- "en"
