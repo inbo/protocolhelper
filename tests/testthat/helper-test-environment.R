@@ -259,12 +259,6 @@ git_commit_and_tag_protocol <- function(protocol_code,
 
 #' Merge a feature branch into main, push, and optionally delete the feature branch
 #'
-#' Fix: Previously `gert::git_merge(ref = branch_name, repo = repo)` passed the
-#' short branch name directly, whereas `gert::git_merge()` requires the full
-#' refspec (`refs/heads/<branch_name>`) from `gert::git_branch_list()`. We now
-#' resolve `refspec` inside this helper and use it across the test suite to
-#' replace the repeated 10-line merge-and-delete boilerplate.
-#'
 #' @param branch_name Branch to merge and delete (defaults to current branch).
 #' @param main_branch Main branch name (default "main").
 #' @param repo Path to local git repo (default ".").
