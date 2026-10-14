@@ -12,8 +12,7 @@
 ^\.zenodo\.json$
 ^_pkgdown.yml$
 ^_pkgdown\.yml$
-^tests/testthat/README\.md$
-^TESTS\.md$
+^checklist.yml
 ^codecov\.yml$
 ^cran-comments\.md$
 ^data-raw$

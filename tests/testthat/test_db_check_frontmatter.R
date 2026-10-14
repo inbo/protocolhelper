@@ -12,7 +12,7 @@
 test_that("Check frontmatter works", {
   language <- "en"
   setup_mock_contributors()
-  # Temporary add zenodo files, fixes the citeme issue 
+  # Temporary add zenodo files, fixes the citeme issue
   # (but the issue is at citeme itself)
   mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
   repo <- mock_repo$repo
