@@ -172,16 +172,11 @@ setup_mock_local_repo <- function(env = parent.frame()) {
 #' the initial branch with upstream tracking. Cleanup and working-directory
 #' restoration are deferred to `env`.
 #'
-#' @param include_zenodo_files If TRUE (the default), also commits `.zenodo.json`
-#'   and `.gitignore` at the repository root. Note: `citeme::citation_meta$new()`
-#'   (called by `check_frontmatter()` and `check_all()`) runs `gert::git_ls()`
-#'   and checks `".zenodo.json" %in% tracked$path`. Because `git_ls()` returns
-#'   paths relative to the repository root, `check_frontmatter()` fails with
-#'   `".zenodo.json is modified. Please commit changes."` unless `.zenodo.json`
-#'   is tracked at the repository root.
+#' @param include_zenodo_files If TRUE, also commits `.zenodo.json` and
+#'   `.gitignore`. This does not mock Zenodo API calls.
 #' @param env Environment controlling cleanup lifetime (defaults to caller).
 #' @return A list with `repo`, `origin_repo`, and `main_branch`.
-setup_mock_bare_origin_repo <- function(include_zenodo_files = TRUE,
+setup_mock_bare_origin_repo <- function(include_zenodo_files = FALSE,
                                         env = parent.frame()) {
   protocol_origin_path <- tempfile("protocol_origin")
   protocol_local_path <- tempfile("protocol_local")
@@ -262,26 +257,37 @@ git_commit_and_tag_protocol <- function(protocol_code,
   gert::git_tag_create(name = generic_tag, message = tag_message, repo = repo)
 }
 
-#' Merge a feature branch into main, push, and delete the feature branch 
-#' (is this one useful? Not added yet to the unit tests)
+#' Merge a feature branch into main, push, and optionally delete the feature branch
 #'
-#' @param branch_name Branch to merge and delete.
+#' Fix: Previously `gert::git_merge(ref = branch_name, repo = repo)` passed the
+#' short branch name directly, whereas `gert::git_merge()` requires the full
+#' refspec (`refs/heads/<branch_name>`) from `gert::git_branch_list()`. We now
+#' resolve `refspec` inside this helper and use it across the test suite to
+#' replace the repeated 10-line merge-and-delete boilerplate.
+#'
+#' @param branch_name Branch to merge and delete (defaults to current branch).
 #' @param main_branch Main branch name (default "main").
 #' @param repo Path to local git repo (default ".").
 #' @param origin_repo Path to origin bare repo (if deleting remote branch as well).
 #' @param remote Remote name (default "origin").
-git_merge_to_main_and_delete <- function(branch_name,
+#' @param delete_branch Logical. Whether to delete `branch_name` after merging (default TRUE).
+git_merge_to_main_and_delete <- function(branch_name = gert::git_branch(repo = repo),
                                          main_branch = "main",
                                          repo = ".",
                                          origin_repo = NULL,
-                                         remote = "origin") {
+                                         remote = "origin",
+                                         delete_branch = TRUE) {
+  branch_info <- gert::git_branch_list(repo = repo)
+  refspec <- branch_info$ref[branch_info$name == branch_name]
   gert::git_branch_checkout(main_branch, repo = repo)
-  gert::git_merge(ref = branch_name, repo = repo)
+  gert::git_merge(ref = refspec, repo = repo)
   git_push_current_branch(repo = repo, remote = remote)
-  if (!is.null(origin_repo)) {
-    gert::git_branch_delete(branch_name, repo = origin_repo)
+  if (delete_branch) {
+    if (!is.null(origin_repo)) {
+      gert::git_branch_delete(branch_name, repo = origin_repo)
+    }
+    gert::git_branch_delete(branch_name, repo = repo)
   }
-  gert::git_branch_delete(branch_name, repo = repo)
 }
 
 #' @param path Path to the protocol directory containing NEWS.md.

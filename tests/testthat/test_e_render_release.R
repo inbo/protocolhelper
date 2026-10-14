@@ -73,16 +73,13 @@ test_that("complete workflow works", {
   
 
 
-  # merge into main
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout(main_branch)
-  gert::git_merge(ref = refspec, repo = repo)
-
-  git_push_current_branch()
-
-  gert::git_branch_delete("sfp-101-en", repo = origin_repo)
-  gert::git_branch_delete("sfp-101-en", repo = repo)
+  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  git_merge_to_main_and_delete(
+    branch_name = "sfp-101-en",
+    main_branch = main_branch,
+    repo = repo,
+    origin_repo = origin_repo
+  )
 
   expect_no_error(protocolhelper:::render_release())
 })

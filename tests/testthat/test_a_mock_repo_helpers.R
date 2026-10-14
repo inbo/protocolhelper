@@ -34,3 +34,29 @@ test_that("bare-origin mock repository has a reachable main branch", {
   )
   expect_true(file.exists(file.path(mock_repo$repo, ".zenodo.json")))
 })
+
+test_that("git_merge_to_main_and_delete merges feature branch and deletes it", {
+  mock_repo <- setup_mock_bare_origin_repo()
+  repo <- mock_repo$repo
+  origin_repo <- mock_repo$origin_repo
+  main_branch <- mock_repo$main_branch
+
+  checklist::new_branch("sfp-101-en", repo = repo)
+  writeLines("test content", file.path(repo, "feature.txt"))
+  gert::git_add("feature.txt", repo = repo)
+  gert::git_commit("add feature.txt", repo = repo)
+  git_push_current_branch(repo = repo)
+
+  git_merge_to_main_and_delete(
+    branch_name = "sfp-101-en",
+    main_branch = main_branch,
+    repo = repo,
+    origin_repo = origin_repo
+  )
+
+  expect_identical(gert::git_branch(repo = repo), main_branch)
+  expect_true(file.exists(file.path(repo, "feature.txt")))
+  expect_false("sfp-101-en" %in% gert::git_branch_list(repo = repo)$name)
+  expect_false("sfp-101-en" %in% gert::git_branch_list(repo = origin_repo)$name)
+})
+

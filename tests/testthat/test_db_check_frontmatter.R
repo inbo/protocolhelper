@@ -39,18 +39,12 @@ test_that("Check frontmatter works", {
     "Well done! No problems found"
   )
 
-  # merge into main
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout(main_branch)
-  gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  # merge into main (Replaced repetitive merge/push boilerplate with helper)
+  git_merge_to_main_and_delete(
+    branch_name = "sfp-101-en",
+    main_branch = main_branch,
+    repo = repo,
+    delete_branch = FALSE
   )
 
   # another protocol
