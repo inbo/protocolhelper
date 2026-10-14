@@ -1,9 +1,13 @@
-# Tests for render_release(): builds release documentation for newly merged protocol versions.
+# Tests for render_release(): builds release documentation for newly merged
+# protocol versions.
 # How it tests:
-# - Sets up a mock repository with Zenodo sandbox files and scaffolds sfp-101-en.
-# - Updates index.Rmd reviewers, updates NEWS.md, and assigns a DOI via update_doi().
+# - Sets up a mock repository with Zenodo sandbox files and scaffolds
+#   sfp-101-en.
+# - Updates index.Rmd reviewers, updates NEWS.md, and assigns a DOI via
+#   update_doi().
 # - Commits, tags, merges the protocol branch into main, and pushes to origin.
-# - Executes render_release() on main and asserts error-free compilation of release artifacts.
+# - Executes render_release() on main and asserts error-free compilation of
+#   release artifacts.
 
 test_that("complete workflow works", {
   skip_if_offline()
@@ -14,7 +18,7 @@ test_that("complete workflow works", {
     assertthat::is.error(try(keyring::key_get("ZENODO_SANDBOX"), silent = TRUE))
   )
   language <- "en"
-  setup_mock_contributors(language=language)
+  setup_mock_contributors(language = language)
 
   mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
   origin_repo <- mock_repo$origin_repo
@@ -64,16 +68,14 @@ test_that("complete workflow works", {
 
   # add, commit and tag it
   git_commit_and_tag_protocol(
-    message ="sfp-101-en_water-1",
+    message = "sfp-101-en_water-1",
     protocol_code = "sfp-101-en",
-    tag_message="bla",
-    version_number=version_number
+    tag_message = "bla",
+    version_number = version_number
   )
   git_push_current_branch()
-  
 
-
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "sfp-101-en",
     main_branch = main_branch,

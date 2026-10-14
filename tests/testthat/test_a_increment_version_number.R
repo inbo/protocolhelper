@@ -1,7 +1,10 @@
-# Tests for increment_version_number(): calculates the next sequential version number in YYYY.NN format.
+# Tests for increment_version_number(): calculates the next sequential version
+# number in YYYY.NN format.
 # How it tests:
-# - Tests year rollover by passing previous-year versions and asserting reset to <currentyear>.01.
-# - Tests in-year increments by passing existing current-year versions and asserting sequential bump.
+# - Tests year rollover by passing previous-year versions and asserting reset
+#   to <currentyear>.01.
+# - Tests in-year increments by passing existing current-year versions and
+#   asserting sequential bump.
 # - Tests empty input vector and asserts initialization to <currentyear>.01.
 
 test_that("increment version number works", {

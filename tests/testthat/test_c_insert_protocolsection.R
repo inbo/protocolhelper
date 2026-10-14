@@ -1,9 +1,14 @@
-# Tests for insert_protocolsection(): inserts chapters or sections from a tagged subprotocol.
+# Tests for insert_protocolsection(): inserts chapters or sections from a
+# tagged subprotocol.
 # How it tests:
-# - Scaffolds and Git-tags a subprotocol (sfp-101-nl) in an isolated mock repository.
-# - Inserts an entire chapter and verifies text output with and without header demotion.
-# - Extracts a specific subsection by header title and tests header level adjustments.
-# - Updates the subprotocol with custom parameters and verifies insertion across protocol versions.
+# - Scaffolds and Git-tags a subprotocol (sfp-101-nl) in an isolated mock
+#   repository.
+# - Inserts an entire chapter and verifies text output with and without header
+#   demotion.
+# - Extracts a specific subsection by header title and tests header level
+#   adjustments.
+# - Updates the subprotocol with custom parameters and verifies insertion
+#   across protocol versions.
 
 test_that("Test that insert_protocolsection works", {
   if (!requireNamespace("png", quietly = TRUE)) {
@@ -11,7 +16,6 @@ test_that("Test that insert_protocolsection works", {
   }
   language <- "nl"
   setup_mock_contributors(language = language)
-  #setup_mock_local_repo()
   setup_mock_bare_origin_repo()
   # create a protocol to be used as subprotocol
   version_number <- "2020.01"

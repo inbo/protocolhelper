@@ -1,14 +1,19 @@
-# Tests for check_all(): runs composite validation across structure, frontmatter, and NEWS.
+# Tests for check_all(): runs composite validation across structure,
+# frontmatter, and NEWS.
 # How it tests:
-# - Scaffolds, tags, and pushes a standard field protocol (sfp-101-en) in a mock repository.
+# - Scaffolds, tags, and pushes a standard field protocol (sfp-101-en) in a
+#   mock repository.
 # - Runs check_all() and asserts clean passage without errors.
-# - Injects a version heading mismatch in NEWS.md using make_news_error() and verifies check_all() fails.
-# - Tests an invalid protocol code ("sfp-111-nl") and verifies error handling for non-existent protocols.
+# - Injects a version heading mismatch in NEWS.md using make_news_error() and
+#   verifies check_all() fails.
+# - Tests an invalid protocol code ("sfp-111-nl") and verifies error handling
+#   for non-existent protocols.
 
 test_that("Test if check all works", {
   language <- "en"
   setup_mock_contributors()
-  mock_repo <- setup_mock_bare_origin_repo()
+  # temporary fix including zenodo files
+  mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
   repo <- mock_repo$repo
   # create a protocol
   version_number <- get_version_number()
@@ -25,7 +30,7 @@ test_that("Test if check all works", {
   git_commit_and_tag_protocol(
     protocol_code = "sfp-101-en",
     message = "sfp-101-en_water-1",
-    version_number=version_number,
+    version_number = version_number,
     tag_message = "bla"
   )
   git_push_current_branch()

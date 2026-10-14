@@ -1,9 +1,14 @@
-# Tests for update_doi(): synchronizes Zenodo DOI identifiers into protocol frontmatter.
+# Tests for update_doi(): synchronizes Zenodo DOI identifiers into protocol
+# frontmatter.
 # How it tests:
-# - Scaffolds an initial protocol version in a mock repository configured with Zenodo sandbox credentials.
-# - Calls update_doi() to mint a concept/version DOI and asserts sandbox prefix (10.5072) and YAML update.
-# - Confirms idempotency by verifying the DOI is retained unchanged on repeated update_doi() calls.
-# - Updates to a second protocol version, verifying DOI versioning and persistence across release cycles.
+# - Scaffolds an initial protocol version in a mock repository configured with
+#   Zenodo sandbox credentials.
+# - Calls update_doi() to mint a concept/version DOI and asserts sandbox prefix
+#   (10.5072) and YAML update.
+# - Confirms idempotency by verifying the DOI is retained unchanged on repeated
+#   update_doi() calls.
+# - Updates to a second protocol version, verifying DOI versioning and
+#   persistence across release cycles.
 
 test_that("update doi works", {
   skip_if_offline()
@@ -14,7 +19,7 @@ test_that("update doi works", {
     assertthat::is.error(try(keyring::key_get("ZENODO_SANDBOX"), silent = TRUE))
   )
   language <- "en"
-  setup_mock_contributors(language=language)
+  setup_mock_contributors(language = language)
 
   mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
   repo <- mock_repo$repo
@@ -55,11 +60,11 @@ test_that("update doi works", {
     protocol_code = "sfp-101-en",
     message = "sfp-101-en_water-1",
     tag_message = "bla",
-    version_number=version_number
+    version_number = version_number
   )
   git_push_current_branch()
 
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "sfp-101-en",
     main_branch = main_branch,
@@ -73,8 +78,6 @@ test_that("update doi works", {
   # prepare to start an update of the protocol (new version doi)
   update_protocol("sfp-101-en")
 
-  #branch_info <- gert::git_branch_list(repo = repo)
-  #refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
   gert::git_commit_all(message = "update version number sfp-101-en_water-1")
   git_push_current_branch()
 
@@ -105,12 +108,12 @@ test_that("update doi works", {
   git_commit_and_tag_protocol(
     protocol_code = "sfp-101-en",
     message = "sfp-101-en_water-1",
-    version_number=version_number,
+    version_number = version_number,
     tag_message = "bla"
   )
   git_push_current_branch()
 
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "sfp-101-en",
     main_branch = main_branch,

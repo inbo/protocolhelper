@@ -1,12 +1,15 @@
-# Tests for update_protocol(): prepares an existing protocol for a new version release.
+# Tests for update_protocol(): prepares an existing protocol for a new version
+# release.
 # How it tests:
-# - Scaffolds, commits, tags, and pushes an initial protocol (sfp-101-en, version 2021.01).
-# - Calls update_protocol("sfp-101-en") to check out the protocol branch and bump the version.
+# - Scaffolds, commits, tags, and pushes an initial protocol (sfp-101-en,
+#   version 2021.01).
+# - Calls update_protocol("sfp-101-en") to check out the protocol branch and
+#   bump the version.
 # - Asserts Git switches to the protocol branch ("sfp-101-en").
-# - Verifies index.Rmd YAML frontmatter is updated with the current year's version number.
+# - Verifies index.Rmd YAML frontmatter is updated with the current year's
+#   version number.
 
 test_that("Update of a protocol works", {
-  
   language <- "en"
   setup_mock_contributors(language = language)
 
@@ -29,7 +32,7 @@ test_that("Update of a protocol works", {
     repo = mock_repo$repo
   )
   git_push_current_branch(repo = mock_repo$repo)
-  
+
   # prepare to start an update of the protocol
   update_protocol("sfp-101-en")
   gert::git_commit_all(message = "update version number sfp-101-en_water-1")
@@ -41,7 +44,7 @@ test_that("Update of a protocol works", {
     "sfp-101-en"
   )
 
-  # check if the year on the updated protocol is the same as the year at time of testing
+  # check if the year on the updated protocol matches the year at test time
   expect_identical(
     yaml_front_matter(
       file.path(

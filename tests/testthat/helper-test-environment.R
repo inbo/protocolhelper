@@ -5,11 +5,12 @@
 #'
 #' Returns a list of default mock data frames for author, reviewer,
 #' and file manager matching the specified language affiliation.
-#' The language affiliation is required for the citeme package, it does not allaw a mismatch
-#' in the author and reviewer roles
-#' @param language Language for contributor affiliations, either `"en"` (English, default)
-#'   or `"nl"` (Dutch).
-#' @return A list of data frames with elements `author_df`, `reviewer_df`, and `file_manager_df`.
+#' The language affiliation is required for the citeme package, which does not
+#' allow a mismatch in the author and reviewer roles.
+#' @param language Language for contributor affiliations, either `"en"`
+#'   (English, default) or `"nl"` (Dutch).
+#' @return A list of data frames with elements `author_df`, `reviewer_df`,
+#'   and `file_manager_df`.
 mock_contributors_df <- function(language = c("en", "nl")) {
   language <- match.arg(language)
   affiliation <- switch(
@@ -54,20 +55,25 @@ mock_contributors_df <- function(language = c("en", "nl")) {
 #' Mocks `ask_yes_no`, `select_individual`, `select_reviewer`,
 #' `select_file_manager`, and `readline` for the duration of the calling
 #' environment (using [testthat::local_mocked_bindings]).
-#' 
-#' The local_mocked_bindings function replaces the bindings of the variables with the anonymous functions
-#' protocolhelper will now call these functions instead of the interactive functions.
-#' 
+#'
+#' The `local_mocked_bindings` function replaces the bindings of the variables
+#' with anonymous functions so `protocolhelper` calls these instead of the
+#' interactive functions.
+#'
 #' @param language Language for contributor affiliations (`"en"` or `"nl"`).
-#' @param env The environment to attach the mocked bindings to (defaults to caller).
+#' @param env The environment to attach the mocked bindings to (defaults to
+#'   caller).
 #' @param author_df Data frame for author selection (defaults to standard mock).
-#' @param reviewer_df Data frame for reviewer selection (defaults to standard mock).
-#' @param file_manager_df Data frame for file manager selection (defaults to standard mock).
-#' @param readline_value Character value returned by `readline()` (default "Een titel").
+#' @param reviewer_df Data frame for reviewer selection (defaults to standard
+#'   mock).
+#' @param file_manager_df Data frame for file manager selection (defaults to
+#'   standard mock).
+#' @param readline_value Character value returned by `readline()` (default
+#'   "Een titel").
 #'
 #' @return None. Called for its side-effect of setting mocked bindings.
 setup_mock_contributors <- function(language = c("en", "nl"),
-                                    env = parent.frame(), # need to keep parent environment for mock setup
+                                    env = parent.frame(),
                                     author_df = NULL,
                                     reviewer_df = NULL,
                                     file_manager_df = NULL,
@@ -153,7 +159,7 @@ mock_zenodo_json <- function() {
 setup_mock_local_repo <- function(env = parent.frame()) {
   repo <- tempfile("test_protocol")
   withr::defer(unlink(repo, recursive = TRUE), envir = env)
-  
+
   gert::git_init(path = repo)
   old_wd <- setwd(repo)
   withr::defer(setwd(old_wd), envir = env)
@@ -161,9 +167,17 @@ setup_mock_local_repo <- function(env = parent.frame()) {
   # keep url origin as citeme uses it for citation metadata
   gert::git_remote_add(url = "https://github.com/inbo/unittests", repo = repo)
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(name = "user.email", value = "someone@example.org", repo = repo)
+  gert::git_config_set(
+    name = "user.email",
+    value = "someone@example.org",
+    repo = repo
+  )
 
-  list(repo = repo, origin_repo = NULL, main_branch = gert::git_branch(repo = repo))
+  list(
+    repo = repo,
+    origin_repo = NULL,
+    main_branch = gert::git_branch(repo = repo)
+  )
 }
 
 #' Set up a temporary Git clone with a local bare origin
@@ -181,7 +195,7 @@ setup_mock_bare_origin_repo <- function(include_zenodo_files = FALSE,
   protocol_origin_path <- tempfile("protocol_origin")
   protocol_local_path <- tempfile("protocol_local")
 
-  origin_repo <- gert::git_init(protocol_origin_path , bare = TRUE)
+  origin_repo <- gert::git_init(protocol_origin_path, bare = TRUE)
   withr::defer(unlink(origin_repo, recursive = TRUE), envir = env)
 
   repo <- gert::git_clone(
@@ -195,7 +209,11 @@ setup_mock_bare_origin_repo <- function(include_zenodo_files = FALSE,
   withr::defer(setwd(old_wd), envir = env)
 
   gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(name = "user.email", value = "someone@example.org", repo = repo)
+  gert::git_config_set(
+    name = "user.email",
+    value = "someone@example.org",
+    repo = repo
+  )
 
   file.create("NEWS.md")
   if (include_zenodo_files) {
@@ -224,7 +242,9 @@ setup_mock_bare_origin_repo <- function(include_zenodo_files = FALSE,
 #' @param repo Path to the git repository (default ".").
 #' @param remote Name of the remote (default "origin").
 #' @param set_upstream Logical. Whether to set tracking upstream (default TRUE).
-git_push_current_branch <- function(repo = ".", remote = "origin", set_upstream = TRUE) {
+git_push_current_branch <- function(repo = ".",
+                                    remote = "origin",
+                                    set_upstream = TRUE) {
   branch_info <- gert::git_branch_list(repo = repo)
   current_branch <- gert::git_branch(repo = repo)
   refspec <- branch_info$ref[branch_info$name == current_branch]
@@ -238,17 +258,20 @@ git_push_current_branch <- function(repo = ".", remote = "origin", set_upstream 
 
 #' Stage, commit, and tag a protocol
 #' The changes are staged in the temporary repo.
-#' 
+#'
 #' @param protocol_code Character. E.g. "sfp-101-en".
 #' @param version_number Character. E.g. "2021.01".
-#' @param message Commit message. Defaults to `paste(protocol_code, version_number, sep = "_")`.
+#' @param message Commit message. Defaults to
+#'   `paste(protocol_code, version_number, sep = "_")`.
 #' @param tag_message Message attached to both tags (default "test tag").
 #' @param repo Path to git repository (default ".").
-git_commit_and_tag_protocol <- function(protocol_code,
-                                       version_number,
-                                       message = paste(protocol_code, version_number, sep = "_"),
-                                       tag_message = "test tag",
-                                       repo = ".") {
+git_commit_and_tag_protocol <- function(
+  protocol_code,
+  version_number,
+  message = paste(protocol_code, version_number, sep = "_"),
+  tag_message = "test tag",
+  repo = "."
+) {
   gert::git_add(files = ".", repo = repo)
   gert::git_commit_all(message = message, repo = repo)
   specific_tag <- paste(protocol_code, version_number, sep = "-")
@@ -257,20 +280,23 @@ git_commit_and_tag_protocol <- function(protocol_code,
   gert::git_tag_create(name = generic_tag, message = tag_message, repo = repo)
 }
 
-#' Merge a feature branch into main, push, and optionally delete the feature branch
+#' Merge a feature branch into main, push, and optionally delete branch
 #'
 #' @param branch_name Branch to merge and delete (defaults to current branch).
 #' @param main_branch Main branch name (default "main").
 #' @param repo Path to local git repo (default ".").
-#' @param origin_repo Path to origin bare repo (if deleting remote branch as well).
+#' @param origin_repo Path to origin bare repo (if deleting remote branch).
 #' @param remote Remote name (default "origin").
-#' @param delete_branch Logical. Whether to delete `branch_name` after merging (default TRUE).
-git_merge_to_main_and_delete <- function(branch_name = gert::git_branch(repo = repo),
-                                         main_branch = "main",
-                                         repo = ".",
-                                         origin_repo = NULL,
-                                         remote = "origin",
-                                         delete_branch = TRUE) {
+#' @param delete_branch Logical. Whether to delete `branch_name` after merging
+#'   (default TRUE).
+git_merge_to_main_and_delete <- function(
+  branch_name = gert::git_branch(repo = repo),
+  main_branch = "main",
+  repo = ".",
+  origin_repo = NULL,
+  remote = "origin",
+  delete_branch = TRUE
+) {
   branch_info <- gert::git_branch_list(repo = repo)
   refspec <- branch_info$ref[branch_info$name == branch_name]
   gert::git_branch_checkout(main_branch, repo = repo)
@@ -286,19 +312,23 @@ git_merge_to_main_and_delete <- function(branch_name = gert::git_branch(repo = r
 
 #' @param path Path to the protocol directory containing NEWS.md.
 #' @param version_number Version number string (e.g. "2021.01").
-#' @param n_bullets Number of bullet points to insert (default 2, used to be rpois).
+#' @param n_bullets Number of bullet points to insert (default 2).
 update_news <- function(path, version_number, n_bullets = 2) {
   news_file <- file.path(path, "NEWS.md")
   news <- readLines(news_file)
   heading <- sprintf("## [%1$s](../%1$s/index.html)", version_number)
   bullets <- rep("- blabla blabla", n_bullets)
-  
-  # prevent creating duplicate version headers. 
+
+  # prevent creating duplicate version headers.
   # As create_protocol/update_protocol insert a NEWS header
   if (any(news == heading)) {
     placeholder_idx <- which(news == "-   ...")[1]
     if (!is.na(placeholder_idx)) {
-      news <- append(news[-placeholder_idx], bullets, after = placeholder_idx - 1)
+      news <- append(
+        news[-placeholder_idx],
+        bullets,
+        after = placeholder_idx - 1
+      )
     }
     writeLines(news, news_file)
   } else {

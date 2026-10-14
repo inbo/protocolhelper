@@ -1,17 +1,20 @@
-# Tests for update_zenodo(): synchronizes protocol contributor metadata into Zenodo JSON.
+# Tests for update_zenodo(): synchronizes protocol contributor metadata into
+# Zenodo JSON.
 # How it tests:
 # - Sets up mock contributors and scaffolds a tagged protocol (sfp-102-en).
 # - Loads a base JSON payload using mock_zenodo_json().
-# - Invokes update_zenodo(write = FALSE) to obtain updated metadata without file writes.
-# - Asserts that the output JSON matches expected contributor attributes (name, ORCID, affiliation).
+# - Invokes update_zenodo(write = FALSE) to obtain updated metadata without
+#   file writes.
+# - Asserts that the output JSON matches expected contributor attributes
+#   (name, ORCID, affiliation).
 
 test_that(
   "Update zenodo works",
   {
     language <- "en"
-    setup_mock_contributors(language=language)
+    setup_mock_contributors(language = language)
     setup_mock_bare_origin_repo()
-    
+
     # create a protocol
     version_number <- "2021.02"
     protocolhelper::create_sfp(
@@ -26,14 +29,14 @@ test_that(
       version_number = version_number,
       tag_message = "bla"
     )
-    
-    # Prepare base JSON and 
+
+    # Prepare base JSON
     input_json <- mock_zenodo_json()
-    
+
     # Test that update_zenodo() adds the new author to contributors
     actual_json <- protocolhelper:::update_zenodo(input_json, write = FALSE)
 
-    # Create a JSON containing the expected output from update_zenodo (with contributors added)
+    # Create a JSON with the expected output from update_zenodo
     expected_list <- jsonlite::fromJSON(input_json, simplifyVector = FALSE)
     expected_list$contributors <- list(
       list(

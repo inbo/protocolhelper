@@ -3,14 +3,14 @@
 # - Sets up an isolated mock origin repository with contributor metadata.
 # - Scaffolds a standard field protocol (sfp-101-en) via create_sfp().
 # - Executes render_protocol() and verifies error-free completion.
-# - Asserts that both build artifacts (index.html and .pdf) are generated in docs/.
+# - Asserts that both build artifacts (index.html and .pdf) are generated in
+#   the docs folder.
 
 test_that("render_protocol works as expected", {
   skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev
   language <- "en"
-  setup_mock_contributors(language=language)
+  setup_mock_contributors(language = language)
 
-  #setup_mock_local_repo()
   setup_mock_bare_origin_repo()
 
   # create a protocol to be used as subprotocol

@@ -1,8 +1,11 @@
-# Tests for mock repository helpers: sets up isolated local and bare-origin Git environments.
+# Tests for mock repository helpers: sets up isolated local and bare-origin Git
+# environments.
 # How it tests:
-# - Calls setup_mock_local_repo() and asserts the mock repo lacks an upstream tracking branch.
+# - Calls setup_mock_local_repo() and asserts the mock repo lacks an upstream
+#   tracking branch.
 # - Calls setup_mock_bare_origin_repo() with Zenodo files enabled.
-# - Verifies git fetch succeeds, tracking branches point to origin/main, and .zenodo.json is created.
+# - Verifies git fetch succeeds, tracking branches point to origin/main, and
+#   .zenodo.json is created.
 
 test_that("local mock repository has no bare origin or tracking branch", {
   mock_repo <- setup_mock_local_repo()
@@ -13,7 +16,10 @@ test_that("local mock repository has no bare origin or tracking branch", {
   expect_identical(remotes$url, "https://github.com/inbo/unittests")
 
   expect_error(gert::git_fetch(remote = "origin", repo = mock_repo$repo))
-  expect_length(grep("^origin/", gert::git_branch_list(repo = mock_repo$repo)$name), 0L)
+  expect_length(
+    grep("^origin/", gert::git_branch_list(repo = mock_repo$repo)$name),
+    0L
+  )
   expect_null(mock_repo$origin_repo)
   expect_identical(
     normalizePath(getwd(), winslash = "/"),
@@ -26,7 +32,10 @@ test_that("bare-origin mock repository has a reachable main branch", {
 
   expect_identical(nrow(gert::git_remote_list(repo = mock_repo$repo)), 1L)
   expect_no_error(gert::git_fetch(remote = "origin", repo = mock_repo$repo))
-  expect_identical(mock_repo$main_branch, gert::git_branch(repo = mock_repo$repo))
+  expect_identical(
+    mock_repo$main_branch,
+    gert::git_branch(repo = mock_repo$repo)
+  )
   expect_match(
     paste(gert::git_branch_list(repo = mock_repo$repo)$name, collapse = " "),
     paste0("origin/", mock_repo$main_branch),
@@ -59,4 +68,3 @@ test_that("git_merge_to_main_and_delete merges feature branch and deletes it", {
   expect_false("sfp-101-en" %in% gert::git_branch_list(repo = repo)$name)
   expect_false("sfp-101-en" %in% gert::git_branch_list(repo = origin_repo)$name)
 })
-

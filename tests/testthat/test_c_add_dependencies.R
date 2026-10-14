@@ -1,15 +1,18 @@
-# Tests for add_dependencies(): writes subprotocol dependency metadata to index.Rmd YAML frontmatter.
+# Tests for add_dependencies(): writes subprotocol dependency metadata to
+# index.Rmd YAML frontmatter.
 # How it tests:
-# - Sets up mock contributors and scaffolds a base protocol (sfp-101-en) in a mock repository.
+# - Sets up mock contributors and scaffolds a base protocol (sfp-101-en) in a
+#   mock repository.
 # - Injects custom protocol-specific parameters into index.Rmd.
-# - Invokes add_dependencies() with multiple subprotocol codes, versions, and parameter overrides.
-# - Parses index.Rmd frontmatter and asserts dependency metadata is added while preserving existing parameters.
+# - Invokes add_dependencies() with multiple subprotocol codes, versions, and
+#   parameter overrides.
+# - Parses index.Rmd frontmatter and asserts dependency metadata is added while
+#   preserving existing parameters.
 
 test_that("test that adding dependencies to yaml works", {
   library(ymlthis)
   language <- "en"
-  setup_mock_contributors(language =language)
-  # setup_mock_local_repo()
+  setup_mock_contributors(language = language)
   setup_mock_bare_origin_repo()
   # create a protocol
   version_number <- "2021.01"
@@ -31,23 +34,23 @@ test_that("test that adding dependencies to yaml works", {
   index_yml <- ymlthis::yml_params(index_yml, protocolspecific = "defaultvalue")
   # this is the index_rmd without params in the yml header
   index_rmd <- file.path(
-      "source", "sfp", "1_water", "sfp_101_en_water_1",
-      "index.Rmd"
-    )
+    "source", "sfp", "1_water", "sfp_101_en_water_1",
+    "index.Rmd"
+  )
 
   # instead of creating a template rmd that is a copy of the index rmd
   # we use the overwrite options of the usethis package
   withr::with_options(list(usethis.overwrite = TRUE), {
-  ymlthis::use_index_rmd(
-    .yml = index_yml,
-    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    template = index_rmd,
-    include_body = TRUE,
-    include_yaml = FALSE,
-    quiet = TRUE,
-    open_doc = FALSE
-  )
-})
+    ymlthis::use_index_rmd(
+      .yml = index_yml,
+      path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
+      template = index_rmd,
+      include_body = TRUE,
+      include_yaml = FALSE,
+      quiet = TRUE,
+      open_doc = FALSE
+    )
+  })
   # add dependencies
 
   add_dependencies(

@@ -1,18 +1,23 @@
-# Tests for check_frontmatter(): validates YAML frontmatter metadata in index.Rmd.
+# Tests for check_frontmatter(): validates YAML frontmatter metadata in
+# index.Rmd.
 # How it tests:
-# - Scaffolds protocols in a mock repository, committing and tagging them against origin.
+# - Scaffolds protocols in a mock repository, committing and tagging them
+#   against origin.
 # - Confirms valid frontmatter outputs "Well done! No problems found".
-# - Corrupts frontmatter fields (invalid title vector, malformed version string, incorrect author format).
-# - Asserts check_frontmatter() surfaces specific validation errors and raises errors when fail = TRUE.
+# - Corrupts frontmatter fields (invalid title vector, malformed version
+#   string, incorrect author format).
+# - Asserts check_frontmatter() surfaces specific validation errors and raises
+#   errors when fail = TRUE.
 
 test_that("Check frontmatter works", {
   language <- "en"
   setup_mock_contributors()
-  mock_repo <- setup_mock_bare_origin_repo()
+  # Temporary add zenodo files, fixes the citeme issue 
+  # (but the issue is at citeme itself)
+  mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
   repo <- mock_repo$repo
   main_branch <- mock_repo$main_branch
   # create a protocol
-  # why do this?
   fs::dir_create(file.path(repo, "source"))
   version_number <- get_version_number()
   create_sfp(
@@ -26,8 +31,8 @@ test_that("Check frontmatter works", {
   git_commit_and_tag_protocol(
     protocol_code = "sfp-101-en",
     message = "sfp-101-en_water-1",
-    version_number=version_number,
-    tag_message="bla"
+    version_number = version_number,
+    tag_message = "bla"
   )
   git_push_current_branch()
 

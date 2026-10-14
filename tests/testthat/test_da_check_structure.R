@@ -1,14 +1,17 @@
-# Tests for check_structure(): validates protocol file structure, chapter titles, and numbering.
+# Tests for check_structure(): validates protocol file structure, chapter
+# titles, and numbering.
 # How it tests:
 # - Scaffolds a protocol and confirms clean validation output ("No problems").
-# - Simulates errors: alters chapter titles, removes references.yaml, and deletes template chapters.
-# - Introduces duplicate chapter numbers (01_) and asserts validation errors and diagnostic messages.
-# - Tests a generic template protocol to ensure structural rules apply across template variants.
+# - Simulates errors: alters chapter titles, removes references.yaml, and
+#   deletes template chapters.
+# - Introduces duplicate chapter numbers (01_) and asserts validation errors
+#   and diagnostic messages.
+# - Tests a generic template protocol to ensure structural rules apply across
+#   template variants.
 
 test_that("check structure works", {
   language <- "en"
-  setup_mock_contributors(language=language)
-  #setup_mock_local_repo()
+  setup_mock_contributors(language = language)
   setup_mock_bare_origin_repo()
   # create a protocol
   version_number <- "2021.01"

@@ -1,10 +1,15 @@
-# Tests end-to-end multi-protocol workflow: authoring, linking, releasing, and updating protocols.
+# Tests end-to-end multi-protocol workflow: authoring, linking, releasing, and
+# updating protocols.
 # How it tests:
 # - Sets up a mock origin repository configured with Zenodo sandbox credentials.
-# - Sequentially scaffolds, tags, merges, and releases subprotocols (sfp-101-en, sfp-407-en, sfp-102-en).
-# - Tests subprotocol dependencies, custom parameter overrides, and media/data file inclusions.
-# - Authors a composite project protocol (spp-001-en) linking subprotocols into an integrated manual.
-# - Updates an existing protocol to a new version and verifies render_release() succeeds after each cycle.
+# - Sequentially scaffolds, tags, merges, and releases subprotocols
+#   (sfp-101-en, sfp-407-en, sfp-102-en).
+# - Tests subprotocol dependencies, custom parameter overrides, and media/data
+#   file inclusions.
+# - Authors a composite project protocol (spp-001-en) linking subprotocols into
+#   an integrated manual.
+# - Updates an existing protocol to a new version and verifies render_release()
+#   succeeds after each cycle.
 
 test_that("complete workflow works", {
   skip_if_offline()
@@ -16,14 +21,15 @@ test_that("complete workflow works", {
   )
   language <- "en"
   setup_mock_contributors(
-    language=language, 
-    readline_value = function(...) paste("Tekst", Sys.time()))
+    language = language,
+    readline_value = function(...) paste("Tekst", Sys.time())
+  )
 
   mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
   repo <- mock_repo$repo
   origin_repo <- mock_repo$origin_repo
   main_branch <- mock_repo$main_branch
-  
+
   # create a protocol to be used as subprotocol
   version_number <- get_version_number()
   create_sfp(
@@ -44,15 +50,15 @@ test_that("complete workflow works", {
   # add, commit and tag it
   git_commit_and_tag_protocol(
     message = "sfp-101-en_water-1",
-    protocol_code  = "sfp-101-en",
-    tag_message="bla",
-    version_number=version_number
+    protocol_code = "sfp-101-en",
+    tag_message = "bla",
+    version_number = version_number
   )
 
   git_push_current_branch()
 
 
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "sfp-101-en",
     main_branch = main_branch,
@@ -86,14 +92,13 @@ test_that("complete workflow works", {
 
   git_commit_and_tag_protocol(
     protocol_code = "sfp-407-en",
-    message="sfp-407-en_vegetation-1",
-    tag_message ="bla",
-    version_number=version_number_2
+    message = "sfp-407-en_vegetation-1",
+    tag_message = "bla",
+    version_number = version_number_2
   )
   git_push_current_branch()
-  
 
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "sfp-407-en",
     main_branch = main_branch,
@@ -202,7 +207,7 @@ test_that("complete workflow works", {
       "sfp_102_en_second_subprotocol"
     ),
     version_number = version_number_3,
-    n_bullets= 6
+    n_bullets = 6
   )
 
   protocolhelper:::update_news_release("sfp-102-en")
@@ -210,14 +215,14 @@ test_that("complete workflow works", {
   doi <- protocolhelper:::update_doi("sfp-102-en")
 
   git_commit_and_tag_protocol(
-    message="sfp-102-en_second_subprotocol",
+    message = "sfp-102-en_second_subprotocol",
     protocol_code = "sfp-102-en",
-    tag_message="bla",
-    version_number=version_number_3
+    tag_message = "bla",
+    version_number = version_number_3
   )
   git_push_current_branch()
 
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "sfp-102-en",
     main_branch = main_branch,
@@ -257,7 +262,7 @@ test_that("complete workflow works", {
       "spp_001_en_mne_protocol"
     ),
     version_number = version_number_4,
-    n_bullets=1
+    n_bullets = 1
   )
 
   protocolhelper:::update_news_release("spp-001-en")
@@ -266,13 +271,13 @@ test_that("complete workflow works", {
 
   # add, commit and tag it
   git_commit_and_tag_protocol(
-    protocol_code ="spp-001-en",
-    message="spp-001-en_mne-protocol",
-    tag_message="bla",
-    version_number=version_number_4
+    protocol_code = "spp-001-en",
+    message = "spp-001-en_mne-protocol",
+    tag_message = "bla",
+    version_number = version_number_4
   )
   git_push_current_branch()
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "spp-001-en",
     main_branch = main_branch,
@@ -291,14 +296,14 @@ test_that("complete workflow works", {
 
   # add, commit and tag it
   git_commit_and_tag_protocol(
-    message="sfp-101-en_water",
-    protocol_code="sfp-101-en",
-    tag_message="bla",
-    version_number=version_number_5
+    message = "sfp-101-en_water",
+    protocol_code = "sfp-101-en",
+    tag_message = "bla",
+    version_number = version_number_5
   )
   git_push_current_branch()
 
-  # merge into main and delete feature branch (using helper to avoid boilerplate)
+  # merge into main and delete feature branch
   git_merge_to_main_and_delete(
     branch_name = "sfp-101-en",
     main_branch = main_branch,
