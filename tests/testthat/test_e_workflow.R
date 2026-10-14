@@ -117,13 +117,13 @@ test_that("complete workflow works", {
     language = "en"
   )
   checklist::new_branch("sfp-102-en", repo = repo)
-  # test non-default params
+
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
     file = file.path(
       "source/sfp/1_water/sfp_102_en_second_subprotocol",
-      "07_stappenplan.Rmd"
+      "07_workflow.Rmd"
     ),
     append = TRUE
   )

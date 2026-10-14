@@ -5,7 +5,8 @@
 # - Asserts the resulting Rmd file matches the expected reference file (result_captions.Rmd).
 
 test_that("function add_captions works", {
-  temp_dir <- tempdir()
+  # temporary dir
+  temp_dir <- withr::local_tempdir()
   add_captions(
     from = file.path("..", "testdata", "test_captions.Rmd"),
     to = file.path(temp_dir, "step1.Rmd")

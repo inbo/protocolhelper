@@ -34,8 +34,7 @@ test_that("Test if check all works", {
   expect_no_error(check_all("sfp-101-en", fail = TRUE))
 
   make_news_error(
-    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    version_number = version_number
+    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1")
   )
 
   gert::git_commit_all(message = "sfp-101-en_water-1")

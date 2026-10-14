@@ -29,25 +29,28 @@ test_that("complete workflow works", {
   )
   checklist::new_branch("sfp-101-en", repo = repo)
 
-  # extra reviewer toevoegen
-  # read index template
   path_to_protocol <- get_path_to_protocol("sfp-101-en")
-  path(path_to_protocol, "index.Rmd") |>
-    readLines() -> index
-  yaml <- head(index, grep("---", index)[2])
-  yaml <- yaml[-1]
-  yaml <- yaml[-38]
-  yaml <- c(yaml[1:17], yaml[12:17], yaml[18:37])
-  yaml[13] <- gsub("Els", "Pieter", yaml[13])
-  yaml[14] <- gsub("Lommelen", "Verschelde", yaml[14])
-  yaml[15] <- gsub("els.lommelen", "pieter.verschelde", yaml[15])
-  yaml[16] <- gsub("0000-0002-3481-5684", "0000-0002-9199-421X", yaml[16])
-
-  # remove existing yaml
-  index <- tail(index, -grep("---", index)[2])
-  # add new yaml
-  index <- c("---", yaml, "---", index)
-  writeLines(index, path(path_to_protocol, "index.Rmd"))
+  parent_rmd <- file.path(path_to_protocol, "index.Rmd")
+  index_yml <- rmarkdown::yaml_front_matter(parent_rmd)
+  second_reviewer <- list(
+    name = list(given = "Pieter", family = "Verschelde"),
+    email = "pieter.verschelde@inbo.be",
+    orcid = "0000-0002-9199-421X",
+    affiliation = "Research Institute for Nature and Forest (INBO)"
+  )
+  index_yml$reviewer <- append(list(second_reviewer), index_yml$reviewer)
+  index_yml <- ymlthis::as_yml(index_yml)
+  withr::with_options(list(usethis.overwrite = TRUE), {
+    ymlthis::use_index_rmd(
+      .yml = index_yml,
+      path = path_to_protocol,
+      template = parent_rmd,
+      include_body = TRUE,
+      include_yaml = FALSE,
+      quiet = TRUE,
+      open_doc = FALSE
+    )
+  })
 
 
   update_news(

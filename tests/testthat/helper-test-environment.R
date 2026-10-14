@@ -172,11 +172,16 @@ setup_mock_local_repo <- function(env = parent.frame()) {
 #' the initial branch with upstream tracking. Cleanup and working-directory
 #' restoration are deferred to `env`.
 #'
-#' @param include_zenodo_files If TRUE, also commits `.zenodo.json` and
-#'   `.gitignore`. This does not mock Zenodo API calls.
+#' @param include_zenodo_files If TRUE (the default), also commits `.zenodo.json`
+#'   and `.gitignore` at the repository root. Note: `citeme::citation_meta$new()`
+#'   (called by `check_frontmatter()` and `check_all()`) runs `gert::git_ls()`
+#'   and checks `".zenodo.json" %in% tracked$path`. Because `git_ls()` returns
+#'   paths relative to the repository root, `check_frontmatter()` fails with
+#'   `".zenodo.json is modified. Please commit changes."` unless `.zenodo.json`
+#'   is tracked at the repository root.
 #' @param env Environment controlling cleanup lifetime (defaults to caller).
 #' @return A list with `repo`, `origin_repo`, and `main_branch`.
-setup_mock_bare_origin_repo <- function(include_zenodo_files = FALSE,
+setup_mock_bare_origin_repo <- function(include_zenodo_files = TRUE,
                                         env = parent.frame()) {
   protocol_origin_path <- tempfile("protocol_origin")
   protocol_local_path <- tempfile("protocol_local")
@@ -279,23 +284,34 @@ git_merge_to_main_and_delete <- function(branch_name,
   gert::git_branch_delete(branch_name, repo = repo)
 }
 
-#' Update protocol NEWS.md with a new release section
-#'
 #' @param path Path to the protocol directory containing NEWS.md.
 #' @param version_number Version number string (e.g. "2021.01").
 #' @param n_bullets Number of bullet points to insert (default 2, used to be rpois).
 update_news <- function(path, version_number, n_bullets = 2) {
   news_file <- file.path(path, "NEWS.md")
   news <- readLines(news_file)
-  writeLines(
-    c(
-      head(news, 2),
-      sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
-      rep("- blabla blabla", n_bullets),
-      tail(news, -2)
-    ),
-    news_file
-  )
+  heading <- sprintf("## [%1$s](../%1$s/index.html)", version_number)
+  bullets <- rep("- blabla blabla", n_bullets)
+  
+  # prevent creating duplicate version headers. 
+  # As create_protocol/update_protocol insert a NEWS header
+  if (any(news == heading)) {
+    placeholder_idx <- which(news == "-   ...")[1]
+    if (!is.na(placeholder_idx)) {
+      news <- append(news[-placeholder_idx], bullets, after = placeholder_idx - 1)
+    }
+    writeLines(news, news_file)
+  } else {
+    writeLines(
+      c(
+        head(news, 2),
+        paste0("\n", heading, "\n"),
+        bullets,
+        tail(news, -2)
+      ),
+      news_file
+    )
+  }
 }
 
 #' Inject an invalid news version for testing check_all / check_news

@@ -1,3 +1,9 @@
+# Tests for mock repository helpers: sets up isolated local and bare-origin Git environments.
+# How it tests:
+# - Calls setup_mock_local_repo() and asserts the mock repo lacks an upstream tracking branch.
+# - Calls setup_mock_bare_origin_repo() with Zenodo files enabled.
+# - Verifies git fetch succeeds, tracking branches point to origin/main, and .zenodo.json is created.
+
 test_that("local mock repository has no bare origin or tracking branch", {
   mock_repo <- setup_mock_local_repo()
 

@@ -83,19 +83,22 @@ test_that("Test that insert_protocolsection works", {
     file = "source/sfp/1_water/sfp_101_nl_water_1/07_werkwijze.Rmd",
     append = TRUE
   )
-  # add the protocolspecific parameter to index yaml
-  index <- readLines(
-    "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
-  )
-  index <- c(
-    index[1:14],
-    "  protocolspecific: defaultvalue",
-    index[15:length(index)]
-  )
-  writeLines(
-    index,
-    con = "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
-  )
+
+  index_rmd <- "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
+  index_yml <- rmarkdown::yaml_front_matter(index_rmd) |>
+    ymlthis::as_yml() |>
+    ymlthis::yml_params(protocolspecific = "defaultvalue")
+  withr::with_options(list(usethis.overwrite = TRUE), {
+    ymlthis::use_index_rmd(
+      .yml = index_yml,
+      path = dirname(index_rmd),
+      template = index_rmd,
+      include_body = TRUE,
+      include_yaml = FALSE,
+      quiet = TRUE,
+      open_doc = FALSE
+    )
+  })
   version_number <- "2020.02"
 
   git_commit_and_tag_protocol(
