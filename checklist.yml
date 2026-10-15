@@ -10,9 +10,10 @@ allowed:
       New submission
 
       Strong dependencies not in mainstream repositories:
-        checklist
+        checklist, citeme
       Availability using Additional_repositories specification:
         checklist   yes   https://inbo.r-universe.dev
+        citeme      yes   https://inbo.r-universe.dev
   notes: []
 citation_roles:
 - aut
