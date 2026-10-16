@@ -19,11 +19,11 @@ identified for person names and \code{orcid} ids.
 Checks the format of person names and \code{orcid} ids.
 }
 \seealso{
-Other check: 
-\code{\link{check_all}()},
-\code{\link{check_frontmatter}()},
-\code{\link{check_structure}()},
+Other check:
+\code{\link[=check_all]{check_all()}},
+\code{\link[=check_frontmatter]{check_frontmatter()}},
+\code{\link[=check_structure]{check_structure()}},
 \code{\link{protocolcheck}},
-\code{\link{validate_orcid}()}
+\code{\link[=validate_orcid]{validate_orcid()}}
 }
 \concept{check}

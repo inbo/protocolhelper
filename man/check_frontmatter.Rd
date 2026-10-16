@@ -25,11 +25,11 @@ and published (for instance, it will fail if version number is
 \code{YYYY.NN.dev}).
 }
 \seealso{
-Other check: 
-\code{\link{check_all}()},
-\code{\link{check_all_person_info}()},
-\code{\link{check_structure}()},
+Other check:
+\code{\link[=check_all]{check_all()}},
+\code{\link[=check_all_person_info]{check_all_person_info()}},
+\code{\link[=check_structure]{check_structure()}},
 \code{\link{protocolcheck}},
-\code{\link{validate_orcid}()}
+\code{\link[=validate_orcid]{validate_orcid()}}
 }
 \concept{check}

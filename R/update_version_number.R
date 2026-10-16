@@ -26,10 +26,11 @@
 #' @family creation
 #'
 update_version_number <- function(
-    protocol_code,
-    commit = TRUE,
-    update_news = TRUE,
-    path = ".") {
+  protocol_code,
+  commit = TRUE,
+  update_news = TRUE,
+  path = "."
+) {
   # assertions
   check_protocolcode(protocol_code)
   assert_that(is_dir(path))

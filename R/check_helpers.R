@@ -96,8 +96,9 @@ validate_orcid <- function(orcid) {
 #' @export
 #' @family check
 check_all_person_info <- function(
-    person_list,
-    problems_vect) {
+  person_list,
+  problems_vect
+) {
   check_given <- function(x) {
     has_name(x, "name") &&
       has_name(x$name, "given") &&

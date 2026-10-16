@@ -21,9 +21,9 @@
 #' @noRd
 #'
 set_tags <- function(
-    protocol_code,
-    path = ".") {
-
+  protocol_code,
+  path = "."
+) {
   if (
     !as.logical(Sys.getenv("GITHUB_ACTIONS", "false")) ||
       !Sys.getenv("GITHUB_REF") %in%
@@ -43,8 +43,7 @@ set_tags <- function(
       "user.name",
       old_config$value[old_config$name == "user.name"],
       repo = path
-    ),
-
+    )
   )
   withr::defer(
     git_config_set(

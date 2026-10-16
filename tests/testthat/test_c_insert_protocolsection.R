@@ -1,63 +1,40 @@
+# Tests for insert_protocolsection(): inserts chapters or sections from a
+# tagged subprotocol.
+# How it tests:
+# - Scaffolds and Git-tags a subprotocol (sfp-101-nl) in an isolated mock
+#   repository.
+# - Inserts an entire chapter and verifies text output with and without header
+#   demotion.
+# - Extracts a specific subsection by header title and tests header level
+#   adjustments.
+# - Updates the subprotocol with custom parameters and verifies insertion
+#   across protocol versions.
+
 test_that("Test that insert_protocolsection works", {
   if (!requireNamespace("png", quietly = TRUE)) {
     stop("please install 'png' package for these tests to work")
   }
-  author_df <- data.frame(
-    given = c("Hans"),
-    family = c("Van Calster"),
-    email = c("hans.vancalster@inbo.be"),
-    orcid = c("0000-0001-8595-8426"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
-  )
-  reviewer_df <- data.frame(
-    given = c("Els"),
-    family = c("Lommelen"),
-    email = c("els.lommelen@inbo.be"),
-    orcid = c("0000-0002-3481-5684"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
-  )
-  file_manager_df <- data.frame(
-    given = c("Pieter"),
-    family = c("Verschelde"),
-    email = c("pieter.verschelde@inbo.be"),
-    orcid = c("0000-0002-9199-421X"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
-  )
-
-
-  local_mocked_bindings(
-    ask_yes_no = function(...) FALSE,
-    use_author = function(...) author_df,
-    use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df,
-    readline = function(...) "Een titel"
-  )
-
-  test_repo <- tempfile("test_protocol")
-  dir.create(test_repo)
-  old_wd <- setwd(test_repo)
-  withr::defer(setwd(old_wd))
-  repo <- gert::git_init()
-  withr::defer(unlink(repo, recursive = TRUE))
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = ".")
-  gert::git_config_set(name = "user.name", value = "someone")
-  gert::git_config_set(name = "user.email", value = "someone@example.org")
-
+  language <- "nl"
+  setup_mock_contributors(language = language)
+  setup_mock_bare_origin_repo()
   # create a protocol to be used as subprotocol
   version_number <- "2020.01"
   create_sfp(
     short_title = "water 1",
-    version_number = version_number, theme = "water", language = "nl"
+    version_number = version_number,
+    theme = "water",
+    language = language
   )
 
   # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-nl_water-1")
-  specific_tag <- paste("sfp-101-nl", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
+
+  git_commit_and_tag_protocol(
+    message = "sfp-101-nl_water-1",
+    protocol_code = "sfp-101-nl",
+    version_number = version_number,
+    tag_message = "bla"
+  )
+  git_push_current_branch()
 
   # test addition of a chapter
   expect_output(
@@ -110,25 +87,31 @@ test_that("Test that insert_protocolsection works", {
     file = "source/sfp/1_water/sfp_101_nl_water_1/07_werkwijze.Rmd",
     append = TRUE
   )
-  # add the protocolspecific parameter to index yaml
-  index <- readLines(
-    "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
-  )
-  index <- c(
-    index[1:14],
-    "  protocolspecific: defaultvalue",
-    index[15:length(index)]
-  )
-  writeLines(
-    index,
-    con = "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
-  )
+
+  index_rmd <- "source/sfp/1_water/sfp_101_nl_water_1/index.Rmd"
+  index_yml <- rmarkdown::yaml_front_matter(index_rmd) |>
+    ymlthis::as_yml() |>
+    ymlthis::yml_params(protocolspecific = "defaultvalue")
+  withr::with_options(list(usethis.overwrite = TRUE), {
+    ymlthis::use_index_rmd(
+      .yml = index_yml,
+      path = dirname(index_rmd),
+      template = index_rmd,
+      include_body = TRUE,
+      include_yaml = FALSE,
+      quiet = TRUE,
+      open_doc = FALSE
+    )
+  })
   version_number <- "2020.02"
-  gert::git_commit_all(message = "sfp-101-nl_water-1")
-  specific_tag <- paste("sfp-101-nl", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
+
+  git_commit_and_tag_protocol(
+    message = "sfp-101-nl_water-1",
+    protocol_code = "sfp-101-nl",
+    version_number = version_number,
+    tag_message = "bla"
+  )
+
 
   # non-default params values need to be passed via render_...() functions
   # insert_protocolsection does not deal with it

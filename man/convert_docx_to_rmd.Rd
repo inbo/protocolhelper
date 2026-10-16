@@ -56,7 +56,7 @@ be recovered manually.
 Usually header information will go inside a yaml section of an Rmarkdown.
 }
 \seealso{
-Other convert: 
-\code{\link{add_captions}()}
+Other convert:
+\code{\link[=add_captions]{add_captions()}}
 }
 \concept{convert}

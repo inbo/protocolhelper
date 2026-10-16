@@ -34,12 +34,12 @@ and changes this accordingly in the YAML section of \code{index.Rmd} file and
 optionally in \code{NEWS.md}.
 }
 \seealso{
-Other creation: 
-\code{\link{add_dependencies}()},
-\code{\link{add_one_subprotocol}()},
-\code{\link{add_subprotocols}()},
-\code{\link{create_protocol}()},
-\code{\link{insert_protocolsection}()},
-\code{\link{update_protocol}()}
+Other creation:
+\code{\link[=add_dependencies]{add_dependencies()}},
+\code{\link[=add_one_subprotocol]{add_one_subprotocol()}},
+\code{\link[=add_subprotocols]{add_subprotocols()}},
+\code{\link[=create_protocol]{create_protocol()}},
+\code{\link[=insert_protocolsection]{insert_protocolsection()}},
+\code{\link[=update_protocol]{update_protocol()}}
 }
 \concept{creation}

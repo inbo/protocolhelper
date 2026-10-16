@@ -43,12 +43,13 @@
 #' @family convert
 #'
 add_captions <- function(
-    from,
-    to,
-    name_figure_from = "Figuur",
-    name_table_from = "Tabel",
-    name_figure_to = "Figuur",
-    name_table_to = "Tabel") {
+  from,
+  to,
+  name_figure_from = "Figuur",
+  name_table_from = "Tabel",
+  name_figure_to = "Figuur",
+  name_table_to = "Tabel"
+) {
   # input checks
   assert_that(!missing(from))
   from <- normalizePath(from)

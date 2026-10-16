@@ -7,106 +7,114 @@
 A class that collects and shows all check results.
 }
 \seealso{
-Other check: 
-\code{\link{check_all}()},
-\code{\link{check_all_person_info}()},
-\code{\link{check_frontmatter}()},
-\code{\link{check_structure}()},
-\code{\link{validate_orcid}()}
+Other check:
+\code{\link[=check_all]{check_all()}},
+\code{\link[=check_all_person_info]{check_all_person_info()}},
+\code{\link[=check_frontmatter]{check_frontmatter()}},
+\code{\link[=check_structure]{check_structure()}},
+\code{\link[=validate_orcid]{validate_orcid()}}
 }
 \concept{check}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{protocol_code}}{Character string giving the protocol code.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{protocol_code}}{Character string giving the protocol code.}
 
-\item{\code{path}}{Character string giving the relative path to the protocol.}
+    \item{\code{path}}{Character string giving the relative path to the protocol.}
 
-\item{\code{error}}{Character vector containing all errors found in the protocol}
-}
-\if{html}{\out{</div>}}
+    \item{\code{error}}{Character vector containing all errors found in the protocol}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Protocolcheck-new}{\code{protocolcheck$new()}}
-\item \href{#method-Protocolcheck-add_error}{\code{protocolcheck$add_error()}}
-\item \href{#method-Protocolcheck-check}{\code{protocolcheck$check()}}
-\item \href{#method-Protocolcheck-clone}{\code{protocolcheck$clone()}}
-}
+  \itemize{
+    \item \href{#method-Protocolcheck-initialize}{\code{Protocolcheck$new()}}
+    \item \href{#method-Protocolcheck-add_error}{\code{Protocolcheck$add_error()}}
+    \item \href{#method-Protocolcheck-check}{\code{Protocolcheck$check()}}
+    \item \href{#method-Protocolcheck-clone}{\code{Protocolcheck$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Protocolcheck-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Protocolcheck-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new \code{Protocolcheck} object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{protocolcheck$new(protocol_code)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-Protocolcheck-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Protocolcheck-initialize}{}}}
+\subsection{\code{Protocolcheck$new()}}{
+  Create a new \code{Protocolcheck} object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Protocolcheck$new(protocol_code)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{protocol_code}}{Character string giving the protocol code.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A new \code{Protocolcheck} object
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{protocol_code}}{Character string giving the protocol code.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A new \code{Protocolcheck} object
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Protocolcheck-add_error"></a>}}
 \if{latex}{\out{\hypertarget{method-Protocolcheck-add_error}{}}}
-\subsection{Method \code{add_error()}}{
-Add a new error to the \code{Protocolcheck} object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{protocolcheck$add_error(msg)}\if{html}{\out{</div>}}
+\subsection{\code{Protocolcheck$add_error()}}{
+  Add a new error to the \code{Protocolcheck} object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Protocolcheck$add_error(msg)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{msg}}{Error message to be added.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{msg}}{Error message to be added.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Protocolcheck-check"></a>}}
 \if{latex}{\out{\hypertarget{method-Protocolcheck-check}{}}}
-\subsection{Method \code{check()}}{
-Give error report from \code{Protocolcheck} object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{protocolcheck$check(fail)}\if{html}{\out{</div>}}
+\subsection{\code{Protocolcheck$check()}}{
+  Give error report from \code{Protocolcheck} object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Protocolcheck$check(fail)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fail}}{Should an error be dropped if the report contains errors?}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An error report (and if desired an error is dropped).
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fail}}{Should an error be dropped if the report contains errors?}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An error report (and if desired an error is dropped).
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Protocolcheck-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Protocolcheck-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{protocolcheck$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Protocolcheck$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Protocolcheck$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

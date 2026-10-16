@@ -24,11 +24,11 @@ This function is intended for checking if a protocol is ready to be rendered
 and published.
 }
 \seealso{
-Other check: 
-\code{\link{check_all}()},
-\code{\link{check_all_person_info}()},
-\code{\link{check_frontmatter}()},
+Other check:
+\code{\link[=check_all]{check_all()}},
+\code{\link[=check_all_person_info]{check_all_person_info()}},
+\code{\link[=check_frontmatter]{check_frontmatter()}},
 \code{\link{protocolcheck}},
-\code{\link{validate_orcid}()}
+\code{\link[=validate_orcid]{validate_orcid()}}
 }
 \concept{check}

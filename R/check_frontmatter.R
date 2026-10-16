@@ -18,14 +18,15 @@
 #' @importFrom assertthat assert_that is.string has_name is.flag noNA
 #' @importFrom stringr str_detect
 #' @importFrom purrr map_lgl map_chr
-#' @importFrom checklist citation_meta
+#' @importFrom citeme citation_meta
 #'
 #' @export
 #' @family check
 #'
 check_frontmatter <- function(
-    protocol_code,
-    fail = !interactive()) {
+  protocol_code,
+  fail = !interactive()
+) {
   check_protocolcode(protocol_code)
   assert_that(is.flag(fail), noNA(fail))
 
@@ -44,9 +45,9 @@ check_frontmatter <- function(
   if (
     !(is.string(yml_protocol$template_name) && is.string(yml_protocol$language))
   ) {
-    x$add_error(msg = sprintf("yaml keys `template_name` and `language`
+    x$add_error(msg = "yaml keys `template_name` and `language`
                               should be present in the yaml section of index.Rmd
-                              and their values should be strings."))
+                              and their values should be strings.")
     return(x$check(fail = fail))
   }
 
@@ -57,10 +58,8 @@ check_frontmatter <- function(
     )
 
   path_to_template <-
-    system.file(
-      file.path("rmarkdown", "templates", template_name, "skeleton"),
-      package = "protocolhelper"
-    )
+    system.file("rmarkdown", "templates", template_name, "skeleton",
+                package = "protocolhelper")
 
   if (!file.exists(file.path(
     path_to_template,

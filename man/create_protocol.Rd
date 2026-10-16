@@ -120,6 +120,8 @@ based on pre-existing protocol numbers.
 Note that for backwards compatibility with protocol numbers that were already
 in use at INBO, we made a list of reserved numbers.
 These reserved numbers will not be used when \code{protocol_number} is NULL.
+You can inspect the list of reserved numbers with
+\code{protocolhelper:::reserved_codes}.
 The only time you will need to explicitly pass a protocol number to the
 \code{protocol_number} argument is when you want to migrate a pre-existing INBO
 protocol to \code{protocolsource} and hence use one of the reserved numbers.
@@ -191,12 +193,12 @@ protocolhelper::create_protocol(
 }
 }
 \seealso{
-Other creation: 
-\code{\link{add_dependencies}()},
-\code{\link{add_one_subprotocol}()},
-\code{\link{add_subprotocols}()},
-\code{\link{insert_protocolsection}()},
-\code{\link{update_protocol}()},
-\code{\link{update_version_number}()}
+Other creation:
+\code{\link[=add_dependencies]{add_dependencies()}},
+\code{\link[=add_one_subprotocol]{add_one_subprotocol()}},
+\code{\link[=add_subprotocols]{add_subprotocols()}},
+\code{\link[=insert_protocolsection]{insert_protocolsection()}},
+\code{\link[=update_protocol]{update_protocol()}},
+\code{\link[=update_version_number]{update_version_number()}}
 }
 \concept{creation}

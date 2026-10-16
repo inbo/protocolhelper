@@ -32,12 +32,12 @@ get_short_titles()
 }
 }
 \seealso{
-Other utility: 
-\code{\link{add_label}()},
-\code{\link{get_path_to_protocol}()},
-\code{\link{get_protocol_type}()},
-\code{\link{get_protocolnumbers}()},
-\code{\link{get_version_number}()},
-\code{\link{increment_version_number}()}
+Other utility:
+\code{\link[=add_label]{add_label()}},
+\code{\link[=get_path_to_protocol]{get_path_to_protocol()}},
+\code{\link[=get_protocol_type]{get_protocol_type()}},
+\code{\link[=get_protocolnumbers]{get_protocolnumbers()}},
+\code{\link[=get_version_number]{get_version_number()}},
+\code{\link[=increment_version_number]{increment_version_number()}}
 }
 \concept{utility}
