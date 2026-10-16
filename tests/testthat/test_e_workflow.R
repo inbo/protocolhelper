@@ -1,3 +1,16 @@
+# Tests end-to-end multi-protocol workflow: authoring, linking, releasing, and
+# updating protocols.
+# How it tests:
+# - Sets up a mock origin repository configured with Zenodo sandbox credentials.
+# - Sequentially scaffolds, tags, merges, and releases subprotocols
+#   (sfp-101-en, sfp-407-en, sfp-102-en).
+# - Tests subprotocol dependencies, custom parameter overrides, and media/data
+#   file inclusions.
+# - Authors a composite project protocol (spp-001-en) linking subprotocols into
+#   an integrated manual.
+# - Updates an existing protocol to a new version and verifies render_release()
+#   succeeds after each cycle.
+
 test_that("complete workflow works", {
   skip_if_offline()
   skip_if(Sys.getenv("MY_UNIVERSE") != "") # skip test on r-universe.dev
@@ -6,138 +19,22 @@ test_that("complete workflow works", {
   skip_if(
     assertthat::is.error(try(keyring::key_get("ZENODO_SANDBOX"), silent = TRUE))
   )
-
-  author_df <- data.frame(
-    given = c("Hans"),
-    family = c("Van Calster"),
-    email = c("hans.vancalster@inbo.be"),
-    orcid = c("0000-0001-8595-8426"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  reviewer_df <- data.frame(
-    given = c("Els"),
-    family = c("Lommelen"),
-    email = c("els.lommelen@inbo.be"),
-    orcid = c("0000-0002-3481-5684"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  file_manager_df <- data.frame(
-    given = c("Pieter"),
-    family = c("Verschelde"),
-    email = c("pieter.verschelde@inbo.be"),
-    orcid = c("0000-0002-9199-421X"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
+  language <- "en"
+  setup_mock_contributors(
+    language = language,
+    readline_value = function(...) paste("Tekst", Sys.time())
   )
 
-
-  local_mocked_bindings(
-    ask_yes_no = function(...) FALSE,
-    select_individual = function(...) author_df,
-    select_reviewer = function(...) reviewer_df,
-    select_file_manager = function(...) file_manager_df,
-    readline = function(...) paste("Tekst", Sys.time())
-  )
-
-  update_news <- function(path, version_number) {
-    news <- readLines(file.path(path, "NEWS.md"))
-    writeLines(
-      c(
-        head(news, 2),
-        sprintf("\n## [%1$s](../%1$s/index.html)\n", version_number),
-        rep("- blabla blabla", 1 + rpois(1, lambda = 3)),
-        tail(news, -2)
-      ),
-      file.path(path, "NEWS.md")
-    )
-  }
-  jsontxt <- '{
-    "title": "",
-    "description": "",
-    "license": "cc-by",
-    "upload_type": "other",
-    "access_right": "open",
-    "creators": [
-        {
-            "name": "Van Calster, Hans",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0001-8595-8426"
-        },
-        {
-            "name": "De Bie, Els",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0001-7679-743X"
-        },
-        {
-            "name": "Onkelinx, Thierry",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0001-8804-4216"
-        },
-        {
-            "name": "Vanderhaeghe, Floris",
-            "affiliation": "Research Institute for Nature and Forest",
-            "orcid": "0000-0002-6378-6229"
-        }
-    ],
-    "keywords": [
-        "open protocol",
-        "open science",
-        "research institute",
-        "nature",
-        "forest",
-        "environment",
-        "markdown",
-        "Flanders",
-        "Belgium"
-        ]
-}'
-
-  origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = origin_repo)
-  on.exit(unlink(origin_repo, recursive = TRUE))
-  repo <- gert::git_clone(
-    url = origin_repo,
-    path = tempfile("protocol_local"), verbose = FALSE
-  )
-  on.exit(unlink(repo, recursive = TRUE))
-  old_wd <- setwd(repo)
-  on.exit(setwd(old_wd))
-
-  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(
-    name = "user.email", value = "someone@example.org",
-    repo = repo
-  )
-  file.create("NEWS.md")
-  file.create(".zenodo.json")
-  writeLines(jsontxt, con = ".zenodo.json")
-
-  file.create(".gitignore")
-  writeLines(c("docs/", "publish/"), con = ".gitignore")
-  gert::git_add("NEWS.md")
-  gert::git_commit_all(message = "add empty NEWS repo file")
-
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
-
-  branch_info <- gert::git_branch_list(repo = repo)
-  main_branch <- ifelse(any(branch_info$name == "origin/main"),
-    "main", ifelse(any(branch_info$name == "origin/master"),
-      "master", "unknown"
-    )
-  )
+  mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
+  repo <- mock_repo$repo
+  origin_repo <- mock_repo$origin_repo
+  main_branch <- mock_repo$main_branch
 
   # create a protocol to be used as subprotocol
   version_number <- get_version_number()
   create_sfp(
     short_title = "water 1",
-    version_number = version_number, theme = "water", language = "en"
+    version_number = version_number, theme = "water", language = language
   )
   checklist::new_branch("sfp-101-en", repo = repo)
 
@@ -151,38 +48,23 @@ test_that("complete workflow works", {
   doi <- protocolhelper:::update_doi("sfp-101-en")
 
   # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    message = "sfp-101-en_water-1",
+    protocol_code = "sfp-101-en",
+    tag_message = "bla",
+    version_number = version_number
   )
 
+  git_push_current_branch()
 
 
-  # merge into main
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout(main_branch)
-  gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  # merge into main and delete feature branch
+  git_merge_to_main_and_delete(
+    branch_name = "sfp-101-en",
+    main_branch = main_branch,
+    repo = repo,
+    origin_repo = origin_repo
   )
-  gert::git_branch_delete("sfp-101-en", repo = origin_repo)
-  gert::git_branch_delete("sfp-101-en", repo = repo)
 
   expect_no_error(protocolhelper:::render_release())
 
@@ -200,43 +82,29 @@ test_that("complete workflow works", {
       "source", "sfp", "4_vegetation",
       "sfp_407_en_vegetation_1"
     ),
-    version_number = version_number_2
+    version_number = version_number_2,
+    n_bullets = 4
   )
 
   protocolhelper:::update_news_release("sfp-407-en")
   protocolhelper:::update_zenodo()
   doi <- protocolhelper:::update_doi("sfp-407-en")
 
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-407-en_vegetation-1")
-  specific_tag <- paste("sfp-407-en", version_number_2, sep = "-")
-  generic_tag <- paste("protocols", version_number_2, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    protocol_code = "sfp-407-en",
+    message = "sfp-407-en_vegetation-1",
+    tag_message = "bla",
+    version_number = version_number_2
   )
+  git_push_current_branch()
 
-  # merge into main
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout(main_branch)
-  gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  # merge into main and delete feature branch
+  git_merge_to_main_and_delete(
+    branch_name = "sfp-407-en",
+    main_branch = main_branch,
+    repo = repo,
+    origin_repo = origin_repo
   )
-  gert::git_branch_delete("sfp-407-en", repo = origin_repo)
-  gert::git_branch_delete("sfp-407-en", repo = repo)
 
   expect_no_error(protocolhelper:::render_release())
 
@@ -249,13 +117,13 @@ test_that("complete workflow works", {
     language = "en"
   )
   checklist::new_branch("sfp-102-en", repo = repo)
-  # test non-default params
+
   test_params <- "\nCheck if the value changed: `r params$protocolspecific`"
   write(
     x = test_params,
     file = file.path(
       "source/sfp/1_water/sfp_102_en_second_subprotocol",
-      "07_stappenplan.Rmd"
+      "07_workflow.Rmd"
     ),
     append = TRUE
   )
@@ -338,43 +206,29 @@ test_that("complete workflow works", {
       "source", "sfp", "1_water",
       "sfp_102_en_second_subprotocol"
     ),
-    version_number = version_number_3
+    version_number = version_number_3,
+    n_bullets = 6
   )
 
   protocolhelper:::update_news_release("sfp-102-en")
   protocolhelper:::update_zenodo()
   doi <- protocolhelper:::update_doi("sfp-102-en")
 
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-102-en_second_subprotocol")
-  specific_tag <- paste("sfp-102-en", version_number_3, sep = "-")
-  generic_tag <- paste("protocols", version_number_3, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    message = "sfp-102-en_second_subprotocol",
+    protocol_code = "sfp-102-en",
+    tag_message = "bla",
+    version_number = version_number_3
   )
+  git_push_current_branch()
 
-  # merge into main
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout(main_branch)
-  gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  # merge into main and delete feature branch
+  git_merge_to_main_and_delete(
+    branch_name = "sfp-102-en",
+    main_branch = main_branch,
+    repo = repo,
+    origin_repo = origin_repo
   )
-  gert::git_branch_delete("sfp-102-en", repo = origin_repo)
-  gert::git_branch_delete("sfp-102-en", repo = repo)
 
   expect_no_error(protocolhelper:::render_release())
 
@@ -407,7 +261,8 @@ test_that("complete workflow works", {
       "source", "spp", "mne",
       "spp_001_en_mne_protocol"
     ),
-    version_number = version_number_4
+    version_number = version_number_4,
+    n_bullets = 1
   )
 
   protocolhelper:::update_news_release("spp-001-en")
@@ -415,36 +270,20 @@ test_that("complete workflow works", {
   doi <- protocolhelper:::update_doi("spp-001-en")
 
   # add, commit and tag it
-  spp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "spp-001-en_mne-protocol")
-  specific_tag <- paste("spp-001-en", version_number_4, sep = "-")
-  generic_tag <- paste("protocols", version_number_4, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    protocol_code = "spp-001-en",
+    message = "spp-001-en_mne-protocol",
+    tag_message = "bla",
+    version_number = version_number_4
   )
-
-  # merge into main
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout(main_branch)
-  gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_push_current_branch()
+  # merge into main and delete feature branch
+  git_merge_to_main_and_delete(
+    branch_name = "spp-001-en",
+    main_branch = main_branch,
+    repo = repo,
+    origin_repo = origin_repo
   )
-  gert::git_branch_delete("spp-001-en", repo = origin_repo)
-  gert::git_branch_delete("spp-001-en", repo = repo)
 
   expect_no_error(protocolhelper:::render_release())
 
@@ -456,36 +295,21 @@ test_that("complete workflow works", {
   doi <- protocolhelper:::update_doi("sfp-101-en")
 
   # add, commit and tag it
-  spp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water")
-  specific_tag <- paste("sfp-101-en", version_number_5, sep = "-")
-  generic_tag <- paste("protocols", version_number_5, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  git_commit_and_tag_protocol(
+    message = "sfp-101-en_water",
+    protocol_code = "sfp-101-en",
+    tag_message = "bla",
+    version_number = version_number_5
   )
+  git_push_current_branch()
 
-  # merge into main
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_branch_checkout(main_branch)
-  gert::git_merge(ref = refspec, repo = repo)
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  # merge into main and delete feature branch
+  git_merge_to_main_and_delete(
+    branch_name = "sfp-101-en",
+    main_branch = main_branch,
+    repo = repo,
+    origin_repo = origin_repo
   )
-  gert::git_branch_delete("sfp-101-en", repo = origin_repo)
-  gert::git_branch_delete("sfp-101-en", repo = repo)
 
   skip_on_ci()
   expect_no_error(protocolhelper:::render_release())

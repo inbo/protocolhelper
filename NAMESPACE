@@ -168,11 +168,7 @@ importFrom(ymlthis,
   as_yml,
   use_index_rmd,
   use_yml_file,
-  yml_author,
   yml_bookdown_opts,
-  yml_date,
-  yml_discard,
   yml_empty,
-  yml_replace,
-  yml_toplevel
+  yml_replace
 )

@@ -60,7 +60,7 @@ Additional_repositories: https://inbo.r-universe.dev
 Config/citeme/communities: inbo
 Config/citeme/keywords: protocols; R package; Reproducible research;
     Rmarkdown templates
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB

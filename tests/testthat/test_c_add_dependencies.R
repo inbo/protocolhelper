@@ -1,55 +1,26 @@
+# Tests for add_dependencies(): writes subprotocol dependency metadata to
+# index.Rmd YAML frontmatter.
+# How it tests:
+# - Sets up mock contributors and scaffolds a base protocol (sfp-101-en) in a
+#   mock repository.
+# - Injects custom protocol-specific parameters into index.Rmd.
+# - Invokes add_dependencies() with multiple subprotocol codes, versions, and
+#   parameter overrides.
+# - Parses index.Rmd frontmatter and asserts dependency metadata is added while
+#   preserving existing parameters.
+
 test_that("test that adding dependencies to yaml works", {
   library(ymlthis)
-  author_df <- data.frame(
-    given = c("Hans"),
-    family = c("Van Calster"),
-    email = c("hans.vancalster@inbo.be"),
-    orcid = c("0000-0001-8595-8426"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  reviewer_df <- data.frame(
-    given = c("Els"),
-    family = c("Lommelen"),
-    email = c("els.lommelen@inbo.be"),
-    orcid = c("0000-0002-3481-5684"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  file_manager_df <- data.frame(
-    given = c("Pieter"),
-    family = c("Verschelde"),
-    email = c("pieter.verschelde@inbo.be"),
-    orcid = c("0000-0002-9199-421X"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
-  )
-
-
-  local_mocked_bindings(
-    ask_yes_no = function(...) FALSE,
-    select_individual = function(...) author_df,
-    select_reviewer = function(...) reviewer_df,
-    select_file_manager = function(...) file_manager_df,
-    readline = function(...) "Een titel"
-  )
-
-
-  old_wd <- getwd()
-  withr::defer(setwd(old_wd))
-  test_repo <- tempfile("test_protocol")
-  dir.create(test_repo)
-  setwd(test_repo)
-  repo <- gert::git_init()
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = ".")
-  gert::git_config_set(name = "user.name", value = "someone")
-  gert::git_config_set(name = "user.email", value = "someone@example.org")
-
+  language <- "en"
+  setup_mock_contributors(language = language)
+  setup_mock_bare_origin_repo()
   # create a protocol
   version_number <- "2021.01"
   create_sfp(
     short_title = "water 1",
     version_number = version_number,
     theme = "water",
-    language = "en"
+    language = language
   )
 
   # add a projectspecific parameter to index yaml
@@ -58,36 +29,30 @@ test_that("test that adding dependencies to yaml works", {
   )
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
+
+  # this is an added parameter to the index yml.
   index_yml <- ymlthis::yml_params(index_yml, protocolspecific = "defaultvalue")
-  template_rmd <-
-    file.path(
-      "source", "sfp", "1_water", "sfp_101_en_water_1",
-      "template.Rmd"
-    )
-  file.copy(
-    from = file.path(
-      "source", "sfp", "1_water", "sfp_101_en_water_1",
-      "index.Rmd"
-    ),
-    to = template_rmd
-  )
-  unlink(file.path(
+  # this is the index_rmd without params in the yml header
+  index_rmd <- file.path(
     "source", "sfp", "1_water", "sfp_101_en_water_1",
     "index.Rmd"
-  ))
-  ymlthis::use_index_rmd(
-    .yml = index_yml,
-    path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
-    template = template_rmd,
-    include_body = TRUE,
-    include_yaml = FALSE,
-    quiet = TRUE,
-    open_doc = FALSE
   )
-  unlink(template_rmd)
 
-
+  # instead of creating a template rmd that is a copy of the index rmd
+  # we use the overwrite options of the usethis package
+  withr::with_options(list(usethis.overwrite = TRUE), {
+    ymlthis::use_index_rmd(
+      .yml = index_yml,
+      path = file.path("source", "sfp", "1_water", "sfp_101_en_water_1"),
+      template = index_rmd,
+      include_body = TRUE,
+      include_yaml = FALSE,
+      quiet = TRUE,
+      open_doc = FALSE
+    )
+  })
   # add dependencies
+
   add_dependencies(
     code_mainprotocol = "sfp-101-en",
     protocol_code = c("sfp-123-en", "spp-124-en"),
@@ -103,6 +68,7 @@ test_that("test that adding dependencies to yaml works", {
   index_yml <- rmarkdown::yaml_front_matter(main)
   unlink("css", recursive = TRUE)
   index_yml <- ymlthis::as_yml(index_yml)
+  # Comparing the params of index with the added dependencies in the header
   testthat::expect_equal(
     index_yml$params,
     list(
