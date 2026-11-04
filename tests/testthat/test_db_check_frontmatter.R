@@ -145,7 +145,7 @@ test_that("Check frontmatter works", {
   )
 })
 
-test_that("check_frontmatter flags missing programmatically added YAML keys", {
+test_that("check_frontmatter flags missing required YAML keys", {
   language <- "en"
   setup_mock_contributors()
   mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
@@ -165,14 +165,28 @@ test_that("check_frontmatter flags missing programmatically added YAML keys", {
   path_to_protocol <- get_path_to_protocol("sfp-101-en")
   index_path <- file.path(path_to_protocol, "index.Rmd")
 
-  # Remove programmatically added keys that are absent from skeleton.Rmd
+  # Remove default YAML keys that are absent from skeleton.Rmd
   # (plus 'theme', which is absent from template_generic_en/skeleton.Rmd)
-  lines <- readLines(index_path)
-  drop_idx <- grep("^(lang:|license:|link-citations:|theme:)", lines)
-  funder_idx <- grep("^funder:", lines)
-  rh_idx <- grep("^rightsholder:", lines)
-  drop_idx <- c(drop_idx, funder_idx:(funder_idx + 4), rh_idx:(rh_idx + 4))
-  writeLines(lines[-drop_idx], index_path)
+  keys_to_drop <- c(
+    "lang", "funder", "rightsholder", "license", "link-citations", "theme"
+  )
+  index_yml <- rmarkdown::yaml_front_matter(index_path) |>
+    ymlthis::as_yml() |>
+    ymlthis::yml_discard(keys_to_drop)
+
+  template_rmd <- file.path(path_to_protocol, "template.rmd")
+  file.copy(from = index_path, to = template_rmd)
+  unlink(index_path)
+  ymlthis::use_index_rmd(
+    .yml = index_yml,
+    path = path_to_protocol,
+    template = template_rmd,
+    include_body = TRUE,
+    include_yaml = FALSE,
+    quiet = TRUE,
+    open_doc = FALSE
+  )
+  unlink(template_rmd)
 
   git_commit_and_tag_protocol(
     protocol_code = "sfp-101-en",
@@ -187,16 +201,9 @@ test_that("check_frontmatter flags missing programmatically added YAML keys", {
   )
   out_text <- paste(out, collapse = "\n")
 
-  expect_match(out_text, "The yaml-key 'lang' is missing", fixed = TRUE)
-  expect_match(out_text, "The yaml-key 'funder' is missing", fixed = TRUE)
-  expect_match(out_text, "The yaml-key 'rightsholder' is missing", fixed = TRUE)
-  expect_match(out_text, "The yaml-key 'license' is missing", fixed = TRUE)
-  expect_match(
-    out_text,
-    "The yaml-key 'link-citations' is missing",
-    fixed = TRUE
-  )
-  expect_match(out_text, "The yaml-key 'theme' is missing", fixed = TRUE)
+  for (key in keys_to_drop) {
+    expect_match(out_text, sprintf("'%s'", key), fixed = TRUE)
+  }
 })
 
 test_that("protocol_yaml_defaults and get_required_yaml_keys edge cases", {
