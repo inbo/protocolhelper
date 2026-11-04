@@ -166,7 +166,6 @@ test_that("check_frontmatter flags missing required YAML keys", {
   index_path <- file.path(path_to_protocol, "index.Rmd")
 
   # Remove default YAML keys that are absent from skeleton.Rmd
-  # (plus 'theme', which is absent from template_generic_en/skeleton.Rmd)
   keys_to_drop <- c(
     "lang", "funder", "rightsholder", "license", "link-citations", "theme"
   )
