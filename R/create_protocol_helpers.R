@@ -678,7 +678,7 @@ protocol_yaml_defaults <- function(
   theme = NULL,
   project_name = NULL
 ) {
-  language <- rlang::match_arg(language)
+  language <- match.arg(language)
   inbo_org <- paste(
     c(
       "  - name:",
@@ -734,7 +734,7 @@ get_required_yaml_keys <- function(protocol_code) {
     "title", "author", "reviewer", "file_manager", "keywords"
   )
   default_keys <- names(
-    # values of the defaults do not matter 
+    # values of the defaults do not matter
     # we only care about the protocol_yaml_defaults names
     protocol_yaml_defaults(
       language = "en",
