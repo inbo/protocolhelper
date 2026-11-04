@@ -659,3 +659,91 @@ yaml_interactive <- function(language) {
 
   return(yaml)
 }
+
+
+#' Helper to construct non-interactive default yaml key-value pairs
+#'
+#' Returns a named character vector where names are the YAML keys and values
+#' are the formatted YAML lines for `index.Rmd`.
+#'
+#' @inheritParams create_protocol
+#' @inheritParams get_path_to_protocol
+#' @return Named character vector of YAML lines.
+#' @noRd
+protocol_yaml_defaults <- function(
+  language = c("nl", "en"),
+  protocol_code,
+  version_number,
+  template,
+  theme = NULL,
+  project_name = NULL
+) {
+  language <- rlang::match_arg(language)
+  inbo_org <- paste(
+    c(
+      "  - name:",
+      paste0("      given: ", inbo_affiliation[[language]]),
+      "    email: info@inbo.be",
+      "    ror: 00j54wy13"
+    ),
+    collapse = "\n"
+  )
+
+  return(c(
+    language = paste("language:", language),
+    lang = paste(
+      "lang:",
+      paste0(language, "-BE"[language == "nl"], "-GB"[language == "en"])
+    ),
+    date = paste("date:", "\"`r Sys.Date()`\""),
+    protocol_code = paste("protocol_code:", protocol_code),
+    version_number = paste0("version_number: \"", version_number, "\""),
+    template_name = paste("template_name:", template),
+    theme = paste("theme:", theme)[!is.null(theme)],
+    project_name = paste("project_name:", project_name)[!is.null(project_name)],
+    community = "community: \"inbo\"", # required by citation_meta
+    publication_type = "publication_type: \"publication-technicalnote\"",
+    publisher = paste("publisher:", inbo_org, sep = "\n"),
+    rightsholder = paste("rightsholder:", inbo_org, sep = "\n"),
+    funder = paste("funder:", inbo_org, sep = "\n"),
+    site = "site: bookdown::bookdown_site",
+    bibliography = c(
+      "bibliography: references.yaml"[language == "en"],
+      "bibliography: referenties.yaml"[language == "nl"]
+    ),
+    `link-citations` = "link-citations: TRUE",
+    license = "license: CC-BY 4.0", # required by citation_meta
+    csl = "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" # nolint
+  ))
+}
+
+#' Get required YAML front matter keys for a protocol
+#'
+#' Derives the required YAML keys for `index.Rmd` from the interactive YAML
+#' fields and [protocol_yaml_defaults()].
+#'
+#' @inheritParams get_path_to_protocol
+#' @return Character vector of required YAML key names.
+#' @noRd
+get_required_yaml_keys <- function(protocol_code) {
+  check_protocolcode(protocol_code)
+  protocol_type <- as.character(
+    get_protocol_type(protocol_code, labels = FALSE)
+  )
+  interactive_keys <- c(
+    "title", "author", "reviewer", "file_manager", "keywords"
+  )
+  default_keys <- names(
+    # values of the defaults do not matter 
+    # we only care about the protocol_yaml_defaults names
+    protocol_yaml_defaults(
+      language = "en",
+      protocol_code = protocol_code,
+      version_number = "2020.01",
+      template = protocol_type,
+      theme = if (protocol_type == "sfp") "generic" else NULL,
+      project_name = if (protocol_type == "spp") "project" else NULL
+    )
+  )
+  return(c(interactive_keys, default_keys))
+}

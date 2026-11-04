@@ -51,43 +51,12 @@ check_frontmatter <- function(
     return(x$check(fail = fail))
   }
 
-  template_name <-
-    paste("template", yml_protocol$template_name,
-      yml_protocol$language,
-      sep = "_"
-    )
-
-  path_to_template <-
-    system.file("rmarkdown", "templates", template_name, "skeleton",
-                package = "protocolhelper")
-
-  if (!file.exists(file.path(
-    path_to_template,
-    "skeleton.Rmd"
-  ))) {
-    x$add_error(msg = paste0(
-      file.path(
-        path_to_template,
-        "skeleton.Rmd"
-      ),
-      " does not exist."
-    ))
-    return(x$check(fail = fail))
-  }
-
-  yml_template <- yaml_front_matter(
-    input = file.path(
-      path_to_template,
-      "skeleton.Rmd"
-    )
-  )
-
-  # check if all yaml keys are present
-  yml_missing <- yml_template[!names(yml_template) %in% names(yml_protocol)]
-  yml_missing$subtitle <- NULL
+  # check if all required yaml keys are present
+  required_keys <- get_required_yaml_keys(protocol_code)
+  missing_keys <- setdiff(required_keys, names(yml_protocol))
   problems <- sprintf(
     "The yaml-key '%s' is missing",
-    names(yml_missing)
+    missing_keys
   )
 
   # checks common to all protocol types
