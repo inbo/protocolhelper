@@ -720,7 +720,7 @@ protocol_yaml_defaults <- function(
 #' Get required YAML front matter keys for a protocol
 #'
 #' Derives the required YAML keys for `index.Rmd` from the interactive YAML
-#' fields and [protocol_yaml_defaults()].
+#' fields and `protocol_yaml_defaults()`.
 #'
 #' @inheritParams get_path_to_protocol
 #' @return Character vector of required YAML key names.

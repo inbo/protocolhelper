@@ -5,6 +5,8 @@
 #' Should be used in a GitHub Action on main branch after merge of a protocol.
 #' Helper function used in protocolhelper:::render_release().
 #'
+#' @importFrom assertthat assert_that is.string
+#' @importFrom fs dir_ls path_rel
 #' @importFrom utils browseURL zip
 #' @importFrom withr with_dir
 #'
