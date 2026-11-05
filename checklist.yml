@@ -5,9 +5,12 @@ allowed:
   - motivation: package will not be submitted to CRAN
     value: |-
       checking CRAN incoming feasibility ... WARNING
-      Maintainer: 'Hans Van Calster <hans.vancalster@inbo.be>'
+      Warning: Maintainer: 'Hans Van Calster <hans.vancalster@inbo.be>'
 
       New submission
+
+      Found the following (possibly) invalid ROR IDs:
+        ID: 00j54wy13	(from: DESCRIPTION)
 
       Strong dependencies not in the CRAN or BioC software repositories:
         checklist, citeme
