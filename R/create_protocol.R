@@ -106,7 +106,9 @@ create_protocol <- function(
   protocol_type <- match.arg(protocol_type)
   assert_that(template %in% c("sfp", "spp", "sap", "sop", "sip", "generic"))
   assert_that(is.string(short_title), nchar(short_title) <= 20)
-  check_versionnumber(version_number)
+  assert_that(is.flag(render), noNA(render))
+  language <- match.arg(language)
+
   if (protocol_type == "sfp") {
     assert_that(
       is.string(theme),
@@ -116,7 +118,6 @@ create_protocol <- function(
   if (protocol_type == "spp") {
     assert_that(is.string(project_name))
   }
-  language <- match.arg(language)
   if (!is.null(protocol_number)) {
     assert_that(
       is.string(protocol_number),
@@ -130,7 +131,7 @@ create_protocol <- function(
       ))
     )
   }
-  assert_that(is.flag(render), noNA(render))
+  check_versionnumber(version_number)
 
   # create protocol code
   protocol_code <- create_protocol_code(
