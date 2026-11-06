@@ -115,7 +115,6 @@ get_short_titles <- function(
 }
 
 
-
 #' Create protocol code from it's components
 #'
 #' A protocol code of format `s[fpioa]p-###-[nl|en]` will be created.
@@ -314,7 +313,6 @@ create_protocol_code <- function(
   protocol_code <- paste(protocol_type, protocol_number, language, sep = "-")
   return(protocol_code)
 }
-
 
 
 #' Create an Rmarkdown version from an existing `docx` protocol
