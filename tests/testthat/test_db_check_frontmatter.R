@@ -252,3 +252,12 @@ test_that("protocol_yaml_defaults and get_required_yaml_keys edge cases", {
   expect_false(any(c("theme", "project_name") %in% sap_keys))
   expect_error(get_required_yaml_keys("invalid-code"))
 })
+
+test_that("yaml_interactive_keys matches the keys yaml_interactive() writes", {
+  # Important test to ensure yaml_interactive_keys are in sync
+  # if new interactive fields are added to yaml_interactive() in the future.
+  setup_mock_contributors()
+  written_yaml <- paste(yaml_interactive(language = "en"), collapse = "\n")
+  written_keys <- names(yaml::yaml.load(written_yaml))
+  expect_setequal(setdiff(written_keys, "subtitle"), yaml_interactive_keys)
+})

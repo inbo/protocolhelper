@@ -717,10 +717,15 @@ protocol_yaml_defaults <- function(
   ))
 }
 
+# top-level keys written by yaml_interactive(); `subtitle` is optional
+yaml_interactive_keys <- c(
+  "title", "author", "reviewer", "file_manager", "keywords"
+)
+
 #' Get required YAML front matter keys for a protocol
 #'
 #' Derives the required YAML keys for `index.Rmd` from the interactive YAML
-#' fields and `protocol_yaml_defaults()`.
+#' fields (`yaml_interactive_keys`) and `protocol_yaml_defaults()`.
 #'
 #' @inheritParams get_path_to_protocol
 #' @return Character vector of required YAML key names.
@@ -729,9 +734,6 @@ get_required_yaml_keys <- function(protocol_code) {
   check_protocolcode(protocol_code)
   protocol_type <- as.character(
     get_protocol_type(protocol_code, labels = FALSE)
-  )
-  interactive_keys <- c(
-    "title", "author", "reviewer", "file_manager", "keywords"
   )
   default_keys <- names(
     # values of the defaults do not matter
@@ -745,5 +747,5 @@ get_required_yaml_keys <- function(protocol_code) {
       project_name = if (protocol_type == "spp") "project" else NULL
     )
   )
-  return(c(interactive_keys, default_keys))
+  return(c(yaml_interactive_keys, default_keys))
 }
