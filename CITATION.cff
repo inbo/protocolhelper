@@ -25,7 +25,7 @@ contact:
   affiliation: Research Institute for Nature and Forest (INBO)
   orcid: 0000-0001-8595-8426
 doi: ~
-license: GPL-3.0
+license: GPL-3.0-only
 repository-code: https://github.com/inbo/protocolhelper/
 type: software
 abstract: "Helper functions to manage INBO protocols."

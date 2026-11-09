@@ -14,9 +14,6 @@ allowed:
       Availability using Additional_repositories specification:
         checklist   yes   https://inbo.r-universe.dev
         citeme      yes   https://inbo.r-universe.dev
-
-      Found the following (possibly) invalid ROR IDs:
-        ID: 00j54wy13	(from: DESCRIPTION)
   notes: []
 citation_roles:
 - aut
