@@ -45,12 +45,12 @@ protocolhelper::add_dependencies(
 }
 }
 \seealso{
-Other creation: 
-\code{\link{add_one_subprotocol}()},
-\code{\link{add_subprotocols}()},
-\code{\link{create_protocol}()},
-\code{\link{insert_protocolsection}()},
-\code{\link{update_protocol}()},
-\code{\link{update_version_number}()}
+Other creation:
+\code{\link[=add_one_subprotocol]{add_one_subprotocol()}},
+\code{\link[=add_subprotocols]{add_subprotocols()}},
+\code{\link[=create_protocol]{create_protocol()}},
+\code{\link[=insert_protocolsection]{insert_protocolsection()}},
+\code{\link[=update_protocol]{update_protocol()}},
+\code{\link[=update_version_number]{update_version_number()}}
 }
 \concept{creation}

@@ -76,9 +76,9 @@
 #' @importFrom rmarkdown draft
 #' @importFrom bookdown render_book
 #' @importFrom fs path_rel dir_create dir_ls file_copy
-#' @importFrom checklist use_author citation_meta ask_yes_no
+#' @importFrom citeme select_individual citation_meta ask_yes_no
 #' @importFrom cli cli_alert_success cli_alert cli_alert_info cli_alert_danger
-#' cli_fmt
+#' @importFrom cli cli_fmt
 #'
 #' @export
 #' @family creation
@@ -91,21 +91,24 @@
 #' )
 #' }
 create_protocol <- function(
-    protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
-    short_title,
-    version_number = get_version_number(),
-    theme = NULL,
-    project_name = NULL,
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = protocol_type,
-    render = FALSE) {
+  protocol_type = c("sfp", "spp", "sap", "sop", "sip"),
+  short_title,
+  version_number = get_version_number(),
+  theme = NULL,
+  project_name = NULL,
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = protocol_type,
+  render = FALSE
+) {
   # check parameters
   protocol_type <- match.arg(protocol_type)
   assert_that(template %in% c("sfp", "spp", "sap", "sop", "sip", "generic"))
   assert_that(is.string(short_title), nchar(short_title) <= 20)
-  check_versionnumber(version_number)
+  assert_that(is.flag(render), noNA(render))
+  language <- match.arg(language)
+
   if (protocol_type == "sfp") {
     assert_that(
       is.string(theme),
@@ -115,7 +118,6 @@ create_protocol <- function(
   if (protocol_type == "spp") {
     assert_that(is.string(project_name))
   }
-  language <- match.arg(language)
   if (!is.null(protocol_number)) {
     assert_that(
       is.string(protocol_number),
@@ -129,7 +131,7 @@ create_protocol <- function(
       ))
     )
   }
-  assert_that(is.flag(render), noNA(render))
+  check_versionnumber(version_number)
 
   # create protocol code
   protocol_code <- create_protocol_code(
@@ -257,41 +259,17 @@ create_protocol <- function(
     system.file(package = "checklist") |>
     file_copy(file.path(path_to_protocol, "LICENSE.md"))
 
-  # build new yaml - interactive part
-  yaml <- yaml_interactive(language = language)
-
-  # add non-interactive key-values
+  # build new yaml - interactive part + non-interactive defaults
   yaml <- c(
-    yaml,
-    paste("language:", language),
-    paste(
-      "lang:",
-      paste0(language, "-BE"[language == "nl"], "-GB"[language == "en"])
-    ),
-    paste("date:", "\"`r Sys.Date()`\""),
-    paste("protocol_code:", protocol_code),
-    paste0("version_number: \"", version_number, "\""),
-    paste("template_name:", template),
-    paste("theme:", theme)[!is.null(theme)],
-    paste("project_name:", project_name)[!is.null(project_name)],
-    "community: \"inbo\"", # required by citation_meta
-    paste0("publisher: ", inbo_affiliation[[language]]),
-    "rightsholder:",
-    "  - name:",
-    paste0("      given: ", inbo_affiliation[[language]]),
-    "    email: info@inbo.be",
-    "    ror: 00j54wy13",
-    "funder:",
-    "  - name:",
-    paste0("      given: ", inbo_affiliation[[language]]),
-    "    email: info@inbo.be",
-    "    ror: 00j54wy13",
-    "site: bookdown::bookdown_site",
-    "bibliography: references.yaml"[language == "en"],
-    "bibliography: referenties.yaml"[language == "nl"],
-    "link-citations: TRUE",
-    "license: CC-BY 4.0", # required by citation_meta
-    "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" # nolint
+    yaml_interactive(language = language),
+    protocol_yaml_defaults(
+      language = language,
+      protocol_code = protocol_code,
+      version_number = version_number,
+      template = template,
+      theme = theme,
+      project_name = project_name
+    )
   )
 
   # read index template
@@ -353,14 +331,15 @@ create_protocol <- function(
 #' @rdname create_protocol
 #' @export
 create_sfp <- function(
-    short_title,
-    version_number = get_version_number(),
-    theme = c("generic", "water", "air", "soil", "vegetation", "species"),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sfp", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  theme = c("generic", "water", "air", "soil", "vegetation", "species"),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sfp", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sfp",
@@ -378,14 +357,15 @@ create_sfp <- function(
 #' @rdname create_protocol
 #' @export
 create_spp <- function(
-    short_title,
-    version_number = get_version_number(),
-    project_name,
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("spp"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  project_name,
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("spp"),
+  render = FALSE
+) {
   create_protocol(
     protocol_type = "spp",
     short_title = short_title,
@@ -402,13 +382,14 @@ create_spp <- function(
 #' @rdname create_protocol
 #' @export
 create_sap <- function(
-    short_title,
-    version_number = get_version_number(),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sap", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sap", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sap",
@@ -425,13 +406,14 @@ create_sap <- function(
 #' @rdname create_protocol
 #' @export
 create_sip <- function(
-    short_title,
-    version_number = get_version_number(),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sip", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sip", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sip",
@@ -448,13 +430,14 @@ create_sip <- function(
 #' @rdname create_protocol
 #' @export
 create_sop <- function(
-    short_title,
-    version_number = get_version_number(),
-    language = c("nl", "en"),
-    from_docx = NULL,
-    protocol_number = NULL,
-    template = c("sop", "generic"),
-    render = FALSE) {
+  short_title,
+  version_number = get_version_number(),
+  language = c("nl", "en"),
+  from_docx = NULL,
+  protocol_number = NULL,
+  template = c("sop", "generic"),
+  render = FALSE
+) {
   template <- match.arg(template)
   create_protocol(
     protocol_type = "sop",

@@ -54,12 +54,12 @@ insert_protocolsection(
 }
 }
 \seealso{
-Other creation: 
-\code{\link{add_dependencies}()},
-\code{\link{add_one_subprotocol}()},
-\code{\link{add_subprotocols}()},
-\code{\link{create_protocol}()},
-\code{\link{update_protocol}()},
-\code{\link{update_version_number}()}
+Other creation:
+\code{\link[=add_dependencies]{add_dependencies()}},
+\code{\link[=add_one_subprotocol]{add_one_subprotocol()}},
+\code{\link[=add_subprotocols]{add_subprotocols()}},
+\code{\link[=create_protocol]{create_protocol()}},
+\code{\link[=update_protocol]{update_protocol()}},
+\code{\link[=update_version_number]{update_version_number()}}
 }
 \concept{creation}

@@ -58,7 +58,7 @@ written in exactly the same way
 Please check carefully for mistakes after using this function
 }
 \seealso{
-Other convert: 
-\code{\link{convert_docx_to_rmd}()}
+Other convert:
+\code{\link[=convert_docx_to_rmd]{convert_docx_to_rmd()}}
 }
 \concept{convert}

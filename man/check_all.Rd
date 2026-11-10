@@ -20,11 +20,11 @@ A report of all failed checks.
 Combines \code{check_frontmatter()} and \code{check_structure()} in one function.
 }
 \seealso{
-Other check: 
-\code{\link{check_all_person_info}()},
-\code{\link{check_frontmatter}()},
-\code{\link{check_structure}()},
+Other check:
+\code{\link[=check_all_person_info]{check_all_person_info()}},
+\code{\link[=check_frontmatter]{check_frontmatter()}},
+\code{\link[=check_structure]{check_structure()}},
 \code{\link{protocolcheck}},
-\code{\link{validate_orcid}()}
+\code{\link[=validate_orcid]{validate_orcid()}}
 }
 \concept{check}

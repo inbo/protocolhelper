@@ -17,7 +17,7 @@
 #' @importFrom purrr map map_chr
 #' @importFrom rmarkdown yaml_front_matter
 #' @importFrom gert git_branch git_branch_checkout git_branch_list git_stash_pop
-#' git_stash_save git_stash_list git_status
+#' @importFrom gert git_stash_save git_stash_list git_status
 #' @importFrom assertthat assert_that
 #'
 #' @return A string containing the next (incremented) version number

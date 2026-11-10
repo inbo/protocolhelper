@@ -19,12 +19,12 @@ Next, it will update the version number in the YAML of \code{index.Rmd} and
 update the protocol-specific \code{NEWS.md} file.
 }
 \seealso{
-Other creation: 
-\code{\link{add_dependencies}()},
-\code{\link{add_one_subprotocol}()},
-\code{\link{add_subprotocols}()},
-\code{\link{create_protocol}()},
-\code{\link{insert_protocolsection}()},
-\code{\link{update_version_number}()}
+Other creation:
+\code{\link[=add_dependencies]{add_dependencies()}},
+\code{\link[=add_one_subprotocol]{add_one_subprotocol()}},
+\code{\link[=add_subprotocols]{add_subprotocols()}},
+\code{\link[=create_protocol]{create_protocol()}},
+\code{\link[=insert_protocolsection]{insert_protocolsection()}},
+\code{\link[=update_version_number]{update_version_number()}}
 }
 \concept{creation}

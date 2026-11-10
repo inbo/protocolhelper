@@ -18,14 +18,15 @@
 #' @importFrom assertthat assert_that is.string has_name is.flag noNA
 #' @importFrom stringr str_detect
 #' @importFrom purrr map_lgl map_chr
-#' @importFrom checklist citation_meta
+#' @importFrom citeme citation_meta
 #'
 #' @export
 #' @family check
 #'
 check_frontmatter <- function(
-    protocol_code,
-    fail = !interactive()) {
+  protocol_code,
+  fail = !interactive()
+) {
   check_protocolcode(protocol_code)
   assert_that(is.flag(fail), noNA(fail))
 
@@ -44,51 +45,18 @@ check_frontmatter <- function(
   if (
     !(is.string(yml_protocol$template_name) && is.string(yml_protocol$language))
   ) {
-    x$add_error(msg = sprintf("yaml keys `template_name` and `language`
+    x$add_error(msg = "yaml keys `template_name` and `language`
                               should be present in the yaml section of index.Rmd
-                              and their values should be strings."))
+                              and their values should be strings.")
     return(x$check(fail = fail))
   }
 
-  template_name <-
-    paste("template", yml_protocol$template_name,
-      yml_protocol$language,
-      sep = "_"
-    )
-
-  path_to_template <-
-    system.file(
-      file.path("rmarkdown", "templates", template_name, "skeleton"),
-      package = "protocolhelper"
-    )
-
-  if (!file.exists(file.path(
-    path_to_template,
-    "skeleton.Rmd"
-  ))) {
-    x$add_error(msg = paste0(
-      file.path(
-        path_to_template,
-        "skeleton.Rmd"
-      ),
-      " does not exist."
-    ))
-    return(x$check(fail = fail))
-  }
-
-  yml_template <- yaml_front_matter(
-    input = file.path(
-      path_to_template,
-      "skeleton.Rmd"
-    )
-  )
-
-  # check if all yaml keys are present
-  yml_missing <- yml_template[!names(yml_template) %in% names(yml_protocol)]
-  yml_missing$subtitle <- NULL
+  # check if all required yaml keys are present
+  required_keys <- get_required_yaml_keys(protocol_code)
+  missing_keys <- setdiff(required_keys, names(yml_protocol))
   problems <- sprintf(
     "The yaml-key '%s' is missing",
-    names(yml_missing)
+    missing_keys
   )
 
   # checks common to all protocol types

@@ -1,3 +1,10 @@
+# protocolhelper 0.8.5
+
+## Bug fix
+
+* Installation of package failed due to breaking changes in `checklist`:
+  some functions moved to `citeme` package which is now used in `protocolhelper`
+
 # protocolhelper 0.8.4
 
 ## Bug fix

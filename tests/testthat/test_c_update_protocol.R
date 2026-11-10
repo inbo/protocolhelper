@@ -1,90 +1,50 @@
+# Tests for update_protocol(): prepares an existing protocol for a new version
+# release.
+# How it tests:
+# - Scaffolds, commits, tags, and pushes an initial protocol (sfp-101-en,
+#   version 2021.01).
+# - Calls update_protocol("sfp-101-en") to check out the protocol branch and
+#   bump the version.
+# - Asserts Git switches to the protocol branch ("sfp-101-en").
+# - Verifies index.Rmd YAML frontmatter is updated with the current year's
+#   version number.
+
 test_that("Update of a protocol works", {
-  author_df <- data.frame(
-    given = c("Hans"),
-    family = c("Van Calster"),
-    email = c("hans.vancalster@inbo.be"),
-    orcid = c("0000-0001-8595-8426"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  reviewer_df <- data.frame(
-    given = c("Els"),
-    family = c("Lommelen"),
-    email = c("els.lommelen@inbo.be"),
-    orcid = c("0000-0002-3481-5684"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  file_manager_df <- data.frame(
-    given = c("Pieter"),
-    family = c("Verschelde"),
-    email = c("pieter.verschelde@inbo.be"),
-    orcid = c("0000-0002-9199-421X"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
-  )
+  language <- "en"
+  setup_mock_contributors(language = language)
 
+  mock_repo <- setup_mock_bare_origin_repo()
 
-  local_mocked_bindings(
-    ask_yes_no = function(...) FALSE,
-    use_author = function(...) author_df,
-    use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df,
-    readline = function(...) "Een titel"
-  )
-
-  origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = origin_repo)
-  withr::defer(unlink(origin_repo, recursive = TRUE))
-  repo <- gert::git_clone(
-    url = origin_repo,
-    path = tempfile("protocol_local"), verbose = FALSE
-  )
-  withr::defer(unlink(repo, recursive = TRUE))
-
-  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(
-    name = "user.email", value = "someone@example.org",
-    repo = repo
-  )
   # create a protocol
-  old_wd <- setwd(repo)
-  withr::defer(setwd(old_wd))
   version_number <- "2021.01"
   create_sfp(
     short_title = "water 1",
-    version_number = version_number, theme = "water", language = "en"
+    version_number = version_number, theme = "water", language = language
   )
 
-  # add, commit and tag it
-  sfp_staged <- gert::git_add(files = ".")
-  gert::git_commit_all(message = "sfp-101-en_water-1")
-  specific_tag <- paste("sfp-101-en", version_number, sep = "-")
-  generic_tag <- paste("protocols", version_number, sep = "-")
-  gert::git_tag_create(name = specific_tag, message = "bla")
-  gert::git_tag_create(name = generic_tag, message = "bla")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
+  # Push the initial protocol commit on the base branch. update_protocol() then
+  # creates the protocol branch from this starting point.
+  git_commit_and_tag_protocol(
+    message = "sfp-101-en_water-1",
+    protocol_code = "sfp-101-en",
+    version_number = version_number,
+    tag_message = "bla",
+    repo = mock_repo$repo
   )
+  git_push_current_branch(repo = mock_repo$repo)
 
   # prepare to start an update of the protocol
   update_protocol("sfp-101-en")
   gert::git_commit_all(message = "update version number sfp-101-en_water-1")
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
+  git_push_current_branch(repo = mock_repo$repo)
 
 
   expect_identical(
-    gert::git_branch(repo = repo),
+    gert::git_branch(repo = mock_repo$repo),
     "sfp-101-en"
   )
+
+  # check if the year on the updated protocol matches the year at test time
   expect_identical(
     yaml_front_matter(
       file.path(

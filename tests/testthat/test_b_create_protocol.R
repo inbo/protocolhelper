@@ -1,71 +1,17 @@
+# Tests for create_sfp(): scaffolds a new Standard Field Protocol directory
+# structure and template files.
+# How it tests:
+# - Sets up mock contributor metadata and an isolated bare-origin Git repo.
+# - Determines the next version number using get_version_number().
+# - Invokes create_sfp() with generic template and water theme in English.
+# - Asserts that protocol scaffolding completes without error.
+
 test_that("add author works", {
-  author_df <- data.frame(
-    given = c("Hans"),
-    family = c("Van Calster"),
-    email = c("hans.vancalster@inbo.be"),
-    orcid = c("0000-0001-8595-8426"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  reviewer_df <- data.frame(
-    given = c("Els"),
-    family = c("Lommelen"),
-    email = c("els.lommelen@inbo.be"),
-    orcid = c("0000-0002-3481-5684"),
-    affiliation = c("Research Institute for Nature and Forest (INBO)")
-  )
-  file_manager_df <- data.frame(
-    given = c("Pieter"),
-    family = c("Verschelde"),
-    email = c("pieter.verschelde@inbo.be"),
-    orcid = c("0000-0002-9199-421X"),
-    affiliation = c("Instituut voor Natuur- en Bosonderzoek (INBO)")
-  )
+  language <- "en"
+  setup_mock_contributors(language = language)
 
-  local_mocked_bindings(
-    ask_yes_no = function(...) FALSE,
-    use_author = function(...) author_df,
-    use_reviewer = function(...) reviewer_df,
-    use_file_manager = function(...) file_manager_df,
-    readline = function(...) "Een titel"
-  )
+  setup_mock_bare_origin_repo()
 
-  origin_repo <- gert::git_init(tempfile("protocol_origin"), bare = TRUE)
-  url = "https://github.com/inbo/unittests"
-  gert::git_remote_add(url = url, repo = origin_repo)
-  withr::defer(unlink(origin_repo, recursive = TRUE))
-  repo <- gert::git_clone(
-    url = origin_repo,
-    path = tempfile("protocol_local"), verbose = FALSE
-  )
-  withr::defer(unlink(repo, recursive = TRUE))
-  old_wd <- setwd(repo)
-  withr::defer(setwd(old_wd))
-
-  gert::git_config_set(name = "user.name", value = "someone", repo = repo)
-  gert::git_config_set(
-    name = "user.email", value = "someone@example.org",
-    repo = repo
-  )
-  file.create("NEWS.md")
-  gert::git_add("NEWS.md")
-  gert::git_commit_all(message = "add empty NEWS repo file")
-  branch_info <- gert::git_branch_list(repo = repo)
-  refspec <- branch_info$ref[branch_info$name == gert::git_branch(repo = repo)]
-  gert::git_push(
-    remote = "origin",
-    refspec = refspec,
-    set_upstream = TRUE,
-    repo = repo
-  )
-
-  branch_info <- gert::git_branch_list(repo = repo)
-  main_branch <- ifelse(
-    any(branch_info$name == "origin/main"),
-    "main", ifelse(
-      any(branch_info$name == "origin/master"),
-      "master", "unknown"
-    )
-  )
   # create a protocol
   version_number <- get_version_number()
   create_sfp(
@@ -73,6 +19,6 @@ test_that("add author works", {
     template = "generic",
     version_number = version_number,
     theme = "water",
-    language = "en"
+    language = language
   ) |> expect_no_error()
 })

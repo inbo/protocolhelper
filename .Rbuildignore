@@ -12,7 +12,7 @@
 ^\.zenodo\.json$
 ^_pkgdown.yml$
 ^_pkgdown\.yml$
-^checklist.yml$
+^checklist.yml
 ^codecov\.yml$
 ^cran-comments\.md$
 ^data-raw$

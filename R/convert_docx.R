@@ -39,13 +39,14 @@
 #' @export
 #' @family convert
 convert_docx_to_rmd <- function(
-    from,
-    to = sub("docx$", "Rmd", from),
-    dir_media = ".",
-    wrap = NA,
-    overwrite = FALSE,
-    verbose = FALSE,
-    wd = getwd()) {
+  from,
+  to = sub("docx$", "Rmd", from),
+  dir_media = ".",
+  wrap = NA,
+  overwrite = FALSE,
+  verbose = FALSE,
+  wd = getwd()
+) {
   assert_that(is.string(from))
   assert_that(grepl("\\.docx$", from))
   assert_that(is.string(to))

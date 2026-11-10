@@ -23,12 +23,12 @@ If this is not the case, or other issues are detected regarding a non-clean
 local git repository - informative error messages will be given.
 }
 \seealso{
-Other utility: 
-\code{\link{add_label}()},
-\code{\link{get_path_to_protocol}()},
-\code{\link{get_protocol_type}()},
-\code{\link{get_protocolnumbers}()},
-\code{\link{get_short_titles}()},
-\code{\link{increment_version_number}()}
+Other utility:
+\code{\link[=add_label]{add_label()}},
+\code{\link[=get_path_to_protocol]{get_path_to_protocol()}},
+\code{\link[=get_protocol_type]{get_protocol_type()}},
+\code{\link[=get_protocolnumbers]{get_protocolnumbers()}},
+\code{\link[=get_short_titles]{get_short_titles()}},
+\code{\link[=increment_version_number]{increment_version_number()}}
 }
 \concept{utility}
