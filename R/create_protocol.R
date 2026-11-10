@@ -259,46 +259,17 @@ create_protocol <- function(
     system.file(package = "checklist") |>
     file_copy(file.path(path_to_protocol, "LICENSE.md"))
 
-  # build new yaml - interactive part
-  yaml <- yaml_interactive(language = language)
-
-  # add non-interactive key-values
+  # build new yaml - interactive part + non-interactive defaults
   yaml <- c(
-    yaml,
-    paste("language:", language),
-    paste(
-      "lang:",
-      paste0(language, "-BE"[language == "nl"], "-GB"[language == "en"])
-    ),
-    paste("date:", "\"`r Sys.Date()`\""),
-    paste("protocol_code:", protocol_code),
-    paste0("version_number: \"", version_number, "\""),
-    paste("template_name:", template),
-    paste("theme:", theme)[!is.null(theme)],
-    paste("project_name:", project_name)[!is.null(project_name)],
-    "community: \"inbo\"", # required by citation_meta
-    "publication_type: \"publication-technicalnote\"", # citation_meta
-    "publisher:",
-    "  - name:",
-    paste0("      given: ", inbo_affiliation[[language]]),
-    "    email: info@inbo.be",
-    "    ror: 00j54wy13",
-    "rightsholder:",
-    "  - name:",
-    paste0("      given: ", inbo_affiliation[[language]]),
-    "    email: info@inbo.be",
-    "    ror: 00j54wy13",
-    "funder:",
-    "  - name:",
-    paste0("      given: ", inbo_affiliation[[language]]),
-    "    email: info@inbo.be",
-    "    ror: 00j54wy13",
-    "site: bookdown::bookdown_site",
-    "bibliography: references.yaml"[language == "en"],
-    "bibliography: referenties.yaml"[language == "nl"],
-    "link-citations: TRUE",
-    "license: CC-BY 4.0", # required by citation_meta
-    "csl: https://raw.githubusercontent.com/citation-style-language/styles/master/research-institute-for-nature-and-forest.csl" # nolint
+    yaml_interactive(language = language),
+    protocol_yaml_defaults(
+      language = language,
+      protocol_code = protocol_code,
+      version_number = version_number,
+      template = template,
+      theme = theme,
+      project_name = project_name
+    )
   )
 
   # read index template

@@ -144,3 +144,120 @@ test_that("Check frontmatter works", {
     "Errors in protocol sfp-102-en:"
   )
 })
+
+test_that("check_frontmatter flags missing required YAML keys", {
+  language <- "en"
+  setup_mock_contributors()
+  mock_repo <- setup_mock_bare_origin_repo(include_zenodo_files = TRUE)
+  repo <- mock_repo$repo
+  fs::dir_create(file.path(repo, "source"))
+  version_number <- get_version_number()
+
+  create_sfp(
+    short_title = "water 1",
+    version_number = version_number,
+    theme = "water",
+    language = language,
+    template = "generic"
+  )
+  checklist::new_branch("sfp-101-en", repo = repo)
+
+  path_to_protocol <- get_path_to_protocol("sfp-101-en")
+  index_path <- file.path(path_to_protocol, "index.Rmd")
+
+  # Remove default YAML keys that are absent from skeleton.Rmd
+  keys_to_drop <- c(
+    "lang", "funder", "rightsholder", "license", "link-citations", "theme"
+  )
+  index_yml <- rmarkdown::yaml_front_matter(index_path) |>
+    ymlthis::as_yml() |>
+    ymlthis::yml_discard(keys_to_drop)
+
+  template_rmd <- file.path(path_to_protocol, "template.rmd")
+  file.copy(from = index_path, to = template_rmd)
+  unlink(index_path)
+  ymlthis::use_index_rmd(
+    .yml = index_yml,
+    path = path_to_protocol,
+    template = template_rmd,
+    include_body = TRUE,
+    include_yaml = FALSE,
+    quiet = TRUE,
+    open_doc = FALSE
+  )
+  unlink(template_rmd)
+
+  git_commit_and_tag_protocol(
+    protocol_code = "sfp-101-en",
+    message = "sfp-101-en_water-1",
+    version_number = version_number,
+    tag_message = "bla"
+  )
+  git_push_current_branch()
+
+  out <- capture.output(
+    check_frontmatter(protocol_code = "sfp-101-en", fail = FALSE)
+  )
+  out_text <- paste(out, collapse = "\n")
+
+  for (key in keys_to_drop) {
+    expect_match(out_text, sprintf("'%s'", key), fixed = TRUE)
+  }
+})
+
+test_that("protocol_yaml_defaults and get_required_yaml_keys edge cases", {
+  en_sfp <- protocol_yaml_defaults(
+    language = "en",
+    protocol_code = "sfp-101-en",
+    version_number = "2026.01",
+    template = "sfp",
+    theme = "water"
+  )
+  expect_true("theme" %in% names(en_sfp))
+  expect_false("project_name" %in% names(en_sfp))
+  expect_identical(en_sfp[["lang"]], "lang: en-GB")
+  expect_identical(en_sfp[["bibliography"]], "bibliography: references.yaml")
+
+  nl_spp <- protocol_yaml_defaults(
+    language = "nl",
+    protocol_code = "spp-001-nl",
+    version_number = "2026.01",
+    template = "spp",
+    project_name = "test_proj"
+  )
+  expect_true("project_name" %in% names(nl_spp))
+  expect_false("theme" %in% names(nl_spp))
+  expect_identical(nl_spp[["lang"]], "lang: nl-BE")
+  expect_identical(nl_spp[["bibliography"]], "bibliography: referenties.yaml")
+
+  expect_error(
+    protocol_yaml_defaults(
+      language = "fr",
+      protocol_code = "sap-001-en",
+      version_number = "2026.01",
+      template = "sap"
+    )
+  )
+
+  sfp_keys <- get_required_yaml_keys("sfp-101-en")
+  spp_keys <- get_required_yaml_keys("spp-001-nl")
+  sap_keys <- get_required_yaml_keys("sap-001-en")
+
+  expect_true(
+    all(c("theme", "lang", "funder", "rightsholder", "license") %in% sfp_keys)
+  )
+  expect_false("project_name" %in% sfp_keys)
+  expect_true("project_name" %in% spp_keys)
+  expect_false("theme" %in% spp_keys)
+  expect_false(any(c("theme", "project_name") %in% sap_keys))
+  expect_error(get_required_yaml_keys("invalid-code"))
+})
+
+test_that("yaml_interactive_keys matches the keys yaml_interactive() writes", {
+  # Important test to ensure yaml_interactive_keys are in sync
+  # if new interactive fields are added to yaml_interactive() in the future.
+  setup_mock_contributors()
+  written_yaml <- paste(yaml_interactive(language = "en"), collapse = "\n")
+  written_keys <- names(yaml::yaml.load(written_yaml))
+  expect_setequal(setdiff(written_keys, "subtitle"), yaml_interactive_keys)
+})
